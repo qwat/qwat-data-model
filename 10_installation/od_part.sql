@@ -31,7 +31,6 @@ ALTER TABLE qwat.od_part ADD COLUMN label_r_2       double precision default nul
 SELECT qwat.fn_geom_tool_point('od_part', true,    true,        true,            true,       true,         true);
 
 /* CONSTRAINTS */
-ALTER TABLE qwat.od_part ADD CONSTRAINT part_id_type        FOREIGN KEY (id_type)          REFERENCES qwat.vl_part_type(id)         MATCH FULL; CREATE INDEX fki_part_id_type         ON qwat.od_part(id_type) ;
 ALTER TABLE qwat.od_part ADD CONSTRAINT part_id_type         FOREIGN KEY (id_type)         REFERENCES qwat.vl_part_type(id)        MATCH FULL; CREATE INDEX fki_part_id_type          ON qwat.od_part(id_type) ;
 ALTER TABLE qwat.od_part ADD CONSTRAINT part_id_distributor  FOREIGN KEY (id_distributor)  REFERENCES qwat.od_distributor(id)      MATCH FULL; CREATE INDEX fki_part_id_distributor   ON qwat.od_part(id_distributor) ;
 ALTER TABLE qwat.od_part ADD CONSTRAINT part_id_status       FOREIGN KEY (id_status)       REFERENCES qwat.vl_status(id)           MATCH FULL; CREATE INDEX fki_part_id_status        ON qwat.od_part(id_status)      ;

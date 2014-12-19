@@ -43,4 +43,5 @@ ranges for tables are defined here.
 95 vl_protectionzone_type
 96 vl_hydrant_provider
 97 vl_bedding
+98 vl_cover_type
 
