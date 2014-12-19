@@ -17,6 +17,7 @@ ALTER TABLE qwat.od_pipe ADD COLUMN id_installmethod       integer not null;    
 ALTER TABLE qwat.od_pipe ADD COLUMN id_material            integer not null;                             /* id_material          FK */
 ALTER TABLE qwat.od_pipe ADD COLUMN id_distributor         integer not null;                             /* id_distributor       FK */
 ALTER TABLE qwat.od_pipe ADD COLUMN id_precision           integer not null;                             /* id_precision         FK */
+ALTER TABLE qwat.od_pipe ADD COLUMN id_bedding             integer not null;                             /* id_bedding           FK */
 ALTER TABLE qwat.od_pipe ADD COLUMN id_protection          integer;                                      /* id_protection        FK */
 ALTER TABLE qwat.od_pipe ADD COLUMN id_status              integer not null;                             /* id_status            FK */
 ALTER TABLE qwat.od_pipe ADD COLUMN id_watertype           integer not null;                             /* id_watertype         FK */
@@ -28,8 +29,8 @@ ALTER TABLE qwat.od_pipe ADD COLUMN folder                 varchar(20) default '
 ALTER TABLE qwat.od_pipe ADD COLUMN remark                 text        default '' ;                      /* remark                  */
 ALTER TABLE qwat.od_pipe ADD COLUMN _valve_count           smallint default NULL;                        /* _valve_count            */
 ALTER TABLE qwat.od_pipe ADD COLUMN _valve_closed          boolean default NULL;                         /* _valve_closed           */
-ALTER TABLE qwat.od_pipe ADD COLUMN label_visible_1         smallint default 1;                           /* label_view 0: hide, 1: show, 2: always show */
-ALTER TABLE qwat.od_pipe ADD COLUMN label_visible_2         smallint default 1;                           /* label_view 0: hide, 1: show, 2: always show */
+ALTER TABLE qwat.od_pipe ADD COLUMN label_visible_1        smallint default 1;                           /* label_view 0: hide, 1: show, 2: always show */
+ALTER TABLE qwat.od_pipe ADD COLUMN label_visible_2        smallint default 1;                           /* label_view 0: hide, 1: show, 2: always show */
 
 /* schema view */
 SELECT qwat.fn_enable_schemaview( 'od_pipe', 'vl_pipe_function', 'id_function' );
@@ -41,11 +42,12 @@ ALTER TABLE qwat.od_pipe ADD CONSTRAINT pipe_id_installmethod  FOREIGN KEY (id_i
 ALTER TABLE qwat.od_pipe ADD CONSTRAINT pipe_id_material       FOREIGN KEY (id_material)       REFERENCES qwat.vl_pipe_material(id)      MATCH FULL   ; CREATE INDEX fki_pipe_id_material      ON qwat.od_pipe(id_material);
 ALTER TABLE qwat.od_pipe ADD CONSTRAINT pipe_id_distributor    FOREIGN KEY (id_distributor)    REFERENCES qwat.od_distributor(id)        MATCH FULL   ; CREATE INDEX fki_pipe_id_distributor   ON qwat.od_pipe(id_distributor);
 ALTER TABLE qwat.od_pipe ADD CONSTRAINT pipe_id_precision      FOREIGN KEY (id_precision)      REFERENCES qwat.vl_precision(id)          MATCH FULL   ; CREATE INDEX fki_pipe_id_precision     ON qwat.od_pipe(id_precision);
+ALTER TABLE qwat.od_pipe ADD CONSTRAINT pipe_id_bedding        FOREIGN KEY (id_bedding)        REFERENCES qwat.vl_bedding(id)            MATCH SIMPLE ; CREATE INDEX fki_pipe_id_bedding       ON qwat.od_pipe(id_bedding);
 ALTER TABLE qwat.od_pipe ADD CONSTRAINT pipe_id_protection     FOREIGN KEY (id_protection)     REFERENCES qwat.vl_pipe_protection(id)    MATCH SIMPLE ; CREATE INDEX fki_pipe_id_protection    ON qwat.od_pipe(id_protection);
 ALTER TABLE qwat.od_pipe ADD CONSTRAINT pipe_id_status         FOREIGN KEY (id_status)         REFERENCES qwat.vl_status(id)             MATCH FULL   ; CREATE INDEX fki_pipe_id_status        ON qwat.od_pipe(id_status);
 ALTER TABLE qwat.od_pipe ADD CONSTRAINT pipe_id_watertype      FOREIGN KEY (id_watertype)      REFERENCES qwat.vl_watertype(id)          MATCH FULL   ; CREATE INDEX fki_pipe_id_watertype     ON qwat.od_pipe(id_watertype);
-ALTER TABLE qwat.od_pipe ADD CONSTRAINT pipe_label_visible_1    FOREIGN KEY (label_visible_1)    REFERENCES qwat.vl_visible(vl_code_int)   MATCH FULL   ; CREATE INDEX fki_pipe_label_visible_1   ON qwat.od_pipe(label_visible_1);
-ALTER TABLE qwat.od_pipe ADD CONSTRAINT pipe_label_visible_2    FOREIGN KEY (label_visible_2)    REFERENCES qwat.vl_visible(vl_code_int)   MATCH FULL   ; CREATE INDEX fki_pipe_label_visible_2   ON qwat.od_pipe(label_visible_2);
+ALTER TABLE qwat.od_pipe ADD CONSTRAINT pipe_label_visible_1   FOREIGN KEY (label_visible_1)   REFERENCES qwat.vl_visible(vl_code_int)   MATCH FULL   ; CREATE INDEX fki_pipe_label_visible_1   ON qwat.od_pipe(label_visible_1);
+ALTER TABLE qwat.od_pipe ADD CONSTRAINT pipe_label_visible_2   FOREIGN KEY (label_visible_2)   REFERENCES qwat.vl_visible(vl_code_int)   MATCH FULL   ; CREATE INDEX fki_pipe_label_visible_2   ON qwat.od_pipe(label_visible_2);
 
 
 /*----------------!!!---!!!----------------*/
