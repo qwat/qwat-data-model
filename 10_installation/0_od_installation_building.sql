@@ -28,7 +28,6 @@ ALTER TABLE qwat.od_installation_building ADD COLUMN label_visible_2 smallint de
 ALTER TABLE qwat.od_installation_building ADD COLUMN label_x_2       double precision default null;
 ALTER TABLE qwat.od_installation_building ADD COLUMN label_y_2       double precision default null;
 ALTER TABLE qwat.od_installation_building ADD COLUMN label_r_2       double precision default null;
-
 /* geometry */
 /* point                              ( table_name,       is_node, create_node, create_schematic, get_pipe, auto_district, auto_pressurezone)*/
 SELECT qwat.fn_geom_tool_point('od_installation_building',true,    true,        true,             false ,    true         , false);
