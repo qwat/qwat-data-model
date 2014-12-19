@@ -31,14 +31,8 @@ ALTER TABLE qwat.od_pipe ADD COLUMN _valve_closed          boolean default NULL;
 ALTER TABLE qwat.od_pipe ADD COLUMN label_visible_1         smallint default 1;                           /* label_view 0: hide, 1: show, 2: always show */
 ALTER TABLE qwat.od_pipe ADD COLUMN label_visible_2         smallint default 1;                           /* label_view 0: hide, 1: show, 2: always show */
 
-
 /* schema view */
 SELECT qwat.fn_enable_schemaview( 'od_pipe', 'vl_pipe_function', 'id_function' );
-
-
-/* old columns */
-ALTER TABLE qwat.od_pipe ADD COLUMN coating_internal_material_id character(20);
-ALTER TABLE qwat.od_pipe ADD COLUMN coating_external_material_id character(20);
 
 /* Constraints */
 ALTER TABLE qwat.od_pipe ADD CONSTRAINT pipe_id_parent         FOREIGN KEY (id_parent)         REFERENCES qwat.od_pipe (id)              MATCH SIMPLE ; CREATE INDEX fki_pipe_id_parent        ON qwat.od_pipe(id_parent);
