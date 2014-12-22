@@ -27,7 +27,6 @@ SELECT qwat.audit_table('qwat.od_samplingpoint');
 SELECT qwat.audit_table('qwat.od_subscriber');
 SELECT qwat.audit_table('qwat.od_subscriber_reference');
 SELECT qwat.audit_table('qwat.od_valve');
-SELECT qwat.audit_table('qwat.od_wateringoutput');
 SELECT qwat.audit_table('qwat.vl_cistern');
 SELECT qwat.audit_table('qwat.vl_hydrant_provider');
 SELECT qwat.audit_table('qwat.vl_installation_type');
