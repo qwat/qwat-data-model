@@ -26,7 +26,6 @@ INSERT INTO qwat.od_node_table (table_name,node_type) VALUES ('od_installation_s
 INSERT INTO qwat.od_node_table (table_name,node_type) VALUES ('od_installation_tank'           , 'installation');
 INSERT INTO qwat.od_node_table (table_name,node_type) VALUES ('od_installation_treatment'      , 'installation');
 INSERT INTO qwat.od_node_table (table_name,node_type) VALUES ('od_installation_valvechamber'   , 'installation');
-INSERT INTO qwat.od_node_table (table_name,node_type) VALUES ('od_wateringoutput', 'wateringoutput');
 INSERT INTO qwat.od_node_table (table_name,node_type) VALUES ('od_valve'  , 'valve');
 INSERT INTO qwat.od_node_table (table_name,node_type) VALUES ('od_hydrant', 'hydrant');
 
