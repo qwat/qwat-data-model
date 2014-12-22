@@ -34,7 +34,6 @@ SELECT qwat.fn_geom_tool_point('od_cover', true,    true,        true,          
 
 /* CONSTRAINTS */
 ALTER TABLE qwat.od_cover ADD CONSTRAINT cover_id_type        FOREIGN KEY (id_type)          REFERENCES qwat.vl_cover_type(id)         MATCH FULL; CREATE INDEX fki_cover_id_type         ON qwat.od_cover(id_type) ;
-ALTER TABLE qwat.od_cover ADD CONSTRAINT cover_id_type         FOREIGN KEY (id_type)         REFERENCES qwat.vl_cover_type(id)        MATCH FULL; CREATE INDEX fki_cover_id_type          ON qwat.od_cover(id_type) ;
 ALTER TABLE qwat.od_cover ADD CONSTRAINT cover_id_distributor  FOREIGN KEY (id_distributor)  REFERENCES qwat.od_distributor(id)      MATCH FULL; CREATE INDEX fki_cover_id_distributor   ON qwat.od_cover(id_distributor) ;
 ALTER TABLE qwat.od_cover ADD CONSTRAINT cover_id_status       FOREIGN KEY (id_status)       REFERENCES qwat.vl_status(id)           MATCH FULL; CREATE INDEX fki_cover_id_status        ON qwat.od_cover(id_status)      ;
 ALTER TABLE qwat.od_cover ADD CONSTRAINT cover_label_visible_1 FOREIGN KEY (label_visible_1) REFERENCES qwat.vl_visible(vl_code_int) MATCH FULL; CREATE INDEX fki_cover_label_visible_1  ON qwat.od_cover(label_visible_1);
