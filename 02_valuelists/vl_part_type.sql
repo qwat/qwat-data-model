@@ -21,6 +21,6 @@ ALTER TABLE qwat.vl_part_type ADD COLUMN helper_ro text default '';
 
 /* VALUES */
 
-INSERT INTO qwat.vl_part_type (id, value_en, value_fr, value_ro, active, helper_en, helper_fr, helper_ro) VALUES (9200, '', 'compteur abonné'   , '', true, '', '', '');    /*  */
-INSERT INTO qwat.vl_part_type (id, value_en, value_fr, value_ro, active, helper_en, helper_fr, helper_ro) VALUES (9201, '', 'bouchon'           , '', true, '', '', '');    /*  */
-INSERT INTO qwat.vl_part_type (id, value_en, value_fr, value_ro, active, helper_en, helper_fr, helper_ro) VALUES (9202, '', 'bouche d''arrosage', '', true, '', '', '');    /*  */
+INSERT INTO qwat.vl_part_type (id, value_en, value_fr, value_ro, active, helper_en, helper_fr, helper_ro) VALUES (9200, '', 'compteur abonné'   , 'număr abonat', true, '', '', '');    /*  */
+INSERT INTO qwat.vl_part_type (id, value_en, value_fr, value_ro, active, helper_en, helper_fr, helper_ro) VALUES (9201, '', 'bouchon'           , 'dop', true, '', '', '');    /*  */
+INSERT INTO qwat.vl_part_type (id, value_en, value_fr, value_ro, active, helper_en, helper_fr, helper_ro) VALUES (9202, '', 'bouche d''arrosage', 'gură de stropire/pulverizare', true, '', '', '');    /*  */

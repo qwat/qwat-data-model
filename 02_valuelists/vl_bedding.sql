@@ -13,15 +13,16 @@ COMMENT ON TABLE qwat.vl_bedding IS 'Bedding';
 ALTER TABLE qwat.vl_bedding ADD COLUMN vl_active boolean default true;
 ALTER TABLE qwat.vl_bedding ADD COLUMN value_fr VARCHAR(30) default '';
 ALTER TABLE qwat.vl_bedding ADD COLUMN value_en VARCHAR(30) default '';
+ALTER TABLE qwat.vl_bedding ADD COLUMN value_ro VARCHAR(30) default '';
 
 /* VALUES */
-INSERT INTO qwat.vl_bedding (id,value_fr ) VALUES (9701,'aucun');   
-INSERT INTO qwat.vl_bedding (id,value_fr ) VALUES (9702,'béton');   
-INSERT INTO qwat.vl_bedding (id,value_fr ) VALUES (9703,'géotextile');  
-INSERT INTO qwat.vl_bedding (id,value_fr ) VALUES (9704,'gravier')   ;  
-INSERT INTO qwat.vl_bedding (id,value_fr ) VALUES (9705,'inconnu');    
-INSERT INTO qwat.vl_bedding (id,value_fr ) VALUES (9706,'sable');    
-INSERT INTO qwat.vl_bedding (id,value_fr ) VALUES (9707,'terre');    
+INSERT INTO qwat.vl_bedding (id,value_fr, value_ro) VALUES (9701,'aucun','lipsă');   
+INSERT INTO qwat.vl_bedding (id,value_fr, value_ro) VALUES (9702,'béton','beton');   
+INSERT INTO qwat.vl_bedding (id,value_fr, value_ro) VALUES (9703,'géotextile','geotextil');  
+INSERT INTO qwat.vl_bedding (id,value_fr, value_ro) VALUES (9704,'gravier','pietriş')   ;  
+INSERT INTO qwat.vl_bedding (id,value_fr, value_ro) VALUES (9705,'inconnu','necunoscut');    
+INSERT INTO qwat.vl_bedding (id,value_fr, value_ro) VALUES (9706,'sable','nisip');    
+INSERT INTO qwat.vl_bedding (id,value_fr, value_ro) VALUES (9707,'terre','pământ');
 
 
 
