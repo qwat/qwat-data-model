@@ -25,6 +25,7 @@ INSERT INTO qwat.vl_hydrant_provider (id,name) VALUES (9605,'SISTAG');
 INSERT INTO qwat.vl_hydrant_provider (id,name) VALUES (9606,'Von Roll');
 INSERT INTO qwat.vl_hydrant_provider (id,name) VALUES (9607,'Straub');
 INSERT INTO qwat.vl_hydrant_provider (id,name) VALUES (9608,'Hinni');
+INSERT INTO qwat.vl_hydrant_provider (id,name) VALUES (9609,'AVK');
 
 
 
