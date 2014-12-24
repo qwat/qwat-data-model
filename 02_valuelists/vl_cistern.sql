@@ -14,5 +14,5 @@ ALTER TABLE qwat.vl_cistern ADD COLUMN value_fr varchar(30) default '' ;
 ALTER TABLE qwat.vl_cistern ADD COLUMN value_ro varchar(30) default '' ;
 
 /* content */
-INSERT INTO qwat.vl_cistern (id, value_en, value_fr, value_ro) VALUES (2101,'circular','cirvulaire','circulară');
+INSERT INTO qwat.vl_cistern (id, value_en, value_fr, value_ro) VALUES (2101,'circular','circulaire','circulară');
 INSERT INTO qwat.vl_cistern (id, value_en, value_fr, value_ro) VALUES (2102,'rectangular','rectangulaire','dreptunghiulară');
