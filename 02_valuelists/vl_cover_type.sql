@@ -13,14 +13,15 @@ COMMENT ON TABLE qwat.vl_cover_type IS 'Type of covers';
 ALTER TABLE qwat.vl_cover_type ADD COLUMN vl_active boolean default true;
 ALTER TABLE qwat.vl_cover_type ADD COLUMN value_fr VARCHAR(30) default '';
 ALTER TABLE qwat.vl_cover_type ADD COLUMN value_en VARCHAR(30) default '';
+ALTER TABLE qwat.vl_cover_type ADD COLUMN value_ro VARCHAR(30) default '';
 
 /* VALUES */
-INSERT INTO qwat.vl_cover_type (id,value_fr ) VALUES (9801,'couvercle acier');
-INSERT INTO qwat.vl_cover_type (id,value_fr ) VALUES (9802,'couvercle béton');
-INSERT INTO qwat.vl_cover_type (id,value_fr ) VALUES (9803,'couvercle plastique');
-INSERT INTO qwat.vl_cover_type (id,value_fr ) VALUES (9804,'couvercle fonte');
-INSERT INTO qwat.vl_cover_type (id,value_fr ) VALUES (9805,'autre');
-INSERT INTO qwat.vl_cover_type (id,value_fr ) VALUES (9806,'inconnu');
+INSERT INTO qwat.vl_cover_type (id, value_fr, value_ro) VALUES (9801,'couvercle acier','capac oţel');
+INSERT INTO qwat.vl_cover_type (id, value_fr, value_ro) VALUES (9802,'couvercle béton','capac beton');
+INSERT INTO qwat.vl_cover_type (id, value_fr, value_ro) VALUES (9803,'couvercle plastique','capac plastic');
+INSERT INTO qwat.vl_cover_type (id, value_fr, value_ro) VALUES (9804,'couvercle fonte','capac fontă');
+INSERT INTO qwat.vl_cover_type (id, value_fr, value_ro) VALUES (9805,'autre','alt tip');
+INSERT INTO qwat.vl_cover_type (id, value_fr, value_ro) VALUES (9806,'inconnu','necunoscut');
 
 
 
