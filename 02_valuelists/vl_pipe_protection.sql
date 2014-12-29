@@ -8,7 +8,7 @@
 /* CREATE TABLE */
 DROP TABLE IF EXISTS qwat.vl_pipe_protection CASCADE;
 CREATE TABLE qwat.vl_pipe_protection (id integer not null, CONSTRAINT "vl_pipe_protection_pk" PRIMARY KEY (id) );
-COMMENT ON TABLE qwat.vl_pipe_protection IS 'Pipe prtoection details.';
+COMMENT ON TABLE qwat.vl_pipe_protection IS 'Pipe protection details.';
 
 ALTER TABLE qwat.vl_pipe_protection ADD COLUMN vl_active boolean default true;
 ALTER TABLE qwat.vl_pipe_protection ADD COLUMN value_en varchar(30) default '';
