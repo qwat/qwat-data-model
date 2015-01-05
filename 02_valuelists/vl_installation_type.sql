@@ -28,7 +28,7 @@ INSERT INTO qwat.vl_installation_type (id,short_fr,value_fr,short_ro,value_ro) V
 INSERT INTO qwat.vl_installation_type (id,short_fr,value_fr,short_ro,value_ro) VALUES (2006,'CT' ,'Chambre de traitement','CT'	,'Cameră de Tratare?');
 INSERT INTO qwat.vl_installation_type (id,short_fr,value_fr,short_ro,value_ro) VALUES (2007,'CR' ,'Chambre réducteur'	,'CR'	,'Cămin reductor presiune?');
 INSERT INTO qwat.vl_installation_type (id,short_fr,value_fr,short_ro,value_ro) VALUES (2008,'CCP','Chambre coupe pression','CRp','Cămin reducere presiune');
-INSERT INTO qwat.vl_installation_type (id,short_fr,value_fr,short_ro,value_ro) VALUES (2009,'CRA','Chambre de rassemblement',''	,'Cămin de vizitare?');
+INSERT INTO qwat.vl_installation_type (id,short_fr,value_fr,short_ro,value_ro) VALUES (2009,'CRA','Chambre de rassemblement',''	,'Cameră de captare/colectare');
 
 
 

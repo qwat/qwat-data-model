@@ -14,15 +14,16 @@ COMMENT ON TABLE qwat.vl_pipe_installmethod IS 'Installation methods.';
 ALTER TABLE qwat.vl_pipe_installmethod ADD COLUMN vl_active boolean default true;
 ALTER TABLE qwat.vl_pipe_installmethod ADD COLUMN value_en varchar(30) default '';
 ALTER TABLE qwat.vl_pipe_installmethod ADD COLUMN value_fr varchar(30) default '';
+ALTER TABLE qwat.vl_pipe_installmethod ADD COLUMN value_ro varchar(30) default '';
 
 /* VALUES */
-INSERT INTO qwat.vl_pipe_installmethod (id,value_fr) VALUES (4201,'En fouille');   /*TB: F   => 1 */
-INSERT INTO qwat.vl_pipe_installmethod (id,value_fr) VALUES (4202,'Chemisé');      /*TB: CH  => 2 */
-INSERT INTO qwat.vl_pipe_installmethod (id,value_fr) VALUES (4203,'Air libre');    /*TB: AL  => 3 */
-INSERT INTO qwat.vl_pipe_installmethod (id,value_fr) VALUES (4204,'Sous pont');    /*TB: SP  => 4 */
-INSERT INTO qwat.vl_pipe_installmethod (id,value_fr) VALUES (4205,'Protégé');      /*TB: PRO => 5 */
-INSERT INTO qwat.vl_pipe_installmethod (id,value_fr) VALUES (4206,'Bétoné');       /*TB: B   => 6 */
-INSERT INTO qwat.vl_pipe_installmethod (id,value_fr) VALUES (4207,'Galerie');      /*TB: G   => 7 */
-INSERT INTO qwat.vl_pipe_installmethod (id,value_fr) VALUES (4208,'Inconnu');      /*TB: I   => 8 */
+INSERT INTO qwat.vl_pipe_installmethod (id,value_fr,value_ro) VALUES (4201,'En fouille','Excavare');   /*TB: F   => 1 */
+INSERT INTO qwat.vl_pipe_installmethod (id,value_fr,value_ro) VALUES (4202,'Chemisé','Cămăşuire');      /*TB: CH  => 2 */
+INSERT INTO qwat.vl_pipe_installmethod (id,value_fr,value_ro) VALUES (4203,'Air libre','Aer liber');    /*TB: AL  => 3 */
+INSERT INTO qwat.vl_pipe_installmethod (id,value_fr,value_ro) VALUES (4204,'Sous pont','Sub pod');    /*TB: SP  => 4 */
+INSERT INTO qwat.vl_pipe_installmethod (id,value_fr,value_ro) VALUES (4205,'Protégé','Protejată');      /*TB: PRO => 5 */
+INSERT INTO qwat.vl_pipe_installmethod (id,value_fr,value_ro) VALUES (4206,'Bétoné','Betonată');       /*TB: B   => 6 */
+INSERT INTO qwat.vl_pipe_installmethod (id,value_fr,value_ro) VALUES (4207,'Galerie','Galerie');      /*TB: G   => 7 */
+INSERT INTO qwat.vl_pipe_installmethod (id,value_fr,value_ro) VALUES (4208,'Inconnu','Necunoscut');      /*TB: I   => 8 */
 
 
