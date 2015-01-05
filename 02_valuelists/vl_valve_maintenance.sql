@@ -17,7 +17,7 @@ ALTER TABLE qwat.vl_valve_maintenance ADD COLUMN priority SMALLINT CHECK (priori
 ALTER TABLE qwat.vl_valve_maintenance ADD COLUMN comment  text default '';
 
 /* VALUES */
-INSERT INTO qwat.vl_valve_maintenance (id, value_fr, value_ro, priority, comment) VALUES (6201,'Cape fendue','Corp crăpat',3,'');
+INSERT INTO qwat.vl_valve_maintenance (id, value_fr, value_ro, priority, comment) VALUES (6201,'Cape fendue','Înveliş crăpat',3,'');
 INSERT INTO qwat.vl_valve_maintenance (id, value_fr, value_ro, priority, comment) VALUES (6202,'Joint manquant','Lipsă tijă',2,'');
 INSERT INTO qwat.vl_valve_maintenance (id, value_fr, value_ro, priority, comment) VALUES (6203,'Bloquée','Blocată',1,'');
 
