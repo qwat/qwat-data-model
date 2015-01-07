@@ -22,7 +22,7 @@ ALTER TABLE qwat.od_pipe ADD COLUMN id_protection          integer;             
 ALTER TABLE qwat.od_pipe ADD COLUMN id_status              integer not null;                             /* id_status            FK */
 ALTER TABLE qwat.od_pipe ADD COLUMN id_watertype           integer not null;                             /* id_watertype         FK */
 ALTER TABLE qwat.od_pipe ADD COLUMN labelremark            varchar(150) default '';                      /* labelemark              */
-ALTER TABLE qwat.od_pipe ADD COLUMN year                   smallint CHECK (YEAR IS NULL OR year > 1800 AND year < 2100); /* year  */
+ALTER TABLE qwat.od_pipe ADD COLUMN year                   smallint CHECK (year IS NULL OR year > 1800 AND year < 2100); /* year  */
 ALTER TABLE qwat.od_pipe ADD COLUMN tunnel_or_bridge       boolean default false;                        /* tunnel_or_bridge        */
 ALTER TABLE qwat.od_pipe ADD COLUMN pressure_nominal       smallint default 16;                          /* pressure_nominale       */
 ALTER TABLE qwat.od_pipe ADD COLUMN folder                 varchar(20) default '';                       /* folder                  */
