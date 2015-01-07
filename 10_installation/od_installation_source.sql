@@ -21,7 +21,7 @@ ALTER TABLE qwat.od_installation_source ADD COLUMN id_watertype       integer no
 ALTER TABLE qwat.od_installation_source ADD COLUMN schema_visible     boolean not null default true ;
 ALTER TABLE qwat.od_installation_source ADD COLUMN altitude_real      decimal(10,3)          ;
 ALTER TABLE qwat.od_installation_source ADD COLUMN remark             text default '' ;
-ALTER TABLE qwat.od_installation_source ADD COLUMN year               smallint CHECK (year > 1800 AND year < 2100);
+ALTER TABLE qwat.od_installation_source ADD COLUMN year               smallint CHECK (year IS NULL OR year > 1800 AND year < 2100);
 ALTER TABLE qwat.od_installation_source ADD COLUMN open_water_surface boolean default false  ;
 ALTER TABLE qwat.od_installation_source ADD COLUMN parcel             varchar(30) default '' ;
 ALTER TABLE qwat.od_installation_source ADD COLUMN eca                varchar(30) default '' ;

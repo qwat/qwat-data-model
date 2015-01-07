@@ -19,7 +19,7 @@ ALTER TABLE qwat.od_hydrant ADD COLUMN id_status          integer not null      
 ALTER TABLE qwat.od_hydrant ADD COLUMN id_provider        integer               ;
 ALTER TABLE qwat.od_hydrant ADD COLUMN id_precision       integer not null      ;
 ALTER TABLE qwat.od_hydrant ADD COLUMN id_precisionalti   integer not null      ;
-ALTER TABLE qwat.od_hydrant ADD COLUMN year               smallint CHECK (year > 1800 AND year < 2100);
+ALTER TABLE qwat.od_hydrant ADD COLUMN year               smallint CHECK (year IS NULL OR year > 1800 AND year < 2100);
 ALTER TABLE qwat.od_hydrant ADD COLUMN model              varchar(30)           default '';
 ALTER TABLE qwat.od_hydrant ADD COLUMN underground        boolean default false ;
 ALTER TABLE qwat.od_hydrant ADD COLUMN altitude_real      decimal(10,3)         ;

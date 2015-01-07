@@ -15,7 +15,7 @@ ALTER TABLE qwat.od_cover ADD COLUMN id_type int;
 ALTER TABLE qwat.od_cover ADD COLUMN identification  varchar(15) default ''  ;
 ALTER TABLE qwat.od_cover ADD COLUMN id_distributor  integer                 ;
 ALTER TABLE qwat.od_cover ADD COLUMN id_status       integer                 ;
-ALTER TABLE qwat.od_cover ADD COLUMN year smallint   CHECK (year > 1800 AND year < 2100);
+ALTER TABLE qwat.od_cover ADD COLUMN year smallint   CHECK (year IS NULL OR year > 1800 AND year < 2100);
 ALTER TABLE qwat.od_cover ADD COLUMN circular        boolean default true;
 ALTER TABLE qwat.od_cover ADD COLUMN diameter        decimal(10,3);
 ALTER TABLE qwat.od_cover ADD COLUMN altitude_real   decimal(10,3)           ;

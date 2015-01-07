@@ -15,7 +15,7 @@ ALTER TABLE qwat.od_part ADD COLUMN id_type int;
 ALTER TABLE qwat.od_part ADD COLUMN identification  varchar(15) default ''  ;
 ALTER TABLE qwat.od_part ADD COLUMN id_distributor  integer                 ;
 ALTER TABLE qwat.od_part ADD COLUMN id_status       integer                 ;
-ALTER TABLE qwat.od_part ADD COLUMN year smallint   CHECK (year > 1800 AND year < 2100);
+ALTER TABLE qwat.od_part ADD COLUMN year smallint   CHECK (year IS NULL OR year > 1800 AND year < 2100);
 ALTER TABLE qwat.od_part ADD COLUMN altitude_real   decimal(10,3)           ;
 ALTER TABLE qwat.od_part ADD COLUMN remark text default '';
 ALTER TABLE qwat.od_part ADD COLUMN label_visible_1 smallint default 1;

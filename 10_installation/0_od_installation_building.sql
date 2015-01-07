@@ -17,7 +17,7 @@ ALTER TABLE qwat.od_installation_building ADD COLUMN id_type         integer not
 ALTER TABLE qwat.od_installation_building ADD COLUMN _displayname_en varchar(50) default '';
 ALTER TABLE qwat.od_installation_building ADD COLUMN _displayname_fr varchar(50) default '';
 ALTER TABLE qwat.od_installation_building ADD COLUMN schema_visible  boolean not null default true ;
-ALTER TABLE qwat.od_installation_building ADD COLUMN year            smallint    check (year > 1800 AND year < 2100);
+ALTER TABLE qwat.od_installation_building ADD COLUMN year            smallint    CHECK (year IS NULL OR year > 1800 AND year < 2100);
 ALTER TABLE qwat.od_installation_building ADD COLUMN parcel          varchar(30) default '';
 ALTER TABLE qwat.od_installation_building ADD COLUMN eca             varchar(30) default '';
 ALTER TABLE qwat.od_installation_building ADD COLUMN label_visible_1 smallint default 1;

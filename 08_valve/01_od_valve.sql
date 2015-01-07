@@ -19,7 +19,7 @@ ALTER TABLE qwat.od_valve ADD COLUMN id_precision           integer not null ;
 ALTER TABLE qwat.od_valve ADD COLUMN id_precisionalti       integer not null ;
 ALTER TABLE qwat.od_valve ADD COLUMN id_maintenance         integer[];
 ALTER TABLE qwat.od_valve ADD COLUMN diameter_nominal       varchar(10) default '';
-ALTER TABLE qwat.od_valve ADD COLUMN year                   smallint CHECK (year > 1800 AND year < 2100);
+ALTER TABLE qwat.od_valve ADD COLUMN year                   smallint CHECK (year IS NULL OR year > 1800 AND year < 2100);
 ALTER TABLE qwat.od_valve ADD COLUMN closed                 boolean       default false ;
 ALTER TABLE qwat.od_valve ADD COLUMN networkseparation      boolean       default false ;
 ALTER TABLE qwat.od_valve ADD COLUMN altitude_real          decimal(10,3)  ;
