@@ -31,6 +31,6 @@ INSERT INTO qwat.vl_valve_function (id, value_fr, value_ro )                 	VA
 INSERT INTO qwat.vl_valve_function (id, value_fr, value_ro )                 	VALUES (6108,'vanne d''hydrant','vană hidrant'); 		/* 8  VH   */
 INSERT INTO qwat.vl_valve_function (id, value_fr, value_ro )                 	VALUES (6109,'inconnu','necunoscut'); 				/* 9 I     */
 INSERT INTO qwat.vl_valve_function (id, value_fr, short_fr,value_ro )        	VALUES (6110,'vidange','Vi','vană de golire'); 			/* 10 VID  */
-INSERT INTO qwat.vl_valve_function (id, value_fr, value_ro)                  	VALUES (6111,'organe réseau',''); 				/* 11 VR   */
+INSERT INTO qwat.vl_valve_function (id, value_fr, value_ro)                  	VALUES (6111,'vanne de réseau','vană de reţea'); 		/* 11 VR   */
 INSERT INTO qwat.vl_valve_function (id, value_fr, short_fr, value_ro)        	VALUES (6112,'vidange-ventouse','ViVe',''); 			/* 12 VIVE */
 INSERT INTO qwat.vl_valve_function (id, value_fr,value_ro)                   	VALUES (6113,'vanne clapet',''); 				/* 13      */
