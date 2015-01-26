@@ -10,6 +10,7 @@ CREATE TABLE qwat_vl.valve_maintenance ( id integer not null, CONSTRAINT valve_m
 COMMENT ON TABLE qwat_vl.valve_maintenance IS 'valve maintenance table.';
 
 /* COLUMNS */
+ALTER TABLE qwat_vl.valve_maintenance ADD COLUMN vl_active boolean default true;
 ALTER TABLE qwat_vl.valve_maintenance ADD COLUMN value_en VARCHAR(30) default '';
 ALTER TABLE qwat_vl.valve_maintenance ADD COLUMN value_fr VARCHAR(30) default '';
 ALTER TABLE qwat_vl.valve_maintenance ADD COLUMN value_ro VARCHAR(30) default '';
