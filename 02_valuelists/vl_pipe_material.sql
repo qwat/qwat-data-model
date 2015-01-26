@@ -37,13 +37,13 @@ Common nominations are SDR11 and SDR17.';
 ALTER TABLE qwat_vl.pipe_material ADD COLUMN vl_active boolean default true;
 ALTER TABLE qwat_vl.pipe_material ADD COLUMN short_fr varchar(8) default '';
 ALTER TABLE qwat_vl.pipe_material ADD COLUMN value_fr varchar(30) default '';
-ALTER TABLE qwat_vl.pipe_material ADD COLUMN _displayname_fr varchar(18) default ''; /* created automatically, used for display only*/
+ALTER TABLE qwat_vl.pipe_material ADD COLUMN _displayname_fr varchar(30) default ''; /* created automatically, used for display only*/
 ALTER TABLE qwat_vl.pipe_material ADD COLUMN short_en varchar(8) default '';
 ALTER TABLE qwat_vl.pipe_material ADD COLUMN value_en varchar(30) default '';
-ALTER TABLE qwat_vl.pipe_material ADD COLUMN _displayname_en varchar(18) default ''; /* created automatically, used for display only*/
+ALTER TABLE qwat_vl.pipe_material ADD COLUMN _displayname_en varchar(30) default ''; /* created automatically, used for display only*/
 ALTER TABLE qwat_vl.pipe_material ADD COLUMN short_ro varchar(8) default '';
 ALTER TABLE qwat_vl.pipe_material ADD COLUMN value_ro varchar(30) default '';
-ALTER TABLE qwat_vl.pipe_material ADD COLUMN _displayname_ro varchar(18) default ''; /* created automatically, used for display only*/
+ALTER TABLE qwat_vl.pipe_material ADD COLUMN _displayname_ro varchar(30) default ''; /* created automatically, used for display only*/
 
 ALTER TABLE qwat_vl.pipe_material ADD COLUMN diameter varchar(10) default ''; /* need to be varchar to specify a string for unknown or inches with a "*/
 ALTER TABLE qwat_vl.pipe_material ADD COLUMN diameter_nominal smallint;
@@ -123,7 +123,7 @@ INSERT INTO qwat_vl.pipe_material (id, vl_active, short_fr, value_fr, _displayna
 INSERT INTO qwat_vl.pipe_material (id, vl_active, short_fr, value_fr, _displayname_fr, short_en, value_en, _displayname_en, short_ro, value_ro, _displayname_ro, diameter, diameter_nominal, diameter_internal, diameter_external, code_sire, pressure_nominal, sdr, wall_thickness) VALUES (5507, true, 'PE', 'Polyéthylène 100', 'PE 200', '', '', ' 200', 'PE', 'Polietilenă 100', 'PE 200', '200', 160, 163.600, 200.000, 10, 16, 11, 18.2);
 INSERT INTO qwat_vl.pipe_material (id, vl_active, short_fr, value_fr, _displayname_fr, short_en, value_en, _displayname_en, short_ro, value_ro, _displayname_ro, diameter, diameter_nominal, diameter_internal, diameter_external, code_sire, pressure_nominal, sdr, wall_thickness) VALUES (5526, true, 'PE', 'Polyéthylène 100', 'PE 710', '', '', ' 710', 'PE', 'Polietilenă 100', 'PE 710', '710', NULL, 581.000, 710.000, 10, 16, 11, 64.5);
 INSERT INTO qwat_vl.pipe_material (id, vl_active, short_fr, value_fr, _displayname_fr, short_en, value_en, _displayname_en, short_ro, value_ro, _displayname_ro, diameter, diameter_nominal, diameter_internal, diameter_external, code_sire, pressure_nominal, sdr, wall_thickness) VALUES (5527, true, 'PE', 'Polyéthylène 100', 'PE 280', '', '', ' 280', 'PE', 'Polietilenă 100', 'PE 280', '280', NULL, 229.200, 280.000, 10, 16, 11, 25.4);
-INSERT INTO qwat_vl.pipe_material (id, vl_active, short_fr, value_fr, _displayname_fr, short_en, value_en, _displayname_en, short_ro, value_ro, _displayname_ro, diameter, diameter_nominal, diameter_internal, diameter_external, code_sire, pressure_nominal, sdr, wall_thickness) VALUES (5501, true, 'PE', 'Polyéthylène 100', NULL, '', '', NULL, 'PE', 'Polietilenă 100', NULL, NULL, NULL, NULL, NULL, 10, NULL, NULL, NULL);
+INSERT INTO qwat_vl.pipe_material (id, vl_active, short_fr, value_fr, _displayname_fr, short_en, value_en, _displayname_en, short_ro, value_ro, _displayname_ro, diameter, diameter_nominal, diameter_internal, diameter_external, code_sire, pressure_nominal, sdr, wall_thickness) VALUES (5501, true, 'PE', 'Polyéthylène 100', '', '', '', '', 'PE', 'Polietilenă 100', NULL, NULL, NULL, NULL, NULL, 10, NULL, NULL, NULL);
 INSERT INTO qwat_vl.pipe_material (id, vl_active, short_fr, value_fr, _displayname_fr, short_en, value_en, _displayname_en, short_ro, value_ro, _displayname_ro, diameter, diameter_nominal, diameter_internal, diameter_external, code_sire, pressure_nominal, sdr, wall_thickness) VALUES (7001, true, 'PE', 'Polyéthylène 100', 'PE 25', '', '', ' 25', 'PE', 'Polietilenă 100', 'PE 25', '25', NULL, 19.400, 25.000, 10, 20, 9, 2.8);
 INSERT INTO qwat_vl.pipe_material (id, vl_active, short_fr, value_fr, _displayname_fr, short_en, value_en, _displayname_en, short_ro, value_ro, _displayname_ro, diameter, diameter_nominal, diameter_internal, diameter_external, code_sire, pressure_nominal, sdr, wall_thickness) VALUES (7002, true, 'PE', 'Polyéthylène 100', 'PE 32', '', '', ' 32', 'PE', 'Polietilenă 100', 'PE 32', '32', NULL, 24.800, 32.000, 10, 20, 9, 3.6);
 INSERT INTO qwat_vl.pipe_material (id, vl_active, short_fr, value_fr, _displayname_fr, short_en, value_en, _displayname_en, short_ro, value_ro, _displayname_ro, diameter, diameter_nominal, diameter_internal, diameter_external, code_sire, pressure_nominal, sdr, wall_thickness) VALUES (7003, true, 'PE', 'Polyéthylène 100', 'PE 40', '', '', ' 40', 'PE', 'Polietilenă 100', 'PE 40', '40', NULL, 31.000, 40.000, 10, 20, 9, 4.5);
