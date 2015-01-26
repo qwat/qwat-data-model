@@ -60,9 +60,9 @@ COMMENT ON COLUMN qwat_vl.pipe_material.pressure_nominal IS 'nominal pressure in
 CREATE OR REPLACE FUNCTION qwat_vl.pipe_material_displayname() RETURNS trigger AS 
 $BODY$
 	BEGIN
-		 NEW._displayname_en := NEW.short_en||' '||NEW.diameter;
-		 NEW._displayname_fr := NEW.short_fr||' '||NEW.diameter;
-                 NEW._displayname_ro := NEW.short_ro||' '||NEW.diameter;
+		 NEW._displayname_en := NEW.short_en||' '||NEW.diameter||COALESCE(' PN'||NEW.pressure_nominal,'');
+		 NEW._displayname_fr := NEW.short_fr||' '||NEW.diameter||COALESCE(' PN'||NEW.pressure_nominal,'');
+         NEW._displayname_ro := NEW.short_ro||' '||NEW.diameter||COALESCE(' PN'||NEW.pressure_nominal,'');
 		 RETURN NEW;
 	END;
 $BODY$ LANGUAGE 'plpgsql';
