@@ -1,6 +1,6 @@
 
 
-CREATE OR REPLACE FUNCTION qwat.fn_update_sequences() RETURNS void AS
+CREATE OR REPLACE FUNCTION qwat_od.fn_update_sequences() RETURNS void AS
 $BODY$
 declare 
   r        record;
@@ -15,7 +15,7 @@ begin
                        column_name, 
                        pg_get_serial_sequence(table_schema||'.'||table_name, column_name) as col_sequence
                 from information_schema.columns
-                where table_schema = 'qwat'
+                where table_schema = 'qwat_od'
               ) t
               where col_sequence is not null
         ) 

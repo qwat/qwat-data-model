@@ -5,15 +5,15 @@
 */
 
 
-DROP TABLE IF EXISTS qwat.od_distributor CASCADE;
-CREATE TABLE qwat.od_distributor ( id SERIAL, CONSTRAINT distributor_pk PRIMARY KEY (id) );
-COMMENT ON TABLE qwat.od_distributor IS 'Companies and distributors list.';
+DROP TABLE IF EXISTS qwat_od.distributor CASCADE;
+CREATE TABLE qwat_od.distributor ( id SERIAL, CONSTRAINT distributor_pk PRIMARY KEY (id) );
+COMMENT ON TABLE qwat_od.distributor IS 'Companies and distributors list.';
 
 /* Columns */
-ALTER TABLE qwat.od_distributor ADD COLUMN name VARCHAR(30) default '';
+ALTER TABLE qwat_od.distributor ADD COLUMN name VARCHAR(30) default '';
 
 /* Constraints */
-ALTER TABLE qwat.od_distributor ADD CONSTRAINT distributor_name UNIQUE (name);
+ALTER TABLE qwat_od.distributor ADD CONSTRAINT distributor_name UNIQUE (name);
 
 
 

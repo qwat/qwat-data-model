@@ -10,7 +10,12 @@ PSQLCOMMAND="psql -h 172.24.171.$ip -U sige -v ON_ERROR_STOP=1"
 rm create.sql
 touch create.sql
 
-echo -e "BEGIN;\n\nDROP SCHEMA IF EXISTS qwat CASCADE;\nCREATE SCHEMA qwat;\n\n" >> create.sql
+echo -e "BEGIN;\n\n
+DROP SCHEMA IF EXISTS qwat_vl CASCADE;\n
+DROP SCHEMA IF EXISTS qwat_od CASCADE;\n
+CREATE SCHEMA qwat_vl;\n
+CREATE SCHEMA qwat_od;\n
+\n" >> create.sql
 for f in *
 do
 	if test -d "$f"; then

@@ -7,7 +7,7 @@
 
 /* define node type */
 /* node type: end, intersection, year, material, diameter */
-CREATE OR REPLACE FUNCTION qwat.fn_node_set_type(node_id integer) RETURNS void AS
+CREATE OR REPLACE FUNCTION qwat_od.fn_node_set_type(node_id integer) RETURNS void AS
 $BODY$
 	DECLARE
 		pipeitem        record                   ;
@@ -30,14 +30,14 @@ $BODY$
 		complement_col  varchar(50)      := ''   ;
 	BEGIN
 		/* determine if the node is under an object (hydrant, valve, etc.)
-		   the table od_node_table contains the names of the tables (i.e. layers) that are typically considered as nodes.
+		   the table node_table contains the names of the tables (i.e. layers) that are typically considered as nodes.
 		   node_type will be used as for the type in the node table if overwrite is true.
 		   overwrite determines if the object type will be used instead of the computed node type.
 		*/
 
-		FOR node_table IN SELECT * FROM qwat.od_node_table
+		FOR node_table IN SELECT * FROM qwat_od.node_table
 		LOOP
-			stmt := 'SELECT COUNT(id) FROM qwat.' || node_table.table_name || ' WHERE id_node='|| node_id || ';';
+			stmt := 'SELECT COUNT(id) FROM qwat_od.' || node_table.table_name || ' WHERE id_node='|| node_id || ';';
 			EXECUTE stmt INTO is_under_count;
 			IF is_under_count > 0 THEN
 				type := node_table.node_type;
@@ -53,41 +53,41 @@ $BODY$
 		END LOOP;
 		/* count the active pipes associated to this node */
 		SELECT
-			COUNT(od_pipe.id)         AS count         ,
+			COUNT(pipe.id)            AS count         ,
 			bool_or(_schema_visible)  AS schema_visible,
-			bool_or(vl_status.active) AS status_active
+			bool_or(status.active) AS status_active
 			INTO grouped
-			FROM qwat.od_pipe
-			INNER JOIN qwat.vl_status ON od_pipe.id_status = vl_status.id
+			FROM qwat_od.pipe
+			INNER JOIN qwat_vl.status ON pipe.id_status = status.id
 			WHERE (id_node_a = node_id OR id_node_b = node_id)
-			AND vl_status.active IS TRUE;
+			AND status.active IS TRUE;
 		/* if not connected not under any object, delete the node */
 		IF grouped.count = 0 AND is_under_object IS false AND keep_type IS FALSE THEN
 			/* check it is not associated to inactive pipes */
-			IF node_id NOT IN (SELECT id_node_a FROM qwat.od_pipe UNION SELECT id_node_b FROM qwat.od_pipe) THEN
+			IF node_id NOT IN (SELECT id_node_a FROM qwat_od.pipe UNION SELECT id_node_b FROM qwat_od.pipe) THEN
 				RAISE NOTICE 'Delete node %' , node_id ;
-				DELETE FROM qwat.od_node WHERE id = node_id ;
+				DELETE FROM qwat_od.node WHERE id = node_id ;
 			END IF;
 		/* if 1 or 2 pipes associated */
 		ELSEIF grouped.count <= 2 THEN
 			/* loop over them, and take the 2 first/last vertices
 			 of the pipe to determine orientation (used for symbology) */
 			FOR pipeitem IN (
-				SELECT 	od_pipe.id, od_pipe.year, vl_pipe_material.value_fr AS material, vl_pipe_material.diameter_nominal AS diameter,
+				SELECT 	pipe.id, pipe.year, pipe_material.value_fr AS material, pipe_material.diameter_nominal AS diameter,
 						ST_StartPoint(geometry) AS point_1,
 						ST_PointN(geometry,2)   AS point_2
-						FROM qwat.od_pipe
-						INNER JOIN qwat.vl_pipe_material ON od_pipe.id_material = vl_pipe_material.id
-						INNER JOIN qwat.vl_status        ON od_pipe.id_status = vl_status.id
-						WHERE id_node_a = node_id AND vl_status.active IS TRUE
+						FROM qwat_od.pipe
+						INNER JOIN qwat_vl.pipe_material ON pipe.id_material = pipe_material.id
+						INNER JOIN qwat_vl.status        ON pipe.id_status = status.id
+						WHERE id_node_a = node_id AND status.active IS TRUE
 				UNION ALL
-				SELECT	od_pipe.id, od_pipe.year, vl_pipe_material.value_fr AS material, vl_pipe_material.diameter_nominal AS diameter,
+				SELECT	pipe.id, pipe.year, pipe_material.value_fr AS material, pipe_material.diameter_nominal AS diameter,
 						ST_EndPoint(geometry)                      AS point_1,
 						ST_PointN(geometry,ST_NPoints(geometry)-1) AS point_2
-						FROM qwat.od_pipe
-						INNER JOIN qwat.vl_pipe_material ON od_pipe.id_material = vl_pipe_material.id
-						INNER JOIN qwat.vl_status        ON od_pipe.id_status = vl_status.id
-						WHERE id_node_b = node_id AND vl_status.active IS TRUE
+						FROM qwat_od.pipe
+						INNER JOIN qwat_vl.pipe_material ON pipe.id_material = pipe_material.id
+						INNER JOIN qwat_vl.status        ON pipe.id_status = status.id
+						WHERE id_node_b = node_id AND status.active IS TRUE
 			) LOOP
 				IF looppos=0 THEN
 					/* first pipe */
@@ -124,9 +124,9 @@ $BODY$
 			END LOOP;
 			IF keep_type IS FALSE AND grouped.count = 1 THEN
 				/* if the node is only on 1 pipe, check if it intersects another pipe. If yes, hide it */
-				node_geom := geometry FROM qwat.od_node WHERE id = node_id;
+				node_geom := geometry FROM qwat_od.node WHERE id = node_id;
 				/* st_intersects does not work as expected. */
-				intersects := bool_or(ST_DWithin(node_geom, od_pipe.geometry, 0.0001)) FROM qwat.od_pipe WHERE id != pipe_id;
+				intersects := bool_or(ST_DWithin(node_geom, pipe.geometry, 0.0001)) FROM qwat_od.pipe WHERE id != pipe_id;
 				IF intersects IS TRUE THEN
 					type := 'one_intersection';
 				END IF;
@@ -136,7 +136,7 @@ $BODY$
 			type := 'three';
 		END IF;
 		/* update the node table */
-		UPDATE qwat.od_node SET
+		UPDATE qwat_od.node SET
 			_type           = type,
 			_orientation    = degrees(orientation),
 			_schema_visible = grouped.schema_visible,
@@ -147,26 +147,26 @@ $BODY$
 	END;
 $BODY$
 LANGUAGE 'plpgsql';
-COMMENT ON FUNCTION qwat.fn_node_set_type(integer) IS 'Set the orientation and type for a node. If three pipe arrives at the node: intersection. If one pipe: end. If two: depends on characteristics of pipe: year (is different), material (and year), diameter(and material/year)';
+COMMENT ON FUNCTION qwat_od.fn_node_set_type(integer) IS 'Set the orientation and type for a node. If three pipe arrives at the node: intersection. If one pipe: end. If two: depends on characteristics of pipe: year (is different), material (and year), diameter(and material/year)';
 
 /* reset all node type */
-DROP FUNCTION IF EXISTS qwat.fn_node_set_type( node_ids integer[] );
-CREATE OR REPLACE FUNCTION qwat.fn_node_set_type( node_ids integer[] DEFAULT NULL ) RETURNS void AS
+DROP FUNCTION IF EXISTS qwat_od.fn_node_set_type( node_ids integer[] );
+CREATE OR REPLACE FUNCTION qwat_od.fn_node_set_type( node_ids integer[] DEFAULT NULL ) RETURNS void AS
 $BODY$
 	DECLARE
 		node record;
 		node_id integer;
 	BEGIN
 		IF node_ids IS NULL THEN
-			FOR node IN (SELECT id FROM qwat.od_node ORDER BY id) LOOP
-				PERFORM qwat.fn_node_set_type(node.id);
+			FOR node IN (SELECT id FROM qwat_od.node ORDER BY id) LOOP
+				PERFORM qwat_od.fn_node_set_type(node.id);
 			END LOOP;
 		ELSE
 			FOREACH node_id IN ARRAY node_ids LOOP
-				PERFORM qwat.fn_node_set_type(node_id);
+				PERFORM qwat_od.fn_node_set_type(node_id);
 			END LOOP;			
 		END IF;
 	END;
 $BODY$
 LANGUAGE 'plpgsql';
-COMMENT ON FUNCTION qwat.fn_node_set_type( node_ids integer[] ) IS 'Set the type and orientation for node. If three pipe arrives at the node: intersection. If one pipe: end. If two: depends on characteristics of pipe: year (is different), material (and year), diameter(and material/year)';
+COMMENT ON FUNCTION qwat_od.fn_node_set_type( node_ids integer[] ) IS 'Set the type and orientation for node. If three pipe arrives at the node: intersection. If one pipe: end. If two: depends on characteristics of pipe: year (is different), material (and year), diameter(and material/year)';

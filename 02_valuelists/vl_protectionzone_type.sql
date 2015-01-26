@@ -5,9 +5,9 @@
 */
 
 /* CREATE */
-DROP TABLE IF EXISTS qwat.vl_protectionzone_type CASCADE;
-CREATE TABLE qwat.vl_protectionzone_type ( id integer not null, CONSTRAINT "protectionzone_type_pk" PRIMARY KEY (id) );
-COMMENT ON TABLE qwat.vl_protectionzone_type
+DROP TABLE IF EXISTS qwat_vl.protectionzone_type CASCADE;
+CREATE TABLE qwat_vl.protectionzone_type ( id integer not null, CONSTRAINT "protectionzone_type_pk" PRIMARY KEY (id) );
+COMMENT ON TABLE qwat_vl.protectionzone_type
   IS 'type of protection zone.
 
 Specifc to Switzerland:
@@ -30,19 +30,19 @@ The outer protection zone is designed to ensure that, in the event of an acciden
 Source: http://www.bafu.admin.ch/grundwasser/07483/07485/10037/index.html?lang=en';
 
 /* COLUMNS*/
-ALTER TABLE qwat.vl_protectionzone_type ADD COLUMN vl_active boolean default true;
-ALTER TABLE qwat.vl_protectionzone_type ADD COLUMN value_fr varchar(50) default '';
-ALTER TABLE qwat.vl_protectionzone_type ADD COLUMN value_en varchar(50) default '';
-ALTER TABLE qwat.vl_protectionzone_type ADD COLUMN value_ro varchar(50) default '';
-ALTER TABLE qwat.vl_protectionzone_type ADD COLUMN short_fr varchar(255) default '';
-ALTER TABLE qwat.vl_protectionzone_type ADD COLUMN short_en varchar(255) default '';
-ALTER TABLE qwat.vl_protectionzone_type ADD COLUMN short_ro varchar(255) default '';
+ALTER TABLE qwat_vl.protectionzone_type ADD COLUMN vl_active boolean default true;
+ALTER TABLE qwat_vl.protectionzone_type ADD COLUMN value_fr varchar(50) default '';
+ALTER TABLE qwat_vl.protectionzone_type ADD COLUMN value_en varchar(50) default '';
+ALTER TABLE qwat_vl.protectionzone_type ADD COLUMN value_ro varchar(50) default '';
+ALTER TABLE qwat_vl.protectionzone_type ADD COLUMN short_fr varchar(255) default '';
+ALTER TABLE qwat_vl.protectionzone_type ADD COLUMN short_en varchar(255) default '';
+ALTER TABLE qwat_vl.protectionzone_type ADD COLUMN short_ro varchar(255) default '';
 
 /* CONTENT */
-INSERT INTO qwat.vl_protectionzone_type (id,short_fr,value_fr,short_ro,value_ro) VALUES (9501,'S1','Zone de protection S1','S1','Zonă de protecţie S1');
-INSERT INTO qwat.vl_protectionzone_type (id,short_fr,value_fr,short_ro,value_ro) VALUES (9502,'S2','Zone de protection S2','S2','Zonă de protecţie S2');
-INSERT INTO qwat.vl_protectionzone_type (id,short_fr,value_fr,short_ro,value_ro) VALUES (9503,'S3','Zone de protection S3','S3','Zonă de protecţie S3');
-INSERT INTO qwat.vl_protectionzone_type (id,short_fr,value_fr,short_ro,value_ro) VALUES (9504,'PP','Périmètre de protection','PP','Perimetru de protecţie');
-INSERT INTO qwat.vl_protectionzone_type (id,short_fr,value_fr,short_ro,value_ro) VALUES (9505,'Zo','Zone de protection des eaux de surface','Zo','Zonă de protecţie a apelor de suprafaţă');
+INSERT INTO qwat_vl.protectionzone_type (id,short_fr,value_fr,short_ro,value_ro) VALUES (9501,'S1','Zone de protection S1','S1','Zonă de protecţie S1');
+INSERT INTO qwat_vl.protectionzone_type (id,short_fr,value_fr,short_ro,value_ro) VALUES (9502,'S2','Zone de protection S2','S2','Zonă de protecţie S2');
+INSERT INTO qwat_vl.protectionzone_type (id,short_fr,value_fr,short_ro,value_ro) VALUES (9503,'S3','Zone de protection S3','S3','Zonă de protecţie S3');
+INSERT INTO qwat_vl.protectionzone_type (id,short_fr,value_fr,short_ro,value_ro) VALUES (9504,'PP','Périmètre de protection','PP','Perimetru de protecţie');
+INSERT INTO qwat_vl.protectionzone_type (id,short_fr,value_fr,short_ro,value_ro) VALUES (9505,'Zo','Zone de protection des eaux de surface','Zo','Zonă de protecţie a apelor de suprafaţă');
 
 
