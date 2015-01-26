@@ -22,6 +22,9 @@ ALTER TABLE qwat_od.subscriber ADD COLUMN remark               text default '';
 /* GEOMETRY                        (table_name,      is_node, create_node, create_schematic, get_pipe, auto_district, auto_pressurezone)*/
 SELECT qwat_od.fn_geom_tool_point('subscriber', false,   false,       false,            false,    false,         true);
 
+/* LABELS */
+SELECT qwat_od.fn_label_create_fields('subscriber');
+
 /* CONSTRAINTS */
 ALTER TABLE qwat_od.subscriber ADD CONSTRAINT subscriber_id_type  FOREIGN KEY (id_type)   REFERENCES qwat_vl.subscriber_type (id) MATCH FULL  ; CREATE INDEX fki_subscriber_id_type   ON qwat_od.subscriber(id_type)        ;
 ALTER TABLE qwat_od.subscriber ADD CONSTRAINT pipe_id_status      FOREIGN KEY (id_status) REFERENCES qwat_vl.status(id)           MATCH FULL  ; CREATE INDEX fki_subscriber_id_status ON qwat_od.subscriber(id_status)	  	;

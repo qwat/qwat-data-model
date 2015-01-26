@@ -17,7 +17,10 @@ ALTER TABLE qwat_od.pressurezone ADD COLUMN colorcode       smallint;
 
 /* GEOMETRY */
 SELECT AddGeometryColumn('qwat_od', 'pressurezone', 'geometry', 21781, 'MULTIPOLYGON', 2);
-CREATE INDEX pressurezone_geoidx ON qwat_od.pressurezone USING GIST ( geometry ); 
+CREATE INDEX pressurezone_geoidx ON qwat_od.pressurezone USING GIST ( geometry );
+
+/* LABELS */
+SELECT qwat_od.fn_label_create_fields('pressurezone'); 
 
 /* CONSTRAINT */
 ALTER TABLE qwat_od.pressurezone ADD CONSTRAINT pressurezone_name UNIQUE (name);

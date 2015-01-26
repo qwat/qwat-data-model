@@ -25,5 +25,8 @@ ALTER TABLE qwat_od.printmap ADD COLUMN y_max double precision;
 SELECT AddGeometryColumn('qwat_od', 'printmap', 'geometry', 21781, 'POLYGON', 2);
 CREATE INDEX printmap_geoidx ON qwat_od.printmap USING GIST ( geometry ); 
 
+/* LABELS */
+SELECT qwat_od.fn_label_create_fields('printmap');
+
 /* Constraints */
 ALTER TABLE qwat_od.printmap ADD CONSTRAINT printmap_id_district FOREIGN KEY (id_district) REFERENCES qwat_od.district (id) MATCH SIMPLE ; CREATE INDEX fki_printmap_id_district ON qwat_od.printmap(id);

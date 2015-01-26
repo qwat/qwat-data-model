@@ -23,6 +23,9 @@ ALTER TABLE qwat_od.district ADD COLUMN colorcode     smallint default 1;
 SELECT AddGeometryColumn('qwat_od', 'district', 'geometry', 21781, 'MULTIPOLYGON', 2);
 CREATE INDEX district_geoidx ON qwat_od.district USING GIST ( geometry );
 
+/* LABELS */
+SELECT qwat_od.fn_label_create_fields('district');
+
 /* contraints */
 ALTER TABLE qwat_od.district ADD CONSTRAINT district_name UNIQUE (name);
 

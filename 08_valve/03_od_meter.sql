@@ -23,6 +23,9 @@ ALTER TABLE qwat_od.meter ADD COLUMN year smallint CHECK (year IS NULL OR year >
 /* GEOMETRY                           (table_name, is_node, create_node, create_schematic, get_pipe, auto_district, auto_pressurezone)*/
 SELECT qwat_od.fn_geom_tool_point('meter', false,    false,      false,            false,    true,         true);
 
+/* LABELS */
+SELECT qwat_od.fn_label_create_fields('meter');
+
 /* CONSTRAINTS */
 ALTER TABLE qwat_od.meter ADD CONSTRAINT pipe_id_status FOREIGN KEY (id_status) REFERENCES qwat_vl.status(id) MATCH FULL  ; CREATE INDEX fki_id_status ON qwat_od.meter(id_status);
 ALTER TABLE qwat_od.meter ADD CONSTRAINT meter_id_pipe  FOREIGN KEY (id_pipe)   REFERENCES qwat_od.pipe (id)  MATCH SIMPLE; CREATE INDEX fki_id_pipe   ON qwat_od.meter(id_pipe)  ;

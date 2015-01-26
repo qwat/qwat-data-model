@@ -10,9 +10,6 @@ DROP TABLE IF EXISTS qwat_od.leak CASCADE;
 CREATE TABLE qwat_od.leak (id serial PRIMARY KEY);
 COMMENT ON TABLE qwat_od.leak IS 'pipe leaks';
 
-/* geometry */
-SELECT qwat_od.fn_geom_tool_point('leak', false, false, false, true, true, true);
-
 /* columns */
 ALTER TABLE qwat_od.leak ADD COLUMN id_type        integer not null;
 ALTER TABLE qwat_od.leak ADD COLUMN id_cause       integer;
@@ -24,6 +21,12 @@ ALTER TABLE qwat_od.leak ADD COLUMN address        text default '';
 ALTER TABLE qwat_od.leak ADD COLUMN pipe_replaced  boolean;
 ALTER TABLE qwat_od.leak ADD COLUMN description    text default '';
 ALTER TABLE qwat_od.leak ADD COLUMN repair         text default '';
+
+/* geometry */
+SELECT qwat_od.fn_geom_tool_point('leak', false, false, false, true, true, true);
+
+/* LABELS */
+SELECT qwat_od.fn_label_create_fields('leak');
 
 /* constraints */
 ALTER TABLE qwat_od.leak ADD CONSTRAINT leak_id_type   FOREIGN KEY (id_type)   REFERENCES qwat_vl.leak_type(id)   MATCH FULL;   CREATE INDEX fki_leak_id_type   ON qwat_od.leak(id_type)  ;
