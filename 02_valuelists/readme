@@ -38,6 +38,7 @@ ranges for tables are defined here.
 9100-9120 leak_cause
 9121-9140 leak_damage
 9141-9160 leak_type
+9161-9199 node_table
 9200-9399 part_type
 94 subscriber_type
 95 protectionzone_type

@@ -30,6 +30,4 @@ ALTER TABLE qwat_od.part ADD CONSTRAINT part_id_type         FOREIGN KEY (id_typ
 ALTER TABLE qwat_od.part ADD CONSTRAINT part_id_distributor  FOREIGN KEY (id_distributor)  REFERENCES qwat_od.distributor(id)      MATCH FULL; CREATE INDEX fki_part_id_distributor   ON qwat_od.part(id_distributor) ;
 ALTER TABLE qwat_od.part ADD CONSTRAINT part_id_status       FOREIGN KEY (id_status)       REFERENCES qwat_vl.status(id)           MATCH FULL; CREATE INDEX fki_part_id_status        ON qwat_od.part(id_status)      ;
 
-/* add this to the node table */
-INSERT INTO qwat_od.node_table (table_name,node_type,overwrite) VALUES ('part','part',false);
 

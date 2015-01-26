@@ -35,7 +35,7 @@ $BODY$
 		   overwrite determines if the object type will be used instead of the computed node type.
 		*/
 
-		FOR node_table IN SELECT * FROM qwat_od.node_table
+		FOR node_table IN SELECT * FROM qwat_vl.node_table
 		LOOP
 			stmt := 'SELECT COUNT(id) FROM qwat_od.' || node_table.table_name || ' WHERE id_node='|| node_id || ';';
 			EXECUTE stmt INTO is_under_count;
