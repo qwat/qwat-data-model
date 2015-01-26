@@ -20,14 +20,7 @@ ALTER TABLE qwat_od.installation_building ADD COLUMN schema_visible  boolean not
 ALTER TABLE qwat_od.installation_building ADD COLUMN year            smallint    CHECK (year IS NULL OR year > 1800 AND year < 2100);
 ALTER TABLE qwat_od.installation_building ADD COLUMN parcel          varchar(30) default '';
 ALTER TABLE qwat_od.installation_building ADD COLUMN eca             varchar(30) default '';
-ALTER TABLE qwat_od.installation_building ADD COLUMN label_visible_1 smallint default 1;
-ALTER TABLE qwat_od.installation_building ADD COLUMN label_x_1       double precision default null;
-ALTER TABLE qwat_od.installation_building ADD COLUMN label_y_1       double precision default null;
-ALTER TABLE qwat_od.installation_building ADD COLUMN label_r_1       double precision default null;
-ALTER TABLE qwat_od.installation_building ADD COLUMN label_visible_2 smallint default 1;
-ALTER TABLE qwat_od.installation_building ADD COLUMN label_x_2       double precision default null;
-ALTER TABLE qwat_od.installation_building ADD COLUMN label_y_2       double precision default null;
-ALTER TABLE qwat_od.installation_building ADD COLUMN label_r_2       double precision default null;
+
 /* geometry */
 /* point                              ( table_name,       is_node, create_node, create_schematic, get_pipe, auto_district, auto_pressurezone)*/
 SELECT qwat_od.fn_geom_tool_point('installation_building',true,    true,        true,             false ,    true         , false);
@@ -35,10 +28,11 @@ SELECT qwat_od.fn_geom_tool_point('installation_building',true,    true,        
 SELECT AddGeometryColumn('qwat_od', 'installation_building', 'geometry_polygon', 21781, 'MULTIPOLYGON', 2);
 CREATE INDEX installation_building_poly_geoidx ON qwat_od.installation_building USING GIST ( geometry_polygon ); 
 
+/* LABELS */
+SELECT qwat_od.fn_label_create_fields('installation_building');
+
 /* Constraints */
 ALTER TABLE qwat_od.installation_building ADD CONSTRAINT installation_id_type          FOREIGN KEY (id_type)          REFERENCES qwat_vl.installation_type(id) MATCH FULL;  CREATE INDEX fki_installation_id_type          ON qwat_od.installation_building(id_type)          ;
-ALTER TABLE qwat_od.installation_building ADD CONSTRAINT installation_label_visible_1  FOREIGN KEY (label_visible_1)  REFERENCES qwat_vl.visible(vl_code_int) MATCH FULL;   CREATE INDEX fki_installation_label_visible_1  ON qwat_od.installation_building(label_visible_1)  ;
-ALTER TABLE qwat_od.installation_building ADD CONSTRAINT installation_label_visible_2  FOREIGN KEY (label_visible_2)  REFERENCES qwat_vl.visible(vl_code_int) MATCH FULL;   CREATE INDEX fki_installation_label_visible_2  ON qwat_od.installation_building(label_visible_2)  ;
 
 /* TRIGGERS */
 CREATE OR REPLACE FUNCTION qwat_od.ft_installation_building() RETURNS trigger AS

@@ -25,15 +25,10 @@ ALTER TABLE qwat_od.installation_source ADD COLUMN year               smallint C
 ALTER TABLE qwat_od.installation_source ADD COLUMN open_water_surface boolean default false  ;
 ALTER TABLE qwat_od.installation_source ADD COLUMN parcel             varchar(30) default '' ;
 ALTER TABLE qwat_od.installation_source ADD COLUMN eca                varchar(30) default '' ;
-ALTER TABLE qwat_od.installation_source ADD COLUMN label_remark            varchar(150) default '';
-ALTER TABLE qwat_od.installation_source ADD COLUMN label_visible_1     smallint default 1;
-ALTER TABLE qwat_od.installation_source ADD COLUMN label_x_1       double precision default null;
-ALTER TABLE qwat_od.installation_source ADD COLUMN label_y_1       double precision default null;
-ALTER TABLE qwat_od.installation_source ADD COLUMN label_r_1       double precision default null;
-ALTER TABLE qwat_od.installation_source ADD COLUMN label_visible_2 smallint default 1;
-ALTER TABLE qwat_od.installation_source ADD COLUMN label_x_2       double precision default null;
-ALTER TABLE qwat_od.installation_source ADD COLUMN label_y_2       double precision default null;
-ALTER TABLE qwat_od.installation_source ADD COLUMN label_r_2       double precision default null;
+
+/* LABELS */
+SELECT qwat_od.fn_label_create_fields('installation_source');
+
 /* specific to sources */
 ALTER TABLE qwat_od.installation_source ADD COLUMN id_type           smallint     ;
 ALTER TABLE qwat_od.installation_source ADD COLUMN id_quality        smallint     ;
@@ -53,8 +48,6 @@ ALTER TABLE qwat_od.installation_source ADD CONSTRAINT installation_source_id_st
 ALTER TABLE qwat_od.installation_source ADD CONSTRAINT installation_source_id_distributor  FOREIGN KEY (id_distributor)  REFERENCES qwat_od.distributor(id)           MATCH FULL;   CREATE INDEX fki_installation_source_id_distributor    ON qwat_od.installation_source(id_distributor) ;
 ALTER TABLE qwat_od.installation_source ADD CONSTRAINT installation_source_id_remote       FOREIGN KEY (id_remote)       REFERENCES qwat_vl.remote_type(id)           MATCH SIMPLE; CREATE INDEX fki_installation_source_id_remote         ON qwat_od.installation_source(id_remote)      ;
 ALTER TABLE qwat_od.installation_source ADD CONSTRAINT installation_source_id_watertype    FOREIGN KEY (id_watertype)    REFERENCES qwat_vl.watertype(id)             MATCH FULL;   CREATE INDEX fki_installation_source_watertype      ON qwat_od.installation_source(id_watertype)   ;
-ALTER TABLE qwat_od.installation_source ADD CONSTRAINT installation_source_label_visible_1 FOREIGN KEY (label_visible_1) REFERENCES qwat_vl.visible(vl_code_int)      MATCH FULL;   CREATE INDEX fki_installation_source_labelvisible_1  ON qwat_od.installation_source(label_visible_1) ;
-ALTER TABLE qwat_od.installation_source ADD CONSTRAINT installation_source_label_visible_2 FOREIGN KEY (label_visible_2) REFERENCES qwat_vl.visible(vl_code_int)      MATCH FULL;   CREATE INDEX fki_installation_source_labelvisible_2  ON qwat_od.installation_source(label_visible_2) ;
 /* specific */
 ALTER TABLE qwat_od.installation_source ADD CONSTRAINT installation_source_id_type         FOREIGN KEY (id_type)         REFERENCES qwat_vl.source_type(id)           MATCH FULL;   CREATE INDEX fki_installation_source_source_type    ON qwat_od.installation_source(id_type)        ;
 ALTER TABLE qwat_od.installation_source ADD CONSTRAINT installation_source_id_quality      FOREIGN KEY (id_quality)      REFERENCES qwat_vl.source_quality(id)        MATCH SIMPLE; CREATE INDEX fki_installation_source_source_quality ON qwat_od.installation_source(id_quality)     ;

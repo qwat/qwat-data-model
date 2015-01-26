@@ -25,18 +25,12 @@ ALTER TABLE qwat_od.installation_pressurecontrol ADD COLUMN year               s
 ALTER TABLE qwat_od.installation_pressurecontrol ADD COLUMN open_water_surface boolean     default false  ;
 ALTER TABLE qwat_od.installation_pressurecontrol ADD COLUMN parcel             varchar(30)  default '';
 ALTER TABLE qwat_od.installation_pressurecontrol ADD COLUMN eca                varchar(30)  default '';
-ALTER TABLE qwat_od.installation_pressurecontrol ADD COLUMN label_remark        varchar(150) default '';
-ALTER TABLE qwat_od.installation_pressurecontrol ADD COLUMN label_visible_1    smallint default 1;
-ALTER TABLE qwat_od.installation_pressurecontrol ADD COLUMN label_x_1       double precision default null;
-ALTER TABLE qwat_od.installation_pressurecontrol ADD COLUMN label_y_1       double precision default null;
-ALTER TABLE qwat_od.installation_pressurecontrol ADD COLUMN label_r_1       double precision default null;
-ALTER TABLE qwat_od.installation_pressurecontrol ADD COLUMN label_visible_2 smallint default 1;
-ALTER TABLE qwat_od.installation_pressurecontrol ADD COLUMN label_x_2       double precision default null;
-ALTER TABLE qwat_od.installation_pressurecontrol ADD COLUMN label_y_2       double precision default null;
-ALTER TABLE qwat_od.installation_pressurecontrol ADD COLUMN label_r_2       double precision default null;
+
+/* LABELS */
+SELECT qwat_od.fn_label_create_fields('installation_pressurecontrol');
+
 /* specific to pressurecontrol */
 ALTER TABLE qwat_od.installation_pressurecontrol ADD COLUMN id_type            integer not null       ;
-
 
 /* GEOMETRY */
 /*                                 (table_name,                is_node, create_node, create_schematic, get_pipe, auto_district, auto_pressurezone)*/
@@ -48,8 +42,6 @@ ALTER TABLE qwat_od.installation_pressurecontrol ADD CONSTRAINT installation_pre
 ALTER TABLE qwat_od.installation_pressurecontrol ADD CONSTRAINT installation_pressurecontrol_id_distributor  FOREIGN KEY (id_distributor)  REFERENCES qwat_od.distributor(id)           MATCH FULL;   CREATE INDEX fki_installation_pressurecontrol_id_distributor  ON qwat_od.installation_pressurecontrol(id_distributor) ;
 ALTER TABLE qwat_od.installation_pressurecontrol ADD CONSTRAINT installation_pressurecontrol_id_remote       FOREIGN KEY (id_remote)       REFERENCES qwat_vl.remote_type(id)                MATCH SIMPLE; CREATE INDEX fki_installation_pressurecontrol_id_remote       ON qwat_od.installation_pressurecontrol(id_remote)      ;
 ALTER TABLE qwat_od.installation_pressurecontrol ADD CONSTRAINT installation_pressurecontrol_id_watertype    FOREIGN KEY (id_watertype)    REFERENCES qwat_vl.watertype(id)             MATCH FULL;   CREATE INDEX fki_installation_pressurecontrol_watertype    ON qwat_od.installation_pressurecontrol(id_watertype)   ;
-ALTER TABLE qwat_od.installation_pressurecontrol ADD CONSTRAINT installation_pressurecontrol_label_visible_1 FOREIGN KEY (label_visible_1) REFERENCES qwat_vl.visible(vl_code_int)      MATCH FULL;   CREATE INDEX fki_installation_pressurecontrol_labelvisible_1  ON qwat_od.installation_pressurecontrol(label_visible_1) ;
-ALTER TABLE qwat_od.installation_pressurecontrol ADD CONSTRAINT installation_pressurecontrol_label_visible_2 FOREIGN KEY (label_visible_2) REFERENCES qwat_vl.visible(vl_code_int)      MATCH FULL;   CREATE INDEX fki_installation_pressurecontrol_labelvisible_2  ON qwat_od.installation_pressurecontrol(label_visible_2) ;
 /* SPECIFIC */
 ALTER TABLE qwat_od.installation_pressurecontrol ADD CONSTRAINT installation_pressurecontrol_id_type         FOREIGN KEY (id_type)         REFERENCES qwat_vl.pressurecontrol(id)       MATCH FULL;   CREATE INDEX fki_installation_pressurecontrol_type         ON qwat_od.installation_pressurecontrol(id_type)        ;
 

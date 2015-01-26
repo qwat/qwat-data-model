@@ -26,15 +26,10 @@ ALTER TABLE qwat_od.installation_pump ADD COLUMN year smallint CHECK (year IS NU
 ALTER TABLE qwat_od.installation_pump ADD COLUMN open_water_surface boolean default False  ;
 ALTER TABLE qwat_od.installation_pump ADD COLUMN parcel             varchar(30) default '' ;
 ALTER TABLE qwat_od.installation_pump ADD COLUMN eca                varchar(30) default '' ; COMMENT ON COLUMN qwat_od.installation_pump.eca IS 'fire brigade id';
-ALTER TABLE qwat_od.installation_pump ADD COLUMN label_remark       varchar(150) default '';
-ALTER TABLE qwat_od.installation_pump ADD COLUMN label_visible_1    smallint default 1;
-ALTER TABLE qwat_od.installation_pump ADD COLUMN label_x_1       double precision default null;
-ALTER TABLE qwat_od.installation_pump ADD COLUMN label_y_1       double precision default null;
-ALTER TABLE qwat_od.installation_pump ADD COLUMN label_r_1       double precision default null;
-ALTER TABLE qwat_od.installation_pump ADD COLUMN label_visible_2 smallint default 1;
-ALTER TABLE qwat_od.installation_pump ADD COLUMN label_x_2       double precision default null;
-ALTER TABLE qwat_od.installation_pump ADD COLUMN label_y_2       double precision default null;
-ALTER TABLE qwat_od.installation_pump ADD COLUMN label_r_2       double precision default null;
+
+/* LABELS */
+SELECT qwat_od.fn_label_create_fields('installation_pump');
+
 /* specific to pumps */
 ALTER TABLE qwat_od.installation_pump ADD COLUMN id_type           smallint     ;
 ALTER TABLE qwat_od.installation_pump ADD COLUMN id_pipe_in        integer      ;
@@ -55,8 +50,6 @@ ALTER TABLE qwat_od.installation_pump ADD CONSTRAINT installation_pump_id_status
 ALTER TABLE qwat_od.installation_pump ADD CONSTRAINT installation_pump_id_distributor  FOREIGN KEY (id_distributor)  REFERENCES qwat_od.distributor(id)           MATCH FULL;   CREATE INDEX fki_installation_pump_id_distributor  ON qwat_od.installation_pump(id_distributor) ;
 ALTER TABLE qwat_od.installation_pump ADD CONSTRAINT installation_pump_id_remote       FOREIGN KEY (id_remote)       REFERENCES qwat_vl.remote_type(id)           MATCH SIMPLE; CREATE INDEX fki_installation_pump_id_remote       ON qwat_od.installation_pump(id_remote)      ;
 ALTER TABLE qwat_od.installation_pump ADD CONSTRAINT installation_pump_id_watertype    FOREIGN KEY (id_watertype)    REFERENCES qwat_vl.watertype(id)             MATCH FULL;   CREATE INDEX fki_installation_pump_watertype    ON qwat_od.installation_pump(id_watertype)   ;
-ALTER TABLE qwat_od.installation_pump ADD CONSTRAINT installation_pump_label_visible_1 FOREIGN KEY (label_visible_1) REFERENCES qwat_vl.visible(vl_code_int)      MATCH FULL;   CREATE INDEX fki_installation_pump_labelvisible_1  ON qwat_od.installation_pump(label_visible_1) ;
-ALTER TABLE qwat_od.installation_pump ADD CONSTRAINT installation_pump_label_visible_2 FOREIGN KEY (label_visible_2) REFERENCES qwat_vl.visible(vl_code_int)      MATCH FULL;   CREATE INDEX fki_installation_pump_labelvisible_2  ON qwat_od.installation_pump(label_visible_2) ;
 /* specific */                                                                                                                                                                                                                                     
 ALTER TABLE qwat_od.installation_pump ADD CONSTRAINT installation_pump_id_type     FOREIGN KEY (id_type)     REFERENCES qwat_vl.pump_type(id) MATCH FULL;   CREATE INDEX fki_installation_pump_vl_pump_type ON qwat_od.installation_pump(id_type)     ;
 ALTER TABLE qwat_od.installation_pump ADD CONSTRAINT installation_pump_id_pipe_in  FOREIGN KEY (id_pipe_in)  REFERENCES qwat_od.pipe(id)      MATCH SIMPLE; CREATE INDEX fki_installation_pump_pipe_in   ON qwat_od.installation_pump(id_pipe_in)  ;

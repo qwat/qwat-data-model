@@ -25,15 +25,10 @@ ALTER TABLE qwat_od.installation_valvechamber ADD COLUMN year               smal
 ALTER TABLE qwat_od.installation_valvechamber ADD COLUMN open_water_surface boolean     default false  ;
 ALTER TABLE qwat_od.installation_valvechamber ADD COLUMN parcel             varchar(30) default '' ;
 ALTER TABLE qwat_od.installation_valvechamber ADD COLUMN eca                varchar(30) default '' ;
-ALTER TABLE qwat_od.installation_valvechamber ADD COLUMN label_remark            varchar(150) default '';
-ALTER TABLE qwat_od.installation_valvechamber ADD COLUMN label_visible_1     smallint default 1;
-ALTER TABLE qwat_od.installation_valvechamber ADD COLUMN label_x_1       double precision default null;
-ALTER TABLE qwat_od.installation_valvechamber ADD COLUMN label_y_1       double precision default null;
-ALTER TABLE qwat_od.installation_valvechamber ADD COLUMN label_r_1       double precision default null;
-ALTER TABLE qwat_od.installation_valvechamber ADD COLUMN label_visible_2 smallint default 1;
-ALTER TABLE qwat_od.installation_valvechamber ADD COLUMN label_x_2       double precision default null;
-ALTER TABLE qwat_od.installation_valvechamber ADD COLUMN label_y_2       double precision default null;
-ALTER TABLE qwat_od.installation_valvechamber ADD COLUMN label_r_2       double precision default null;
+
+/* LABELS */
+SELECT qwat_od.fn_label_create_fields('installation_valvechamber');
+
 /* specific to pressurecontrol */
 ALTER TABLE qwat_od.installation_valvechamber ADD COLUMN networkseparation  boolean               ;
 ALTER TABLE qwat_od.installation_valvechamber ADD COLUMN meter              boolean               ;
@@ -49,9 +44,6 @@ ALTER TABLE qwat_od.installation_valvechamber ADD CONSTRAINT installation_valvec
 ALTER TABLE qwat_od.installation_valvechamber ADD CONSTRAINT installation_valvechamber_id_distributor  FOREIGN KEY (id_distributor)  REFERENCES qwat_od.distributor(id)           MATCH FULL;   CREATE INDEX fki_installation_valvechamber_id_distributor  ON qwat_od.installation_valvechamber(id_distributor) ;
 ALTER TABLE qwat_od.installation_valvechamber ADD CONSTRAINT installation_valvechamber_id_remote       FOREIGN KEY (id_remote)       REFERENCES qwat_vl.remote_type(id)           MATCH SIMPLE; CREATE INDEX fki_installation_valvechamber_id_remote       ON qwat_od.installation_valvechamber(id_remote)      ;
 ALTER TABLE qwat_od.installation_valvechamber ADD CONSTRAINT installation_valvechamber_id_watertype    FOREIGN KEY (id_watertype)    REFERENCES qwat_vl.watertype(id)             MATCH FULL;   CREATE INDEX fki_installation_valvechamber_watertype    ON qwat_od.installation_valvechamber(id_watertype)   ;
-ALTER TABLE qwat_od.installation_valvechamber ADD CONSTRAINT installation_valvechamber_label_visible_1 FOREIGN KEY (label_visible_1) REFERENCES qwat_vl.visible(vl_code_int)      MATCH FULL;   CREATE INDEX fki_installation_valvechamber_labelvisible_1  ON qwat_od.installation_valvechamber(label_visible_1) ;
-ALTER TABLE qwat_od.installation_valvechamber ADD CONSTRAINT installation_valvechamber_label_visible_2 FOREIGN KEY (label_visible_2) REFERENCES qwat_vl.visible(vl_code_int)      MATCH FULL;   CREATE INDEX fki_installation_valvechamber_labelvisible_2  ON qwat_od.installation_valvechamber(label_visible_2) ;
-
 
 /* VIEW */
 CREATE OR REPLACE VIEW qwat_od.vw_installation_valvechamber_fr AS

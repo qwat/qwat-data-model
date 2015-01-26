@@ -21,7 +21,6 @@ ALTER TABLE qwat_od.pipe ADD COLUMN id_bedding             integer not null;    
 ALTER TABLE qwat_od.pipe ADD COLUMN id_protection          integer;                                      /* id_protection        FK */
 ALTER TABLE qwat_od.pipe ADD COLUMN id_status              integer not null;                             /* id_status            FK */
 ALTER TABLE qwat_od.pipe ADD COLUMN id_watertype           integer not null;                             /* id_watertype         FK */
-ALTER TABLE qwat_od.pipe ADD COLUMN labelremark            varchar(150) default '';                      /* labelemark              */
 ALTER TABLE qwat_od.pipe ADD COLUMN year                   smallint CHECK (year IS NULL OR year > 1800 AND year < 2100); /* year  */
 ALTER TABLE qwat_od.pipe ADD COLUMN tunnel_or_bridge       boolean default false;                        /* tunnel_or_bridge        */
 ALTER TABLE qwat_od.pipe ADD COLUMN pressure_nominal       smallint default 16;                          /* pressure_nominale       */
@@ -29,11 +28,12 @@ ALTER TABLE qwat_od.pipe ADD COLUMN folder                 varchar(20) default '
 ALTER TABLE qwat_od.pipe ADD COLUMN remark                 text        default '' ;                      /* remark                  */
 ALTER TABLE qwat_od.pipe ADD COLUMN _valve_count           smallint default NULL;                        /* _valve_count            */
 ALTER TABLE qwat_od.pipe ADD COLUMN _valve_closed          boolean default NULL;                         /* _valve_closed           */
-ALTER TABLE qwat_od.pipe ADD COLUMN label_visible_1        smallint default 1;                           /* label_view 0: hide, 1: show, 2: always show */
-ALTER TABLE qwat_od.pipe ADD COLUMN label_visible_2        smallint default 1;                           /* label_view 0: hide, 1: show, 2: always show */
 
 /* schema view */
 SELECT qwat_od.fn_enable_schemaview( 'pipe', 'pipe_function', 'id_function' );
+
+/* LABELS */
+SELECT qwat_od.fn_label_create_fields('pipe', false, false);
 
 /* Constraints */
 ALTER TABLE qwat_od.pipe ADD CONSTRAINT pipe_id_parent         FOREIGN KEY (id_parent)         REFERENCES qwat_od.pipe (id)              MATCH SIMPLE ; CREATE INDEX fki_pipe_id_parent        ON qwat_od.pipe(id_parent);
@@ -46,9 +46,6 @@ ALTER TABLE qwat_od.pipe ADD CONSTRAINT pipe_id_bedding        FOREIGN KEY (id_b
 ALTER TABLE qwat_od.pipe ADD CONSTRAINT pipe_id_protection     FOREIGN KEY (id_protection)     REFERENCES qwat_vl.pipe_protection(id)    MATCH SIMPLE ; CREATE INDEX fki_pipe_id_protection    ON qwat_od.pipe(id_protection);
 ALTER TABLE qwat_od.pipe ADD CONSTRAINT pipe_id_status         FOREIGN KEY (id_status)         REFERENCES qwat_vl.status(id)             MATCH FULL   ; CREATE INDEX fki_pipe_id_status        ON qwat_od.pipe(id_status);
 ALTER TABLE qwat_od.pipe ADD CONSTRAINT pipe_id_watertype      FOREIGN KEY (id_watertype)      REFERENCES qwat_vl.watertype(id)          MATCH FULL   ; CREATE INDEX fki_pipe_id_watertype     ON qwat_od.pipe(id_watertype);
-ALTER TABLE qwat_od.pipe ADD CONSTRAINT pipe_label_visible_1   FOREIGN KEY (label_visible_1)   REFERENCES qwat_vl.visible(vl_code_int)   MATCH FULL   ; CREATE INDEX fki_pipe_label_visible_1   ON qwat_od.pipe(label_visible_1);
-ALTER TABLE qwat_od.pipe ADD CONSTRAINT pipe_label_visible_2   FOREIGN KEY (label_visible_2)   REFERENCES qwat_vl.visible(vl_code_int)   MATCH FULL   ; CREATE INDEX fki_pipe_label_visible_2   ON qwat_od.pipe(label_visible_2);
-
 
 /*----------------!!!---!!!----------------*/
 /* Trigger for tunnel_or_bridge */

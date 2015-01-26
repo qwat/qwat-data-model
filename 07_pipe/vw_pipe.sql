@@ -23,7 +23,7 @@ CREATE VIEW qwat_od.vw_pipe AS
 		pipe.tunnel_or_bridge  ,
 		pipe.pressure_nominal  ,
 		pipe.folder            ,
-		pipe.labelremark       ,
+		pipe.label_1_text       ,
 		pipe.remark            ,
 		pipe._valve_count      ,
 		pipe._valve_closed     ,
