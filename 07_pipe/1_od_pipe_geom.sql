@@ -61,7 +61,7 @@ CREATE OR REPLACE FUNCTION qwat_od.ft_pipe_geom() RETURNS TRIGGER AS
 		RETURN NEW;
 	END;
 	$BODY$
-	LANGUAGE 'plpgsql';
+	LANGUAGE plpgsql;
 
 /* create triggers */
 CREATE TRIGGER tr_pipe_geom_insert
@@ -101,7 +101,7 @@ CREATE OR REPLACE FUNCTION qwat_od.ft_pipe_node_type() RETURNS TRIGGER AS
 		RETURN NEW;
 	END;
 	$BODY$
-	LANGUAGE 'plpgsql';
+	LANGUAGE plpgsql;
 
 CREATE TRIGGER tr_pipe_node_type_insdel
 	AFTER INSERT OR DELETE ON qwat_od.pipe
@@ -126,7 +126,7 @@ CREATE OR REPLACE FUNCTION qwat_od.ft_pipe_alternative_geom() RETURNS TRIGGER AS
 		RETURN NEW;
 	END;
 	$BODY$
-	LANGUAGE 'plpgsql';
+	LANGUAGE plpgsql;
 
 CREATE TRIGGER tr_pipe_alternative_geom
 	BEFORE UPDATE OF geometry_alt1, geometry_alt2 ON qwat_od.pipe

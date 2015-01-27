@@ -1,80 +1,93 @@
 
 
-/*                        (table_name, is_node, create_node, create_alt_geom, get_pipe, auto_district, auto_pressurezone)*/
-CREATE OR REPLACE FUNCTION qwat_od.fn_geom_tool_point(table_name varchar, is_node boolean, create_node boolean, create_alt_geom boolean, get_pipe boolean, auto_district boolean, auto_pressurezone boolean) RETURNS void AS
-$BODY$
+/* (table_name, is_node, create_node, _create_alt_geom, get_pipe, _auto_district, _auto_pressurezone) */
+CREATE OR REPLACE FUNCTION qwat_od.fn_geom_tool_point(
+			_table_name text, 
+			_is_node boolean, 
+			_create_node boolean,
+			_create_alt_geom boolean,
+			_get_pipe boolean,
+			_auto_district boolean,
+			_auto_pressurezone boolean) 
+	RETURNS void AS
+$func$
 	DECLARE
 		sql_trigger varchar;
 		match_mode varchar;
 	BEGIN
 		/* Creates columns */
-		IF is_node IS TRUE THEN
-			EXECUTE 'ALTER TABLE qwat_od.'||table_name||' ADD COLUMN id_node         integer   ;';
+		IF _is_node IS TRUE THEN
+			EXECUTE format('ALTER TABLE qwat_od.%I ADD COLUMN id_node         integer   ;', _table_name);
 		END IF;
-		EXECUTE 'ALTER TABLE qwat_od.'||table_name||' ADD COLUMN id_district     integer   ;';
-		EXECUTE 'ALTER TABLE qwat_od.'||table_name||' ADD COLUMN id_pressurezone integer   ;';
-		EXECUTE 'ALTER TABLE qwat_od.'||table_name||' ADD COLUMN id_printmap     integer[] ;';
-		IF get_pipe IS TRUE THEN
-			EXECUTE 'ALTER TABLE qwat_od.'||table_name||' ADD COLUMN id_pipe         integer   ;';
+		EXECUTE format('ALTER TABLE qwat_od.%I
+							ADD COLUMN id_district     integer,
+							ADD COLUMN id_pressurezone integer,
+							ADD COLUMN id_printmap     integer[] ;', _table_name);
+		IF _get_pipe IS TRUE THEN
+			EXECUTE format('ALTER TABLE qwat_od.%I ADD COLUMN id_pipe         integer   ;', _table_name);
 		END IF;
-		IF auto_district IS TRUE THEN
-			EXECUTE 'ALTER TABLE qwat_od.'||table_name||' ADD COLUMN _district       varchar(255) default '''' ;';
+		IF _auto_district IS TRUE THEN
+			EXECUTE format('ALTER TABLE qwat_od.%I ADD COLUMN _district       varchar(255) default '''' ;', _table_name);
 		END IF;
-		IF auto_pressurezone IS TRUE THEN
-			EXECUTE 'ALTER TABLE qwat_od.'||table_name||' ADD COLUMN _pressurezone   varchar(255) default '''' ;';
+		IF _auto_pressurezone IS TRUE THEN
+			EXECUTE format('ALTER TABLE qwat_od.%I ADD COLUMN _pressurezone   varchar(255) default '''' ;', _table_name);
 		END IF;		
-		EXECUTE 'ALTER TABLE qwat_od.'||table_name||' ADD COLUMN _printmaps      varchar(100) default '''' ;';
+		EXECUTE format('ALTER TABLE qwat_od.%I ADD COLUMN _printmaps      varchar(100) default '''' ;', _table_name);
 		
 		/* Enables geometry */
-		PERFORM addGeometryColumn('qwat_od', table_name, 'geometry', 21781, 'POINT', 2);
-		EXECUTE 'CREATE INDEX '||table_name||'_geoidx ON qwat_od.'||table_name||' USING GIST ( geometry );';
-		IF create_alt_geom IS TRUE THEN
-			PERFORM addGeometryColumn('qwat_od', table_name, 'geometry_alt1', 21781, 'POINT', 2);
-			PERFORM addGeometryColumn('qwat_od', table_name, 'geometry_alt2', 21781, 'POINT', 2);
-			EXECUTE 'CREATE INDEX '||table_name||'_geoidx_alt1 ON qwat_od.'||table_name||' USING GIST ( geometry_alt1 );';
-			EXECUTE 'CREATE INDEX '||table_name||'_geoidx_alt2 ON qwat_od.'||table_name||' USING GIST ( geometry_alt2 );';
-			EXECUTE 'ALTER TABLE qwat_od.'||table_name||' ADD COLUMN _geometry_alt1_used boolean;';
-			EXECUTE 'ALTER TABLE qwat_od.'||table_name||' ADD COLUMN _geometry_alt2_used boolean;';
+		PERFORM addGeometryColumn('qwat_od', _table_name, 'geometry', 21781, 'POINT', 2);
+		EXECUTE format('CREATE INDEX %1$I ON qwat_od.%2$I USING GIST ( geometry );', _table_name||'_geoidx', _table_name);
+		IF _create_alt_geom IS TRUE THEN
+			PERFORM addGeometryColumn('qwat_od', _table_name, 'geometry_alt1', 21781, 'POINT', 2);
+			PERFORM addGeometryColumn('qwat_od', _table_name, 'geometry_alt2', 21781, 'POINT', 2);
+			EXECUTE format('CREATE INDEX %1$I ON qwat_od.%2$I USING GIST ( geometry_alt1 );
+							CREATE INDEX %3$I ON qwat_od.%2$I USING GIST ( geometry_alt2 );
+							ALTER TABLE qwat_od.%2$I  ADD COLUMN _geometry_alt1_used boolean,
+													  ADD COLUMN _geometry_alt2_used boolean;',
+							_table_name||'_geoidx_alt1', _table_name, _table_name||'_geoidx_alt2');
 		END IF;
 				
 		/* Add constraints and indexes */
-		IF is_node IS TRUE THEN
-			IF create_node IS TRUE THEN
+		IF _is_node IS TRUE THEN
+			IF _create_node IS TRUE THEN
 				match_mode := 'FULL';
 			ELSE
 				match_mode := 'SIMPLE';
 			END IF;
-			EXECUTE 'ALTER TABLE qwat_od.'||table_name||' ADD CONSTRAINT '||table_name||'_id_node         FOREIGN KEY (id_node)         REFERENCES qwat_od.node(id)         MATCH ' || match_mode || ';' ;
+			EXECUTE format('ALTER TABLE qwat_od.%1$I ADD CONSTRAINT %2$I FOREIGN KEY (id_node)     REFERENCES qwat_od.node(id)         MATCH %3$s;', 
+								_table_name, _table_name||'_id_node ', match_mode);
 		END IF;
-		EXECUTE 'ALTER TABLE qwat_od.'||table_name||' ADD CONSTRAINT '||table_name||'_id_district     FOREIGN KEY (id_district)     REFERENCES qwat_od.district(id)     MATCH SIMPLE;';
-		EXECUTE 'ALTER TABLE qwat_od.'||table_name||' ADD CONSTRAINT '||table_name||'_id_pressurezone FOREIGN KEY (id_pressurezone) REFERENCES qwat_od.pressurezone(id) MATCH SIMPLE;';
-		IF get_pipe IS TRUE THEN
-			EXECUTE 'ALTER TABLE qwat_od.'||table_name||' ADD CONSTRAINT '||table_name||'_id_pipe FOREIGN KEY (id_pipe) REFERENCES qwat_od.pipe(id) MATCH SIMPLE;';
+		EXECUTE format('ALTER TABLE qwat_od.%1$I ADD CONSTRAINT %2$I FOREIGN KEY (id_district)     REFERENCES qwat_od.district(id)     MATCH SIMPLE;
+						ALTER TABLE qwat_od.%1$I ADD CONSTRAINT %3$I FOREIGN KEY (id_pressurezone) REFERENCES qwat_od.pressurezone(id) MATCH SIMPLE;', 
+						_table_name, _table_name||'_id_district', _table_name||'_id_pressurezone');
+		IF _get_pipe IS TRUE THEN
+			EXECUTE format('ALTER TABLE qwat_od.%1$I ADD CONSTRAINT %2$I FOREIGN KEY (id_pipe) REFERENCES qwat_od.pipe(id) MATCH SIMPLE;', _table_name, _table_name||'_id_pipe');
 		END IF;
-		IF is_node IS TRUE THEN
-			EXECUTE 'CREATE INDEX fki_'||table_name||'_id_node     ON qwat_od.'||table_name||'(id_node);';
+		IF _is_node IS TRUE THEN
+			EXECUTE format('CREATE INDEX %1$I ON qwat_od.%2$I(id_node);', 'fki_'||_table_name||'_id_node', _table_name);
 		END IF;
-		EXECUTE 'CREATE INDEX fki_'||table_name||'_id_district     ON qwat_od.'||table_name||'(id_district);';
-		EXECUTE 'CREATE INDEX fki_'||table_name||'_id_pressurezone ON qwat_od.'||table_name||'(id_pressurezone);';
-		IF get_pipe IS TRUE THEN
-			EXECUTE 'CREATE INDEX fki_'||table_name||'_id_pipe ON qwat_od.'||table_name||'(id_pipe);';
+		EXECUTE format('CREATE INDEX %1$I ON qwat_od.%2$I(id_district);
+						CREATE INDEX %3$I ON qwat_od.%2$I(id_pressurezone);',
+						'fki_'||_table_name||'_id_district', _table_name, 'fki_'||_table_name||'_id_pressurezone');
+		IF _get_pipe IS TRUE THEN
+			EXECUTE format('CREATE INDEX %1$I ON qwat_od.%2$I(id_pipe);', 'fki_'||_table_name||'_id_pipe', _table_name);
 		END IF;
 		
 		/* Geometric trigger function */
-		sql_trigger := 'CREATE OR REPLACE FUNCTION qwat_od.ft_'||table_name||'_geom() RETURNS TRIGGER AS
+		sql_trigger := format('CREATE OR REPLACE FUNCTION qwat_od.%I() RETURNS TRIGGER AS
 				''
-				BEGIN';
-		IF is_node IS TRUE THEN
-			sql_trigger := sql_trigger || '
-						NEW.id_node            := qwat_od.fn_node_get_id(NEW.geometry,'||create_node||');';
+				BEGIN', 'ft_'||_table_name||'_geom');
+		IF _is_node IS TRUE THEN
+			sql_trigger := sql_trigger || format('
+						NEW.id_node            := qwat_od.fn_node_get_id(NEW.geometry, %I);', _create_node);
 		END IF;
-		IF auto_district IS TRUE THEN
+		IF _auto_district IS TRUE THEN
 			sql_trigger := sql_trigger || '
 						NEW._district          := qwat_od.fn_get_districts(NEW.geometry);';
 		END IF;
 		sql_trigger := sql_trigger || '
 						NEW.id_district        := qwat_od.fn_get_district_id(NEW.geometry);';
-		IF auto_pressurezone IS TRUE THEN
+		IF _auto_pressurezone IS TRUE THEN
 			sql_trigger := sql_trigger || '
 						NEW._pressurezone      := qwat_od.fn_get_pressurezone(NEW.geometry);';
 		END IF;
@@ -82,10 +95,10 @@ $BODY$
 						NEW.id_pressurezone    := qwat_od.fn_get_pressurezone_id(NEW.geometry);';
 		sql_trigger := sql_trigger || '
 						NEW.id_printmap        := qwat_od.fn_get_printmap_id(NEW.geometry);';
-		IF get_pipe IS TRUE THEN
+		IF _get_pipe IS TRUE THEN
 			sql_trigger := sql_trigger || '
 						NEW.id_pipe            := qwat_od.fn_pipe_get_id(NEW.geometry);';
-		END IF;		IF create_alt_geom IS TRUE THEN
+		END IF;		IF _create_alt_geom IS TRUE THEN
 			sql_trigger := sql_trigger || '
 						NEW.geometry_alt1       := NEW.geometry;
 						NEW.geometry_alt2       := NEW.geometry;
@@ -97,28 +110,32 @@ $BODY$
 					RETURN NEW;				
 				END;
 				''
-				LANGUAGE ''plpgsql'';		
+				LANGUAGE plpgsql;		
 		';
 		EXECUTE sql_trigger;
 		
 		/* create triggers */
-		EXECUTE 'CREATE TRIGGER tr_'||table_name||'_geom_insert
-			BEFORE INSERT ON qwat_od.'||table_name||'
-			FOR EACH ROW
-			EXECUTE PROCEDURE qwat_od.ft_'||table_name||'_geom();';
-		EXECUTE 'COMMENT ON TRIGGER tr_'||table_name||'_geom_insert ON qwat_od.'||table_name||' IS ''Trigger: updates auto fields of the '||table_name||' after insert.'';';
+		EXECUTE format('CREATE TRIGGER %1$I
+						BEFORE INSERT ON qwat_od.%2$I
+						FOR EACH ROW
+						EXECUTE PROCEDURE qwat_od.%3$I();', 
+				'tr_'||_table_name||'_geom_insert', _table_name, 'ft_'||_table_name||'_geom');
+				
+		EXECUTE format('COMMENT ON TRIGGER %1$I ON qwat_od.%2$I IS ''Trigger: updates auto fields after insert.'';', 'tr_'||_table_name||'_geom_insert', _table_name);
 
-		EXECUTE 'CREATE TRIGGER tr_'||table_name||'_geom_update
-			BEFORE UPDATE OF geometry ON qwat_od.'||table_name||' 
-			FOR EACH ROW
-			WHEN (ST_AsBinary(NEW.geometry) <> ST_AsBinary(OLD.geometry))
-			EXECUTE PROCEDURE qwat_od.ft_'||table_name||'_geom();';
-		EXECUTE 'COMMENT ON TRIGGER tr_'||table_name||'_geom_update ON qwat_od.'||table_name||' IS ''Trigger: updates auto fields of the '||table_name||' after geom update.'';';
+		EXECUTE format('CREATE TRIGGER %1$I
+						BEFORE UPDATE OF geometry ON qwat_od.%2$I 
+						FOR EACH ROW
+						WHEN (ST_AsBinary(NEW.geometry) <> ST_AsBinary(OLD.geometry))
+						EXECUTE PROCEDURE qwat_od.%3$I();',
+				'tr_'||_table_name||'_geom_update', _table_name, 'ft_'||_table_name||'_geom');
+				
+		EXECUTE format('COMMENT ON TRIGGER %1$I ON qwat_od.%2$I IS ''Trigger: updates auto fields after geom update.'';', 'tr_'||_table_name||'_geom_update', _table_name);
 
 		/* detect if alternatve geom is used */
-		IF create_alt_geom IS TRUE THEN
-			EXECUTE '	
-				CREATE OR REPLACE FUNCTION qwat_od.ft_'||table_name||'_alternative_geom() RETURNS TRIGGER AS
+		IF _create_alt_geom IS TRUE THEN
+			EXECUTE format('	
+				CREATE OR REPLACE FUNCTION qwat_od.%I() RETURNS TRIGGER AS
 					''
 					BEGIN
 						NEW._geometry_alt1_used := NEW.geometry_alt1 IS NULL OR ST_AsBinary(NEW.geometry_alt1) <> ST_AsBinary(NEW.geometry);
@@ -126,16 +143,20 @@ $BODY$
 						RETURN NEW;
 					END;
 					''
-					LANGUAGE ''plpgsql'';		
-			';
-			EXECUTE 'CREATE TRIGGER tr_'||table_name||'_alternative_geom
-				BEFORE UPDATE OF geometry_alt1, geometry_alt2  ON qwat_od.'||table_name||' 
-				FOR EACH ROW
-				EXECUTE PROCEDURE qwat_od.ft_'||table_name||'_alternative_geom();';
-			EXECUTE 'COMMENT ON TRIGGER tr_'||table_name||'_alternative_geom ON qwat_od.'||table_name||' IS ''Trigger: when updating, check if alternative geometries are different to fill the boolean fields.'';';
+					LANGUAGE plpgsql;		
+			', 'ft_'||_table_name||'_alternative_geom');
+			
+			EXECUTE format('CREATE TRIGGER %1$I
+							BEFORE UPDATE OF geometry_alt1, geometry_alt2  ON qwat_od.%2$I 
+							FOR EACH ROW
+							EXECUTE PROCEDURE qwat_od.%3$I();',
+					'tr_'||_table_name||'_alternative_geom', _table_name, 'ft_'||_table_name||'_alternative_geom');
+					
+			EXECUTE format('COMMENT ON TRIGGER %1$I ON qwat_od.%2$I IS ''Trigger: when updating, check if alternative geometries are different to fill the boolean fields.'';',
+						'tr_'||_table_name||'_alternative_geom',_table_name);
 		END IF;
 	END;
-$BODY$
-LANGUAGE 'plpgsql';
-COMMENT ON FUNCTION qwat_od.fn_geom_tool_point(varchar,boolean,boolean,boolean,boolean,boolean,boolean) IS 'Create geometric columns, constraint and triggers for tables with point on node items. Second argument determines if node has to be created or not if not found.  (table_name, is_node, create_node, create_alt_geom, get_pipe, auto_district, auto_pressurezone)';
+$func$
+LANGUAGE plpgsql;
+COMMENT ON FUNCTION qwat_od.fn_geom_tool_point(text,boolean,boolean,boolean,boolean,boolean,boolean) IS 'Create geometric columns, constraint and triggers for tables with point on node items. Second argument determines if node has to be created or not if not found.  (table_name, _is_node, _create_node, _create_alt_geom, _get_pipe, _auto_district, _auto_pressurezone)';
 

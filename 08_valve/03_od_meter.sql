@@ -39,7 +39,7 @@ $BODY$
 		RETURN NEW;
 	END;
 $BODY$
-LANGUAGE 'plpgsql';
+LANGUAGE plpgsql;
 COMMENT ON FUNCTION qwat_od.ft_meter_fullid() IS 'Fcn/Trigger: updates the full identification (district prefix) of the client.';
 
 CREATE TRIGGER tr_meter_fullid

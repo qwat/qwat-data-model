@@ -17,7 +17,7 @@ $BODY$
 		RETURN result;
 	END;
 $BODY$
-LANGUAGE 'plpgsql';
+LANGUAGE plpgsql;
 COMMENT ON FUNCTION qwat_od.fn_get_pressurezone(geometry) IS 'Return the name of the first overlapping pressurezone.';
 
 /* get pressurezone id function */
@@ -35,5 +35,5 @@ $BODY$
 		RETURN id_pressurezone;
 	END
 $BODY$
-LANGUAGE 'plpgsql';
+LANGUAGE plpgsql;
 COMMENT ON FUNCTION qwat_od.fn_get_pressurezone_id(geometry) IS 'Returns the id of the first overlapping pressurezone.';

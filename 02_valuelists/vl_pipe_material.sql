@@ -65,7 +65,7 @@ $BODY$
          NEW._displayname_ro := NEW.short_ro||' '||NEW.diameter||COALESCE(' PN'||NEW.pressure_nominal,'');
 		 RETURN NEW;
 	END;
-$BODY$ LANGUAGE 'plpgsql';
+$BODY$ LANGUAGE plpgsql;
 COMMENT ON FUNCTION qwat_vl.pipe_material_displayname() IS 'Fcn/Trigger: updates the fancy value_fr, value_ro and value_en in the material table.';
 
 CREATE TRIGGER tr_fancy_value

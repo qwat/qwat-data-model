@@ -16,7 +16,7 @@ $BODY$
 		RETURN pipe_id;	
 	END;
 $BODY$
-LANGUAGE 'plpgsql';
+LANGUAGE plpgsql;
 COMMENT ON FUNCTION qwat_od.fn_pipe_get_id(geometry) IS 'Returns the pipe at a given position.';
 
 

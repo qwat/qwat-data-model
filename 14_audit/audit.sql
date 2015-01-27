@@ -195,7 +195,7 @@ BEGIN
  
 END;
 $body$
-LANGUAGE 'plpgsql';
+LANGUAGE plpgsql;
  
 COMMENT ON FUNCTION qwat_od.audit_table(regclass, BOOLEAN, BOOLEAN, text[]) IS $body$
 ADD auditing support TO a TABLE.

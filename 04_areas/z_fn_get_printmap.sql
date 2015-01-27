@@ -20,7 +20,7 @@ $BODY$
 		RETURN result;
 	END;
 $BODY$
-LANGUAGE 'plpgsql';
+LANGUAGE plpgsql;
 COMMENT ON FUNCTION qwat_od.fn_get_printmaps(geometry) IS 'Returns a string contaning all the short names of the polygons in table printmap which overlap the given geometry.';
 
 
@@ -33,7 +33,7 @@ $BODY$
 		RETURN ARRAY( SELECT printmap.id FROM  qwat_od.printmap WHERE ST_Intersects(geom,printmap.geometry) IS TRUE);
 	END;
 $BODY$
-LANGUAGE 'plpgsql';
+LANGUAGE plpgsql;
 COMMENT ON FUNCTION qwat_od.fn_get_printmap_id(geometry) IS 'Returns the id of the first overlapping printmap.';
 
 

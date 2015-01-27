@@ -67,7 +67,7 @@ CREATE OR REPLACE FUNCTION qwat_od.fn_get_parent(integer,integer) RETURNS intege
 			END IF;
 		END LOOP;
 	END
-' LANGUAGE 'plpgsql';
+' LANGUAGE plpgsql;
 COMMENT ON FUNCTION qwat_od.fn_get_parent(integer,integer) IS 'Function to get a group ID (parent/children). Also works in case of sub-parent';
 
 /* 

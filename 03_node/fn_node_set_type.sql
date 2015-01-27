@@ -146,7 +146,7 @@ $BODY$
 		/*RAISE NOTICE '% %' , node_id , orientation;*/
 	END;
 $BODY$
-LANGUAGE 'plpgsql';
+LANGUAGE plpgsql;
 COMMENT ON FUNCTION qwat_od.fn_node_set_type(integer) IS 'Set the orientation and type for a node. If three pipe arrives at the node: intersection. If one pipe: end. If two: depends on characteristics of pipe: year (is different), material (and year), diameter(and material/year)';
 
 /* reset all node type */
@@ -168,5 +168,5 @@ $BODY$
 		END IF;
 	END;
 $BODY$
-LANGUAGE 'plpgsql';
+LANGUAGE plpgsql;
 COMMENT ON FUNCTION qwat_od.fn_node_set_type( node_ids integer[] ) IS 'Set the type and orientation for node. If three pipe arrives at the node: intersection. If one pipe: end. If two: depends on characteristics of pipe: year (is different), material (and year), diameter(and material/year)';

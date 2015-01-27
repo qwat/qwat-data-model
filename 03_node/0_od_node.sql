@@ -32,7 +32,7 @@ $BODY$
 		RETURN NEW;
 	END;
 $BODY$
-LANGUAGE 'plpgsql';
+LANGUAGE plpgsql;
 COMMENT ON FUNCTION qwat_od.ft_node_geom() IS 'Fcn/Trigger: set uptodate to false for altitude when geometry changes.';
 
 CREATE TRIGGER tr_node_geom

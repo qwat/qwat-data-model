@@ -83,7 +83,7 @@ $BODY$
 		END IF;
 	END
 $BODY$
-LANGUAGE 'plpgsql';
+LANGUAGE plpgsql;
 COMMENT ON FUNCTION qwat_od.fn_litres_per_cm(integer, double precision, double precision) IS 'Calculate the litres_per_cm of a tank cistern.';
 
 /* Triggers */
@@ -97,7 +97,7 @@ $BODY$
 		RETURN NEW;
 	END;
 $BODY$
-LANGUAGE 'plpgsql';
+LANGUAGE plpgsql;
 
 CREATE TRIGGER tr_installation
 	BEFORE INSERT OR UPDATE OF cistern1_id_type,cistern1_dimension_1,cistern1_dimension_2,

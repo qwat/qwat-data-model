@@ -17,7 +17,7 @@ $BODY$
 		RETURN node_id;
 	END;
 $BODY$
-LANGUAGE 'plpgsql';
+LANGUAGE plpgsql;
 COMMENT ON FUNCTION qwat_od.fn_node_get_id(geometry,boolean) IS 'Returns the node for a given geometry (point). If node does not exist and if specified in argument, it is created.';
 
 
@@ -35,5 +35,5 @@ $BODY$
 		RETURN node_ids;
 	END;
 $BODY$
-LANGUAGE 'plpgsql';
+LANGUAGE plpgsql;
 COMMENT ON FUNCTION qwat_od.fn_node_get_ids(extent box2d) IS 'Returns a list of node IDs contained a given extent.';

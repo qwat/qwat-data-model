@@ -29,7 +29,7 @@ $BODY$
 		NEW.controled = true;
 		RETURN NEW;
 	END;
-$BODY$ LANGUAGE 'plpgsql';
+$BODY$ LANGUAGE plpgsql;
 
 CREATE TRIGGER tr_controled_crossing
 BEFORE UPDATE ON qwat_od.crossing

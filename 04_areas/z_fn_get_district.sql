@@ -20,7 +20,7 @@ $BODY$
 		RETURN result;
 	END;
 $BODY$
-LANGUAGE 'plpgsql';
+LANGUAGE plpgsql;
 COMMENT ON FUNCTION qwat_od.fn_get_districts(geometry) IS 'Returns a coma separeted list of the districts overlapping the given geometry.';
 
 /* get district id function */
@@ -37,7 +37,7 @@ $BODY$
 		RETURN id_district;
 	END;
 $BODY$
-LANGUAGE 'plpgsql';
+LANGUAGE plpgsql;
 COMMENT ON FUNCTION qwat_od.fn_get_district_id(geometry) IS 'Returns the id of the first overlapping district.';
 
 

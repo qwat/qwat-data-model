@@ -17,7 +17,7 @@ $BODY$
 		RETURN valve_count ;
 	END
 $BODY$
-LANGUAGE 'plpgsql';
+LANGUAGE plpgsql;
 COMMENT ON FUNCTION qwat_od.fn_pipe_count_valve(integer) IS 'Count the number of valves related to a given pipe.';
 
 
@@ -32,7 +32,7 @@ $BODY$
 		RETURN isClosed ;
 	END
 $BODY$
-LANGUAGE 'plpgsql';
+LANGUAGE plpgsql;
 COMMENT ON FUNCTION qwat_od.fn_pipe_count_valve(integer) IS 'Determine if a pipe is closed by a valve or not.';
 
   

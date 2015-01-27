@@ -43,7 +43,7 @@ BEGIN
 	 RETURN NEW;
 END;
 $BODY$
-LANGUAGE 'plpgsql';
+LANGUAGE plpgsql;
 
 CREATE TRIGGER tr_installation_building
         BEFORE INSERT OR UPDATE OF id_type, name ON qwat_od.installation_building 

@@ -38,6 +38,6 @@ $BODY$
 		';
 	END;
 $BODY$
-LANGUAGE 'plpgsql';
+LANGUAGE plpgsql;
 COMMENT ON FUNCTION qwat_od.fn_enable_schemaview(varchar,varchar,varchar) IS 'Add a column schema_force_view and _schema_visible in given table. _schema_visible is a boolean determined by the corresponding auxiliary table and might be overriden by _schema_force_view.';	
 

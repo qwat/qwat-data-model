@@ -56,7 +56,7 @@ $BODY$
   NEW._diff_elevation := NULL;
   RETURN NEW;
  END;
-$BODY$ LANGUAGE 'plpgsql';
+$BODY$ LANGUAGE plpgsql;
 
 CREATE TRIGGER tr_pipe_tunnelbridge
  BEFORE INSERT OR UPDATE OF tunnel_or_bridge ON qwat_od.pipe

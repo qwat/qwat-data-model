@@ -27,5 +27,5 @@ begin
   end loop;
 end;
 $BODY$
-LANGUAGE 'plpgsql';
+LANGUAGE plpgsql;
 

@@ -44,7 +44,7 @@ $BODY$
 		END IF;
 		 RETURN NEW;
 	END;
-$BODY$LANGUAGE 'plpgsql';
+$BODY$LANGUAGE plpgsql;
 COMMENT ON FUNCTION qwat_od.ft_leak_repaired() IS 'Fcn/Trigger: updates the repaired status of the leak.';
 
 CREATE TRIGGER tr_leak_repaired
