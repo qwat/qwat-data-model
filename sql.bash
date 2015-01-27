@@ -15,8 +15,12 @@ DROP SCHEMA IF EXISTS qwat_vl CASCADE;\n
 DROP SCHEMA IF EXISTS qwat_od CASCADE;\n
 CREATE SCHEMA qwat_vl;\n
 CREATE SCHEMA qwat_od;\n
-\n" >> create.sql
-for f in *
+\n" >> tmp.tmp
+
+
+cat tmp.tmp value_lists/*.sql > create.sql
+
+for f in ordinary_data/*
 do
 	if test -d "$f"; then
 		cat create.sql $f/*.sql > tmp.tmp
