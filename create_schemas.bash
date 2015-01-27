@@ -1,74 +1,70 @@
 #!/bin/bash
 
 usage() { 
-    echo -e "Usage: $0 dbname [user (owner)] [password]\n"
+    echo -e "Usage: $0 [option...] [dbname]"
+    echo -e "\nOptions: refer to psql manual."
+    echo -e "\nFallback to PGSERVICE=qWat if present."
+    echo -e "\nExemples:"
+    echo -e "  # use connection parameters from service qWat in .pg_service.conf file"
+    echo -e "  $0"
+    echo -e "\n  # define connections parameters on command line"
+    echo -e "  $0 -h localhost -p 5432 -U postgres database_name"
+    echo -e ""
+    
 }
 
-if [ $# -eq "0" ]
+if [ "$1" == "--help" ]
 then 
     usage
     exit 0
 fi
 
-dbname=$1
-user=$2
-password=$3
-
-if [ -z "$user" ]
-then
-    read -p "Enter user name (database owner) : " user
-fi
-
-if [ -z "$password" ]
-then
-    read -p "Enter password for user $user : " password
-fi
-export PGPASSWORD=$password
-
-
-#################################
-# Create/overwrite qwat schemas #
-#################################
-
-if [ `psql -h localhost -U $user -d $dbname -c "\dn" | grep " qwat_od " | wc -l` -eq 1 ]
-then
-    read -p "Schema qwat_od already exists, overwrite ? (y/c) :" response
-    if [ $response != "y" ]
-    then
-        exit 0
-    fi
-fi
-if [ `psql -h localhost -U $user -d $dbname -c "\dn" | grep "qwat_vl" | wc -l` -eq 1 ]
-then
-    read -p "Schema qwat_vl already exists, overwrite ? (y/c) :" response
-    if [ $response != "y" ]
-    then
-        exit 0
-    fi
-fi
-
+export PGSERVICE=qWat
 mkdir -p tmp
 
-echo -e "BEGIN;" > tmp/install.sql
+#####################################
+# Create/overwrite schemas qwat_vl  #
+#####################################
 
-echo -e "DROP SCHEMA IF EXISTS qwat_vl CASCADE;" >> tmp/qwat.sql
-echo -e "CREATE SCHEMA qwat_vl;" >> tmp/qwat.sql
+if [ `psql -c "\dn" $* | grep "qwat_vl" | wc -l` -eq 1 ]
+then
+    read -p "Schema qwat_vl already exists, overwrite ? (y/c): " response
+    if [ $response != "y" ]
+    then
+        exit 0
+    fi
+fi
+echo -e "BEGIN;" > tmp/qwat_vl.sql
+echo -e "DROP SCHEMA IF EXISTS qwat_vl CASCADE;" >> tmp/qwat_vl.sql
+echo -e "CREATE SCHEMA qwat_vl;" >> tmp/qwat_vl.sql
+cat value_lists/*.sql >> tmp/qwat_vl.sql
+echo -e "COMMIT;" >> tmp/qwat_vl.sql
+psql -v ON_ERROR_STOP=1 -f tmp/qwat_vl.sql $* 2> tmp/qwat_vl.err
+cat tmp/qwat_vl.err
 
-echo -e "DROP SCHEMA IF EXISTS qwat_od CASCADE;" >> tmp/qwat.sql
-echo -e "CREATE SCHEMA qwat_od;" >> tmp/qwat.sql
+#####################################
+# Create/overwrite schemas qwat_od  #
+#####################################
 
-cat value_lists/*.sql >> tmp/qwat.sql
-
+if [ `psql -c "\dn" $* | grep " qwat_od " | wc -l` -eq 1 ]
+then
+    read -p "Schema qwat_od already exists, overwrite ? (y/c): " response
+    if [ $response != "y" ]
+    then
+        exit 0
+    fi
+fi
+echo -e "BEGIN;" > tmp/qwat_od.sql
+echo -e "DROP SCHEMA IF EXISTS qwat_od CASCADE;" >> tmp/qwat_od.sql
+echo -e "CREATE SCHEMA qwat_od;" >> tmp/qwat_od.sql
 for f in ordinary_data/*
 do
     if test -d "$f"; then
-        cat $f/*.sql >> tmp/qwat.sql
+        cat $f/*.sql >> tmp/qwat_od.sql
     fi
 done
-
-echo -e "COMMIT;" >> tmp/qwat.sql
-
-psql -h localhost -U $user -d $dbname -v ON_ERROR_STOP=1 -f tmp/qwat.sql 2> tmp/qwat.err
-cat tmp/qwat.err
+echo -e "COMMIT;" >> tmp/qwat_od.sql
+psql -v ON_ERROR_STOP=1 -f tmp/qwat_od.sql $* 2> tmp/qwat_od.err
+cat tmp/qwat_od.err
 
 exit 0
