@@ -5,39 +5,46 @@
 */
 
 
-CREATE OR REPLACE FUNCTION qwat_od.fn_enable_schemaview(main_table varchar, auxiliary varchar, keyfield varchar) RETURNS VOID AS 
+CREATE OR REPLACE FUNCTION qwat_od.fn_enable_schemaview(
+		_table_name text, 
+		_auxiliary varchar,
+		_keyfield varchar)
+	RETURNS VOID AS 
 $BODY$
 	BEGIN
 		/* Add columns */
-		EXECUTE 'ALTER TABLE qwat_od.'||main_table||' ADD COLUMN schema_force_view boolean default NULL;';
-		EXECUTE 'ALTER TABLE qwat_od.'||main_table||' ADD COLUMN _schema_visible boolean default NULL;';
+		EXECUTE format('ALTER TABLE qwat_od.%I 
+							ADD COLUMN schema_force_view boolean default NULL,
+							ADD COLUMN _schema_visible boolean default NULL;',
+						_table_name);
 		/* Constraint */
-		EXECUTE 'ALTER TABLE qwat_od.'||main_table||' ADD CONSTRAINT '||main_table||'_schema_force_view FOREIGN KEY (schema_force_view) REFERENCES qwat_vl.visible(vl_code) MATCH FULL;';
-		EXECUTE ' CREATE INDEX fki_'||main_table||'_schema_force_view ON qwat_od.'||main_table||'(schema_force_view);';
+		EXECUTE format('ALTER TABLE qwat_od.%1$I ADD CONSTRAINT %2$I FOREIGN KEY (schema_force_view) REFERENCES qwat_vl.visible(vl_code) MATCH FULL;
+						CREATE INDEX %3$I ON qwat_od.%1$I(schema_force_view);', 
+						_table_name, _table_name||'_schema_force_view', 'fki_'||_table_name||'_schema_force_view');
 		
 		/* trigger */
-		EXECUTE 'CREATE OR REPLACE FUNCTION qwat_od.'||main_table||'_schemaview() RETURNS trigger AS
-		''
+		EXECUTE format('CREATE OR REPLACE FUNCTION qwat_od.%1$I() RETURNS trigger AS
+		$func$
 			DECLARE
 				visibility boolean;
 			BEGIN
 				IF NEW.schema_force_view IS NULL THEN
-					SELECT schema_visible FROM qwat_od.'||auxiliary||' WHERE id = NEW.'||keyfield||' INTO visibility;
+					SELECT schema_visible FROM qwat_od.%2$I WHERE id = NEW.%3$I INTO visibility;
 				ELSE 
 					visibility := NEW.schema_force_view;
 				END IF;
 				NEW._schema_visible := visibility;
 				RETURN NEW;
 			END;
-		'' LANGUAGE ''plpgsql'';
+		$func$ LANGUAGE plpgsql;
 		
-		CREATE TRIGGER tr_'||main_table||'_schemaview
-			BEFORE INSERT OR UPDATE OF schema_force_view,'||keyfield||' ON qwat_od.'||main_table||'
-			FOR EACH ROW EXECUTE PROCEDURE qwat_od.'||main_table||'_schemaview();
-		COMMENT ON TRIGGER tr_'||main_table||'_schemaview ON qwat_od.'||main_table||' IS ''Schema view depends on pipe function and on manual changes.'';
-		';
+		CREATE TRIGGER %4$I
+			BEFORE INSERT OR UPDATE OF schema_force_view,%3$I ON qwat_od.%5$I
+			FOR EACH ROW EXECUTE PROCEDURE qwat_od.%1$I();
+		COMMENT ON TRIGGER %4$I ON qwat_od.%5$I IS ''Schema view depends on pipe function and on manual changes.'';',
+		_table_name||'_schemaview', _auxiliary, _keyfield, 'tr_'||_table_name||'_schemaview', _table_name);
 	END;
 $BODY$
 LANGUAGE plpgsql;
-COMMENT ON FUNCTION qwat_od.fn_enable_schemaview(varchar,varchar,varchar) IS 'Add a column schema_force_view and _schema_visible in given table. _schema_visible is a boolean determined by the corresponding auxiliary table and might be overriden by _schema_force_view.';	
+COMMENT ON FUNCTION qwat_od.fn_enable_schemaview(text,varchar,varchar) IS 'Add a column schema_force_view and _schema_visible in given table. _schema_visible is a boolean determined by the corresponding auxiliary table and might be overriden by _schema_force_view.';	
 
