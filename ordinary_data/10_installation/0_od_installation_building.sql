@@ -13,6 +13,7 @@ COMMENT ON TABLE qwat_od.installation_building IS 'This table is used to define 
 /* columns */
 ALTER TABLE qwat_od.installation_building ADD COLUMN name            varchar(60) default '';
 ALTER TABLE qwat_od.installation_building ADD COLUMN identification  varchar(25) default '';
+ALTER TABLE qwat_od.installation_building ADD COLUMN id_status       integer not null      ;
 ALTER TABLE qwat_od.installation_building ADD COLUMN id_type         integer not null;
 ALTER TABLE qwat_od.installation_building ADD COLUMN _displayname_en varchar(50) default '';
 ALTER TABLE qwat_od.installation_building ADD COLUMN _displayname_fr varchar(50) default '';
@@ -32,7 +33,8 @@ CREATE INDEX installation_building_poly_geoidx ON qwat_od.installation_building 
 SELECT qwat_od.fn_label_create_fields('installation_building');
 
 /* Constraints */
-ALTER TABLE qwat_od.installation_building ADD CONSTRAINT installation_id_type          FOREIGN KEY (id_type)          REFERENCES qwat_vl.installation_type(id) MATCH FULL;  CREATE INDEX fki_installation_id_type          ON qwat_od.installation_building(id_type)          ;
+ALTER TABLE qwat_od.installation_building ADD CONSTRAINT installation_id_status FOREIGN KEY (id_status) REFERENCES qwat_vl.status(id)            MATCH FULL; CREATE INDEX fki_installation_id_status         ON qwat_od.installation_source(id_status);
+ALTER TABLE qwat_od.installation_building ADD CONSTRAINT installation_id_type   FOREIGN KEY (id_type)   REFERENCES qwat_vl.installation_type(id) MATCH FULL; CREATE INDEX fki_installation_id_type          ON qwat_od.installation_building(id_type) ;
 
 /* TRIGGERS */
 CREATE OR REPLACE FUNCTION qwat_od.ft_installation_building() RETURNS trigger AS
