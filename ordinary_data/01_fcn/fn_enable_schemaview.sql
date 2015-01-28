@@ -29,7 +29,7 @@ $BODY$
 				visibility boolean;
 			BEGIN
 				IF NEW.schema_force_view IS NULL THEN
-					SELECT schema_visible FROM qwat_od.%2$I WHERE id = NEW.%3$I INTO visibility;
+					SELECT schema_visible FROM qwat_vl.%2$I WHERE id = NEW.%3$I INTO visibility;
 				ELSE 
 					visibility := NEW.schema_force_view;
 				END IF;
