@@ -78,8 +78,8 @@ $func$
 				''
 				BEGIN', 'ft_'||_table_name||'_geom');
 		IF _is_node IS TRUE THEN
-			sql_trigger := sql_trigger || format('
-						NEW.id_node            := qwat_od.fn_node_get_id(NEW.geometry, %I);', _create_node);
+			sql_trigger := sql_trigger || '
+						NEW.id_node            := qwat_od.fn_node_get_id(NEW.geometry, '||_create_node||');';
 		END IF;
 		IF _auto_district IS TRUE THEN
 			sql_trigger := sql_trigger || '
