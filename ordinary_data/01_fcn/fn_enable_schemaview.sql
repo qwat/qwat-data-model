@@ -42,7 +42,7 @@ $BODY$
 			BEFORE INSERT OR UPDATE OF schema_force_view,%3$I ON qwat_od.%5$I
 			FOR EACH ROW EXECUTE PROCEDURE qwat_od.%1$I();
 		COMMENT ON TRIGGER %4$I ON qwat_od.%5$I IS ''Schema view depends on pipe function and on manual changes.'';',
-		_table_name||'_schemaview', _auxiliary, _keyfield, 'tr_'||_table_name||'_schemaview', _table_name);
+		'ft_'||_table_name||'_schemaview', _auxiliary, _keyfield, 'tr_'||_table_name||'_schemaview', _table_name);
 	END;
 $BODY$
 LANGUAGE plpgsql;
