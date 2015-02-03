@@ -40,10 +40,10 @@ SELECT qwat_od.fn_geom_tool_point('installation_pressurecontrol',true,    true, 
 ALTER TABLE qwat_od.installation_pressurecontrol ADD CONSTRAINT installation_pressurecontrol_id_installation FOREIGN KEY (id_installation) REFERENCES qwat_od.installation_building(id) MATCH SIMPLE; CREATE INDEX fki_installation_pressurecontrol_id_installation ON qwat_od.installation_pressurecontrol(id_installation);
 ALTER TABLE qwat_od.installation_pressurecontrol ADD CONSTRAINT installation_pressurecontrol_id_status       FOREIGN KEY (id_status)       REFERENCES qwat_vl.status(id)                MATCH FULL;   CREATE INDEX fki_installation_pressurecontrol_id_status       ON qwat_od.installation_pressurecontrol(id_status)      ;
 ALTER TABLE qwat_od.installation_pressurecontrol ADD CONSTRAINT installation_pressurecontrol_id_distributor  FOREIGN KEY (id_distributor)  REFERENCES qwat_od.distributor(id)           MATCH FULL;   CREATE INDEX fki_installation_pressurecontrol_id_distributor  ON qwat_od.installation_pressurecontrol(id_distributor) ;
-ALTER TABLE qwat_od.installation_pressurecontrol ADD CONSTRAINT installation_pressurecontrol_id_remote       FOREIGN KEY (id_remote)       REFERENCES qwat_vl.remote_type(id)                MATCH SIMPLE; CREATE INDEX fki_installation_pressurecontrol_id_remote       ON qwat_od.installation_pressurecontrol(id_remote)      ;
-ALTER TABLE qwat_od.installation_pressurecontrol ADD CONSTRAINT installation_pressurecontrol_id_watertype    FOREIGN KEY (id_watertype)    REFERENCES qwat_vl.watertype(id)             MATCH FULL;   CREATE INDEX fki_installation_pressurecontrol_watertype    ON qwat_od.installation_pressurecontrol(id_watertype)   ;
+ALTER TABLE qwat_od.installation_pressurecontrol ADD CONSTRAINT installation_pressurecontrol_id_remote       FOREIGN KEY (id_remote)       REFERENCES qwat_vl.remote_type(id)           MATCH SIMPLE; CREATE INDEX fki_installation_pressurecontrol_id_remote       ON qwat_od.installation_pressurecontrol(id_remote)      ;
+ALTER TABLE qwat_od.installation_pressurecontrol ADD CONSTRAINT installation_pressurecontrol_id_watertype    FOREIGN KEY (id_watertype)    REFERENCES qwat_vl.watertype(id)             MATCH FULL;   CREATE INDEX fki_installation_pressurecontrol_watertype       ON qwat_od.installation_pressurecontrol(id_watertype)   ;
 /* SPECIFIC */
-ALTER TABLE qwat_od.installation_pressurecontrol ADD CONSTRAINT installation_pressurecontrol_id_type         FOREIGN KEY (id_type)         REFERENCES qwat_vl.pressurecontrol(id)       MATCH FULL;   CREATE INDEX fki_installation_pressurecontrol_type         ON qwat_od.installation_pressurecontrol(id_type)        ;
+ALTER TABLE qwat_od.installation_pressurecontrol ADD CONSTRAINT installation_pressurecontrol_id_type         FOREIGN KEY (id_type)         REFERENCES qwat_vl.pressurecontrol_type(id)  MATCH FULL;   CREATE INDEX fki_installation_pressurecontrol_type            ON qwat_od.installation_pressurecontrol(id_type)        ;
 
 
 /* VIEW */
@@ -55,13 +55,13 @@ SELECT
 	distributor.name AS distributor,
 	remote_type.value_fr AS remote,
 	watertype.value_fr AS watertype,
-	pressurecontrol.value_fr AS type
+	pressurecontrol_type.value_fr AS type
 	FROM qwat_od.installation_pressurecontrol
-	INNER JOIN      qwat_vl.status          ON status.id          = installation_pressurecontrol.id_status
-	INNER JOIN      qwat_od.distributor     ON distributor.id     = installation_pressurecontrol.id_distributor
-	LEFT OUTER JOIN qwat_vl.remote_type     ON remote_type.id     = installation_pressurecontrol.id_remote
-	INNER JOIN      qwat_vl.watertype       ON watertype.id       = installation_pressurecontrol.id_watertype
-	INNER JOIN      qwat_vl.pressurecontrol ON pressurecontrol.id = installation_pressurecontrol.id_type;
+	INNER JOIN      qwat_vl.status               ON status.id               = installation_pressurecontrol.id_status
+	INNER JOIN      qwat_od.distributor          ON distributor.id          = installation_pressurecontrol.id_distributor
+	LEFT OUTER JOIN qwat_vl.remote_type          ON remote_type.id          = installation_pressurecontrol.id_remote
+	INNER JOIN      qwat_vl.watertype            ON watertype.id            = installation_pressurecontrol.id_watertype
+	INNER JOIN      qwat_vl.pressurecontrol_type ON pressurecontrol_type.id = installation_pressurecontrol.id_type;
 
 
 
