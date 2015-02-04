@@ -39,7 +39,7 @@ SELECT qwat_od.audit_table('qwat_vl.pipe_installmethod');
 SELECT qwat_od.audit_table('qwat_vl.pipe_material');
 SELECT qwat_od.audit_table('qwat_vl.pipe_protection');
 SELECT qwat_od.audit_table('qwat_vl.precision');
-SELECT qwat_od.audit_table('qwat_vl.pressurecontrol');
+SELECT qwat_od.audit_table('qwat_vl.pressurecontrol_type');
 SELECT qwat_od.audit_table('qwat_vl.protectionzone_type');
 SELECT qwat_od.audit_table('qwat_vl.pump_type');
 SELECT qwat_od.audit_table('qwat_vl.remote_type');
