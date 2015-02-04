@@ -60,10 +60,16 @@ COMMENT ON COLUMN qwat_vl.pipe_material.pressure_nominal IS 'nominal pressure in
 CREATE OR REPLACE FUNCTION qwat_vl.pipe_material_displayname() RETURNS trigger AS 
 $BODY$
 	BEGIN
-		 NEW._displayname_en := NEW.short_en||' '||NEW.diameter||COALESCE(' PN'||NEW.pressure_nominal,'');
-		 NEW._displayname_fr := NEW.short_fr||' '||NEW.diameter||COALESCE(' PN'||NEW.pressure_nominal,'');
-         NEW._displayname_ro := NEW.short_ro||' '||NEW.diameter||COALESCE(' PN'||NEW.pressure_nominal,'');
-		 RETURN NEW;
+		IF NEW.diameter IS NULL OR NEW.diameter = '' THEN
+			NEW._displayname_en := NEW.short_en;
+			NEW._displayname_fr := NEW.short_fr;
+                 	NEW._displayname_ro := NEW.value_ro;
+                ELSE
+			NEW._displayname_en := NEW.short_en||' '||NEW.diameter||COALESCE(' PN'||NEW.pressure_nominal,'');
+		 	NEW._displayname_fr := NEW.short_fr||' '||NEW.diameter||COALESCE(' PN'||NEW.pressure_nominal,'');
+                 	NEW._displayname_ro := NEW.short_ro||' '||NEW.diameter||COALESCE(' PN'||NEW.pressure_nominal,'');
+		END IF;
+		RETURN NEW;
 	END;
 $BODY$ LANGUAGE plpgsql;
 COMMENT ON FUNCTION qwat_vl.pipe_material_displayname() IS 'Fcn/Trigger: updates the fancy value_fr, value_ro and value_en in the material table.';
