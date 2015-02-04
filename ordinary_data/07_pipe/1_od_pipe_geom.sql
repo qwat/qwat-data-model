@@ -121,8 +121,8 @@ COMMENT ON TRIGGER tr_pipe_node_type_update ON qwat_od.pipe IS 'Trigger: after u
 CREATE OR REPLACE FUNCTION qwat_od.ft_pipe_alternative_geom() RETURNS TRIGGER AS
 	$BODY$
 	BEGIN
-		NEW._geometry_alt1_used := NEW.geometry_alt1 IS NULL OR ST_AsBinary(NEW.geometry_alt1) <> ST_AsBinary(NEW.geometry);
-		NEW._geometry_alt2_used := NEW.geometry_alt2 IS NULL OR ST_AsBinary(NEW.geometry_alt2) <> ST_AsBinary(NEW.geometry);
+		NEW._geometry_alt1_used := NEW.geometry_alt1 IS NOT NULL AND ST_AsBinary(NEW.geometry_alt1) <> ST_AsBinary(NEW.geometry);
+		NEW._geometry_alt2_used := NEW.geometry_alt2 IS NOT NULL AND ST_AsBinary(NEW.geometry_alt2) <> ST_AsBinary(NEW.geometry);
 		RETURN NEW;
 	END;
 	$BODY$
