@@ -6,35 +6,7 @@
 
 /* number of valves on a pipe and determination of the opening of a pipe is updated in pipe table automatically */
 
-
-/* count pipes for a valve */
-CREATE OR REPLACE FUNCTION qwat_od.fn_pipe_count_valve(_pipe_id integer) RETURNS integer AS
-$BODY$
-	DECLARE
-		valve_count integer;
-	BEGIN
-		SELECT COUNT(id) FROM qwat_od.valve WHERE id_pipe = _pipe_id INTO valve_count;
-		RETURN valve_count ;
-	END
-$BODY$
-LANGUAGE plpgsql;
-COMMENT ON FUNCTION qwat_od.fn_pipe_count_valve(integer) IS 'Count the number of valves related to a given pipe.';
-
-
-/* is a pipe closed */
-CREATE OR REPLACE FUNCTION qwat_od.fn_pipe_is_closed(_pipe_id integer) RETURNS boolean AS
-$BODY$
-	DECLARE
-		isClosed boolean := false;
-	BEGIN
-		SELECT bool_or(closed) FROM qwat_od.valve WHERE id_pipe = _pipe_id INTO isClosed;
-		RETURN isClosed ;
-	END
-$BODY$
-LANGUAGE plpgsql;
-COMMENT ON FUNCTION qwat_od.fn_pipe_is_closed(integer) IS 'Determine if the given pipe is closed by a valve or not.';
-
-
+/* Trigger function to update valve count and opening for pipe */
 CREATE OR REPLACE FUNCTION qwat_od.ft_valve_update_pipe() RETURNS TRIGGER AS
 	$BODY$
 	DECLARE
@@ -56,9 +28,17 @@ CREATE OR REPLACE FUNCTION qwat_od.ft_valve_update_pipe() RETURNS TRIGGER AS
 		FOREACH _pipe_id IN ARRAY _pipe_ids LOOP
 			UPDATE qwat_od.pipe 
 				SET 
-					_valve_count  = qwat_od.fn_pipe_count_valve(_pipe_id),
-					_valve_closed = qwat_od.fn_pipe_is_closed(_pipe_id) 
-				WHERE id = _pipe_id;
+					_valve_count  = valve_group.vcount,
+					_valve_closed = valve_group.vclosed
+				FROM qwat_od.pipe pipe_dupp
+				INNER JOIN (
+					SELECT id_pipe, count(id) AS vcount, bool_or(closed) AS vclosed
+					FROM qwat_od.valve
+					WHERE id_pipe = _pipe_id
+					GROUP BY id_pipe 
+					) AS valve_group
+				ON pipe_dupp.id = valve_group.id_pipe
+				WHERE pipe.id = _pipe_id;
 		END LOOP;
 		RETURN NEW;
 	END;
