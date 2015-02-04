@@ -44,8 +44,8 @@ ALTER TABLE qwat_od.valve ADD CONSTRAINT valve_id_precisionalti FOREIGN KEY (id_
 /* cannot create constraint on arrays yet
 ALTER TABLE qwat_od.valve ADD CONSTRAINT valve_id_maintenance FOREIGN KEY (id_maintenance) REFERENCES qwat_vl.valve_maintenance(id) MATCH SIMPLE ; CREATE INDEX fki_valve_id_maintenance ON qwat_od.valve(id_maintenance) ;
 */
-
-
+	
+	
 
 
 
