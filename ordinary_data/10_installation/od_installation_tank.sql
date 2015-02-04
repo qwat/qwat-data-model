@@ -93,7 +93,7 @@ $BODY$
 	BEGIN
 		NEW._cistern1_litrepercm := qwat_od.fn_litres_per_cm(NEW.cistern1_id_type,NEW.cistern1_dimension_1,NEW.cistern1_dimension_2);
 		NEW._cistern2_litrepercm := qwat_od.fn_litres_per_cm(NEW.cistern2_id_type,NEW.cistern2_dimension_1,NEW.cistern2_dimension_2);
-		NEW._litrepercm := COALESCE(_cistern1_litrepercm,0)+COALESCE(_cistern2_litrepercm,0);
+		NEW._litrepercm := COALESCE(NEW._cistern1_litrepercm,0)+COALESCE(NEW._cistern2_litrepercm,0);
 		RETURN NEW;
 	END;
 $BODY$
