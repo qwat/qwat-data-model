@@ -67,6 +67,8 @@ $BODY$
 			IF node_id NOT IN (SELECT id_node_a FROM qwat_od.pipe UNION SELECT id_node_b FROM qwat_od.pipe) THEN
 				RAISE NOTICE 'Delete node %' , node_id ;
 				DELETE FROM qwat_od.node WHERE id = node_id ;
+			ELSE
+				type := 'inactive' ;
 			END IF;
 		/* if 1 or 2 pipes associated */
 		ELSEIF grouped.count <= 2 THEN
