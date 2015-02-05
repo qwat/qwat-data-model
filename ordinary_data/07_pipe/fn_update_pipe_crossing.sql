@@ -1,19 +1,19 @@
-CREATE OR REPLACE FUNCTION qwat_od.fn_update_pipe_crossing(update_existing boolean, delete_unused boolean)
+CREATE OR REPLACE FUNCTION qwat_od.fn_update_pipe_crossing(update_existing boolean default true, delete_unused boolean default true)
   RETURNS void AS
 $BODY$
 	DECLARE
-		crossing record;
-		pipe1 record;
-		pipe2 record;
-		crossing_id integer;
-		updated_crossing integer[] := ARRAY[]::integer[];
-		inserted_crossing_count integer := 0;
-		updated_crossing_count integer := 0;
-		deleted_crossing_count integer := 0;
+		_crossing record;
+		_pipe1 record;
+		_pipe2 record;
+		_crossing_id integer;
+		_updated_crossing integer[] := ARRAY[]::integer[];
+		_inserted_crossing_count integer := 0;
+		_updated_crossing_count integer := 0;
+		_deleted_crossing_count integer := 0;
 	BEGIN
 /* * * * * * * * * * * * * * * * * * * * * * * * */
 		/* compute all crossing points */ 
-		FOR crossing IN
+		FOR _crossing IN
 			SELECT pipe1_id, pipe2_id,
 				pipe1_geometry, pipe2_geometry,
 				(dp).geom AS cross_geometry 
@@ -40,10 +40,11 @@ $BODY$
 		LOOP
 /* * * * * * * * * * * * * * * * * * * * * * * * */
 			/* SKIP INTERSECTION AT ENDS OF PIPE (occurs if the two pipes cross at another point) */
-			IF crossing.cross_geometry IN (ST_StartPoint(crossing.pipe1_geometry), ST_EndPoint(crossing.pipe1_geometry),
-						ST_StartPoint(crossing.pipe2_geometry), ST_EndPoint(crossing.pipe2_geometry)) THEN
+			IF _crossing.cross_geometry IN (ST_StartPoint(_crossing.pipe1_geometry), ST_EndPoint(_crossing.pipe1_geometry),
+						ST_StartPoint(_crossing.pipe2_geometry), ST_EndPoint(_crossing.pipe2_geometry)) THEN
 				CONTINUE;
 			END IF;
+/* * * * * * * * * * * * * * * * * * * * * * * * */
 			/* !!!! PIPE 1 !!!! */
 			/* perform azimuth for all segments of the pipes with the corresponding linear referencing */
 			WITH azimuth AS
@@ -53,18 +54,18 @@ $BODY$
 					ST_LineLocatePoint( geometry, ST_PointN( geometry, n) ) AS pt_locat,
 					( 90 + degrees( ST_Azimuth( ST_PointN( geometry, n), ST_PointN( geometry, n+1 ) ) ) )::integer % 360 AS azimuth 
 				FROM qwat_od.pipe, generate_series(1, ST_NumPoints(geometry)-1) n
-				WHERE pipe.id = crossing.pipe1_id
+				WHERE pipe.id = _crossing.pipe1_id
 			),
 			/* find the correct segment according to linear referencing of the crossing point */
 			pt_locat AS
 			(
 				SELECT MAX(pt_locat) AS pt_locat
 				FROM azimuth 
-				WHERE pt_locat < ST_LineLocatePoint( crossing.pipe1_geometry, crossing.cross_geometry )
+				WHERE pt_locat < ST_LineLocatePoint( _crossing.pipe1_geometry, _crossing.cross_geometry )
 			)
 			/* get the corresponding azimuth according to segment id (pt_locat) */
 			SELECT azimuth
-			INTO pipe1
+			INTO _pipe1
 			FROM azimuth
 			JOIN pt_locat USING (pt_locat);		
 
@@ -78,70 +79,70 @@ $BODY$
 					ST_LineLocatePoint( geometry, ST_PointN( geometry, n) ) AS pt_locat,
 					( 90 + degrees( ST_Azimuth( ST_PointN( geometry, n), ST_PointN( geometry, n+1 ) ) ) )::integer % 360 AS azimuth 
 				FROM qwat_od.pipe, generate_series(1, ST_NumPoints(geometry)-1) n
-				WHERE pipe.id = crossing.pipe2_id
+				WHERE pipe.id = _crossing.pipe2_id
 			),
 			/* find the correct segment according to linear referencing of the crossing point */
 			pt_locat AS
 			(
 				SELECT MAX(pt_locat) AS pt_locat
 				FROM azimuth
-				WHERE pt_locat < ST_LineLocatePoint( crossing.pipe2_geometry, crossing.cross_geometry )
+				WHERE pt_locat < ST_LineLocatePoint( _crossing.pipe2_geometry, _crossing.cross_geometry )
 			)
 			/* get the corresponding azimuth according to segment id (pt_locat) */
 			SELECT azimuth
-			INTO pipe2
+			INTO _pipe2
 			FROM azimuth
 			JOIN pt_locat USING (pt_locat);
 			
 /* * * * * * * * * * * * * * * * * * * * * * * * */
 			/* ERROR REPORTING */
-			IF pipe1.azimuth IS NULL THEN
+			IF _pipe1.azimuth IS NULL THEN
 				RAISE NOTICE '*******';
-				RAISE NOTICE 'POINT: %', ST_AsText(crossing.cross_geometry);
-				RAISE NOTICE 'PIPE: %', crossing.pipe1_id;
-				RAISE NOTICE 'LINE: %', ST_AsText(crossing.pipe1_geometry);
+				RAISE NOTICE 'POINT: %', ST_AsText(_crossing.cross_geometry);
+				RAISE NOTICE 'PIPE: %', _crossing.pipe1_id;
+				RAISE NOTICE 'LINE: %', ST_AsText(_crossing.pipe1_geometry);
 			END IF;
-			IF pipe2.azimuth IS NULL THEN
+			IF _pipe2.azimuth IS NULL THEN
 				RAISE NOTICE '*******';
-				RAISE NOTICE 'POINT: %', ST_AsText(crossing.cross_geometry);
-				RAISE NOTICE 'PIPE: %', crossing.pipe2_id;
-				RAISE NOTICE 'LINE: %', ST_AsText(crossing.pipe2_geometry);
+				RAISE NOTICE 'POINT: %', ST_AsText(_crossing.cross_geometry);
+				RAISE NOTICE 'PIPE: %', _crossing.pipe2_id;
+				RAISE NOTICE 'LINE: %', ST_AsText(_crossing.pipe2_geometry);
 			END IF;
 /* * * * * * * * * * * * * * * * * * * * * * * * */
 			/* UPDATE OR INSERT NEW CROSSING */
-			SELECT id FROM qwat_od.crossing WHERE ST_DWithin(crossing.cross_geometry,geometry,0.0) IS TRUE LIMIT 1 INTO crossing_id;
-			IF crossing_id IS NULL THEN
+			SELECT id FROM qwat_od.crossing WHERE ST_DWithin(_crossing.cross_geometry,geometry,0.0) IS TRUE LIMIT 1 INTO _crossing_id;
+			IF _crossing_id IS NULL THEN
 				INSERT INTO qwat_od.crossing 
-						(_pipe1_id,_pipe2_id,_pipe1_angle,_pipe2_angle,geometry) 
+						(         _pipe1_id,          _pipe2_id, _pipe1_angle,     _pipe2_angle,                 geometry) 
 					VALUES
-						(crossing.pipe1_id,crossing.pipe2_id,pipe1.azimuth,pipe2.azimuth,crossing.cross_geometry)
-					RETURNING id INTO crossing_id;
-				inserted_crossing_count := inserted_crossing_count + 1;
+						(_crossing.pipe1_id, _crossing.pipe2_id, _pipe1.azimuth, _pipe2.azimuth, _crossing.cross_geometry)
+					RETURNING id INTO _crossing_id;
+				_inserted_crossing_count := _inserted_crossing_count + 1;
 			ELSIF update_existing IS TRUE THEN
 				UPDATE qwat_od.crossing 
 				SET 
-					_pipe1_id = crossing.pipe1_id,
-					_pipe1_angle = pipe1.azimuth,
-					_pipe2_id = crossing.pipe2_id,
-					_pipe2_angle = pipe2.azimuth,
-					geometry = crossing.cross_geometry
-				WHERE crossing.id = crossing_id;
-				updated_crossing_count := updated_crossing_count + 1;
+					_pipe1_id     = _crossing.pipe1_id,
+					_pipe1_angle  = _pipe1.azimuth,
+					_pipe2_id     = _crossing.pipe2_id,
+					_pipe2_angle  = _pipe2.azimuth,
+					geometry      = _crossing.cross_geometry
+				WHERE crossing.id = _crossing_id;
+				_updated_crossing_count := _updated_crossing_count + 1;
 			END IF;
-			updated_crossing := array_append(updated_crossing, crossing_id);
+			_updated_crossing := array_append(_updated_crossing, _crossing_id);
 		END LOOP;
 /* * * * * * * * * * * * * * * * * * * * * * * * */
 		/* DELETE OLD CROSSINGS */
 		IF delete_unused IS TRUE THEN
-			DELETE FROM qwat_od.crossing WHERE NOT ( id = ANY(updated_crossing) );
-			GET DIAGNOSTICS deleted_crossing_count = ROW_COUNT;
+			DELETE FROM qwat_od.crossing WHERE NOT ( id = ANY(_updated_crossing) );
+			GET DIAGNOSTICS _deleted_crossing_count = ROW_COUNT;
 		END IF;
 		RAISE NOTICE '';
 		RAISE NOTICE '* * * * * * * * * * * * * * * * *';
 		RAISE NOTICE '';
-		RAISE NOTICE 'Added % new crossing.', inserted_crossing_count;
-		RAISE NOTICE 'Updated % existing crossing.', updated_crossing_count;
-		RAISE NOTICE 'Deleted % unused crossing.', deleted_crossing_count;
+		RAISE NOTICE 'Added % new crossing.', _inserted_crossing_count;
+		RAISE NOTICE 'Updated % existing crossing.', _updated_crossing_count;
+		RAISE NOTICE 'Deleted % unused crossing.', _deleted_crossing_count;
 		RAISE NOTICE '';
 		RAISE NOTICE '* * * * * * * * * * * * * * * * *';
 		RAISE NOTICE '';
