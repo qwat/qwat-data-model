@@ -4,7 +4,7 @@ usage() {
     echo -e "Usage: $0 [option...] [dbname]"
     echo -e "\nOptions: refer to psql manual."
     echo -e "\nFallback to PGSERVICE=qWat if present."
-    echo -e "\nExemples:"
+    echo -e "\nExamples:"
     echo -e "  # use connection parameters from service qWat in .pg_service.conf file"
     echo -e "  $0"
     echo -e "\n  # define connections parameters on command line"
@@ -13,7 +13,7 @@ usage() {
     
 }
 
-if [ "$1" == "--help" ]
+if [ "$1" = "--help" ]
 then 
     usage
     exit 0
