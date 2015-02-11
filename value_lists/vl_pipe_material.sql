@@ -35,10 +35,10 @@ Common nominations are SDR11 and SDR17.';
 
 /* COLUMNS*/
 ALTER TABLE qwat_vl.pipe_material ADD COLUMN vl_active boolean default true;
-ALTER TABLE qwat_vl.pipe_material ADD COLUMN short_fr varchar(8) default '';
+ALTER TABLE qwat_vl.pipe_material ADD COLUMN short_fr varchar(10) default '';
 ALTER TABLE qwat_vl.pipe_material ADD COLUMN value_fr varchar(30) default '';
 ALTER TABLE qwat_vl.pipe_material ADD COLUMN _displayname_fr varchar(30) default ''; /* created automatically, used for display only*/
-ALTER TABLE qwat_vl.pipe_material ADD COLUMN short_en varchar(8) default '';
+ALTER TABLE qwat_vl.pipe_material ADD COLUMN short_en varchar(10) default '';
 ALTER TABLE qwat_vl.pipe_material ADD COLUMN value_en varchar(30) default '';
 ALTER TABLE qwat_vl.pipe_material ADD COLUMN _displayname_en varchar(30) default ''; /* created automatically, used for display only*/
 ALTER TABLE qwat_vl.pipe_material ADD COLUMN short_ro varchar(10) default '';
