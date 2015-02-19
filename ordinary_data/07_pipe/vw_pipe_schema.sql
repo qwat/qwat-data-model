@@ -172,7 +172,7 @@ Report schema errors
 CREATE OR REPLACE VIEW qwat_od.vw_pipe_schema_error AS
 	SELECT id, geometry FROM 
 	 ( 	SELECT 	groupid AS id, 
-				ST_Multi(ST_LineMerge(ST_Union(geometry)))::geometry(MultiLineString,21781) AS geometry
+				ST_Multi(ST_LineMerge(ST_Union(geometry))) AS geometry
 		  FROM qwat_od.vw_pipe_schema_items
 		 GROUP BY groupid 
 	 ) AS foo
