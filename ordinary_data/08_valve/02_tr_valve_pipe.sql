@@ -21,7 +21,7 @@ CREATE OR REPLACE FUNCTION qwat_od.ft_valve_update_pipe() RETURNS TRIGGER AS
 
 		IF TG_OP = 'UPDATE' THEN
 			IF NEW.id_pipe <> OLD.id_pipe THEN
-				_pipe_ids := array_append(pipe_ids, NEW.id_pipe);
+				_pipe_ids := array_append(_pipe_ids, NEW.id_pipe);
 			END IF;
 		END IF;
 		
