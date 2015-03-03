@@ -70,6 +70,6 @@ SELECT
 	INNER JOIN      qwat_od.distributor    ON distributor.id    = installation_source.id_distributor
 	LEFT OUTER JOIN qwat_vl.remote_type    ON remote_type.id   = installation_source.id_remote
 	INNER JOIN      qwat_vl.watertype      ON watertype.id      = installation_source.id_watertype
-	INNER JOIN      qwat_vl.source_type    ON source_type.id    = installation_source.id_type
+	LEFT OUTER JOIN qwat_vl.source_type    ON source_type.id    = installation_source.id_type
 	LEFT OUTER JOIN qwat_vl.source_quality ON source_quality.id = installation_source.id_quality;
 
