@@ -26,7 +26,7 @@ ALTER TABLE qwat_od.valve ADD COLUMN altitude_real          decimal(10,3)  ;
 ALTER TABLE qwat_od.valve ADD COLUMN remark                 text          default '';
 
 /* schema view */
-SELECT qwat_od.fn_enable_schemaview('valve','valve_function','id_function');
+SELECT qwat_od.fn_enable_schemaview('valve');
 
 /* geometry                  (table_name, is_node, create_node, create_schematic, get_pipe, auto_district, auto_pressurezone)*/
 SELECT qwat_od.fn_geom_tool_point('valve',true    ,false,        true,             true,       true,          true);
