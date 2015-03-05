@@ -7,7 +7,7 @@
 /* CREATE */
 DROP TABLE IF EXISTS qwat_vl.pipe_function CASCADE;
 CREATE TABLE qwat_vl.pipe_function ( id integer not null, CONSTRAINT "pipe_function_pk" PRIMARY KEY (id) );
-COMMENT ON TABLE qwat_vl.pipe_function IS 'Function for pipe. Here is determined if pipe should be visible or not in the schematic view, but this can be overidden by the pipe attribute schema_force_view.';
+COMMENT ON TABLE qwat_vl.pipe_function IS 'Function for pipe. Here is determined if pipe should be visible or not in the schematic view, but this can be overidden by the pipe attribute schema_force_visible.';
 
 /* COLUMNS*/
 ALTER TABLE qwat_vl.pipe_function ADD COLUMN vl_active boolean default true;

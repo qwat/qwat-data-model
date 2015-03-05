@@ -27,7 +27,7 @@ CREATE VIEW qwat_od.vw_pipe_schema_visibleitems AS
 	FROM qwat_od.pipe
 	INNER JOIN qwat_vl.status ON pipe.id_status = status.id
 	INNER JOIN qwat_vl.pipe_function ON pipe.id_function = pipe_function.id
-	WHERE COALESCE(schema_force_view, pipe_function.schema_visible) IS TRUE
+	WHERE COALESCE(schema_force_visible, pipe_function.schema_visible) IS TRUE
 	AND status.active IS TRUE;
 COMMENT ON VIEW qwat_od.vw_pipe_schema_visibleitems IS 'visible pipe in the schematic view (before merge)';
 
