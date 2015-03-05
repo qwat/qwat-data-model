@@ -30,14 +30,14 @@ CREATE VIEW qwat_od.vw_pipe_schema_visibleitems AS
 	AND status.active IS TRUE;
 COMMENT ON VIEW qwat_od.vw_pipe_schema_visibleitems IS 'visible pipe in the schematic view (before merge)';
 
-CREATE OR REPLACE RULE pipe_update_alternative AS
+CREATE OR REPLACE RULE rl_pipe_update_alternative AS
 	ON UPDATE TO qwat_od.vw_pipe_schema_visibleitems DO INSTEAD
 		UPDATE qwat_od.pipe SET
 			id_parent = NEW.id_parent,
 			geometry_alt2 = NEW.geometry
 		WHERE id = NEW.id;
 	
-CREATE OR REPLACE RULE pipe_delete_alternative AS
+CREATE OR REPLACE RULE rl_pipe_delete_alternative AS
 	ON DELETE TO qwat_od.vw_pipe_schema_visibleitems DO INSTEAD
 		UPDATE qwat_od.pipe SET
 			geometry_alt2 = NULL::geometry(LineString,21781)
@@ -106,7 +106,7 @@ Join with pipe_view to get pipe properties
 DROP VIEW IF EXISTS qwat_od.vw_pipe_schema ;
 CREATE VIEW qwat_od.vw_pipe_schema AS
 	SELECT	
-			pipe.id				              ,
+			pipe.id				               ,
 			pipe.id_function                   ,
 			pipe.id_installmethod              ,
 			pipe.id_material                   ,
@@ -123,8 +123,8 @@ CREATE VIEW qwat_od.vw_pipe_schema AS
 			pipe.id_printmap                   ,
 			pipe._district                     ,
 			pipe._printmaps                    ,
-			pipe.label_1_visible                ,
-			pipe.label_2_visible                ,
+			pipe.label_2_visible               ,
+			pipe.label_2_text                  ,
 			vw_pipe_schema_merged._length2d       ,
 			vw_pipe_schema_merged._length3d       ,
 			vw_pipe_schema_merged.number_of_pipe  ,
@@ -139,6 +139,13 @@ CREATE VIEW qwat_od.vw_pipe_schema AS
 	 INNER JOIN qwat_od.pressurezone ON pipe.id_pressurezone = pressurezone.id;
 COMMENT ON VIEW qwat_od.vw_pipe_schema IS 'Final view for schema';
 
+/* label update rule */
+CREATE RULE rl_pipe_schema_label
+	AS ON UPDATE TO qwat_od.vw_pipe_schema DO INSTEAD
+		UPDATE qwat_od.pipe SET 
+			label_2_visible = NEW.label_2_visible,
+			label_2_text    = NEW.label_2_text
+		WHERE id = OLD.id;
 
 /* 
 Add node id
