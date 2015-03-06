@@ -54,11 +54,12 @@ $BODY$
 		/* count the active pipes associated to this node */
 		SELECT
 			COUNT(pipe.id)            AS count         ,
-			bool_or(_schema_visible)  AS schema_visible,
+			bool_or(coalesce(schema_force_visible,pipe_function.schema_visible)) AS schema_visible,
 			bool_or(status.active) AS status_active
 			INTO grouped
 			FROM qwat_od.pipe
 			INNER JOIN qwat_vl.status ON pipe.id_status = status.id
+			INNER JOIN qwat_vl.pipe_function ON pipe.id_function = pipe_function.id
 			WHERE (id_node_a = node_id OR id_node_b = node_id)
 			AND status.active IS TRUE;
 		/* if not connected not under any object, delete the node */

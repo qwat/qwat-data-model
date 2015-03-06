@@ -18,6 +18,7 @@ CREATE VIEW qwat_od.vw_pipe_schema_visibleitems AS
 	SELECT 	
 		pipe.id,
 		pipe.id_parent,
+		pipe.id_material,
 		pipe._length2d,
 		pipe._length3d,
 		pipe.tunnel_or_bridge,
