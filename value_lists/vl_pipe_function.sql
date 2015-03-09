@@ -15,7 +15,7 @@ ALTER TABLE qwat_vl.pipe_function ADD COLUMN value_fr varchar(30) default '';
 ALTER TABLE qwat_vl.pipe_function ADD COLUMN value_en varchar(30) default '';
 ALTER TABLE qwat_vl.pipe_function ADD COLUMN value_ro varchar(30) default '';
 ALTER TABLE qwat_vl.pipe_function ADD COLUMN schema_visible boolean not null default true;
-ALTER TABLE qwat_vl.pipe_function ADD COLUMN major_pipe boolean not null default true;
+ALTER TABLE qwat_vl.pipe_function ADD COLUMN major boolean not null default true;
 ALTER TABLE qwat_vl.pipe_function ADD COLUMN code_sire smallint;
 
 /* VALUES */
