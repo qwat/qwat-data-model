@@ -37,3 +37,7 @@ FOR EACH ROW
 WHEN (NEW.hide_pipe != OLD.hide_pipe)
 EXECUTE PROCEDURE qwat_od.ft_controled_crossing();
 
+CREATE OR REPLACE RULE rl_crossing_delete
+	AS ON DELETE TO qwat_od.pipe
+	DO ALSO DELETE FROM qwat_od.crossing WHERE _pipe1_id = OLD.id OR _pipe2_id = OLD.id;
+
