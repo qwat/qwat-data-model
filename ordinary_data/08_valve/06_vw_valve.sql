@@ -2,7 +2,7 @@
 /*
 	qWat - QGIS Water Module
 	
-	SQL file :: valvles view
+	SQL file :: valves view
 */
 
 /* TODO: maintenance */
