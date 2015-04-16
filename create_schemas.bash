@@ -42,7 +42,7 @@ echo -e "DROP SCHEMA IF EXISTS qwat_vl CASCADE;" >> tmp/qwat_vl.sql
 echo -e "CREATE SCHEMA qwat_vl;" >> tmp/qwat_vl.sql
 cat value_lists/*.sql >> tmp/qwat_vl.sql
 echo -e "COMMIT;" >> tmp/qwat_vl.sql
-psql -v ON_ERROR_STOP=1 -f tmp/qwat_vl.sql $* 2> tmp/qwat_vl.err
+PGOPTIONS='--client-min-messages=warning' psql -v ON_ERROR_STOP=1 -f tmp/qwat_vl.sql $* 2> tmp/qwat_vl.err
 cat tmp/qwat_vl.err
 
 #####################################
@@ -67,8 +67,28 @@ do
     fi
 done
 echo -e "COMMIT;" >> tmp/qwat_od.sql
-psql -v ON_ERROR_STOP=1 -f tmp/qwat_od.sql $* 2> tmp/qwat_od.err
+PGOPTIONS='--client-min-messages=warning' psql -v ON_ERROR_STOP=1 -f tmp/qwat_od.sql $* 2> tmp/qwat_od.err
 cat tmp/qwat_od.err
+
+#####################################
+# Create/overwrite schemas qwat_sys  #
+#####################################
+
+if [ `psql -c "\dn" $* | grep "qwat_sys" | wc -l` -eq 1 ]
+then
+    read -p "Schema qwat_sys already exists, overwrite ? (y/c): " response
+    if [ $response != "y" ]
+    then
+        exit 0
+    fi
+fi
+echo -e "BEGIN;" > tmp/qwat_sys.sql
+echo -e "DROP SCHEMA IF EXISTS qwat_sys CASCADE;" >> tmp/qwat_sys.sql
+echo -e "CREATE SCHEMA qwat_sys;" >> tmp/qwat_sys.sql
+cat system/*.sql >> tmp/qwat_sys.sql
+echo -e "COMMIT;" >> tmp/qwat_sys.sql
+PGOPTIONS='--client-min-messages=warning' psql -v ON_ERROR_STOP=1 -f tmp/qwat_sys.sql $* 2> tmp/qwat_sys.err
+cat tmp/qwat_sys.err
 
 echo " *** "
 echo " *** schemas were successfully written ***"
