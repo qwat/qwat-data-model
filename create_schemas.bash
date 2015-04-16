@@ -13,6 +13,9 @@ usage() {
     
 }
 
+# Exit on error
+set -e
+
 if [ "$1" = "--help" ]
 then 
     usage
@@ -66,5 +69,9 @@ done
 echo -e "COMMIT;" >> tmp/qwat_od.sql
 psql -v ON_ERROR_STOP=1 -f tmp/qwat_od.sql $* 2> tmp/qwat_od.err
 cat tmp/qwat_od.err
+
+echo " *** "
+echo " *** schemas were successfully written ***"
+echo " *** "
 
 exit 0

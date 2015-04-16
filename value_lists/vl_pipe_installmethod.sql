@@ -7,14 +7,9 @@
 
 /* CREATE TABLE */
 DROP TABLE IF EXISTS qwat_vl.pipe_installmethod CASCADE;
-CREATE TABLE qwat_vl.pipe_installmethod (id integer not null, CONSTRAINT "vl_pipe_installmethod_pk" PRIMARY KEY (id) );
+CREATE TABLE qwat_vl.pipe_installmethod () INHERITS ( qwat_vl.value_list_base );
+ALTER TABLE qwat_vl.pipe_installmethod ADD CONSTRAINT vl_pipe_installmethod_pk PRIMARY KEY (id);
 COMMENT ON TABLE qwat_vl.pipe_installmethod IS 'Installation methods.';
-
-/* COLUMNS */
-ALTER TABLE qwat_vl.pipe_installmethod ADD COLUMN vl_active boolean default true;
-ALTER TABLE qwat_vl.pipe_installmethod ADD COLUMN value_en varchar(30) default '';
-ALTER TABLE qwat_vl.pipe_installmethod ADD COLUMN value_fr varchar(30) default '';
-ALTER TABLE qwat_vl.pipe_installmethod ADD COLUMN value_ro varchar(30) default '';
 
 /* VALUES */
 INSERT INTO qwat_vl.pipe_installmethod (id,value_fr,value_ro) VALUES (4201,'En fouille','Excavare');   /*TB: F   => 1 */

@@ -6,13 +6,8 @@
 
 /* Cistern types */
 DROP TABLE IF EXISTS qwat_vl.remote_type CASCADE;
-CREATE TABLE qwat_vl.remote_type (id integer not null, CONSTRAINT "remote_type_pk" PRIMARY KEY (id) );
-
-/* COLUMNS */
-ALTER TABLE qwat_vl.remote_type ADD COLUMN vl_active boolean default true;
-ALTER TABLE qwat_vl.remote_type ADD COLUMN value_fr varchar(30) default '' ;
-ALTER TABLE qwat_vl.remote_type ADD COLUMN value_en varchar(30) default '' ;
-ALTER TABLE qwat_vl.remote_type ADD COLUMN value_ro varchar(30) default '' ;
+CREATE TABLE qwat_vl.remote_type () INHERITS ( qwat_vl.value_list_base);
+ALTER TABLE qwat_vl.remote_type ADD CONSTRAINT vl_remote_type_pk PRIMARY KEY (id);
 
 /* content */
 INSERT INTO qwat_vl.remote_type (id,value_en,value_fr,value_ro) VALUES (1201,'','Aucune','Niciuna');

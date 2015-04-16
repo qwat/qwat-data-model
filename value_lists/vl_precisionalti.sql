@@ -6,18 +6,12 @@
 
 /* CREATE TABLE */
 DROP TABLE IF EXISTS qwat_vl.precisionalti CASCADE;
-CREATE TABLE qwat_vl.precisionalti (id integer not null, CONSTRAINT "precisionalti_pk" PRIMARY KEY (id) );
-COMMENT ON TABLE qwat_vl.precisionalti IS 'pressure precisionalti.';
+CREATE TABLE qwat_vl.precisionalti () INHERITS ( qwat_vl.value_list_base);
+ALTER TABLE qwat_vl.precisionalti ADD CONSTRAINT vl_precisionalti_pk PRIMARY KEY (id);
+COMMENT ON TABLE qwat_vl.precisionalti IS 'precision of altitude';
 
 /* COLUMNS */
-ALTER TABLE qwat_vl.precisionalti ADD COLUMN vl_active      boolean default true;
-ALTER TABLE qwat_vl.precisionalti ADD COLUMN value_en       varchar(30) default '';
-ALTER TABLE qwat_vl.precisionalti ADD COLUMN value_fr       varchar(30) default '';
-ALTER TABLE qwat_vl.precisionalti ADD COLUMN value_ro       varchar(30) default '';
-ALTER TABLE qwat_vl.precisionalti ADD COLUMN description_en varchar(30) default '';
-ALTER TABLE qwat_vl.precisionalti ADD COLUMN description_fr varchar(30) default '';
-ALTER TABLE qwat_vl.precisionalti ADD COLUMN description_ro varchar(30) default '';
-ALTER TABLE qwat_vl.precisionalti ADD COLUMN code_sire      smallint ;
+ALTER TABLE qwat_vl.precisionalti ADD COLUMN code_sire smallint ;
 
 /* VALUES */
 INSERT INTO qwat_vl.precisionalti (id,code_sire,value_en,value_fr,value_ro) VALUES (1121,1, 'Unprecised'        ,'Imprécis'		,'Imprecisă');  

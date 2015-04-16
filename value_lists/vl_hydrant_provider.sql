@@ -6,11 +6,11 @@
 
 
 DROP TABLE IF EXISTS qwat_vl.hydrant_provider CASCADE;
-CREATE TABLE qwat_vl.hydrant_provider ( id integer not null, CONSTRAINT hydrant_provider_pk PRIMARY KEY (id) );
+CREATE TABLE qwat_vl.hydrant_provider () INHERITS (qwat_vl.value_list_base);
+ALTER TABLE qwat_vl.hydrant_provider ADD CONSTRAINT vl_hydrant_provider_pk PRIMARY KEY (id);
 COMMENT ON TABLE qwat_vl.hydrant_provider IS 'hydrant providers list.';
 
 /* Columns */
-ALTER TABLE qwat_vl.hydrant_provider ADD COLUMN vl_active boolean default true;
 ALTER TABLE qwat_vl.hydrant_provider ADD COLUMN name varchar(30) default '';
 
 /* Constraints */

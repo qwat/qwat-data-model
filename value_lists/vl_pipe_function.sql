@@ -6,14 +6,11 @@
 
 /* CREATE */
 DROP TABLE IF EXISTS qwat_vl.pipe_function CASCADE;
-CREATE TABLE qwat_vl.pipe_function ( id integer not null, CONSTRAINT "pipe_function_pk" PRIMARY KEY (id) );
+CREATE TABLE qwat_vl.pipe_function () INHERITS ( qwat_vl.value_list_base);
+ALTER TABLE qwat_vl.pipe_function ADD CONSTRAINT vl_pipe_function_pk PRIMARY KEY (id);
 COMMENT ON TABLE qwat_vl.pipe_function IS 'Function for pipe. Here is determined if pipe should be visible or not in the schematic view, but this can be overidden by the pipe attribute schema_force_visible.';
 
 /* COLUMNS*/
-ALTER TABLE qwat_vl.pipe_function ADD COLUMN vl_active boolean default true;
-ALTER TABLE qwat_vl.pipe_function ADD COLUMN value_fr varchar(30) default '';
-ALTER TABLE qwat_vl.pipe_function ADD COLUMN value_en varchar(30) default '';
-ALTER TABLE qwat_vl.pipe_function ADD COLUMN value_ro varchar(30) default '';
 ALTER TABLE qwat_vl.pipe_function ADD COLUMN schema_visible boolean not null default true;
 ALTER TABLE qwat_vl.pipe_function ADD COLUMN major boolean not null default true;
 ALTER TABLE qwat_vl.pipe_function ADD COLUMN code_sire smallint;

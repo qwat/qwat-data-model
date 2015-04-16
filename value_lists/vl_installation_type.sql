@@ -6,17 +6,11 @@
 
 /* CREATE */
 DROP TABLE IF EXISTS qwat_vl.installation_type CASCADE;
-CREATE TABLE qwat_vl.installation_type ( id integer not null, CONSTRAINT "installation_type_pk" PRIMARY KEY (id) );
+CREATE TABLE qwat_vl.installation_type () INHERITS ( qwat_vl.value_list_base);
+ALTER TABLE qwat_vl.installation_type ADD CONSTRAINT vl_installation_type_pk PRIMARY KEY (id);
 COMMENT ON TABLE qwat_vl.installation_type IS 'type for installation.';
 
 /* COLUMNS*/
-ALTER TABLE qwat_vl.installation_type ADD COLUMN vl_active boolean default true;
-ALTER TABLE qwat_vl.installation_type ADD COLUMN short_en varchar(5) default '';
-ALTER TABLE qwat_vl.installation_type ADD COLUMN short_fr varchar(5) default '';
-ALTER TABLE qwat_vl.installation_type ADD COLUMN short_ro varchar(5) default '';
-ALTER TABLE qwat_vl.installation_type ADD COLUMN value_en varchar(30) default '';
-ALTER TABLE qwat_vl.installation_type ADD COLUMN value_fr varchar(30) default '';
-ALTER TABLE qwat_vl.installation_type ADD COLUMN value_ro varchar(30) default '';
 ALTER TABLE qwat_vl.installation_type ADD COLUMN schema_visible boolean default true;
 
 /* VALUES */

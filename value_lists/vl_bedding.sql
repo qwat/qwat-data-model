@@ -6,15 +6,9 @@
 
 /* CREATE */
 DROP TABLE IF EXISTS qwat_vl.bedding CASCADE;
-CREATE TABLE qwat_vl.bedding ( id integer not null, CONSTRAINT "bedding_pk" PRIMARY KEY (id));
+CREATE TABLE qwat_vl.bedding () INHERITS ( qwat_vl.value_list_base);
+ALTER TABLE qwat_vl.bedding ADD CONSTRAINT vl_bedding_pk PRIMARY KEY (id);
 COMMENT ON TABLE qwat_vl.bedding IS 'Bedding';
-
-/* COLUMNS */
-ALTER TABLE qwat_vl.bedding ADD COLUMN vl_active boolean default true;
-ALTER TABLE qwat_vl.bedding ADD COLUMN value_fr VARCHAR(30) default '';
-ALTER TABLE qwat_vl.bedding ADD COLUMN value_en VARCHAR(30) default '';
-ALTER TABLE qwat_vl.bedding ADD COLUMN value_ro VARCHAR(30) default '';
-
 /* VALUES */
 INSERT INTO qwat_vl.bedding (id,value_fr, value_ro) VALUES (9701,'aucun','lipsă');   
 INSERT INTO qwat_vl.bedding (id,value_fr, value_ro) VALUES (9702,'béton','beton');   

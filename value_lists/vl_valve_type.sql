@@ -7,17 +7,9 @@
 
 /* CREATE */
 DROP TABLE IF EXISTS qwat_vl.valve_type CASCADE;
-CREATE TABLE qwat_vl.valve_type ( id integer not null, CONSTRAINT "valve_type_pk" PRIMARY KEY (id));
+CREATE TABLE qwat_vl.valve_type () INHERITS ( qwat_vl.value_list_base);
+ALTER TABLE qwat_vl.valve_type ADD CONSTRAINT vl_valve_type_pk PRIMARY KEY (id);
 COMMENT ON TABLE qwat_vl.valve_type IS 'Types of valve';
-
-/* COLUMNS*/
-ALTER TABLE qwat_vl.valve_type ADD COLUMN vl_active boolean default true;
-ALTER TABLE qwat_vl.valve_type ADD COLUMN value_en VARCHAR(30) default '';
-ALTER TABLE qwat_vl.valve_type ADD COLUMN value_fr VARCHAR(30) default '';
-ALTER TABLE qwat_vl.valve_type ADD COLUMN value_ro VARCHAR(30) default '';
-ALTER TABLE qwat_vl.valve_type ADD COLUMN short_en VARCHAR(5) default '';
-ALTER TABLE qwat_vl.valve_type ADD COLUMN short_fr VARCHAR(5) default '';
-ALTER TABLE qwat_vl.valve_type ADD COLUMN short_ro VARCHAR(5) default '';
 
 /* COLUMNS */
 INSERT INTO qwat_vl.valve_type ( id, value_fr, value_ro ) VALUES (6301, 'vanne à gauche',	'vană la stânga?');      /* 1  VG  */

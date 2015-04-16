@@ -7,17 +7,11 @@
 
 /* CREATE */
 DROP TABLE IF EXISTS qwat_vl.valve_function CASCADE;
-CREATE TABLE qwat_vl.valve_function ( id integer not null, CONSTRAINT "valve_function_pk" PRIMARY KEY (id));                          
+CREATE TABLE qwat_vl.valve_function () INHERITS ( qwat_vl.value_list_base);
+ALTER TABLE qwat_vl.valve_function ADD CONSTRAINT vl_valve_function_pk PRIMARY KEY (id);                    
 COMMENT ON TABLE qwat_vl.valve_function IS 'Types of valve';
 
 /* COLUMNS*/
-ALTER TABLE qwat_vl.valve_function ADD COLUMN vl_active boolean default true;
-ALTER TABLE qwat_vl.valve_function ADD COLUMN value_en VARCHAR(30) default '';
-ALTER TABLE qwat_vl.valve_function ADD COLUMN value_fr VARCHAR(30) default '';
-ALTER TABLE qwat_vl.valve_function ADD COLUMN value_ro VARCHAR(30) default '';
-ALTER TABLE qwat_vl.valve_function ADD COLUMN short_en VARCHAR(5) default '';
-ALTER TABLE qwat_vl.valve_function ADD COLUMN short_fr VARCHAR(5) default '';
-ALTER TABLE qwat_vl.valve_function ADD COLUMN short_ro VARCHAR(5) default '';
 ALTER TABLE qwat_vl.valve_function ADD COLUMN schema_visible BOOLEAN NOT NULL default true;
 
 /* VALUES */

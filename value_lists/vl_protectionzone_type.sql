@@ -6,7 +6,8 @@
 
 /* CREATE */
 DROP TABLE IF EXISTS qwat_vl.protectionzone_type CASCADE;
-CREATE TABLE qwat_vl.protectionzone_type ( id integer not null, CONSTRAINT "protectionzone_type_pk" PRIMARY KEY (id) );
+CREATE TABLE qwat_vl.protectionzone_type () INHERITS ( qwat_vl.value_list_base);
+ALTER TABLE qwat_vl.protectionzone_type ADD CONSTRAINT vl_protectionzone_type_pk PRIMARY KEY (id);
 COMMENT ON TABLE qwat_vl.protectionzone_type
   IS 'type of protection zone.
 
@@ -28,15 +29,6 @@ In this zone, the spreading of liquid manure is therefore prohibited, as are the
 The outer protection zone is designed to ensure that, in the event of an accident, sufficient time and space are available to ward off any hazards to drinking water. Thus, facilities that pose a hazard to groundwater (e.g. petrol stations) are not allowed to be located in zone S3. Wastewater seepage and gravel extraction are likewise prohibited in this area.
 
 Source: http://www.bafu.admin.ch/grundwasser/07483/07485/10037/index.html?lang=en';
-
-/* COLUMNS*/
-ALTER TABLE qwat_vl.protectionzone_type ADD COLUMN vl_active boolean default true;
-ALTER TABLE qwat_vl.protectionzone_type ADD COLUMN value_fr varchar(50) default '';
-ALTER TABLE qwat_vl.protectionzone_type ADD COLUMN value_en varchar(50) default '';
-ALTER TABLE qwat_vl.protectionzone_type ADD COLUMN value_ro varchar(50) default '';
-ALTER TABLE qwat_vl.protectionzone_type ADD COLUMN short_fr varchar(255) default '';
-ALTER TABLE qwat_vl.protectionzone_type ADD COLUMN short_en varchar(255) default '';
-ALTER TABLE qwat_vl.protectionzone_type ADD COLUMN short_ro varchar(255) default '';
 
 /* CONTENT */
 INSERT INTO qwat_vl.protectionzone_type (id,short_fr,value_fr,short_ro,value_ro) VALUES (9501,'S1','Zone de protection S1','S1','Zonă de protecţie S1');
