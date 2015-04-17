@@ -11,19 +11,20 @@ COMMENT ON TABLE qwat_od.valve IS 'Table for valve.';
 
 
 /* columns */
-ALTER TABLE qwat_od.valve ADD COLUMN identification         varchar(20) default '';
-ALTER TABLE qwat_od.valve ADD COLUMN id_type                integer not null ;
-ALTER TABLE qwat_od.valve ADD COLUMN id_function            integer not null ;
-ALTER TABLE qwat_od.valve ADD COLUMN id_status              integer not null ; 
-ALTER TABLE qwat_od.valve ADD COLUMN id_precision           integer not null ;
-ALTER TABLE qwat_od.valve ADD COLUMN id_precisionalti       integer not null ;
-ALTER TABLE qwat_od.valve ADD COLUMN id_maintenance         integer[];
-ALTER TABLE qwat_od.valve ADD COLUMN diameter_nominal       varchar(10) default '';
-ALTER TABLE qwat_od.valve ADD COLUMN year                   smallint CHECK (year IS NULL OR year > 1800 AND year < 2100);
-ALTER TABLE qwat_od.valve ADD COLUMN closed                 boolean       default false ;
-ALTER TABLE qwat_od.valve ADD COLUMN networkseparation      boolean       default false ;
-ALTER TABLE qwat_od.valve ADD COLUMN altitude_real          decimal(10,3)  ;
-ALTER TABLE qwat_od.valve ADD COLUMN remark                 text          default '';
+ALTER TABLE qwat_od.valve ADD COLUMN identification    varchar(20) default '';
+ALTER TABLE qwat_od.valve ADD COLUMN id_distributor    integer not null      ;
+ALTER TABLE qwat_od.valve ADD COLUMN id_type           integer not null ;
+ALTER TABLE qwat_od.valve ADD COLUMN id_function       integer not null ;
+ALTER TABLE qwat_od.valve ADD COLUMN id_status         integer not null ; 
+ALTER TABLE qwat_od.valve ADD COLUMN id_precision      integer not null ;
+ALTER TABLE qwat_od.valve ADD COLUMN id_precisionalti  integer not null ;
+ALTER TABLE qwat_od.valve ADD COLUMN id_maintenance    integer[];
+ALTER TABLE qwat_od.valve ADD COLUMN diameter_nominal  varchar(10) default '';
+ALTER TABLE qwat_od.valve ADD COLUMN year              smallint CHECK (year IS NULL OR year > 1800 AND year < 2100);
+ALTER TABLE qwat_od.valve ADD COLUMN closed            boolean       default false ;
+ALTER TABLE qwat_od.valve ADD COLUMN networkseparation boolean       default false ;
+ALTER TABLE qwat_od.valve ADD COLUMN altitude_real     decimal(10,3)  ;
+ALTER TABLE qwat_od.valve ADD COLUMN remark            text          default '';
 
 /* schema view */
 SELECT qwat_od.fn_enable_schemaview('valve');
@@ -37,6 +38,7 @@ ALTER TABLE qwat_od.valve ADD COLUMN geometry_handle geometry(Point,21781);
 SELECT qwat_od.fn_label_create_fields('valve');
 
 /* constraints */
+ALTER TABLE qwat_od.valve ADD CONSTRAINT valve_id_distributor   FOREIGN KEY (id_distributor)   REFERENCES qwat_od.distributor(id)      MATCH FULL; CREATE INDEX fki_valve_id_distributor   ON qwat_od.valve(id_distributor)  ;
 ALTER TABLE qwat_od.valve ADD CONSTRAINT valve_id_type          FOREIGN KEY (id_type)          REFERENCES qwat_vl.valve_type(id)       MATCH FULL; CREATE INDEX fki_valve_id_type          ON qwat_od.valve(id_type)         ;
 ALTER TABLE qwat_od.valve ADD CONSTRAINT valve_id_function      FOREIGN KEY (id_function)      REFERENCES qwat_vl.valve_function(id)   MATCH FULL; CREATE INDEX fki_valve_id_function      ON qwat_od.valve(id_function)     ;
 ALTER TABLE qwat_od.valve ADD CONSTRAINT valve_id_status        FOREIGN KEY (id_status)        REFERENCES qwat_vl.status(id)           MATCH FULL; CREATE INDEX fki_valve_id_status        ON qwat_od.valve(id_status)       ;
