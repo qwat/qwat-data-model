@@ -22,7 +22,7 @@ then
     exit 0
 fi
 
-export PGSERVICE=test
+export PGSERVICE=qWat
 mkdir -p tmp
 
 #####################################

@@ -38,7 +38,7 @@ CREATE TABLE qwat_sys.logged_actions (
     statement_only BOOLEAN NOT NULL
 );
  
-REVOKE ALL ON qwat_sy.logged_actions FROM public;
+REVOKE ALL ON qwat_sys.logged_actions FROM public;
  
 COMMENT ON TABLE qwat_sys.logged_actions IS 'History of auditable actions on audited tables, from qwat_sys.if_modified_func()';
 COMMENT ON COLUMN qwat_sys.logged_actions.event_id IS 'Unique identifier for each auditable event';
