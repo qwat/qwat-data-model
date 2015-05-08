@@ -1,10 +1,10 @@
 /* --------------------------- */
 /* -------- COLUMNS ---------- */
-ALTER TABLE qwat_od.pipe ADD COLUMN id_node_a       integer    not null;
-ALTER TABLE qwat_od.pipe ADD COLUMN id_node_b       integer    not null;
-ALTER TABLE qwat_od.pipe ADD COLUMN id_district     integer   ;
-ALTER TABLE qwat_od.pipe ADD COLUMN id_pressurezone integer   ;
-ALTER TABLE qwat_od.pipe ADD COLUMN id_printmap     integer[] ;
+ALTER TABLE qwat_od.pipe ADD COLUMN fk_node_a       integer    not null;
+ALTER TABLE qwat_od.pipe ADD COLUMN fk_node_b       integer    not null;
+ALTER TABLE qwat_od.pipe ADD COLUMN fk_district     integer   ;
+ALTER TABLE qwat_od.pipe ADD COLUMN fk_pressurezone integer   ;
+ALTER TABLE qwat_od.pipe ADD COLUMN fk_printmap     integer[] ;
 ALTER TABLE qwat_od.pipe ADD COLUMN _length2d       decimal(8,2) ;
 ALTER TABLE qwat_od.pipe ADD COLUMN _length3d       decimal(8,2) ;
 ALTER TABLE qwat_od.pipe ADD COLUMN _diff_elevation decimal(8,2) ;
@@ -28,14 +28,14 @@ CREATE INDEX pipe_geoidx_alt2 ON qwat_od.pipe USING GIST ( geometry_alt2 );
 
 /* ------------------------------- */
 /* -------- CONSTRAINTS ---------- */
-ALTER TABLE qwat_od.pipe ADD CONSTRAINT pipe_id_node_a       FOREIGN KEY (id_node_a)       REFERENCES qwat_od.node(id)         MATCH FULL;
-ALTER TABLE qwat_od.pipe ADD CONSTRAINT pipe_id_node_b       FOREIGN KEY (id_node_b)       REFERENCES qwat_od.node(id)         MATCH FULL;
-ALTER TABLE qwat_od.pipe ADD CONSTRAINT pipe_id_district     FOREIGN KEY (id_district)     REFERENCES qwat_od.district(id)     MATCH SIMPLE;
-ALTER TABLE qwat_od.pipe ADD CONSTRAINT pipe_id_pressurezone FOREIGN KEY (id_pressurezone) REFERENCES qwat_od.pressurezone(id) MATCH SIMPLE;
-CREATE INDEX fki_pipe_id_node_a       ON qwat_od.pipe(id_node_a);
-CREATE INDEX fki_pipe_id_node_b       ON qwat_od.pipe(id_node_b);
-CREATE INDEX fki_pipe_id_district     ON qwat_od.pipe(id_district);
-CREATE INDEX fki_pipe_id_pressurezone ON qwat_od.pipe(id_pressurezone);
+ALTER TABLE qwat_od.pipe ADD CONSTRAINT pipe_fk_node_a       FOREIGN KEY (fk_node_a)       REFERENCES qwat_od.node(id)         MATCH FULL;
+ALTER TABLE qwat_od.pipe ADD CONSTRAINT pipe_fk_node_b       FOREIGN KEY (fk_node_b)       REFERENCES qwat_od.node(id)         MATCH FULL;
+ALTER TABLE qwat_od.pipe ADD CONSTRAINT pipe_fk_district     FOREIGN KEY (fk_district)     REFERENCES qwat_od.district(id)     MATCH SIMPLE;
+ALTER TABLE qwat_od.pipe ADD CONSTRAINT pipe_fk_pressurezone FOREIGN KEY (fk_pressurezone) REFERENCES qwat_od.pressurezone(id) MATCH SIMPLE;
+CREATE INDEX fki_pipe_fk_node_a       ON qwat_od.pipe(fk_node_a);
+CREATE INDEX fki_pipe_fk_node_b       ON qwat_od.pipe(fk_node_b);
+CREATE INDEX fki_pipe_fk_district     ON qwat_od.pipe(fk_district);
+CREATE INDEX fki_pipe_fk_pressurezone ON qwat_od.pipe(fk_pressurezone);
 
 
 /* ------------------------------------*/
@@ -43,11 +43,11 @@ CREATE INDEX fki_pipe_id_pressurezone ON qwat_od.pipe(id_pressurezone);
 CREATE OR REPLACE FUNCTION qwat_od.ft_pipe_geom() RETURNS TRIGGER AS
 	$BODY$
 	BEGIN
-		NEW.id_node_a                := qwat_od.fn_node_get_id(ST_StartPoint(NEW.geometry),true);
-		NEW.id_node_b                := qwat_od.fn_node_get_id(ST_EndPoint(  NEW.geometry),true);
-		NEW.id_district              := qwat_od.fn_get_district_id(NEW.geometry)                ;
-		NEW.id_pressurezone          := qwat_od.fn_get_pressurezone_id(NEW.geometry)            ;
-		NEW.id_printmap              := qwat_od.fn_get_printmap_id(NEW.geometry)                ;
+		NEW.fk_node_a                := qwat_od.fn_node_get_id(ST_StartPoint(NEW.geometry),true);
+		NEW.fk_node_b                := qwat_od.fn_node_get_id(ST_EndPoint(  NEW.geometry),true);
+		NEW.fk_district              := qwat_od.fn_get_district_id(NEW.geometry)                ;
+		NEW.fk_pressurezone          := qwat_od.fn_get_pressurezone_id(NEW.geometry)            ;
+		NEW.fk_printmap              := qwat_od.fn_get_printmap_id(NEW.geometry)                ;
 		NEW.geometry_alt1            := NEW.geometry                                         ;
 		NEW.geometry_alt2            := NEW.geometry                                         ;
 		NEW._geometry_alt1_used      := false                                                ;
@@ -85,16 +85,16 @@ CREATE OR REPLACE FUNCTION qwat_od.ft_pipe_node_type() RETURNS TRIGGER AS
 		node_ids integer[];
 	BEGIN
 		IF TG_OP = 'INSERT' THEN
-			node_ids := ARRAY[NEW.id_node_a, NEW.id_node_b];
+			node_ids := ARRAY[NEW.fk_node_a, NEW.fk_node_b];
 		ELSE
-			node_ids := ARRAY[OLD.id_node_a, OLD.id_node_b];
+			node_ids := ARRAY[OLD.fk_node_a, OLD.fk_node_b];
 		END IF;
 		IF TG_OP = 'UPDATE' THEN
-			IF NEW.id_node_a <> OLD.id_node_a THEN
-				node_ids := array_append(node_ids, OLD.id_node_a);
+			IF NEW.fk_node_a <> OLD.fk_node_a THEN
+				node_ids := array_append(node_ids, OLD.fk_node_a);
 			END IF;
-			IF NEW.id_node_b <> OLD.id_node_b THEN
-				node_ids := array_append(node_ids, OLD.id_node_b);
+			IF NEW.fk_node_b <> OLD.fk_node_b THEN
+				node_ids := array_append(node_ids, OLD.fk_node_b);
 			END IF;
 		END IF;
 		PERFORM qwat_od.fn_node_set_type( node_ids );

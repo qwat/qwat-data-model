@@ -32,8 +32,8 @@ $BODY$
 						ST_Intersection(p1.geometry,p2.geometry) AS cross_geometry 
 					FROM qwat_od.pipe p1, qwat_od.pipe p2 
 					WHERE p1.id < p2.id 
-					AND p1.id_status = 1301 
-					AND p2.id_status = 1301
+					AND p1.fk_status = 1301 
+					AND p2.fk_status = 1301
 					AND ST_Crosses(p1.geometry,p2.geometry)
 				) AS foo
 			 ) AS foo2

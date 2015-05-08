@@ -12,22 +12,22 @@ CREATE VIEW qwat_od.vw_valve AS
 SELECT  
 	valve.id                ,
 	valve.identification    ,
-	valve.id_type           ,
-	valve.id_function       ,
-	valve.id_status         ,
-	valve.id_precision      ,
-	valve.id_maintenance    ,
-	valve.id_pipe           ,
+	valve.fk_type           ,
+	valve.fk_function       ,
+	valve.fk_status         ,
+	valve.fk_precision      ,
+	valve.fk_maintenance    ,
+	valve.fk_pipe           ,
 	valve.diameter_nominal  ,
 	valve.year              ,
 	valve.closed            ,
 	valve.altitude_real     ,
 	valve.remark            ,
 	valve.schema_force_visible ,
-	valve.id_node           ,
-	valve.id_district       ,
-	valve.id_pressurezone   ,
-	valve.id_printmap       ,
+	valve.fk_node           ,
+	valve.fk_district       ,
+	valve.fk_pressurezone   ,
+	valve.fk_printmap       ,
 	valve._district         ,
 	valve._pressurezone     ,
 	valve._printmaps        ,
@@ -45,10 +45,10 @@ SELECT
 	node.altitude_dtm       AS _altitude_dtm,
 	pressurezone.colorcode  AS _pressurezone_colorcode
 	FROM qwat_od.valve
-	INNER JOIN      qwat_vl.valve_type     ON valve.id_type         = valve_type.id
-	INNER JOIN      qwat_vl.valve_function ON valve.id_function     = valve_function.id
-	INNER      JOIN qwat_vl.status         ON valve.id_status       = status.id
-	LEFT OUTER JOIN qwat_od.node           ON valve.id_node         = node.id       
-	LEFT OUTER JOIN qwat_od.district       ON valve.id_district     = district.id       
-	LEFT OUTER JOIN qwat_od.pressurezone   ON valve.id_pressurezone = pressurezone.id;
+	INNER JOIN      qwat_vl.valve_type     ON valve.fk_type         = valve_type.id
+	INNER JOIN      qwat_vl.valve_function ON valve.fk_function     = valve_function.id
+	INNER      JOIN qwat_vl.status         ON valve.fk_status       = status.id
+	LEFT OUTER JOIN qwat_od.node           ON valve.fk_node         = node.id       
+	LEFT OUTER JOIN qwat_od.district       ON valve.fk_district     = district.id       
+	LEFT OUTER JOIN qwat_od.pressurezone   ON valve.fk_pressurezone = pressurezone.id;
 	

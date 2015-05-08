@@ -23,7 +23,7 @@ label_2_rotation     	,
 label_2_text 	,
 remote.geometry::geometry(MultiLineString,21781) AS geometry
 FROM qwat_od.remote
-INNER      JOIN qwat_od.distributor   ON remote.id_distributor = distributor.id
-INNER      JOIN qwat_vl.status        ON remote.id_status      = status.id
-INNER      JOIN qwat_vl.precision     ON remote.id_precision   = precision.id
-INNER      JOIN qwat_vl.pipe_material ON remote.id_material    = pipe_material.id;
+INNER      JOIN qwat_od.distributor   ON remote.fk_distributor = distributor.id
+INNER      JOIN qwat_vl.status        ON remote.fk_status      = status.id
+INNER      JOIN qwat_vl.precision     ON remote.fk_precision   = precision.id
+INNER      JOIN qwat_vl.pipe_material ON remote.fk_material    = pipe_material.id;

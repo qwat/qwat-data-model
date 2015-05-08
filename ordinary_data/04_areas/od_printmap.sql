@@ -12,7 +12,7 @@ COMMENT ON TABLE qwat_od.printmap IS 'This table is used for polygons for predef
 
 /* columns */
 ALTER TABLE qwat_od.printmap ADD COLUMN name         varchar(20) default '';
-ALTER TABLE qwat_od.printmap ADD COLUMN id_district  smallint;
+ALTER TABLE qwat_od.printmap ADD COLUMN fk_district  smallint;
 ALTER TABLE qwat_od.printmap ADD COLUMN remark       text default '';
 ALTER TABLE qwat_od.printmap ADD COLUMN version_date date;
 
@@ -29,4 +29,4 @@ CREATE INDEX printmap_geoidx ON qwat_od.printmap USING GIST ( geometry );
 SELECT qwat_od.fn_label_create_fields('printmap');
 
 /* Constraints */
-ALTER TABLE qwat_od.printmap ADD CONSTRAINT printmap_id_district FOREIGN KEY (id_district) REFERENCES qwat_od.district (id) MATCH SIMPLE ; CREATE INDEX fki_printmap_id_district ON qwat_od.printmap(id);
+ALTER TABLE qwat_od.printmap ADD CONSTRAINT printmap_fk_district FOREIGN KEY (fk_district) REFERENCES qwat_od.district (id) MATCH SIMPLE ; CREATE INDEX fki_printmap_fk_district ON qwat_od.printmap(id);

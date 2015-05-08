@@ -17,14 +17,14 @@ $func$
 	BEGIN
 		/* Creates columns */
 		IF _is_node IS TRUE THEN
-			EXECUTE format('ALTER TABLE qwat_od.%I ADD COLUMN id_node         integer   ;', _table_name);
+			EXECUTE format('ALTER TABLE qwat_od.%I ADD COLUMN fk_node         integer   ;', _table_name);
 		END IF;
 		EXECUTE format('ALTER TABLE qwat_od.%I
-							ADD COLUMN id_district     integer,
-							ADD COLUMN id_pressurezone integer,
-							ADD COLUMN id_printmap     integer[] ;', _table_name);
+							ADD COLUMN fk_district     integer,
+							ADD COLUMN fk_pressurezone integer,
+							ADD COLUMN fk_printmap     integer[] ;', _table_name);
 		IF _get_pipe IS TRUE THEN
-			EXECUTE format('ALTER TABLE qwat_od.%I ADD COLUMN id_pipe         integer   ;', _table_name);
+			EXECUTE format('ALTER TABLE qwat_od.%I ADD COLUMN fk_pipe         integer   ;', _table_name);
 		END IF;
 		IF _auto_district IS TRUE THEN
 			EXECUTE format('ALTER TABLE qwat_od.%I ADD COLUMN _district       varchar(255) default '''' ;', _table_name);
@@ -54,23 +54,23 @@ $func$
 			ELSE
 				match_mode := 'SIMPLE';
 			END IF;
-			EXECUTE format('ALTER TABLE qwat_od.%1$I ADD CONSTRAINT %2$I FOREIGN KEY (id_node)     REFERENCES qwat_od.node(id)         MATCH %3$s;', 
-								_table_name, _table_name||'_id_node ', match_mode);
+			EXECUTE format('ALTER TABLE qwat_od.%1$I ADD CONSTRAINT %2$I FOREIGN KEY (fk_node)     REFERENCES qwat_od.node(id)         MATCH %3$s;', 
+								_table_name, _table_name||'_fk_node ', match_mode);
 		END IF;
-		EXECUTE format('ALTER TABLE qwat_od.%1$I ADD CONSTRAINT %2$I FOREIGN KEY (id_district)     REFERENCES qwat_od.district(id)     MATCH SIMPLE;
-						ALTER TABLE qwat_od.%1$I ADD CONSTRAINT %3$I FOREIGN KEY (id_pressurezone) REFERENCES qwat_od.pressurezone(id) MATCH SIMPLE;', 
-						_table_name, _table_name||'_id_district', _table_name||'_id_pressurezone');
+		EXECUTE format('ALTER TABLE qwat_od.%1$I ADD CONSTRAINT %2$I FOREIGN KEY (fk_district)     REFERENCES qwat_od.district(id)     MATCH SIMPLE;
+						ALTER TABLE qwat_od.%1$I ADD CONSTRAINT %3$I FOREIGN KEY (fk_pressurezone) REFERENCES qwat_od.pressurezone(id) MATCH SIMPLE;', 
+						_table_name, _table_name||'_fk_district', _table_name||'_fk_pressurezone');
 		IF _get_pipe IS TRUE THEN
-			EXECUTE format('ALTER TABLE qwat_od.%1$I ADD CONSTRAINT %2$I FOREIGN KEY (id_pipe) REFERENCES qwat_od.pipe(id) MATCH SIMPLE;', _table_name, _table_name||'_id_pipe');
+			EXECUTE format('ALTER TABLE qwat_od.%1$I ADD CONSTRAINT %2$I FOREIGN KEY (fk_pipe) REFERENCES qwat_od.pipe(id) MATCH SIMPLE;', _table_name, _table_name||'_fk_pipe');
 		END IF;
 		IF _is_node IS TRUE THEN
-			EXECUTE format('CREATE INDEX %1$I ON qwat_od.%2$I(id_node);', 'fki_'||_table_name||'_id_node', _table_name);
+			EXECUTE format('CREATE INDEX %1$I ON qwat_od.%2$I(fk_node);', 'fki_'||_table_name||'_fk_node', _table_name);
 		END IF;
-		EXECUTE format('CREATE INDEX %1$I ON qwat_od.%2$I(id_district);
-						CREATE INDEX %3$I ON qwat_od.%2$I(id_pressurezone);',
-						'fki_'||_table_name||'_id_district', _table_name, 'fki_'||_table_name||'_id_pressurezone');
+		EXECUTE format('CREATE INDEX %1$I ON qwat_od.%2$I(fk_district);
+						CREATE INDEX %3$I ON qwat_od.%2$I(fk_pressurezone);',
+						'fki_'||_table_name||'_fk_district', _table_name, 'fki_'||_table_name||'_fk_pressurezone');
 		IF _get_pipe IS TRUE THEN
-			EXECUTE format('CREATE INDEX %1$I ON qwat_od.%2$I(id_pipe);', 'fki_'||_table_name||'_id_pipe', _table_name);
+			EXECUTE format('CREATE INDEX %1$I ON qwat_od.%2$I(fk_pipe);', 'fki_'||_table_name||'_fk_pipe', _table_name);
 		END IF;
 		
 		/* Geometric trigger function */
@@ -79,25 +79,25 @@ $func$
 				BEGIN', 'ft_'||_table_name||'_geom');
 		IF _is_node IS TRUE THEN
 			sql_trigger := sql_trigger || '
-						NEW.id_node            := qwat_od.fn_node_get_id(NEW.geometry, '||_create_node||');';
+						NEW.fk_node            := qwat_od.fn_node_get_id(NEW.geometry, '||_create_node||');';
 		END IF;
 		IF _auto_district IS TRUE THEN
 			sql_trigger := sql_trigger || '
 						NEW._district          := qwat_od.fn_get_districts(NEW.geometry);';
 		END IF;
 		sql_trigger := sql_trigger || '
-						NEW.id_district        := qwat_od.fn_get_district_id(NEW.geometry);';
+						NEW.fk_district        := qwat_od.fn_get_district_id(NEW.geometry);';
 		IF _auto_pressurezone IS TRUE THEN
 			sql_trigger := sql_trigger || '
 						NEW._pressurezone      := qwat_od.fn_get_pressurezone(NEW.geometry);';
 		END IF;
 		sql_trigger := sql_trigger || '
-						NEW.id_pressurezone    := qwat_od.fn_get_pressurezone_id(NEW.geometry);';
+						NEW.fk_pressurezone    := qwat_od.fn_get_pressurezone_id(NEW.geometry);';
 		sql_trigger := sql_trigger || '
-						NEW.id_printmap        := qwat_od.fn_get_printmap_id(NEW.geometry);';
+						NEW.fk_printmap        := qwat_od.fn_get_printmap_id(NEW.geometry);';
 		IF _get_pipe IS TRUE THEN
 			sql_trigger := sql_trigger || '
-						NEW.id_pipe            := qwat_od.fn_pipe_get_id(NEW.geometry);';
+						NEW.fk_pipe            := qwat_od.fn_pipe_get_id(NEW.geometry);';
 		END IF;		IF _create_alt_geom IS TRUE THEN
 			sql_trigger := sql_trigger || '
 						NEW.geometry_alt1       := NEW.geometry;

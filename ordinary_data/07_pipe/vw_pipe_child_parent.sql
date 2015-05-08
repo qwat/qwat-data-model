@@ -40,8 +40,8 @@ CREATE OR REPLACE VIEW qwat_od.vw_pipe_child_parent AS
 						ST_Line_Interpolate_Point(b.geometry,GREATEST(0,1-4/b._length2d/2))::geometry(Point,21781) 
 					),a.geometry) AS end_point
 			FROM qwat_od.pipe a 
-			INNER JOIN qwat_od.pipe b ON a.id_parent = b.id
-			WHERE a.id_parent IS NOT NULL
+			INNER JOIN qwat_od.pipe b ON a.fk_parent = b.id
+			WHERE a.fk_parent IS NOT NULL
 		) AS foo
 	) AS foo2;
 	

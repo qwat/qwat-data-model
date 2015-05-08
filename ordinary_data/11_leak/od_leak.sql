@@ -11,9 +11,9 @@ CREATE TABLE qwat_od.leak (id serial PRIMARY KEY);
 COMMENT ON TABLE qwat_od.leak IS 'pipe leaks';
 
 /* columns */
-ALTER TABLE qwat_od.leak ADD COLUMN id_type        integer not null;
-ALTER TABLE qwat_od.leak ADD COLUMN id_cause       integer;
-ALTER TABLE qwat_od.leak ADD COLUMN id_damage      integer not null;
+ALTER TABLE qwat_od.leak ADD COLUMN fk_type        integer not null;
+ALTER TABLE qwat_od.leak ADD COLUMN fk_cause       integer;
+ALTER TABLE qwat_od.leak ADD COLUMN fk_damage      integer not null;
 ALTER TABLE qwat_od.leak ADD COLUMN detection_date date;
 ALTER TABLE qwat_od.leak ADD COLUMN repair_date    date;
 ALTER TABLE qwat_od.leak ADD COLUMN _repaired      boolean;
@@ -29,9 +29,9 @@ SELECT qwat_od.fn_geom_tool_point('leak', false, false, false, true, true, true)
 SELECT qwat_od.fn_label_create_fields('leak');
 
 /* constraints */
-ALTER TABLE qwat_od.leak ADD CONSTRAINT leak_id_type   FOREIGN KEY (id_type)   REFERENCES qwat_vl.leak_type(id)   MATCH FULL;   CREATE INDEX fki_leak_id_type   ON qwat_od.leak(id_type)  ;
-ALTER TABLE qwat_od.leak ADD CONSTRAINT leak_id_cause  FOREIGN KEY (id_cause)  REFERENCES qwat_vl.leak_cause(id)  MATCH SIMPLE; CREATE INDEX fki_leak_id_cause  ON qwat_od.leak(id_cause) ;
-ALTER TABLE qwat_od.leak ADD CONSTRAINT leak_id_damage FOREIGN KEY (id_damage) REFERENCES qwat_vl.leak_damage(id) MATCH FULL;   CREATE INDEX fki_leak_id_damage ON qwat_od.leak(id_damage);
+ALTER TABLE qwat_od.leak ADD CONSTRAINT leak_fk_type   FOREIGN KEY (fk_type)   REFERENCES qwat_vl.leak_type(id)   MATCH FULL;   CREATE INDEX fki_leak_fk_type   ON qwat_od.leak(fk_type)  ;
+ALTER TABLE qwat_od.leak ADD CONSTRAINT leak_fk_cause  FOREIGN KEY (fk_cause)  REFERENCES qwat_vl.leak_cause(id)  MATCH SIMPLE; CREATE INDEX fki_leak_fk_cause  ON qwat_od.leak(fk_cause) ;
+ALTER TABLE qwat_od.leak ADD CONSTRAINT leak_fk_damage FOREIGN KEY (fk_damage) REFERENCES qwat_vl.leak_damage(id) MATCH FULL;   CREATE INDEX fki_leak_fk_damage ON qwat_od.leak(fk_damage);
 
 /* Trigger */
 CREATE OR REPLACE FUNCTION qwat_od.ft_leak_repaired() RETURNS trigger AS 

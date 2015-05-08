@@ -12,5 +12,5 @@ CREATE VIEW qwat_od.vw_protectionzone AS
 		protectionzone_type.value_fr AS _type_long,
 		protectionzone_type.short_fr AS _type
 	FROM qwat_od.protectionzone
-	INNER JOIN qwat_vl.protectionzone_type ON protectionzone.id_type = protectionzone_type.id ;
+	INNER JOIN qwat_vl.protectionzone_type ON protectionzone.fk_type = protectionzone_type.id ;
 

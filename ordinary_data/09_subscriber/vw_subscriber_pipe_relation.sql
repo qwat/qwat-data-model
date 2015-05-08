@@ -15,7 +15,7 @@ CREATE OR REPLACE VIEW qwat_od.subscriber_pipe_relation AS
 	FROM 
 		qwat_od.subscriber a
 	INNER JOIN 
-		qwat_od.pipe b ON a.id_pipe = b.id
+		qwat_od.pipe b ON a.fk_pipe = b.id
 	WHERE 
-		a.id_pipe IS NOT NULL;	
+		a.fk_pipe IS NOT NULL;	
 

@@ -13,5 +13,5 @@ CREATE VIEW qwat_od.vw_printmap AS
 		district.name AS _district,
 		district.shortname AS _district_short
 	FROM qwat_od.printmap
-	INNER JOIN qwat_od.district ON printmap.id_district = district.id ;
+	INNER JOIN qwat_od.district ON printmap.fk_district = district.id ;
 

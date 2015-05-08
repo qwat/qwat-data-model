@@ -8,42 +8,42 @@ CREATE OR REPLACE VIEW qwat_od.vw_search_view AS
 		'Réservoir ' || identification || ' ' || name as search_text,
 		geometry
 		FROM qwat_od.installation_tank 
-		INNER JOIN qwat_vl.status ON installation_tank.id_status = status.id
+		INNER JOIN qwat_vl.status ON installation_tank.fk_status = status.id
 		WHERE status.active IS TRUE
 	UNION SELECT
 		'Ouvrages' as layer_name,
 		'Pompage ' || identification || ' ' || name as search_text,
 		geometry
 		FROM qwat_od.installation_pump 
-		INNER JOIN qwat_vl.status ON installation_pump.id_status = status.id
+		INNER JOIN qwat_vl.status ON installation_pump.fk_status = status.id
 		WHERE status.active IS TRUE
 	UNION SELECT
 		'Ouvrages' as layer_name,
 		'Source ' || identification || ' ' || name as search_text,
 		geometry
 		FROM qwat_od.installation_source
-		INNER JOIN qwat_vl.status ON installation_source.id_status = status.id
+		INNER JOIN qwat_vl.status ON installation_source.fk_status = status.id
 		WHERE status.active IS TRUE
 	UNION SELECT
 		'Ouvrages' as layer_name,
 		'Traitement ' || identification || ' ' || name as search_text,
 		geometry
 		FROM qwat_od.installation_treatment 
-		INNER JOIN qwat_vl.status ON installation_treatment.id_status = status.id
+		INNER JOIN qwat_vl.status ON installation_treatment.fk_status = status.id
 		WHERE status.active IS TRUE
 	UNION SELECT
 		'Ouvrages' as layer_name,
 		'Régulation de pression ' || identification || ' ' || name as search_text,
 		geometry
 		FROM qwat_od.installation_pressurecontrol 
-		INNER JOIN qwat_vl.status ON installation_pressurecontrol.id_status = status.id
+		INNER JOIN qwat_vl.status ON installation_pressurecontrol.fk_status = status.id
 		WHERE status.active IS TRUE
 	UNION SELECT
 		'Ouvrages' as layer_name,
 		'Chambre de vannes ' || identification || ' ' || name as search_text,
 		geometry
 		FROM qwat_od.installation_valvechamber
-		INNER JOIN qwat_vl.status ON installation_valvechamber.id_status = status.id
+		INNER JOIN qwat_vl.status ON installation_valvechamber.fk_status = status.id
 		WHERE status.active IS TRUE
 		
 	UNION SELECT

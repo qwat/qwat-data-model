@@ -25,14 +25,14 @@ CREATE OR REPLACE FUNCTION qwat_od.fn_get_pressurezone_id(geometry) RETURNS inte
 $BODY$ 
 	DECLARE
 		geom ALIAS FOR $1;
-		id_pressurezone integer;
+		fk_pressurezone integer;
 	BEGIN
-		SELECT pressurezone.id INTO id_pressurezone
+		SELECT pressurezone.id INTO fk_pressurezone
 			FROM  qwat_od.pressurezone
 			WHERE ST_Intersects(geom,pressurezone.geometry) IS TRUE
 			ORDER BY ST_Length(ST_Intersection(geom,pressurezone.geometry)) DESC
 			LIMIT 1;
-		RETURN id_pressurezone;
+		RETURN fk_pressurezone;
 	END
 $BODY$
 LANGUAGE plpgsql;

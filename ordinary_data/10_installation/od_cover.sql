@@ -11,10 +11,10 @@ COMMENT ON TABLE qwat_od.cover IS 'Table for installation covers.';
 
 /* COLUMNS */
 
-ALTER TABLE qwat_od.cover ADD COLUMN id_type int;
+ALTER TABLE qwat_od.cover ADD COLUMN fk_type int;
 ALTER TABLE qwat_od.cover ADD COLUMN identification  varchar(15) default ''  ;
-ALTER TABLE qwat_od.cover ADD COLUMN id_distributor  integer                 ;
-ALTER TABLE qwat_od.cover ADD COLUMN id_status       integer                 ;
+ALTER TABLE qwat_od.cover ADD COLUMN fk_distributor  integer                 ;
+ALTER TABLE qwat_od.cover ADD COLUMN fk_status       integer                 ;
 ALTER TABLE qwat_od.cover ADD COLUMN year smallint   CHECK (year IS NULL OR year > 1800 AND year < 2100);
 ALTER TABLE qwat_od.cover ADD COLUMN circular        boolean default true;
 ALTER TABLE qwat_od.cover ADD COLUMN diameter        decimal(10,3);
@@ -29,6 +29,6 @@ SELECT qwat_od.fn_geom_tool_point('cover', true,    true,        true,          
 SELECT qwat_od.fn_label_create_fields('cover');
 
 /* CONSTRAINTS */
-ALTER TABLE qwat_od.cover ADD CONSTRAINT cover_id_type        FOREIGN KEY (id_type)        REFERENCES qwat_vl.cover_type(id)  MATCH FULL; CREATE INDEX fki_cover_id_type        ON qwat_od.cover(id_type) ;
-ALTER TABLE qwat_od.cover ADD CONSTRAINT cover_id_distributor FOREIGN KEY (id_distributor) REFERENCES qwat_od.distributor(id) MATCH FULL; CREATE INDEX fki_cover_id_distributor ON qwat_od.cover(id_distributor) ;
-ALTER TABLE qwat_od.cover ADD CONSTRAINT cover_id_status      FOREIGN KEY (id_status)      REFERENCES qwat_vl.status(id)      MATCH FULL; CREATE INDEX fki_cover_id_status      ON qwat_od.cover(id_status)      ;
+ALTER TABLE qwat_od.cover ADD CONSTRAINT cover_fk_type        FOREIGN KEY (fk_type)        REFERENCES qwat_vl.cover_type(id)  MATCH FULL; CREATE INDEX fki_cover_fk_type        ON qwat_od.cover(fk_type) ;
+ALTER TABLE qwat_od.cover ADD CONSTRAINT cover_fk_distributor FOREIGN KEY (fk_distributor) REFERENCES qwat_od.distributor(id) MATCH FULL; CREATE INDEX fki_cover_fk_distributor ON qwat_od.cover(fk_distributor) ;
+ALTER TABLE qwat_od.cover ADD CONSTRAINT cover_fk_status      FOREIGN KEY (fk_status)      REFERENCES qwat_vl.status(id)      MATCH FULL; CREATE INDEX fki_cover_fk_status      ON qwat_od.cover(fk_status)      ;

@@ -28,13 +28,13 @@ CREATE OR REPLACE FUNCTION qwat_od.fn_get_district_id(geometry) RETURNS integer 
 $BODY$
 	DECLARE
 		geom ALIAS FOR $1;
-		id_district integer;
+		fk_district integer;
 	BEGIN
-		SELECT district.id INTO id_district
+		SELECT district.id INTO fk_district
 			FROM  qwat_od.district
 			WHERE ST_Intersects(geom,district.geometry) IS TRUE
 			LIMIT 1;
-		RETURN id_district;
+		RETURN fk_district;
 	END;
 $BODY$
 LANGUAGE plpgsql;

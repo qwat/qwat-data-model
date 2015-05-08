@@ -19,9 +19,9 @@ CREATE VIEW qwat_od.vw_leak AS
 		repair          ,
 		geometry::geometry(Point,21781)
 	FROM qwat_od.leak
-	INNER      JOIN qwat_vl.leak_type   ON leak.id_type   = leak_type.id
-	LEFT OUTER JOIN qwat_vl.leak_cause  ON leak.id_cause  = leak_cause.id
-	INNER      JOIN qwat_vl.leak_damage ON leak.id_damage = leak_damage.id;
+	INNER      JOIN qwat_vl.leak_type   ON leak.fk_type   = leak_type.id
+	LEFT OUTER JOIN qwat_vl.leak_cause  ON leak.fk_cause  = leak_cause.id
+	INNER      JOIN qwat_vl.leak_damage ON leak.fk_damage = leak_damage.id;
 
 
 

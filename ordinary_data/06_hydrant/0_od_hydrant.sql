@@ -14,11 +14,11 @@ COMMENT ON TABLE qwat_od.hydrant IS 'hydrant.';
 
 /* COLUMNS */
 ALTER TABLE qwat_od.hydrant ADD COLUMN identification     varchar(15) default '';
-ALTER TABLE qwat_od.hydrant ADD COLUMN id_distributor     integer not null      ;
-ALTER TABLE qwat_od.hydrant ADD COLUMN id_status          integer not null      ;
-ALTER TABLE qwat_od.hydrant ADD COLUMN id_provider        integer               ;
-ALTER TABLE qwat_od.hydrant ADD COLUMN id_precision       integer not null      ;
-ALTER TABLE qwat_od.hydrant ADD COLUMN id_precisionalti   integer not null      ;
+ALTER TABLE qwat_od.hydrant ADD COLUMN fk_distributor     integer not null      ;
+ALTER TABLE qwat_od.hydrant ADD COLUMN fk_status          integer not null      ;
+ALTER TABLE qwat_od.hydrant ADD COLUMN fk_provider        integer               ;
+ALTER TABLE qwat_od.hydrant ADD COLUMN fk_precision       integer not null      ;
+ALTER TABLE qwat_od.hydrant ADD COLUMN fk_precisionalti   integer not null      ;
 ALTER TABLE qwat_od.hydrant ADD COLUMN year               smallint CHECK (year IS NULL OR year > 1800 AND year < 2100);
 ALTER TABLE qwat_od.hydrant ADD COLUMN model              varchar(30)           default '';
 ALTER TABLE qwat_od.hydrant ADD COLUMN underground        boolean default false ;
@@ -38,9 +38,9 @@ SELECT qwat_od.fn_geom_tool_point('hydrant',   true,    true,        true,      
 SELECT qwat_od.fn_label_create_fields('hydrant');
 
 /* CONSTRAINTS */
-ALTER TABLE qwat_od.hydrant ADD CONSTRAINT hydrant_id_distributor   FOREIGN KEY (id_distributor)   REFERENCES qwat_od.distributor(id)      MATCH FULL  ; CREATE INDEX fki_hydrant_id_distributor   ON qwat_od.hydrant(id_distributor)  ;
-ALTER TABLE qwat_od.hydrant ADD CONSTRAINT hydrant_id_status        FOREIGN KEY (id_status)        REFERENCES qwat_vl.status(id)           MATCH FULL  ; CREATE INDEX fki_hydrant_id_status        ON qwat_od.hydrant(id_status)       ;
-ALTER TABLE qwat_od.hydrant ADD CONSTRAINT hydrant_id_provider      FOREIGN KEY (id_provider)      REFERENCES qwat_vl.hydrant_provider(id) MATCH SIMPLE; CREATE INDEX fki_hydrant_id_provider      ON qwat_od.hydrant(id_provider)     ;
-ALTER TABLE qwat_od.hydrant ADD CONSTRAINT hydrant_id_precision     FOREIGN KEY (id_precision)     REFERENCES qwat_vl.precision(id)        MATCH FULL  ; CREATE INDEX fki_hydrant_id_precision     ON qwat_od.hydrant(id_precision)    ;
-ALTER TABLE qwat_od.hydrant ADD CONSTRAINT hydrant_id_precisionalti FOREIGN KEY (id_precisionalti) REFERENCES qwat_vl.precisionalti(id)    MATCH FULL  ; CREATE INDEX fki_hydrant_id_precisionalti ON qwat_od.hydrant(id_precisionalti);
+ALTER TABLE qwat_od.hydrant ADD CONSTRAINT hydrant_fk_distributor   FOREIGN KEY (fk_distributor)   REFERENCES qwat_od.distributor(id)      MATCH FULL  ; CREATE INDEX fki_hydrant_fk_distributor   ON qwat_od.hydrant(fk_distributor)  ;
+ALTER TABLE qwat_od.hydrant ADD CONSTRAINT hydrant_fk_status        FOREIGN KEY (fk_status)        REFERENCES qwat_vl.status(id)           MATCH FULL  ; CREATE INDEX fki_hydrant_fk_status        ON qwat_od.hydrant(fk_status)       ;
+ALTER TABLE qwat_od.hydrant ADD CONSTRAINT hydrant_fk_provider      FOREIGN KEY (fk_provider)      REFERENCES qwat_vl.hydrant_provider(id) MATCH SIMPLE; CREATE INDEX fki_hydrant_fk_provider      ON qwat_od.hydrant(fk_provider)     ;
+ALTER TABLE qwat_od.hydrant ADD CONSTRAINT hydrant_fk_precision     FOREIGN KEY (fk_precision)     REFERENCES qwat_vl.precision(id)        MATCH FULL  ; CREATE INDEX fki_hydrant_fk_precision     ON qwat_od.hydrant(fk_precision)    ;
+ALTER TABLE qwat_od.hydrant ADD CONSTRAINT hydrant_fk_precisionalti FOREIGN KEY (fk_precisionalti) REFERENCES qwat_vl.precisionalti(id)    MATCH FULL  ; CREATE INDEX fki_hydrant_fk_precisionalti ON qwat_od.hydrant(fk_precisionalti);
 

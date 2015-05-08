@@ -10,7 +10,7 @@ CREATE TABLE qwat_od.pressurezone (id serial PRIMARY KEY);
 COMMENT ON TABLE qwat_od.pressurezone IS 'Pressure zones.';
 
 /* COLUMNS */
-ALTER TABLE qwat_od.pressurezone ADD COLUMN id_distributor  integer not null;
+ALTER TABLE qwat_od.pressurezone ADD COLUMN fk_distributor  integer not null;
 ALTER TABLE qwat_od.pressurezone ADD COLUMN name            varchar(50) default '';
 ALTER TABLE qwat_od.pressurezone ADD COLUMN consumptionzone varchar(50) default '';
 ALTER TABLE qwat_od.pressurezone ADD COLUMN colorcode       smallint;
@@ -24,7 +24,7 @@ SELECT qwat_od.fn_label_create_fields('pressurezone');
 
 /* CONSTRAINT */
 ALTER TABLE qwat_od.pressurezone ADD CONSTRAINT pressurezone_name UNIQUE (name);
-ALTER TABLE qwat_od.pressurezone ADD CONSTRAINT pressurezone_id_distributor FOREIGN KEY (id_distributor) REFERENCES qwat_od.distributor(id) MATCH FULL; CREATE INDEX fki_pressurezone_id_distributor ON qwat_od.pressurezone(id_distributor) ;
+ALTER TABLE qwat_od.pressurezone ADD CONSTRAINT pressurezone_fk_distributor FOREIGN KEY (fk_distributor) REFERENCES qwat_od.distributor(id) MATCH FULL; CREATE INDEX fki_pressurezone_fk_distributor ON qwat_od.pressurezone(fk_distributor) ;
             
       
 /* TRIGGER FOR CONSUMPTION ZONE */

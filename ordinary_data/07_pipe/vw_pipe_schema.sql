@@ -17,8 +17,8 @@ DROP VIEW IF EXISTS qwat_od.vw_pipe_schema_visibleitems CASCADE;
 CREATE VIEW qwat_od.vw_pipe_schema_visibleitems AS 
 	SELECT 	
 		pipe.id,
-		pipe.id_parent,
-		pipe.id_material,
+		pipe.fk_parent,
+		pipe.fk_material,
 		pipe._length2d,
 		pipe._length3d,
 		pipe.tunnel_or_bridge,
@@ -26,8 +26,8 @@ CREATE VIEW qwat_od.vw_pipe_schema_visibleitems AS
 		pipe._valve_count,
 		pipe._valve_closed
 	FROM qwat_od.pipe
-	INNER JOIN qwat_vl.status ON pipe.id_status = status.id
-	INNER JOIN qwat_vl.pipe_function ON pipe.id_function = pipe_function.id
+	INNER JOIN qwat_vl.status ON pipe.fk_status = status.id
+	INNER JOIN qwat_vl.pipe_function ON pipe.fk_function = pipe_function.id
 	WHERE COALESCE(schema_force_visible, pipe_function.schema_visible) IS TRUE
 	AND status.active IS TRUE;
 COMMENT ON VIEW qwat_od.vw_pipe_schema_visibleitems IS 'visible pipe in the schematic view (before merge)';
@@ -35,7 +35,7 @@ COMMENT ON VIEW qwat_od.vw_pipe_schema_visibleitems IS 'visible pipe in the sche
 CREATE OR REPLACE RULE rl_pipe_update_alternative AS
 	ON UPDATE TO qwat_od.vw_pipe_schema_visibleitems DO INSTEAD
 		UPDATE qwat_od.pipe SET
-			id_parent = NEW.id_parent,
+			fk_parent = NEW.fk_parent,
 			geometry_alt2 = NEW.geometry
 		WHERE id = NEW.id;
 	
@@ -58,7 +58,7 @@ CREATE OR REPLACE FUNCTION qwat_od.fn_get_parent(integer,integer) RETURNS intege
 			RETURN childid;
 		END IF;
 		LOOP
-			SELECT id_parent INTO childid 
+			SELECT fk_parent INTO childid 
 			FROM qwat_od.vw_pipe_schema_visibleitems
 			WHERE id = parentid;
 
@@ -78,7 +78,7 @@ View of pipe with group ID
 CREATE OR REPLACE VIEW qwat_od.vw_pipe_schema_items AS 
 	SELECT 
 		geometry::geometry(LineString,21781),
-		qwat_od.fn_get_parent(id,id_parent) AS groupid,
+		qwat_od.fn_get_parent(id,fk_parent) AS groupid,
 		_length2d,
 		_length3d,
 		tunnel_or_bridge,
@@ -109,20 +109,20 @@ DROP VIEW IF EXISTS qwat_od.vw_pipe_schema ;
 CREATE VIEW qwat_od.vw_pipe_schema AS
 	SELECT	
 			pipe.id				               ,
-			pipe.id_function                   ,
-			pipe.id_installmethod              ,
-			pipe.id_material                   ,
-			pipe.id_distributor                ,
-			pipe.id_precision                  ,
-			pipe.id_protection                 ,
-			pipe.id_status                     ,
+			pipe.fk_function                   ,
+			pipe.fk_installmethod              ,
+			pipe.fk_material                   ,
+			pipe.fk_distributor                ,
+			pipe.fk_precision                  ,
+			pipe.fk_protection                 ,
+			pipe.fk_status                     ,
 			pipe.year                          ,
 			pipe.pressure_nominal              ,
 			pipe.folder                        ,
 			pipe.remark                        , 
-			pipe.id_district                   ,
-			pipe.id_pressurezone               ,
-			pipe.id_printmap                   ,
+			pipe.fk_district                   ,
+			pipe.fk_pressurezone               ,
+			pipe.fk_printmap                   ,
 			pipe._district                     ,
 			pipe._printmaps                    ,
 			pipe.label_2_visible               ,
@@ -138,7 +138,7 @@ CREATE VIEW qwat_od.vw_pipe_schema AS
 			vw_pipe_schema_merged.geometry::geometry(LineString,21781) AS geometry
 	  FROM qwat_od.vw_pipe_schema_merged
 	 INNER JOIN qwat_od.pipe         ON pipe.id = vw_pipe_schema_merged.id
-	 INNER JOIN qwat_od.pressurezone ON pipe.id_pressurezone = pressurezone.id;
+	 INNER JOIN qwat_od.pressurezone ON pipe.fk_pressurezone = pressurezone.id;
 COMMENT ON VIEW qwat_od.vw_pipe_schema IS 'Final view for schema';
 
 /* label update rule */
@@ -167,12 +167,12 @@ CREATE MATERIALIZED VIEW qwat_od.vw_pipe_schema_node AS
 	FROM
 		( SELECT	
 			vw_pipe_schema.*,
-			qwat_od.fn_node_get_id(ST_StartPoint(geometry),true) AS id_node_a,
-			qwat_od.fn_node_get_id(ST_EndPoint(  geometry),true) AS id_node_b	
+			qwat_od.fn_node_get_id(ST_StartPoint(geometry),true) AS fk_node_a,
+			qwat_od.fn_node_get_id(ST_EndPoint(  geometry),true) AS fk_node_b	
 			FROM qwat_od.vw_pipe_schema 
 		) AS foo
-		LEFT OUTER JOIN qwat_od.node AS node_a ON id_node_a = node_a.id
-		LEFT OUTER JOIN qwat_od.node AS node_b ON id_node_b = node_b.id; 
+		LEFT OUTER JOIN qwat_od.node AS node_a ON fk_node_a = node_a.id
+		LEFT OUTER JOIN qwat_od.node AS node_b ON fk_node_b = node_b.id; 
 COMMENT ON MATERIALIZED VIEW qwat_od.vw_pipe_schema_node IS 'Final view for schema completed with node.';
 
 /*
