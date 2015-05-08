@@ -19,7 +19,7 @@ ALTER TABLE qwat_od.subscriber ADD COLUMN _identification_full varchar(16) defau
 ALTER TABLE qwat_od.subscriber ADD COLUMN parcel               varchar(12) default '' ;
 ALTER TABLE qwat_od.subscriber ADD COLUMN remark               text default '';
 
-/* GEOMETRY                        (table_name,      is_node, create_node, create_schematic, get_pipe, auto_district, auto_pressurezone)*/
+/* GEOMETRY                      (table_name,  is_node, create_node, create_schematic, get_pipe, auto_district, auto_pressurezone)*/
 SELECT qwat_od.fn_geom_tool_point('subscriber', false,   false,       false,            false,    false,         true);
 
 /* LABELS */
