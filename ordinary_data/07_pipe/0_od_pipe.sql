@@ -36,16 +36,16 @@ SELECT qwat_od.fn_enable_schemaview( 'pipe' );
 SELECT qwat_od.fn_label_create_fields('pipe', false, false);
 
 /* Constraints */
-ALTER TABLE qwat_od.pipe ADD CONSTRAINT pipe_fk_parent         FOREIGN KEY (fk_parent)         REFERENCES qwat_od.pipe (id)              MATCH SIMPLE ; CREATE INDEX fki_pipe_fk_parent        ON qwat_od.pipe(fk_parent);
-ALTER TABLE qwat_od.pipe ADD CONSTRAINT pipe_fk_function       FOREIGN KEY (fk_function)       REFERENCES qwat_vl.pipe_function(id)      MATCH FULL   ; CREATE INDEX fki_pipe_fk_function      ON qwat_od.pipe(fk_function);
-ALTER TABLE qwat_od.pipe ADD CONSTRAINT pipe_fk_installmethod  FOREIGN KEY (fk_installmethod)  REFERENCES qwat_vl.pipe_installmethod(id) MATCH FULL   ; CREATE INDEX fki_pipe_fk_installmethod ON qwat_od.pipe(fk_installmethod);
-ALTER TABLE qwat_od.pipe ADD CONSTRAINT pipe_fk_material       FOREIGN KEY (fk_material)       REFERENCES qwat_vl.pipe_material(id)      MATCH FULL   ; CREATE INDEX fki_pipe_fk_material      ON qwat_od.pipe(fk_material);
-ALTER TABLE qwat_od.pipe ADD CONSTRAINT pipe_fk_distributor    FOREIGN KEY (fk_distributor)    REFERENCES qwat_od.distributor(id)        MATCH FULL   ; CREATE INDEX fki_pipe_fk_distributor   ON qwat_od.pipe(fk_distributor);
-ALTER TABLE qwat_od.pipe ADD CONSTRAINT pipe_fk_precision      FOREIGN KEY (fk_precision)      REFERENCES qwat_vl.precision(id)          MATCH FULL   ; CREATE INDEX fki_pipe_fk_precision     ON qwat_od.pipe(fk_precision);
-ALTER TABLE qwat_od.pipe ADD CONSTRAINT pipe_fk_bedding        FOREIGN KEY (fk_bedding)        REFERENCES qwat_vl.bedding(id)            MATCH SIMPLE ; CREATE INDEX fki_pipe_fk_bedding       ON qwat_od.pipe(fk_bedding);
-ALTER TABLE qwat_od.pipe ADD CONSTRAINT pipe_fk_protection     FOREIGN KEY (fk_protection)     REFERENCES qwat_vl.pipe_protection(id)    MATCH SIMPLE ; CREATE INDEX fki_pipe_fk_protection    ON qwat_od.pipe(fk_protection);
-ALTER TABLE qwat_od.pipe ADD CONSTRAINT pipe_fk_status         FOREIGN KEY (fk_status)         REFERENCES qwat_vl.status(id)             MATCH FULL   ; CREATE INDEX fki_pipe_fk_status        ON qwat_od.pipe(fk_status);
-ALTER TABLE qwat_od.pipe ADD CONSTRAINT pipe_fk_watertype      FOREIGN KEY (fk_watertype)      REFERENCES qwat_vl.watertype(id)          MATCH FULL   ; CREATE INDEX fki_pipe_fk_watertype     ON qwat_od.pipe(fk_watertype);
+ALTER TABLE qwat_od.pipe ADD CONSTRAINT pipe_fk_parent         FOREIGN KEY (fk_parent)         REFERENCES qwat_od.pipe (id)              MATCH FULL; CREATE INDEX fki_pipe_fk_parent        ON qwat_od.pipe(fk_parent);
+ALTER TABLE qwat_od.pipe ADD CONSTRAINT pipe_fk_function       FOREIGN KEY (fk_function)       REFERENCES qwat_vl.pipe_function(id)      MATCH FULL; CREATE INDEX fki_pipe_fk_function      ON qwat_od.pipe(fk_function);
+ALTER TABLE qwat_od.pipe ADD CONSTRAINT pipe_fk_installmethod  FOREIGN KEY (fk_installmethod)  REFERENCES qwat_vl.pipe_installmethod(id) MATCH FULL; CREATE INDEX fki_pipe_fk_installmethod ON qwat_od.pipe(fk_installmethod);
+ALTER TABLE qwat_od.pipe ADD CONSTRAINT pipe_fk_material       FOREIGN KEY (fk_material)       REFERENCES qwat_vl.pipe_material(id)      MATCH FULL; CREATE INDEX fki_pipe_fk_material      ON qwat_od.pipe(fk_material);
+ALTER TABLE qwat_od.pipe ADD CONSTRAINT pipe_fk_distributor    FOREIGN KEY (fk_distributor)    REFERENCES qwat_od.distributor(id)        MATCH FULL; CREATE INDEX fki_pipe_fk_distributor   ON qwat_od.pipe(fk_distributor);
+ALTER TABLE qwat_od.pipe ADD CONSTRAINT pipe_fk_precision      FOREIGN KEY (fk_precision)      REFERENCES qwat_vl.precision(id)          MATCH FULL; CREATE INDEX fki_pipe_fk_precision     ON qwat_od.pipe(fk_precision);
+ALTER TABLE qwat_od.pipe ADD CONSTRAINT pipe_fk_bedding        FOREIGN KEY (fk_bedding)        REFERENCES qwat_vl.bedding(id)            MATCH FULL; CREATE INDEX fki_pipe_fk_bedding       ON qwat_od.pipe(fk_bedding);
+ALTER TABLE qwat_od.pipe ADD CONSTRAINT pipe_fk_protection     FOREIGN KEY (fk_protection)     REFERENCES qwat_vl.pipe_protection(id)    MATCH FULL; CREATE INDEX fki_pipe_fk_protection    ON qwat_od.pipe(fk_protection);
+ALTER TABLE qwat_od.pipe ADD CONSTRAINT pipe_fk_status         FOREIGN KEY (fk_status)         REFERENCES qwat_vl.status(id)             MATCH FULL; CREATE INDEX fki_pipe_fk_status        ON qwat_od.pipe(fk_status);
+ALTER TABLE qwat_od.pipe ADD CONSTRAINT pipe_fk_watertype      FOREIGN KEY (fk_watertype)      REFERENCES qwat_vl.watertype(id)          MATCH FULL; CREATE INDEX fki_pipe_fk_watertype     ON qwat_od.pipe(fk_watertype);
 
 /*----------------!!!---!!!----------------*/
 /* Trigger for tunnel_or_bridge */

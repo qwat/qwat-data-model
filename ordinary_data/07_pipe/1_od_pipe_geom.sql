@@ -30,8 +30,8 @@ CREATE INDEX pipe_geoidx_alt2 ON qwat_od.pipe USING GIST ( geometry_alt2 );
 /* -------- CONSTRAINTS ---------- */
 ALTER TABLE qwat_od.pipe ADD CONSTRAINT pipe_fk_node_a       FOREIGN KEY (fk_node_a)       REFERENCES qwat_od.node(id)         MATCH FULL;
 ALTER TABLE qwat_od.pipe ADD CONSTRAINT pipe_fk_node_b       FOREIGN KEY (fk_node_b)       REFERENCES qwat_od.node(id)         MATCH FULL;
-ALTER TABLE qwat_od.pipe ADD CONSTRAINT pipe_fk_district     FOREIGN KEY (fk_district)     REFERENCES qwat_od.district(id)     MATCH SIMPLE;
-ALTER TABLE qwat_od.pipe ADD CONSTRAINT pipe_fk_pressurezone FOREIGN KEY (fk_pressurezone) REFERENCES qwat_od.pressurezone(id) MATCH SIMPLE;
+ALTER TABLE qwat_od.pipe ADD CONSTRAINT pipe_fk_district     FOREIGN KEY (fk_district)     REFERENCES qwat_od.district(id)     MATCH FULL;
+ALTER TABLE qwat_od.pipe ADD CONSTRAINT pipe_fk_pressurezone FOREIGN KEY (fk_pressurezone) REFERENCES qwat_od.pressurezone(id) MATCH FULL;
 CREATE INDEX fki_pipe_fk_node_a       ON qwat_od.pipe(fk_node_a);
 CREATE INDEX fki_pipe_fk_node_b       ON qwat_od.pipe(fk_node_b);
 CREATE INDEX fki_pipe_fk_district     ON qwat_od.pipe(fk_district);

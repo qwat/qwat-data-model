@@ -2,13 +2,13 @@
 
 /* (table_name, is_node, create_node, _create_alt_geom, get_pipe, _auto_district, _auto_pressurezone) */
 CREATE OR REPLACE FUNCTION qwat_od.fn_geom_tool_point(
-			_table_name text, 
-			_is_node boolean, 
+			_table_name text,
+			_is_node boolean,
 			_create_node boolean,
 			_create_alt_geom boolean,
 			_get_pipe boolean,
 			_auto_district boolean,
-			_auto_pressurezone boolean) 
+			_auto_pressurezone boolean)
 	RETURNS void AS
 $func$
 	DECLARE
@@ -35,9 +35,9 @@ $func$
 		END IF;
 		IF _auto_pressurezone IS TRUE THEN
 			EXECUTE format('ALTER TABLE qwat_od.%I ADD COLUMN _pressurezone   varchar(255) default '''' ;', _table_name);
-		END IF;		
+		END IF;
 		EXECUTE format('ALTER TABLE qwat_od.%I ADD COLUMN _printmaps      varchar(100) default '''' ;', _table_name);
-		
+
 		/* Enables geometry */
 		PERFORM addGeometryColumn('qwat_od', _table_name, 'geometry', 21781, 'POINT', 2);
 		EXECUTE format('CREATE INDEX %1$I ON qwat_od.%2$I USING GIST ( geometry );', _table_name||'_geoidx', _table_name);
@@ -50,7 +50,7 @@ $func$
 													  ADD COLUMN _geometry_alt2_used boolean;',
 							_table_name||'_geoidx_alt1', _table_name, _table_name||'_geoidx_alt2');
 		END IF;
-				
+
 		/* Add constraints and indexes */
 		IF _is_node IS TRUE THEN
 			IF _create_node IS TRUE THEN
@@ -58,11 +58,11 @@ $func$
 			ELSE
 				match_mode := 'SIMPLE';
 			END IF;
-			EXECUTE format('ALTER TABLE qwat_od.%1$I ADD CONSTRAINT %2$I FOREIGN KEY (fk_node)     REFERENCES qwat_od.node(id)         MATCH %3$s;', 
+			EXECUTE format('ALTER TABLE qwat_od.%1$I ADD CONSTRAINT %2$I FOREIGN KEY (fk_node)     REFERENCES qwat_od.node(id)         MATCH %3$s;',
 								_table_name, _table_name||'_fk_node ', match_mode);
 		END IF;
 		EXECUTE format('ALTER TABLE qwat_od.%1$I ADD CONSTRAINT %2$I FOREIGN KEY (fk_district)     REFERENCES qwat_od.district(id)     MATCH FULL;
-						ALTER TABLE qwat_od.%1$I ADD CONSTRAINT %3$I FOREIGN KEY (fk_pressurezone) REFERENCES qwat_od.pressurezone(id) MATCH FULL;', 
+						ALTER TABLE qwat_od.%1$I ADD CONSTRAINT %3$I FOREIGN KEY (fk_pressurezone) REFERENCES qwat_od.pressurezone(id) MATCH FULL;',
 						_table_name, _table_name||'_fk_district', _table_name||'_fk_pressurezone');
 		IF _get_pipe IS TRUE THEN
 			EXECUTE format('ALTER TABLE qwat_od.%1$I ADD CONSTRAINT %2$I FOREIGN KEY (fk_pipe) REFERENCES qwat_od.pipe(id) MATCH FULL;', _table_name, _table_name||'_fk_pipe');
@@ -76,7 +76,7 @@ $func$
 		IF _get_pipe IS TRUE THEN
 			EXECUTE format('CREATE INDEX %1$I ON qwat_od.%2$I(fk_pipe);', 'fki_'||_table_name||'_fk_pipe', _table_name);
 		END IF;
-		
+
 		/* Geometric trigger function */
 		sql_trigger := format('CREATE OR REPLACE FUNCTION qwat_od.%I() RETURNS TRIGGER AS
 				''
@@ -111,34 +111,34 @@ $func$
 		END IF;
 		sql_trigger := sql_trigger || '
 						NEW._printmaps         := qwat_od.fn_get_printmaps(NEW.geometry);
-					RETURN NEW;				
+					RETURN NEW;
 				END;
 				''
-				LANGUAGE plpgsql;		
+				LANGUAGE plpgsql;
 		';
 		EXECUTE sql_trigger;
-		
+
 		/* create triggers */
 		EXECUTE format('CREATE TRIGGER %1$I
 						BEFORE INSERT ON qwat_od.%2$I
 						FOR EACH ROW
-						EXECUTE PROCEDURE qwat_od.%3$I();', 
+						EXECUTE PROCEDURE qwat_od.%3$I();',
 				'tr_'||_table_name||'_geom_insert', _table_name, 'ft_'||_table_name||'_geom');
-				
+
 		EXECUTE format('COMMENT ON TRIGGER %1$I ON qwat_od.%2$I IS ''Trigger: updates auto fields after insert.'';', 'tr_'||_table_name||'_geom_insert', _table_name);
 
 		EXECUTE format('CREATE TRIGGER %1$I
-						BEFORE UPDATE OF geometry ON qwat_od.%2$I 
+						BEFORE UPDATE OF geometry ON qwat_od.%2$I
 						FOR EACH ROW
 						WHEN (ST_AsBinary(NEW.geometry) <> ST_AsBinary(OLD.geometry))
 						EXECUTE PROCEDURE qwat_od.%3$I();',
 				'tr_'||_table_name||'_geom_update', _table_name, 'ft_'||_table_name||'_geom');
-				
+
 		EXECUTE format('COMMENT ON TRIGGER %1$I ON qwat_od.%2$I IS ''Trigger: updates auto fields after geom update.'';', 'tr_'||_table_name||'_geom_update', _table_name);
 
 		/* detect if alternatve geom is used */
 		IF _create_alt_geom IS TRUE THEN
-			EXECUTE format('	
+			EXECUTE format('
 				CREATE OR REPLACE FUNCTION qwat_od.%I() RETURNS TRIGGER AS
 					''
 					BEGIN
@@ -147,15 +147,15 @@ $func$
 						RETURN NEW;
 					END;
 					''
-					LANGUAGE plpgsql;		
+					LANGUAGE plpgsql;
 			', 'ft_'||_table_name||'_alternative_geom');
-			
+
 			EXECUTE format('CREATE TRIGGER %1$I
-							BEFORE UPDATE OF geometry_alt1, geometry_alt2  ON qwat_od.%2$I 
+							BEFORE UPDATE OF geometry_alt1, geometry_alt2  ON qwat_od.%2$I
 							FOR EACH ROW
 							EXECUTE PROCEDURE qwat_od.%3$I();',
 					'tr_'||_table_name||'_alternative_geom', _table_name, 'ft_'||_table_name||'_alternative_geom');
-					
+
 			EXECUTE format('COMMENT ON TRIGGER %1$I ON qwat_od.%2$I IS ''Trigger: when updating, check if alternative geometries are different to fill the boolean fields.'';',
 						'tr_'||_table_name||'_alternative_geom',_table_name);
 		END IF;

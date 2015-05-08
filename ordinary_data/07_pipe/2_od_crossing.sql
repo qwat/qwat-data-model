@@ -10,10 +10,10 @@ CREATE TABLE qwat_od.crossing
   _pipe2_angle double precision,
   CONSTRAINT crossing_pkey PRIMARY KEY (id),
   CONSTRAINT crossing_pipe1 FOREIGN KEY (_pipe1_id)
-      REFERENCES qwat_od.pipe (id) MATCH SIMPLE
+      REFERENCES qwat_od.pipe (id) MATCH FULL
       ON UPDATE NO ACTION ON DELETE NO ACTION,
   CONSTRAINT crossing_pipe2 FOREIGN KEY (_pipe2_id)
-      REFERENCES qwat_od.pipe (id) MATCH SIMPLE
+      REFERENCES qwat_od.pipe (id) MATCH FULL
       ON UPDATE NO ACTION ON DELETE NO ACTION
 )
 WITH (

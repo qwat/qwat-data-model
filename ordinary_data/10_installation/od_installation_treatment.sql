@@ -46,10 +46,10 @@ ALTER TABLE qwat_od.installation_treatment ADD COLUMN treatment_capacity        
 SELECT qwat_od.fn_geom_tool_point('installation_treatment',true,    true,        true,            false,    true,          false);
 
 /* Constraints */
-ALTER TABLE qwat_od.installation_treatment ADD CONSTRAINT installation_treatment_fk_installation FOREIGN KEY (fk_installation) REFERENCES qwat_od.installation_building(id) MATCH SIMPLE; CREATE INDEX fki_installation_treatment_fk_installation ON qwat_od.installation_treatment(fk_installation);
+ALTER TABLE qwat_od.installation_treatment ADD CONSTRAINT installation_treatment_fk_installation FOREIGN KEY (fk_installation) REFERENCES qwat_od.installation_building(id) MATCH FULL; CREATE INDEX fki_installation_treatment_fk_installation ON qwat_od.installation_treatment(fk_installation);
 ALTER TABLE qwat_od.installation_treatment ADD CONSTRAINT installation_treatment_fk_status       FOREIGN KEY (fk_status)       REFERENCES qwat_vl.status(id)                MATCH FULL;   CREATE INDEX fki_installation_treatment_fk_status       ON qwat_od.installation_treatment(fk_status)      ;
 ALTER TABLE qwat_od.installation_treatment ADD CONSTRAINT installation_treatment_fk_distributor  FOREIGN KEY (fk_distributor)  REFERENCES qwat_od.distributor(id)           MATCH FULL;   CREATE INDEX fki_installation_treatment_fk_distributor  ON qwat_od.installation_treatment(fk_distributor) ;
-ALTER TABLE qwat_od.installation_treatment ADD CONSTRAINT installation_treatment_fk_remote       FOREIGN KEY (fk_remote)       REFERENCES qwat_vl.remote_type(id)           MATCH SIMPLE; CREATE INDEX fki_installation_treatment_fk_remote       ON qwat_od.installation_treatment(fk_remote)      ;
+ALTER TABLE qwat_od.installation_treatment ADD CONSTRAINT installation_treatment_fk_remote       FOREIGN KEY (fk_remote)       REFERENCES qwat_vl.remote_type(id)           MATCH FULL; CREATE INDEX fki_installation_treatment_fk_remote       ON qwat_od.installation_treatment(fk_remote)      ;
 ALTER TABLE qwat_od.installation_treatment ADD CONSTRAINT installation_treatment_fk_watertype    FOREIGN KEY (fk_watertype)    REFERENCES qwat_vl.watertype(id)             MATCH FULL;   CREATE INDEX fki_installation_treatment_watertype    ON qwat_od.installation_treatment(fk_watertype)   ;
 
 /* VIEW */

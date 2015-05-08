@@ -30,7 +30,7 @@ SELECT qwat_od.fn_label_create_fields('leak');
 
 /* constraints */
 ALTER TABLE qwat_od.leak ADD CONSTRAINT leak_fk_type   FOREIGN KEY (fk_type)   REFERENCES qwat_vl.leak_type(id)   MATCH FULL;   CREATE INDEX fki_leak_fk_type   ON qwat_od.leak(fk_type)  ;
-ALTER TABLE qwat_od.leak ADD CONSTRAINT leak_fk_cause  FOREIGN KEY (fk_cause)  REFERENCES qwat_vl.leak_cause(id)  MATCH SIMPLE; CREATE INDEX fki_leak_fk_cause  ON qwat_od.leak(fk_cause) ;
+ALTER TABLE qwat_od.leak ADD CONSTRAINT leak_fk_cause  FOREIGN KEY (fk_cause)  REFERENCES qwat_vl.leak_cause(id)  MATCH FULL; CREATE INDEX fki_leak_fk_cause  ON qwat_od.leak(fk_cause) ;
 ALTER TABLE qwat_od.leak ADD CONSTRAINT leak_fk_damage FOREIGN KEY (fk_damage) REFERENCES qwat_vl.leak_damage(id) MATCH FULL;   CREATE INDEX fki_leak_fk_damage ON qwat_od.leak(fk_damage);
 
 /* Trigger */

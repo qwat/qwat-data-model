@@ -46,7 +46,7 @@ ALTER TABLE qwat_od.valve ADD CONSTRAINT valve_fk_precision     FOREIGN KEY (fk_
 ALTER TABLE qwat_od.valve ADD CONSTRAINT valve_fk_precisionalti FOREIGN KEY (fk_precisionalti) REFERENCES qwat_vl.precisionalti(id)    MATCH FULL; CREATE INDEX fki_valve_fk_precisionalti ON qwat_od.valve(fk_precisionalti);
 
 /* cannot create constraint on arrays yet
-ALTER TABLE qwat_od.valve ADD CONSTRAINT valve_fk_maintenance FOREIGN KEY (fk_maintenance) REFERENCES qwat_vl.valve_maintenance(id) MATCH SIMPLE ; CREATE INDEX fki_valve_fk_maintenance ON qwat_od.valve(fk_maintenance) ;
+ALTER TABLE qwat_od.valve ADD CONSTRAINT valve_fk_maintenance FOREIGN KEY (fk_maintenance) REFERENCES qwat_vl.valve_maintenance(id) MATCH FULL ; CREATE INDEX fki_valve_fk_maintenance ON qwat_od.valve(fk_maintenance) ;
 */
 	
 	

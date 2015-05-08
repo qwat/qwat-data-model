@@ -29,4 +29,4 @@ CREATE INDEX printmap_geoidx ON qwat_od.printmap USING GIST ( geometry );
 SELECT qwat_od.fn_label_create_fields('printmap');
 
 /* Constraints */
-ALTER TABLE qwat_od.printmap ADD CONSTRAINT printmap_fk_district FOREIGN KEY (fk_district) REFERENCES qwat_od.district (id) MATCH SIMPLE ; CREATE INDEX fki_printmap_fk_district ON qwat_od.printmap(id);
+ALTER TABLE qwat_od.printmap ADD CONSTRAINT printmap_fk_district FOREIGN KEY (fk_district) REFERENCES qwat_od.district (id) MATCH FULL ; CREATE INDEX fki_printmap_fk_district ON qwat_od.printmap(id);

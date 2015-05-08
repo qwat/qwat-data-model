@@ -58,16 +58,16 @@ ALTER TABLE qwat_od.installation_tank ADD COLUMN _cistern2_litrepercm numeric(9,
 SELECT qwat_od.fn_geom_tool_point('installation_tank',true,    true,       true,             false,    true,          false);
 
 /* Constraints */
-ALTER TABLE qwat_od.installation_tank ADD CONSTRAINT installation_tank_fk_installation FOREIGN KEY (fk_installation)  REFERENCES qwat_od.installation_building(id) MATCH SIMPLE; CREATE INDEX fki_installation_tank_fk_installation ON qwat_od.installation_tank(fk_installation) ;
+ALTER TABLE qwat_od.installation_tank ADD CONSTRAINT installation_tank_fk_installation FOREIGN KEY (fk_installation)  REFERENCES qwat_od.installation_building(id) MATCH FULL; CREATE INDEX fki_installation_tank_fk_installation ON qwat_od.installation_tank(fk_installation) ;
 ALTER TABLE qwat_od.installation_tank ADD CONSTRAINT installation_tank_fk_status       FOREIGN KEY (fk_status)        REFERENCES qwat_vl.status(id)                MATCH FULL;   CREATE INDEX fki_installation_tank_fk_status       ON qwat_od.installation_tank(fk_status)       ;
 ALTER TABLE qwat_od.installation_tank ADD CONSTRAINT installation_tank_fk_distributor  FOREIGN KEY (fk_distributor)   REFERENCES qwat_od.distributor(id)           MATCH FULL;   CREATE INDEX fki_installation_tank_fk_distributor  ON qwat_od.installation_tank(fk_distributor)  ;
-ALTER TABLE qwat_od.installation_tank ADD CONSTRAINT installation_tank_fk_remote       FOREIGN KEY (fk_remote)        REFERENCES qwat_vl.remote_type(id)           MATCH SIMPLE; CREATE INDEX fki_installation_tank_fk_remote       ON qwat_od.installation_tank(fk_remote)       ;
+ALTER TABLE qwat_od.installation_tank ADD CONSTRAINT installation_tank_fk_remote       FOREIGN KEY (fk_remote)        REFERENCES qwat_vl.remote_type(id)           MATCH FULL; CREATE INDEX fki_installation_tank_fk_remote       ON qwat_od.installation_tank(fk_remote)       ;
 ALTER TABLE qwat_od.installation_tank ADD CONSTRAINT installation_tank_fk_watertype    FOREIGN KEY (fk_watertype)     REFERENCES qwat_vl.watertype(id)             MATCH FULL;   CREATE INDEX fki_installation_tank_watertype    ON qwat_od.installation_tank(fk_watertype)    ;
 /* specific */
-ALTER TABLE qwat_od.installation_tank ADD CONSTRAINT installation_tank_fk_overflow     FOREIGN KEY (fk_overflow)      REFERENCES qwat_vl.overflow(id)              MATCH SIMPLE; CREATE INDEX fki_installation_tank_fk_overflow     ON qwat_od.installation_tank(fk_overflow)     ;
-ALTER TABLE qwat_od.installation_tank ADD CONSTRAINT installation_tank_fk_firestorage  FOREIGN KEY (fk_firestorage)   REFERENCES qwat_vl.tank_firestorage(id)      MATCH SIMPLE; CREATE INDEX fki_installation_tank_fk_firestorage  ON qwat_od.installation_tank(fk_firestorage)  ;
-ALTER TABLE qwat_od.installation_tank ADD CONSTRAINT installation_tank_cistern1type    FOREIGN KEY (cistern1_fk_type) REFERENCES qwat_vl.cistern(id)               MATCH SIMPLE; CREATE INDEX fki_installation_tank_cistern1type    ON qwat_od.installation_tank(cistern1_fk_type);
-ALTER TABLE qwat_od.installation_tank ADD CONSTRAINT installation_tank_cistern2type    FOREIGN KEY (cistern2_fk_type) REFERENCES qwat_vl.cistern(id)               MATCH SIMPLE; CREATE INDEX fki_installation_tank_cistern2type    ON qwat_od.installation_tank(cistern2_fk_type);
+ALTER TABLE qwat_od.installation_tank ADD CONSTRAINT installation_tank_fk_overflow     FOREIGN KEY (fk_overflow)      REFERENCES qwat_vl.overflow(id)              MATCH FULL; CREATE INDEX fki_installation_tank_fk_overflow     ON qwat_od.installation_tank(fk_overflow)     ;
+ALTER TABLE qwat_od.installation_tank ADD CONSTRAINT installation_tank_fk_firestorage  FOREIGN KEY (fk_firestorage)   REFERENCES qwat_vl.tank_firestorage(id)      MATCH FULL; CREATE INDEX fki_installation_tank_fk_firestorage  ON qwat_od.installation_tank(fk_firestorage)  ;
+ALTER TABLE qwat_od.installation_tank ADD CONSTRAINT installation_tank_cistern1type    FOREIGN KEY (cistern1_fk_type) REFERENCES qwat_vl.cistern(id)               MATCH FULL; CREATE INDEX fki_installation_tank_cistern1type    ON qwat_od.installation_tank(cistern1_fk_type);
+ALTER TABLE qwat_od.installation_tank ADD CONSTRAINT installation_tank_cistern2type    FOREIGN KEY (cistern2_fk_type) REFERENCES qwat_vl.cistern(id)               MATCH FULL; CREATE INDEX fki_installation_tank_cistern2type    ON qwat_od.installation_tank(cistern2_fk_type);
 
 
 /* Function */

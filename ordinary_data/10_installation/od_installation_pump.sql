@@ -45,15 +45,15 @@ ALTER TABLE qwat_od.installation_pump ADD COLUMN manometric_height decimal(10,2)
 SELECT qwat_od.fn_geom_tool_point('installation_pump',true,    true,       true,             false,    true,          false);
 
 /* Constraints */
-ALTER TABLE qwat_od.installation_pump ADD CONSTRAINT installation_pump_fk_installation FOREIGN KEY (fk_installation) REFERENCES qwat_od.installation_building(id) MATCH SIMPLE; CREATE INDEX fki_installation_pump_fk_installation ON qwat_od.installation_pump(fk_installation);
+ALTER TABLE qwat_od.installation_pump ADD CONSTRAINT installation_pump_fk_installation FOREIGN KEY (fk_installation) REFERENCES qwat_od.installation_building(id) MATCH FULL; CREATE INDEX fki_installation_pump_fk_installation ON qwat_od.installation_pump(fk_installation);
 ALTER TABLE qwat_od.installation_pump ADD CONSTRAINT installation_pump_fk_status       FOREIGN KEY (fk_status)       REFERENCES qwat_vl.status(id)                MATCH FULL;   CREATE INDEX fki_installation_pump_fk_status       ON qwat_od.installation_pump(fk_status)      ;
 ALTER TABLE qwat_od.installation_pump ADD CONSTRAINT installation_pump_fk_distributor  FOREIGN KEY (fk_distributor)  REFERENCES qwat_od.distributor(id)           MATCH FULL;   CREATE INDEX fki_installation_pump_fk_distributor  ON qwat_od.installation_pump(fk_distributor) ;
-ALTER TABLE qwat_od.installation_pump ADD CONSTRAINT installation_pump_fk_remote       FOREIGN KEY (fk_remote)       REFERENCES qwat_vl.remote_type(id)           MATCH SIMPLE; CREATE INDEX fki_installation_pump_fk_remote       ON qwat_od.installation_pump(fk_remote)      ;
+ALTER TABLE qwat_od.installation_pump ADD CONSTRAINT installation_pump_fk_remote       FOREIGN KEY (fk_remote)       REFERENCES qwat_vl.remote_type(id)           MATCH FULL; CREATE INDEX fki_installation_pump_fk_remote       ON qwat_od.installation_pump(fk_remote)      ;
 ALTER TABLE qwat_od.installation_pump ADD CONSTRAINT installation_pump_fk_watertype    FOREIGN KEY (fk_watertype)    REFERENCES qwat_vl.watertype(id)             MATCH FULL;   CREATE INDEX fki_installation_pump_watertype    ON qwat_od.installation_pump(fk_watertype)   ;
 /* specific */                                                                                                                                                                                                                                     
 ALTER TABLE qwat_od.installation_pump ADD CONSTRAINT installation_pump_fk_type     FOREIGN KEY (fk_type)     REFERENCES qwat_vl.pump_type(id) MATCH FULL;   CREATE INDEX fki_installation_pump_vl_pump_type ON qwat_od.installation_pump(fk_type)     ;
-ALTER TABLE qwat_od.installation_pump ADD CONSTRAINT installation_pump_fk_pipe_in  FOREIGN KEY (fk_pipe_in)  REFERENCES qwat_od.pipe(id)      MATCH SIMPLE; CREATE INDEX fki_installation_pump_pipe_in   ON qwat_od.installation_pump(fk_pipe_in)  ;
-ALTER TABLE qwat_od.installation_pump ADD CONSTRAINT installation_pump_fk_pipe_out FOREIGN KEY (fk_pipe_out) REFERENCES qwat_od.pipe(id)      MATCH SIMPLE; CREATE INDEX fki_installation_pump_pipe_out  ON qwat_od.installation_pump(fk_pipe_out) ;
+ALTER TABLE qwat_od.installation_pump ADD CONSTRAINT installation_pump_fk_pipe_in  FOREIGN KEY (fk_pipe_in)  REFERENCES qwat_od.pipe(id)      MATCH FULL; CREATE INDEX fki_installation_pump_pipe_in   ON qwat_od.installation_pump(fk_pipe_in)  ;
+ALTER TABLE qwat_od.installation_pump ADD CONSTRAINT installation_pump_fk_pipe_out FOREIGN KEY (fk_pipe_out) REFERENCES qwat_od.pipe(id)      MATCH FULL; CREATE INDEX fki_installation_pump_pipe_out  ON qwat_od.installation_pump(fk_pipe_out) ;
 
 
 /* VIEW */

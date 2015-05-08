@@ -43,14 +43,14 @@ ALTER TABLE qwat_od.installation_source ADD COLUMN gathering_chamber boolean    
 SELECT qwat_od.fn_geom_tool_point('installation_source',true,    true,       true,             false,    true,          false);
 
 /* Constraints */
-ALTER TABLE qwat_od.installation_source ADD CONSTRAINT installation_source_fk_installation FOREIGN KEY (fk_installation) REFERENCES qwat_od.installation_building(id) MATCH SIMPLE; CREATE INDEX fki_installation_source_fk_installation   ON qwat_od.installation_source(fk_installation);
+ALTER TABLE qwat_od.installation_source ADD CONSTRAINT installation_source_fk_installation FOREIGN KEY (fk_installation) REFERENCES qwat_od.installation_building(id) MATCH FULL; CREATE INDEX fki_installation_source_fk_installation   ON qwat_od.installation_source(fk_installation);
 ALTER TABLE qwat_od.installation_source ADD CONSTRAINT installation_source_fk_status       FOREIGN KEY (fk_status)       REFERENCES qwat_vl.status(id)                MATCH FULL;   CREATE INDEX fki_installation_source_fk_status         ON qwat_od.installation_source(fk_status)      ;
 ALTER TABLE qwat_od.installation_source ADD CONSTRAINT installation_source_fk_distributor  FOREIGN KEY (fk_distributor)  REFERENCES qwat_od.distributor(id)           MATCH FULL;   CREATE INDEX fki_installation_source_fk_distributor    ON qwat_od.installation_source(fk_distributor) ;
-ALTER TABLE qwat_od.installation_source ADD CONSTRAINT installation_source_fk_remote       FOREIGN KEY (fk_remote)       REFERENCES qwat_vl.remote_type(id)           MATCH SIMPLE; CREATE INDEX fki_installation_source_fk_remote         ON qwat_od.installation_source(fk_remote)      ;
+ALTER TABLE qwat_od.installation_source ADD CONSTRAINT installation_source_fk_remote       FOREIGN KEY (fk_remote)       REFERENCES qwat_vl.remote_type(id)           MATCH FULL; CREATE INDEX fki_installation_source_fk_remote         ON qwat_od.installation_source(fk_remote)      ;
 ALTER TABLE qwat_od.installation_source ADD CONSTRAINT installation_source_fk_watertype    FOREIGN KEY (fk_watertype)    REFERENCES qwat_vl.watertype(id)             MATCH FULL;   CREATE INDEX fki_installation_source_watertype      ON qwat_od.installation_source(fk_watertype)   ;
 /* specific */
 ALTER TABLE qwat_od.installation_source ADD CONSTRAINT installation_source_fk_type         FOREIGN KEY (fk_type)         REFERENCES qwat_vl.source_type(id)           MATCH FULL;   CREATE INDEX fki_installation_source_source_type    ON qwat_od.installation_source(fk_type)        ;
-ALTER TABLE qwat_od.installation_source ADD CONSTRAINT installation_source_fk_quality      FOREIGN KEY (fk_quality)      REFERENCES qwat_vl.source_quality(id)        MATCH SIMPLE; CREATE INDEX fki_installation_source_source_quality ON qwat_od.installation_source(fk_quality)     ;
+ALTER TABLE qwat_od.installation_source ADD CONSTRAINT installation_source_fk_quality      FOREIGN KEY (fk_quality)      REFERENCES qwat_vl.source_quality(id)        MATCH FULL; CREATE INDEX fki_installation_source_source_quality ON qwat_od.installation_source(fk_quality)     ;
 
 
 
