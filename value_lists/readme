@@ -35,6 +35,8 @@ ranges for tables are defined here.
 63 valve_type
 
 /* various */
+9000-9040 altitude_reference
+
 9100-9120 leak_cause
 9121-9140 leak_damage
 9141-9160 leak_type
