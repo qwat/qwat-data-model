@@ -17,7 +17,11 @@ $func$
 	BEGIN
 		/* Creates columns */
 		IF _is_node IS TRUE THEN
-			EXECUTE format('ALTER TABLE qwat_od.%I ADD COLUMN fk_node         integer   ;', _table_name);
+			IF _create_node IS TRUE THEN
+				EXECUTE format('ALTER TABLE qwat_od.%I ADD COLUMN fk_node         integer not null  ;', _table_name);
+			ELSE
+				EXECUTE format('ALTER TABLE qwat_od.%I ADD COLUMN fk_node         integer   ;', _table_name);
+			END IF;
 		END IF;
 		EXECUTE format('ALTER TABLE qwat_od.%I
 							ADD COLUMN fk_district     integer,
@@ -57,11 +61,11 @@ $func$
 			EXECUTE format('ALTER TABLE qwat_od.%1$I ADD CONSTRAINT %2$I FOREIGN KEY (fk_node)     REFERENCES qwat_od.node(id)         MATCH %3$s;', 
 								_table_name, _table_name||'_fk_node ', match_mode);
 		END IF;
-		EXECUTE format('ALTER TABLE qwat_od.%1$I ADD CONSTRAINT %2$I FOREIGN KEY (fk_district)     REFERENCES qwat_od.district(id)     MATCH SIMPLE;
-						ALTER TABLE qwat_od.%1$I ADD CONSTRAINT %3$I FOREIGN KEY (fk_pressurezone) REFERENCES qwat_od.pressurezone(id) MATCH SIMPLE;', 
+		EXECUTE format('ALTER TABLE qwat_od.%1$I ADD CONSTRAINT %2$I FOREIGN KEY (fk_district)     REFERENCES qwat_od.district(id)     MATCH FULL;
+						ALTER TABLE qwat_od.%1$I ADD CONSTRAINT %3$I FOREIGN KEY (fk_pressurezone) REFERENCES qwat_od.pressurezone(id) MATCH FULL;', 
 						_table_name, _table_name||'_fk_district', _table_name||'_fk_pressurezone');
 		IF _get_pipe IS TRUE THEN
-			EXECUTE format('ALTER TABLE qwat_od.%1$I ADD CONSTRAINT %2$I FOREIGN KEY (fk_pipe) REFERENCES qwat_od.pipe(id) MATCH SIMPLE;', _table_name, _table_name||'_fk_pipe');
+			EXECUTE format('ALTER TABLE qwat_od.%1$I ADD CONSTRAINT %2$I FOREIGN KEY (fk_pipe) REFERENCES qwat_od.pipe(id) MATCH FULL;', _table_name, _table_name||'_fk_pipe');
 		END IF;
 		IF _is_node IS TRUE THEN
 			EXECUTE format('CREATE INDEX %1$I ON qwat_od.%2$I(fk_node);', 'fki_'||_table_name||'_fk_node', _table_name);
