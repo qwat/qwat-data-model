@@ -1,4 +1,4 @@
-﻿/*
+/*
 	qWat - QGIS Water Module
 
 	SQL file :: pressure zones
