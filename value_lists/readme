@@ -33,6 +33,7 @@ ranges for tables are defined here.
 61 valve_function
 62 valve_maintenance
 63 valve_type
+64 valve_actuation
 
 /* various */
 9000-9040 altitude_reference

@@ -15,7 +15,8 @@ ALTER TABLE qwat_od.valve ADD COLUMN identification    varchar(20) default '';
 ALTER TABLE qwat_od.valve ADD COLUMN fk_distributor    integer not null      ;
 ALTER TABLE qwat_od.valve ADD COLUMN fk_type           integer not null ;
 ALTER TABLE qwat_od.valve ADD COLUMN fk_function       integer not null ;
-ALTER TABLE qwat_od.valve ADD COLUMN fk_status         integer not null ; 
+ALTER TABLE qwat_od.valve ADD COLUMN fk_status         integer not null ;
+ALTER TABLE qwat_od.valve ADD COLUMN fk_actuation      integer not null ;
 ALTER TABLE qwat_od.valve ADD COLUMN fk_precision      integer not null ;
 ALTER TABLE qwat_od.valve ADD COLUMN fk_precisionalti  integer not null ;
 ALTER TABLE qwat_od.valve ADD COLUMN fk_maintenance    integer[];
@@ -42,6 +43,7 @@ ALTER TABLE qwat_od.valve ADD CONSTRAINT valve_fk_distributor   FOREIGN KEY (fk_
 ALTER TABLE qwat_od.valve ADD CONSTRAINT valve_fk_type          FOREIGN KEY (fk_type)          REFERENCES qwat_vl.valve_type(id)       MATCH FULL; CREATE INDEX fki_valve_fk_type          ON qwat_od.valve(fk_type)         ;
 ALTER TABLE qwat_od.valve ADD CONSTRAINT valve_fk_function      FOREIGN KEY (fk_function)      REFERENCES qwat_vl.valve_function(id)   MATCH FULL; CREATE INDEX fki_valve_fk_function      ON qwat_od.valve(fk_function)     ;
 ALTER TABLE qwat_od.valve ADD CONSTRAINT valve_fk_status        FOREIGN KEY (fk_status)        REFERENCES qwat_vl.status(id)           MATCH FULL; CREATE INDEX fki_valve_fk_status        ON qwat_od.valve(fk_status)       ;
+ALTER TABLE qwat_od.valve ADD CONSTRAINT valve_fk_actuation      FOREIGN KEY (fk_actuation)      REFERENCES qwat_vl.valve_actuation(id)   MATCH FULL; CREATE INDEX fki_valve_fk_actuation      ON qwat_od.valve(fk_actuation)     ;
 ALTER TABLE qwat_od.valve ADD CONSTRAINT valve_fk_precision     FOREIGN KEY (fk_precision)     REFERENCES qwat_vl.precision(id)        MATCH FULL; CREATE INDEX fki_valve_fk_precision     ON qwat_od.valve(fk_precision)    ;
 ALTER TABLE qwat_od.valve ADD CONSTRAINT valve_fk_precisionalti FOREIGN KEY (fk_precisionalti) REFERENCES qwat_vl.precisionalti(id)    MATCH FULL; CREATE INDEX fki_valve_fk_precisionalti ON qwat_od.valve(fk_precisionalti);
 

@@ -50,5 +50,6 @@ SELECT qwat_sys.audit_table('qwat_vl.subscriber_type');
 SELECT qwat_sys.audit_table('qwat_vl.tank_firestorage');
 SELECT qwat_sys.audit_table('qwat_vl.valve_function');
 SELECT qwat_sys.audit_table('qwat_vl.valve_maintenance');
+SELECT qwat_sys.audit_table('qwat_vl.valve_actuation');
 SELECT qwat_sys.audit_table('qwat_vl.valve_type');
 SELECT qwat_sys.audit_table('qwat_vl.visible');
