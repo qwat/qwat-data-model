@@ -18,7 +18,6 @@ INSERT INTO qwat_vl.valve_type ( id, value_fr, value_ro ) VALUES (6303, 'vanne a
 INSERT INTO qwat_vl.valve_type ( id, value_fr, value_ro ) VALUES (6304, 'inconnu',		'necunoscut');  	/* 4  I   */
 INSERT INTO qwat_vl.valve_type ( id, value_fr, value_ro ) VALUES (6305, 'jauge',		'jojă?');               /* 5  J   */
 INSERT INTO qwat_vl.valve_type ( id, value_fr, value_ro ) VALUES (6306, 'limiteur de débit',	'reductor');   		/* 6  LD  */
-INSERT INTO qwat_vl.valve_type ( id, value_fr, value_ro ) VALUES (6307, 'purge', 		'purjare');            	/* 7  PU  */
 INSERT INTO qwat_vl.valve_type ( id, value_fr, value_ro ) VALUES (6308, 'soupape automatique', 	'supapă automatică'); 	/* 8  SA  */
 INSERT INTO qwat_vl.valve_type ( id, value_fr, value_ro ) VALUES (6309, 'sprinkler',		'sprinkler');		/* 9  SP  */
 INSERT INTO qwat_vl.valve_type ( id, value_fr, value_ro ) VALUES (6310, 'vanne',		'vană');		/* 10 V   */
