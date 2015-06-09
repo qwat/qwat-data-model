@@ -29,6 +29,7 @@ SELECT qwat_sys.audit_table('qwat_od.subscriber_reference');
 SELECT qwat_sys.audit_table('qwat_od.valve');
 SELECT qwat_sys.audit_table('qwat_vl.cistern');
 SELECT qwat_sys.audit_table('qwat_vl.hydrant_provider');
+SELECT qwat_sys.audit_table('qwat_vl.hydrant_material');
 SELECT qwat_sys.audit_table('qwat_vl.installation_type');
 SELECT qwat_sys.audit_table('qwat_vl.leak_cause');
 SELECT qwat_sys.audit_table('qwat_vl.leak_damage');
