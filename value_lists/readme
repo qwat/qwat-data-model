@@ -35,6 +35,9 @@ ranges for tables are defined here.
 63 valve_type
 64 valve_actuation
 
+/* hydrant */
+70 hydrant_material
+
 /* various */
 9000-9040 altitude_reference
 
@@ -48,4 +51,3 @@ ranges for tables are defined here.
 96 hydrant_provider
 97 bedding
 98 cover_type
-
