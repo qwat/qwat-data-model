@@ -17,15 +17,15 @@ ALTER TABLE qwat_vl.hydrant_provider ADD COLUMN name varchar(30) default '';
 ALTER TABLE qwat_vl.hydrant_provider ADD CONSTRAINT hydrant_provider_name UNIQUE (name);
 
 
-INSERT INTO qwat_vl.hydrant_provider (id,name) VALUES (9601,'+GF+');
-INSERT INTO qwat_vl.hydrant_provider (id,name) VALUES (9602,'Wild');
-INSERT INTO qwat_vl.hydrant_provider (id,name) VALUES (9603,'Hawie');
-INSERT INTO qwat_vl.hydrant_provider (id,name) VALUES (9604,'Erhard');
-INSERT INTO qwat_vl.hydrant_provider (id,name) VALUES (9605,'SISTAG');
-INSERT INTO qwat_vl.hydrant_provider (id,name) VALUES (9606,'Von Roll');
-INSERT INTO qwat_vl.hydrant_provider (id,name) VALUES (9607,'Straub');
-INSERT INTO qwat_vl.hydrant_provider (id,name) VALUES (9608,'Hinni');
-INSERT INTO qwat_vl.hydrant_provider (id,name) VALUES (9609,'AVK');
+INSERT INTO qwat_vl.hydrant_provider (id,name) VALUES (7101,'+GF+');
+INSERT INTO qwat_vl.hydrant_provider (id,name) VALUES (7102,'Wild');
+INSERT INTO qwat_vl.hydrant_provider (id,name) VALUES (7103,'Hawie');
+INSERT INTO qwat_vl.hydrant_provider (id,name) VALUES (7104,'Erhard');
+INSERT INTO qwat_vl.hydrant_provider (id,name) VALUES (7105,'SISTAG');
+INSERT INTO qwat_vl.hydrant_provider (id,name) VALUES (7106,'Von Roll');
+INSERT INTO qwat_vl.hydrant_provider (id,name) VALUES (7107,'Straub');
+INSERT INTO qwat_vl.hydrant_provider (id,name) VALUES (7108,'Hinni');
+INSERT INTO qwat_vl.hydrant_provider (id,name) VALUES (7109,'AVK');
 
 
 

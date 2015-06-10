@@ -37,6 +37,7 @@ ranges for tables are defined here.
 
 /* hydrant */
 70 hydrant_material
+71 hydrant_provider
 
 /* various */
 9000-9040 altitude_reference
@@ -48,6 +49,6 @@ ranges for tables are defined here.
 9200-9399 part_type
 94 subscriber_type
 95 protectionzone_type
-96 hydrant_provider
+
 97 bedding
 98 cover_type
