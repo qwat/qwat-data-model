@@ -21,4 +21,4 @@ INSERT INTO qwat_vl.valve_actuation (id, value_en, value_fr, value_ro )       	V
 INSERT INTO qwat_vl.valve_actuation (id, value_en, value_fr, value_ro )       	VALUES (6404, 'remote controlled', 'télécommandée', 'telecomandată');
 INSERT INTO qwat_vl.valve_actuation (id, value_en, value_fr, value_ro ) 	VALUES (6405, 'other', 'autre', 'alta');
 INSERT INTO qwat_vl.valve_actuation (id, value_en, value_fr, value_ro ) 	VALUES (6406, 'unknown', 'inconnu', 'necunoscută');
-INSERT INTO qwat_vl.valve_actuation (id, value_en, value_fr, value_ro )         VALUES (6407, 'to be determined', 'à déterminer', 'a determina');
+INSERT INTO qwat_vl.valve_actuation (id, value_en, value_fr, value_ro )         VALUES (6407, 'to be determined', 'à déterminer', 'de determinat');

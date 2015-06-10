@@ -14,7 +14,8 @@ COMMENT ON TABLE qwat_od.installation_building IS 'This table is used to define 
 ALTER TABLE qwat_od.installation_building ADD COLUMN name            varchar(60) default '';
 ALTER TABLE qwat_od.installation_building ADD COLUMN identification  varchar(25) default '';
 ALTER TABLE qwat_od.installation_building ADD COLUMN fk_status       integer not null      ;
-ALTER TABLE qwat_od.installation_building ADD COLUMN fk_type         integer not null;
+ALTER TABLE qwat_od.installation_building ADD COLUMN fk_type         integer not null      ;
+ALTER TABLE qwat_od.installation_building ADD COLUMN fk_locationtype integer[]		   ; 
 ALTER TABLE qwat_od.installation_building ADD COLUMN _displayname_en varchar(50) default '';
 ALTER TABLE qwat_od.installation_building ADD COLUMN _displayname_fr varchar(50) default '';
 ALTER TABLE qwat_od.installation_building ADD COLUMN schema_visible  boolean not null default true ;

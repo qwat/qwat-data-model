@@ -20,6 +20,7 @@ ALTER TABLE qwat_od.hydrant ADD COLUMN fk_provider        integer               
 ALTER TABLE qwat_od.hydrant ADD COLUMN fk_material        integer not null      ;
 ALTER TABLE qwat_od.hydrant ADD COLUMN fk_precision       integer not null      ;
 ALTER TABLE qwat_od.hydrant ADD COLUMN fk_precisionalti   integer not null      ;
+ALTER TABLE qwat_od.hydrant ADD COLUMN fk_locationtype    integer[]		;
 ALTER TABLE qwat_od.hydrant ADD COLUMN year               smallint CHECK (year IS NULL OR year > 1800 AND year < 2100);
 ALTER TABLE qwat_od.hydrant ADD COLUMN model              varchar(30)           default '';
 ALTER TABLE qwat_od.hydrant ADD COLUMN underground        boolean default false ;
