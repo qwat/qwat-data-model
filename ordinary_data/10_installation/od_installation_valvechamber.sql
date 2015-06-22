@@ -35,8 +35,12 @@ ALTER TABLE qwat_od.installation_valvechamber ADD COLUMN meter              bool
 
 
 /* geometry */
-/*                                 ( table_name,            is_node, create_node, create_schematic, get_pipe, auto_district, auto_pressurezone)*/
+/*point                              ( table_name,           is_node, create_node, create_schematic, get_pipe, auto_district, auto_pressurezone)*/
 SELECT qwat_od.fn_geom_tool_point('installation_valvechamber',true,    true,       true,             false,    true,          false);
+
+/* polygon */
+SELECT AddGeometryColumn('qwat_od', 'installation_valvechamber', 'geometry_polygon', 21781, 'MULTIPOLYGON', 2);
+CREATE INDEX installation_valvechamber_poly_geoidx ON qwat_od.installation_valvechamber USING GIST ( geometry_polygon );
 
 /* Constraints */
 ALTER TABLE qwat_od.installation_valvechamber ADD CONSTRAINT installation_valvechamber_fk_installation FOREIGN KEY (fk_installation) REFERENCES qwat_od.installation_building(id) MATCH FULL; CREATE INDEX fki_installation_valvechamber_fk_installation ON qwat_od.installation_valvechamber(fk_installation);
@@ -59,3 +63,17 @@ SELECT
 	INNER JOIN      qwat_od.distributor     ON distributor.id     = installation_valvechamber.fk_distributor
 	LEFT OUTER JOIN qwat_vl.remote_type     ON remote_type.id     = installation_valvechamber.fk_remote
 	INNER JOIN      qwat_vl.watertype       ON watertype.id       = installation_valvechamber.fk_watertype;
+
+CREATE OR REPLACE VIEW qwat_od.vw_installation_valvechamber_ro AS
+SELECT
+        installation_valvechamber.*,
+        status.value_ro AS status,
+        status.active AS active,
+        distributor.name AS distributor,
+        remote_type.value_ro AS remote,
+        watertype.value_ro AS watertype
+        FROM qwat_od.installation_valvechamber
+        INNER JOIN      qwat_vl.status          ON status.id          = installation_valvechamber.fk_status
+        INNER JOIN      qwat_od.distributor     ON distributor.id     = installation_valvechamber.fk_distributor
+        LEFT OUTER JOIN qwat_vl.remote_type     ON remote_type.id     = installation_valvechamber.fk_remote
+        INNER JOIN      qwat_vl.watertype       ON watertype.id       = installation_valvechamber.fk_watertype;
