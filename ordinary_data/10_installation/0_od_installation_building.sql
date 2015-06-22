@@ -17,6 +17,7 @@ ALTER TABLE qwat_od.installation_building ADD COLUMN fk_status       integer not
 ALTER TABLE qwat_od.installation_building ADD COLUMN fk_type         integer not null;
 ALTER TABLE qwat_od.installation_building ADD COLUMN _displayname_en varchar(50) default '';
 ALTER TABLE qwat_od.installation_building ADD COLUMN _displayname_fr varchar(50) default '';
+ALTER TABLE qwat_od.installation_building ADD COLUMN _displayname_ro varchar(50) default '';
 ALTER TABLE qwat_od.installation_building ADD COLUMN schema_visible  boolean not null default true ;
 ALTER TABLE qwat_od.installation_building ADD COLUMN year            smallint    CHECK (year IS NULL OR year > 1800 AND year < 2100);
 ALTER TABLE qwat_od.installation_building ADD COLUMN parcel          varchar(30) default '';
@@ -42,6 +43,7 @@ $BODY$
 BEGIN
 	 NEW._displayname_en = installation_type.short_en||' '||NEW.name FROM qwat_vl.installation_type WHERE NEW.fk_type = installation_type.id;
 	 NEW._displayname_fr = installation_type.short_fr||' '||NEW.name FROM qwat_vl.installation_type WHERE NEW.fk_type = installation_type.id;
+         NEW._displayname_ro = installation_type.short_ro||' '||NEW.name FROM qwat_vl.installation_type WHERE NEW.fk_type = installation_type.id;
 	 RETURN NEW;
 END;
 $BODY$
