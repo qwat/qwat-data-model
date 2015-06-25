@@ -21,6 +21,7 @@ ALTER TABLE qwat_od.pipe ADD COLUMN fk_bedding             integer not null;    
 ALTER TABLE qwat_od.pipe ADD COLUMN fk_protection          integer;                                      /* fk_protection        FK */
 ALTER TABLE qwat_od.pipe ADD COLUMN fk_status              integer not null;                             /* fk_status            FK */
 ALTER TABLE qwat_od.pipe ADD COLUMN fk_watertype           integer not null;                             /* fk_watertype         FK */
+ALTER TABLE qwat_od.pipe ADD COLUMN fk_locationtype        integer[];
 ALTER TABLE qwat_od.pipe ADD COLUMN year                   smallint CHECK (year IS NULL OR year > 1800 AND year < 2100); /* year  */
 ALTER TABLE qwat_od.pipe ADD COLUMN tunnel_or_bridge       boolean default false;                        /* tunnel_or_bridge        */
 ALTER TABLE qwat_od.pipe ADD COLUMN pressure_nominal       smallint default 16;                          /* pressure_nominale       */
@@ -62,11 +63,3 @@ CREATE TRIGGER tr_pipe_tunnelbridge
  BEFORE INSERT OR UPDATE OF tunnel_or_bridge ON qwat_od.pipe
  FOR EACH ROW EXECUTE PROCEDURE qwat_od.ft_pipe_tunnelbridge();
 COMMENT ON TRIGGER tr_pipe_tunnelbridge ON qwat_od.pipe IS 'For tunnel and bridges, 3d length is the 2d length (i.e. pipes are considered as horinzontal).';
-
-
-
-
-
-
-
-
