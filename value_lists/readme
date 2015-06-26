@@ -3,8 +3,10 @@ code formulation for vl_code fields
 vl_code is an integer of usually 4 digits.
 ranges for tables are defined here.
 
+Every value list should contain  'other', 'unknown' and 'to be determined'.
+They will have 101, 102 and 103 as code, respectively.
 
-* Global tables *  
+* Global tables *
 1101-1120 precision
 1121-1140 precisionalti
 12xx remote
@@ -43,8 +45,6 @@ ranges for tables are defined here.
 9000-9040 altitude_reference
 
 9100-9120 leak_cause
-9121-9140 leak_damage
-9141-9160 leak_type
 9161-9199 node_table
 9200-9399 part_type
 94 subscriber_type
