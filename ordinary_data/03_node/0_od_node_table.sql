@@ -25,7 +25,7 @@ INSERT INTO qwat_od.node_table (id,table_name,node_type) VALUES (9163,'installat
 INSERT INTO qwat_od.node_table (id,table_name,node_type) VALUES (9164,'installation_source'         , 'installation');
 INSERT INTO qwat_od.node_table (id,table_name,node_type) VALUES (9165,'installation_tank'           , 'installation');
 INSERT INTO qwat_od.node_table (id,table_name,node_type) VALUES (9166,'installation_treatment'      , 'installation');
-INSERT INTO qwat_od.node_table (id,table_name,node_type) VALUES (9167,'installation_valvechamber'   , 'installation');
+INSERT INTO qwat_od.node_table (id,table_name,node_type) VALUES (9167,'installation_chamber'   , 'installation');
 INSERT INTO qwat_od.node_table (id,table_name,node_type) VALUES (9168,'valve'  , 'valve');
 INSERT INTO qwat_od.node_table (id,table_name,node_type) VALUES (9169,'hydrant', 'hydrant');
 INSERT INTO qwat_od.node_table (id,table_name,node_type) VALUES (9170,'part', 'part');

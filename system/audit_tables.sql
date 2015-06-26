@@ -15,7 +15,7 @@ SELECT qwat_sys.audit_table('qwat_od.installation_pump');
 SELECT qwat_sys.audit_table('qwat_od.installation_source');
 SELECT qwat_sys.audit_table('qwat_od.installation_treatment');
 SELECT qwat_sys.audit_table('qwat_od.installation_tank');
-SELECT qwat_sys.audit_table('qwat_od.installation_valvechamber');
+SELECT qwat_sys.audit_table('qwat_od.installation_chamber');
 SELECT qwat_sys.audit_table('qwat_od.leak');
 SELECT qwat_sys.audit_table('qwat_od.meter');
 SELECT qwat_sys.audit_table('qwat_od.node_table');

@@ -42,8 +42,8 @@ CREATE OR REPLACE VIEW qwat_od.vw_search_view AS
 		'Ouvrages' as layer_name,
 		'Chambre de vannes ' || identification || ' ' || name as search_text,
 		geometry
-		FROM qwat_od.installation_valvechamber
-		INNER JOIN qwat_vl.status ON installation_valvechamber.fk_status = status.id
+		FROM qwat_od.installation_chamber
+		INNER JOIN qwat_vl.status ON installation_chamber.fk_status = status.id
 		WHERE status.active IS TRUE
 		
 	UNION SELECT
