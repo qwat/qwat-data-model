@@ -23,8 +23,13 @@ INSERT INTO qwat_vl.valve_function (id, value_fr, value_ro, schema_visible ) 	VA
 INSERT INTO qwat_vl.valve_function (id, value_fr, value_ro )                 	VALUES (6106,'prise de secours','');
 INSERT INTO qwat_vl.valve_function (id, value_fr, value_ro )                 	VALUES (6107,'vanne incendie','vană incendiu');
 INSERT INTO qwat_vl.valve_function (id, value_fr, value_ro )                 	VALUES (6108,'vanne d''hydrant','vană hidrant');
-INSERT INTO qwat_vl.valve_function (id, value_fr, value_ro )                 	VALUES (6109,'inconnu','necunoscut');
+
 INSERT INTO qwat_vl.valve_function (id, value_fr, short_fr,value_ro )        	VALUES (6110,'vidange','Vi','vană golire');
 INSERT INTO qwat_vl.valve_function (id, value_fr, value_ro)                  	VALUES (6111,'vanne réseau','vană cu sertar');
 INSERT INTO qwat_vl.valve_function (id, value_fr, short_fr, value_ro)        	VALUES (6112,'vidange-ventouse','ViVe','golire-aerisire');
-INSERT INTO qwat_vl.valve_function (id, value_en, value_fr, short_fr, value_ro) VALUES (6113, 'backflow prevention', 'antirefoulement','','antiretur');
+INSERT INTO qwat_vl.valve_function (id, value_en, value_fr, value_ro)  		VALUES (6113, 'backflow prevention', 'antirefoulement',	   'antiretur');
+INSERT INTO qwat_vl.valve_function (id, value_en, value_fr, value_ro ) 		VALUES (6314, 'shut-off valve',     'arrêt',                'oprire');
+INSERT INTO qwat_vl.valve_function (id, value_en, value_fr, value_ro ) 		VALUES (6315, 'vent valve',         'jauge',                'aerisire');
+INSERT INTO qwat_vl.valve_function (id, value_en, value_fr, value_ro ) 		VALUES (10001, 'other', 'autre', 'alta');
+INSERT INTO qwat_vl.valve_function (id, value_en, value_fr, value_ro ) 		VALUES (10002, 'unknown', 'inconnu', 'necunoscută');
+INSERT INTO qwat_vl.valve_function (id, value_en, value_fr, value_ro ) 		VALUES (10003, 'to be determined', 'à déterminer', 'de determinat');
