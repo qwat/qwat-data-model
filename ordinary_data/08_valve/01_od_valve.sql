@@ -27,7 +27,7 @@ ALTER TABLE qwat_od.valve ADD COLUMN diameter_nominal 		 varchar(10) ;
 ALTER TABLE qwat_od.valve ADD COLUMN year              		 smallint CHECK (year IS NULL OR year > 1800 AND year < 2100);
 ALTER TABLE qwat_od.valve ADD COLUMN closed            		 boolean  	        default false ;
 ALTER TABLE qwat_od.valve ADD COLUMN networkseparation 		 boolean       	default false ;
-ALTER TABLE qwat_od.valve ADD COLUMN altitude_real     		 decimal(10,3)  ;
+ALTER TABLE qwat_od.valve ADD COLUMN node_altitude_real      decimal(10,3)  ;
 ALTER TABLE qwat_od.valve ADD COLUMN handle_altitude_real    decimal(10,3)  ;
 ALTER TABLE qwat_od.valve ADD COLUMN remark                  text ;
 
