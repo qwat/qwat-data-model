@@ -22,7 +22,7 @@ then
     exit 0
 fi
 
-export PGSERVICE=qwat
+export PGSERVICE=qwat_new
 mkdir -p tmp
 
 #####################################
@@ -85,12 +85,7 @@ fi
 echo -e "BEGIN;" > tmp/qwat_dr.sql
 echo -e "DROP SCHEMA IF EXISTS qwat_dr CASCADE;" >> tmp/qwat_dr.sql
 echo -e "CREATE SCHEMA qwat_dr;" >> tmp/qwat_dr.sql
-for f in drawing/*
-do
-    if test -d "$f"; then
-        cat $f/*.sql >> tmp/qwat_dr.sql
-    fi
-done
+cat drawing/*.sql >> tmp/qwat_dr.sql
 echo -e "COMMIT;" >> tmp/qwat_dr.sql
 PGOPTIONS='--client-min-messages=warning' psql -v ON_ERROR_STOP=1 -f tmp/qwat_dr.sql $* 2> tmp/qwat_dr.err
 cat tmp/qwat_dr.err

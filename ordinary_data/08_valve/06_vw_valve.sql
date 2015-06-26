@@ -21,7 +21,7 @@ SELECT
 	valve.diameter_nominal  ,
 	valve.year              ,
 	valve.closed            ,
-	valve.altitude_real     ,
+	valve.node_altitude_real,
 	valve.remark            ,
 	valve.schema_force_visible ,
 	valve.fk_node           ,

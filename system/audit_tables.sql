@@ -1,11 +1,10 @@
 /* Audit */
-SELECT qwat_sys.audit_table('qwat_od.annotationline');
-SELECT qwat_sys.audit_table('qwat_od.annotationline_schema');
-SELECT qwat_sys.audit_table('qwat_od.annotationpoint');
-SELECT qwat_sys.audit_table('qwat_od.annotationpoint_schema');
-SELECT qwat_sys.audit_table('qwat_od.constructionpoint');
-SELECT qwat_sys.audit_table('qwat_od.dimension_distance');
-SELECT qwat_sys.audit_table('qwat_od.dimension_orientation');
+SELECT qwat_sys.audit_table('qwat_dr.annotationline');
+SELECT qwat_sys.audit_table('qwat_dr.annotationpoint');
+SELECT qwat_sys.audit_table('qwat_dr.constructionpoint');
+SELECT qwat_sys.audit_table('qwat_dr.dimension_distance');
+SELECT qwat_sys.audit_table('qwat_dr.dimension_orientation');
+
 SELECT qwat_sys.audit_table('qwat_od.distributor');
 SELECT qwat_sys.audit_table('qwat_od.district');
 SELECT qwat_sys.audit_table('qwat_od.hydrant');
@@ -27,13 +26,12 @@ SELECT qwat_sys.audit_table('qwat_od.samplingpoint');
 SELECT qwat_sys.audit_table('qwat_od.subscriber');
 SELECT qwat_sys.audit_table('qwat_od.subscriber_reference');
 SELECT qwat_sys.audit_table('qwat_od.valve');
+
 SELECT qwat_sys.audit_table('qwat_vl.cistern');
 SELECT qwat_sys.audit_table('qwat_vl.hydrant_provider');
 SELECT qwat_sys.audit_table('qwat_vl.hydrant_material');
 SELECT qwat_sys.audit_table('qwat_vl.installation_type');
-SELECT qwat_sys.audit_table('qwat_vl.leak_cause');
-SELECT qwat_sys.audit_table('qwat_vl.leak_damage');
-SELECT qwat_sys.audit_table('qwat_vl.leak_type');
+SELECT qwat_sys.audit_table('qwat_vl.leak_cause');;
 SELECT qwat_sys.audit_table('qwat_vl.overflow');
 SELECT qwat_sys.audit_table('qwat_vl.pipe_function');
 SELECT qwat_sys.audit_table('qwat_vl.pipe_installmethod');

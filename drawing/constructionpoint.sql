@@ -12,7 +12,7 @@ COMMENT ON TABLE qwat_dr.constructionpoint IS 'construction points are artificia
 
 /* columns */
 ALTER TABLE qwat_dr.constructionpoint ADD COLUMN altitude_real         decimal(10,3)  ;
-ALTER TABLE qwat_od.constructionpoint ADD COLUMN fk_altitude_reference integer     ;
+ALTER TABLE qwat_dr.constructionpoint ADD COLUMN fk_altitude_reference integer     ;
 ALTER TABLE qwat_dr.constructionpoint ADD COLUMN code                  varchar(15) ;
 ALTER TABLE qwat_dr.constructionpoint ADD COLUMN measurement_campaign  varchar(200) ;
 ALTER TABLE qwat_dr.constructionpoint ADD COLUMN remark                text ;
