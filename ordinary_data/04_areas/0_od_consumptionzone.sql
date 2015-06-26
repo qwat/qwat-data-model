@@ -10,7 +10,7 @@ CREATE TABLE qwat_od.consumptionzone (id serial PRIMARY KEY);
 COMMENT ON TABLE qwat_od.consumptionzone IS 'consumption zones.';
 
 /* COLUMNS */
-ALTER TABLE qwat_od.consumptionzone ADD COLUMN name       varchar(50) default '';
+ALTER TABLE qwat_od.consumptionzone ADD COLUMN name       varchar(50) ;
 ALTER TABLE qwat_od.consumptionzone ADD COLUMN population integer default 0;
 ALTER TABLE qwat_od.consumptionzone ADD COLUMN colorcode  smallint;
 

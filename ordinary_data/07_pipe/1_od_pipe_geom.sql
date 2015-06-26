@@ -8,9 +8,9 @@ ALTER TABLE qwat_od.pipe ADD COLUMN fk_printmap     integer[] ;
 ALTER TABLE qwat_od.pipe ADD COLUMN _length2d       decimal(8,2) ;
 ALTER TABLE qwat_od.pipe ADD COLUMN _length3d       decimal(8,2) ;
 ALTER TABLE qwat_od.pipe ADD COLUMN _diff_elevation decimal(8,2) ;
-ALTER TABLE qwat_od.pipe ADD COLUMN _district       varchar(255) default '' ;
-ALTER TABLE qwat_od.pipe ADD COLUMN _pressurezone   varchar(100) default '' ;
-ALTER TABLE qwat_od.pipe ADD COLUMN _printmaps      varchar(100) default '' ;
+ALTER TABLE qwat_od.pipe ADD COLUMN _district       varchar(255)  ;
+ALTER TABLE qwat_od.pipe ADD COLUMN _pressurezone   varchar(100)  ;
+ALTER TABLE qwat_od.pipe ADD COLUMN _printmaps      varchar(100)  ;
 ALTER TABLE qwat_od.pipe ADD COLUMN _geometry_alt1_used boolean;
 ALTER TABLE qwat_od.pipe ADD COLUMN _geometry_alt2_used boolean;
 

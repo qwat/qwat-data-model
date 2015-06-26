@@ -35,11 +35,11 @@ Pipes with a lower SDR can withstand higher pressure.
 Common nominations are SDR11 and SDR17.';
 
 /* COLUMNS*/
-ALTER TABLE qwat_vl.pipe_material ADD COLUMN _displayname_fr varchar(30) default ''; /* created automatically, used for display only*/
-ALTER TABLE qwat_vl.pipe_material ADD COLUMN _displayname_en varchar(30) default ''; /* created automatically, used for display only*/
-ALTER TABLE qwat_vl.pipe_material ADD COLUMN _displayname_ro varchar(30) default ''; /* created automatically, used for display only*/
+ALTER TABLE qwat_vl.pipe_material ADD COLUMN _displayname_fr varchar(30) ; /* created automatically, used for display only*/
+ALTER TABLE qwat_vl.pipe_material ADD COLUMN _displayname_en varchar(30) ; /* created automatically, used for display only*/
+ALTER TABLE qwat_vl.pipe_material ADD COLUMN _displayname_ro varchar(30) ; /* created automatically, used for display only*/
 
-ALTER TABLE qwat_vl.pipe_material ADD COLUMN diameter varchar(10) default ''; /* need to be varchar to specify a string for unknown or inches with a "*/
+ALTER TABLE qwat_vl.pipe_material ADD COLUMN diameter varchar(10) ; /* need to be varchar to specify a string for unknown or inches with a "*/
 ALTER TABLE qwat_vl.pipe_material ADD COLUMN diameter_nominal smallint;
 ALTER TABLE qwat_vl.pipe_material ADD COLUMN diameter_internal decimal(7,3);
 ALTER TABLE qwat_vl.pipe_material ADD COLUMN diameter_external decimal(7,3);

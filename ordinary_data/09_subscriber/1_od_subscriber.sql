@@ -14,10 +14,10 @@ COMMENT ON TABLE qwat_od.subscriber IS 'Table for subscriber.';
 ALTER TABLE qwat_od.subscriber ADD COLUMN fk_type              integer not null;
 ALTER TABLE qwat_od.subscriber ADD COLUMN fk_status            integer not null default 1301;
 ALTER TABLE qwat_od.subscriber ADD COLUMN fk_pipe              integer;
-ALTER TABLE qwat_od.subscriber ADD COLUMN identification       varchar(12) default '' ;
-ALTER TABLE qwat_od.subscriber ADD COLUMN _identification_full varchar(16) default '' ;
-ALTER TABLE qwat_od.subscriber ADD COLUMN parcel               varchar(12) default '' ;
-ALTER TABLE qwat_od.subscriber ADD COLUMN remark               text default '';
+ALTER TABLE qwat_od.subscriber ADD COLUMN identification       varchar(12)  ;
+ALTER TABLE qwat_od.subscriber ADD COLUMN _identification_full varchar(16)  ;
+ALTER TABLE qwat_od.subscriber ADD COLUMN parcel               varchar(12)  ;
+ALTER TABLE qwat_od.subscriber ADD COLUMN remark               text ;
 
 /* GEOMETRY                      (table_name,  is_node, create_node, create_schematic, get_pipe, auto_district, auto_pressurezone)*/
 SELECT qwat_od.fn_geom_tool_point('subscriber', false,   false,       false,            false,    false,         true);

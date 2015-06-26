@@ -11,9 +11,9 @@ CREATE TABLE qwat_od.printmap (id serial PRIMARY KEY);
 COMMENT ON TABLE qwat_od.printmap IS 'This table is used for polygons for predefined printable maps. shortname would be used as label string, and long_mame would be used in the print composer.';
 
 /* columns */
-ALTER TABLE qwat_od.printmap ADD COLUMN name         varchar(20) default '';
+ALTER TABLE qwat_od.printmap ADD COLUMN name         varchar(20) ;
 ALTER TABLE qwat_od.printmap ADD COLUMN fk_district  smallint;
-ALTER TABLE qwat_od.printmap ADD COLUMN remark       text default '';
+ALTER TABLE qwat_od.printmap ADD COLUMN remark       text ;
 ALTER TABLE qwat_od.printmap ADD COLUMN version_date date;
 
 ALTER TABLE qwat_od.printmap ADD COLUMN x_min double precision;

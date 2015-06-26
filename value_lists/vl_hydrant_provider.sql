@@ -11,7 +11,7 @@ ALTER TABLE qwat_vl.hydrant_provider ADD CONSTRAINT vl_hydrant_provider_pk PRIMA
 COMMENT ON TABLE qwat_vl.hydrant_provider IS 'hydrant providers list.';
 
 /* Columns */
-ALTER TABLE qwat_vl.hydrant_provider ADD COLUMN name varchar(30) default '';
+ALTER TABLE qwat_vl.hydrant_provider ADD COLUMN name varchar(30) not null;
 
 /* Constraints */
 ALTER TABLE qwat_vl.hydrant_provider ADD CONSTRAINT hydrant_provider_name UNIQUE (name);

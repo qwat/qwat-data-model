@@ -11,8 +11,8 @@ CREATE TABLE qwat_od.installation_treatment (id serial PRIMARY KEY);
 COMMENT ON TABLE qwat_od.installation_treatment IS 'storage treatments. These are related to installations and are made of cisterns';
 
 /* common columns to all installations*/
-ALTER TABLE qwat_od.installation_treatment ADD COLUMN name               varchar(40) default '' ;
-ALTER TABLE qwat_od.installation_treatment ADD COLUMN identification     varchar(25) default '' ;
+ALTER TABLE qwat_od.installation_treatment ADD COLUMN name               varchar(40)  ;
+ALTER TABLE qwat_od.installation_treatment ADD COLUMN identification     varchar(25)  ;
 ALTER TABLE qwat_od.installation_treatment ADD COLUMN fk_installation    integer                ;
 ALTER TABLE qwat_od.installation_treatment ADD COLUMN fk_status          integer not null       ;
 ALTER TABLE qwat_od.installation_treatment ADD COLUMN fk_distributor     integer not null       ;
@@ -20,11 +20,11 @@ ALTER TABLE qwat_od.installation_treatment ADD COLUMN fk_remote          integer
 ALTER TABLE qwat_od.installation_treatment ADD COLUMN fk_watertype       integer not null       ;
 ALTER TABLE qwat_od.installation_treatment ADD COLUMN schema_visible     boolean not null default true ;
 ALTER TABLE qwat_od.installation_treatment ADD COLUMN altitude_real      decimal(10,3)          ;
-ALTER TABLE qwat_od.installation_treatment ADD COLUMN remark             text        default '' ;
+ALTER TABLE qwat_od.installation_treatment ADD COLUMN remark             text         ;
 ALTER TABLE qwat_od.installation_treatment ADD COLUMN year               smallint CHECK (year IS NULL OR year > 1800 AND year < 2100);
 ALTER TABLE qwat_od.installation_treatment ADD COLUMN open_water_surface boolean default False  ;
-ALTER TABLE qwat_od.installation_treatment ADD COLUMN parcel             varchar(30) default '' ;
-ALTER TABLE qwat_od.installation_treatment ADD COLUMN eca                varchar(30) default '' ;
+ALTER TABLE qwat_od.installation_treatment ADD COLUMN parcel             varchar(30)  ;
+ALTER TABLE qwat_od.installation_treatment ADD COLUMN eca                varchar(30)  ;
 
 /* LABELS */
 SELECT qwat_od.fn_label_create_fields('installation_treatment');

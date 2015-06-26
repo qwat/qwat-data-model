@@ -12,11 +12,11 @@ CREATE TABLE qwat_od.district (id serial PRIMARY KEY);
 COMMENT ON TABLE qwat_od.district IS 'Districts.';
 
 /* columns */
-ALTER TABLE qwat_od.district ADD COLUMN name          varchar(40) default '';
-ALTER TABLE qwat_od.district ADD COLUMN shortname     varchar(12) default '';
-ALTER TABLE qwat_od.district ADD COLUMN zip           varchar(12) default '';
-ALTER TABLE qwat_od.district ADD COLUMN land_registry varchar(12) default '';
-ALTER TABLE qwat_od.district ADD COLUMN prefix        varchar(12) default '';
+ALTER TABLE qwat_od.district ADD COLUMN name          varchar(40) not null;
+ALTER TABLE qwat_od.district ADD COLUMN shortname     varchar(12) ;
+ALTER TABLE qwat_od.district ADD COLUMN zip           varchar(12) ;
+ALTER TABLE qwat_od.district ADD COLUMN land_registry varchar(12) ;
+ALTER TABLE qwat_od.district ADD COLUMN prefix        varchar(12) ;
 ALTER TABLE qwat_od.district ADD COLUMN colorcode     smallint default 1;
 
 /* geometry */

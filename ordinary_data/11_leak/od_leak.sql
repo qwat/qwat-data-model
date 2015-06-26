@@ -16,10 +16,10 @@ ALTER TABLE qwat_od.leak ADD COLUMN widespread_damage boolean not null;
 ALTER TABLE qwat_od.leak ADD COLUMN detection_date   date;
 ALTER TABLE qwat_od.leak ADD COLUMN repair_date      date;
 ALTER TABLE qwat_od.leak ADD COLUMN _repaired        boolean;
-ALTER TABLE qwat_od.leak ADD COLUMN address          text default '';
+ALTER TABLE qwat_od.leak ADD COLUMN address          text ;
 ALTER TABLE qwat_od.leak ADD COLUMN pipe_replaced    boolean;
-ALTER TABLE qwat_od.leak ADD COLUMN description      text default '';
-ALTER TABLE qwat_od.leak ADD COLUMN repair           text default '';
+ALTER TABLE qwat_od.leak ADD COLUMN description      text ;
+ALTER TABLE qwat_od.leak ADD COLUMN repair           text ;
 
 /* geometry */
 SELECT qwat_od.fn_geom_tool_point('leak', false, false, false, true, true, true);

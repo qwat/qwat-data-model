@@ -12,7 +12,7 @@ COMMENT ON TABLE qwat_od.pressurezone IS 'Pressure zones.';
 /* COLUMNS */
 ALTER TABLE qwat_od.pressurezone ADD COLUMN fk_distributor     integer not null;
 ALTER TABLE qwat_od.pressurezone ADD COLUMN fk_consumptionzone integer;
-ALTER TABLE qwat_od.pressurezone ADD COLUMN name               varchar(50) default '';
+ALTER TABLE qwat_od.pressurezone ADD COLUMN name               varchar(50) not null;
 ALTER TABLE qwat_od.pressurezone ADD COLUMN population         integer default 0;
 ALTER TABLE qwat_od.pressurezone ADD COLUMN colorcode          smallint;
 

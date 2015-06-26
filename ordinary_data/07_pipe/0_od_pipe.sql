@@ -25,8 +25,8 @@ ALTER TABLE qwat_od.pipe ADD COLUMN fk_locationtype        integer[];
 ALTER TABLE qwat_od.pipe ADD COLUMN year                   smallint CHECK (year IS NULL OR year > 1800 AND year < 2100); /* year  */
 ALTER TABLE qwat_od.pipe ADD COLUMN tunnel_or_bridge       boolean default false;                        /* tunnel_or_bridge        */
 ALTER TABLE qwat_od.pipe ADD COLUMN pressure_nominal       smallint default 16;                          /* pressure_nominale       */
-ALTER TABLE qwat_od.pipe ADD COLUMN folder                 varchar(20) default '';                       /* folder                  */
-ALTER TABLE qwat_od.pipe ADD COLUMN remark                 text        default '' ;                      /* remark                  */
+ALTER TABLE qwat_od.pipe ADD COLUMN folder                 varchar(20) ;                       /* folder                  */
+ALTER TABLE qwat_od.pipe ADD COLUMN remark                 text         ;                      /* remark                  */
 ALTER TABLE qwat_od.pipe ADD COLUMN _valve_count           smallint default NULL;                        /* _valve_count            */
 ALTER TABLE qwat_od.pipe ADD COLUMN _valve_closed          boolean default NULL;                         /* _valve_closed           */
 

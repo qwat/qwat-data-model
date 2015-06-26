@@ -14,10 +14,10 @@ COMMENT ON TABLE qwat_od.meter IS 'Table for meters.';
 /* COLUMNS */
 ALTER TABLE qwat_od.meter ADD COLUMN fk_status integer not null;
 ALTER TABLE qwat_od.meter ADD COLUMN fk_pipe integer;
-ALTER TABLE qwat_od.meter ADD COLUMN identification varchar(12) default '';
-ALTER TABLE qwat_od.meter ADD COLUMN _identification_full varchar(16) default '';
-ALTER TABLE qwat_od.meter ADD COLUMN parcel varchar(12) default '' ;
-ALTER TABLE qwat_od.meter ADD COLUMN remark  text default '';
+ALTER TABLE qwat_od.meter ADD COLUMN identification varchar(12) ;
+ALTER TABLE qwat_od.meter ADD COLUMN _identification_full varchar(16) ;
+ALTER TABLE qwat_od.meter ADD COLUMN parcel varchar(12)  ;
+ALTER TABLE qwat_od.meter ADD COLUMN remark  text ;
 ALTER TABLE qwat_od.meter ADD COLUMN year smallint CHECK (year IS NULL OR year > 1800 AND year < 2100);
 
 /* GEOMETRY                     (table_name, is_node, create_node, create_schematic, get_pipe, auto_district, auto_pressurezone)*/

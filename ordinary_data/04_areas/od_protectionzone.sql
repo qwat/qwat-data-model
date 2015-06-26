@@ -13,10 +13,10 @@ COMMENT ON TABLE qwat_od.protectionzone IS 'protectionzones.';
 
 /* columns */
 ALTER TABLE qwat_od.protectionzone ADD COLUMN fk_type   integer;
-ALTER TABLE qwat_od.protectionzone ADD COLUMN name      varchar(40) default '';
+ALTER TABLE qwat_od.protectionzone ADD COLUMN name      varchar(40) ;
 ALTER TABLE qwat_od.protectionzone ADD COLUMN validated boolean     default True;
 ALTER TABLE qwat_od.protectionzone ADD COLUMN date      date;
-ALTER TABLE qwat_od.protectionzone ADD COLUMN agent     varchar(40) default '';
+ALTER TABLE qwat_od.protectionzone ADD COLUMN agent     varchar(40) ;
 
 /* geometry */
 SELECT AddGeometryColumn('qwat_od', 'protectionzone', 'geometry', 21781, 'MULTIPOLYGON', 2);

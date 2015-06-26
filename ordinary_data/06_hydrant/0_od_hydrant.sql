@@ -13,7 +13,7 @@ CREATE TABLE qwat_od.hydrant (id serial PRIMARY KEY);
 COMMENT ON TABLE qwat_od.hydrant IS 'hydrant.';
 
 /* COLUMNS */
-ALTER TABLE qwat_od.hydrant ADD COLUMN identification     varchar(15) default '';
+ALTER TABLE qwat_od.hydrant ADD COLUMN identification     varchar(15) ;
 ALTER TABLE qwat_od.hydrant ADD COLUMN fk_distributor     integer not null      ;
 ALTER TABLE qwat_od.hydrant ADD COLUMN fk_status          integer not null      ;
 ALTER TABLE qwat_od.hydrant ADD COLUMN fk_provider        integer               ;
@@ -22,16 +22,16 @@ ALTER TABLE qwat_od.hydrant ADD COLUMN fk_precision       integer not null      
 ALTER TABLE qwat_od.hydrant ADD COLUMN fk_precisionalti   integer not null      ;
 ALTER TABLE qwat_od.hydrant ADD COLUMN fk_locationtype    integer[]		;
 ALTER TABLE qwat_od.hydrant ADD COLUMN year               smallint CHECK (year IS NULL OR year > 1800 AND year < 2100);
-ALTER TABLE qwat_od.hydrant ADD COLUMN model              varchar(30)           default '';
+ALTER TABLE qwat_od.hydrant ADD COLUMN model              varchar(30)           ;
 ALTER TABLE qwat_od.hydrant ADD COLUMN underground        boolean default false ;
 ALTER TABLE qwat_od.hydrant ADD COLUMN altitude_real      decimal(10,3)         ;
 ALTER TABLE qwat_od.hydrant ADD COLUMN marked        	  boolean default false ; COMMENT ON COLUMN qwat_od.hydrant.marked IS 'does it have markings pointing to it';
-ALTER TABLE qwat_od.hydrant ADD COLUMN remark             text    default ''    ;
+ALTER TABLE qwat_od.hydrant ADD COLUMN remark             text        ;
 ALTER TABLE qwat_od.hydrant ADD COLUMN pressure_static    decimal(5,2)          ; COMMENT ON COLUMN qwat_od.hydrant.pressure_static IS 'pression statique [bar]';
 ALTER TABLE qwat_od.hydrant ADD COLUMN pressure_dynamic   decimal(5,2)          ; COMMENT ON COLUMN qwat_od.hydrant.pressure_dynamic IS 'pression dynamique [bar]';
 ALTER TABLE qwat_od.hydrant ADD COLUMN flow               decimal(8,2)          ; COMMENT ON COLUMN qwat_od.hydrant.flow IS 'debit [l/min]';
 ALTER TABLE qwat_od.hydrant ADD COLUMN observation_date   date                  ;
-ALTER TABLE qwat_od.hydrant ADD COLUMN observation_source varchar(45)           default '';
+ALTER TABLE qwat_od.hydrant ADD COLUMN observation_source varchar(45)           ;
 
 /* geometry                     (table_name,  is_node, create_node, create_schematic, get_pipe, auto_district, auto_pressurezone)*/
 SELECT qwat_od.fn_geom_tool_point('hydrant',   true,    true,        true,             false,    true,          true);

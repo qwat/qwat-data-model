@@ -11,9 +11,9 @@ CREATE TABLE qwat_dr.dimension_distance (id serial PRIMARY KEY);
 COMMENT ON TABLE qwat_dr.dimension_distance IS 'dimension arcs displays measures done on the field. For example: distances to buildings corner';
 
 /* columns */
-ALTER TABLE qwat_dr.dimension_distance ADD COLUMN observation  varchar(120) default '';
+ALTER TABLE qwat_dr.dimension_distance ADD COLUMN observation  varchar(120) ;
 ALTER TABLE qwat_dr.dimension_distance ADD COLUMN _calculation double precision;
-ALTER TABLE qwat_dr.dimension_distance ADD COLUMN remark       text default '';
+ALTER TABLE qwat_dr.dimension_distance ADD COLUMN remark       text ;
 
 /* geometry */
 SELECT AddGeometryColumn('qwat_dr', 'dimension_distance','geometry',21781,'LINESTRING',2);

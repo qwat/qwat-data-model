@@ -31,12 +31,12 @@ $func$
 			EXECUTE format('ALTER TABLE qwat_od.%I ADD COLUMN fk_pipe         integer   ;', _table_name);
 		END IF;
 		IF _auto_district IS TRUE THEN
-			EXECUTE format('ALTER TABLE qwat_od.%I ADD COLUMN _district       varchar(255) default '''' ;', _table_name);
+			EXECUTE format('ALTER TABLE qwat_od.%I ADD COLUMN _district       varchar(255)  ;', _table_name);
 		END IF;
 		IF _auto_pressurezone IS TRUE THEN
-			EXECUTE format('ALTER TABLE qwat_od.%I ADD COLUMN _pressurezone   varchar(255) default '''' ;', _table_name);
+			EXECUTE format('ALTER TABLE qwat_od.%I ADD COLUMN _pressurezone   varchar(255)  ;', _table_name);
 		END IF;
-		EXECUTE format('ALTER TABLE qwat_od.%I ADD COLUMN _printmaps      varchar(100) default '''' ;', _table_name);
+		EXECUTE format('ALTER TABLE qwat_od.%I ADD COLUMN _printmaps      varchar(100)  ;', _table_name);
 
 		/* Enables geometry */
 		PERFORM addGeometryColumn('qwat_od', _table_name, 'geometry', 21781, 'POINT', 2);

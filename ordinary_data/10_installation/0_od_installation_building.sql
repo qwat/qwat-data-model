@@ -11,17 +11,17 @@ CREATE TABLE qwat_od.installation_building (id serial PRIMARY KEY);
 COMMENT ON TABLE qwat_od.installation_building IS 'This table is used to define the buildings of installation.';
 
 /* columns */
-ALTER TABLE qwat_od.installation_building ADD COLUMN name            varchar(60) default '';
-ALTER TABLE qwat_od.installation_building ADD COLUMN identification  varchar(25) default '';
+ALTER TABLE qwat_od.installation_building ADD COLUMN name            varchar(60) ;
+ALTER TABLE qwat_od.installation_building ADD COLUMN identification  varchar(25) ;
 ALTER TABLE qwat_od.installation_building ADD COLUMN fk_status       integer not null      ;
 ALTER TABLE qwat_od.installation_building ADD COLUMN fk_type         integer not null      ;
 ALTER TABLE qwat_od.installation_building ADD COLUMN fk_locationtype integer[]		   ; 
-ALTER TABLE qwat_od.installation_building ADD COLUMN _displayname_en varchar(50) default '';
-ALTER TABLE qwat_od.installation_building ADD COLUMN _displayname_fr varchar(50) default '';
+ALTER TABLE qwat_od.installation_building ADD COLUMN _displayname_en varchar(50) ;
+ALTER TABLE qwat_od.installation_building ADD COLUMN _displayname_fr varchar(50) ;
 ALTER TABLE qwat_od.installation_building ADD COLUMN schema_visible  boolean not null default true ;
 ALTER TABLE qwat_od.installation_building ADD COLUMN year            smallint    CHECK (year IS NULL OR year > 1800 AND year < 2100);
-ALTER TABLE qwat_od.installation_building ADD COLUMN parcel          varchar(30) default '';
-ALTER TABLE qwat_od.installation_building ADD COLUMN eca             varchar(30) default '';
+ALTER TABLE qwat_od.installation_building ADD COLUMN parcel          varchar(30) ;
+ALTER TABLE qwat_od.installation_building ADD COLUMN eca             varchar(30) ;
 
 /* geometry */
 /* point                              ( table_name,       is_node, create_node, create_schematic, get_pipe, auto_district, auto_pressurezone)*/

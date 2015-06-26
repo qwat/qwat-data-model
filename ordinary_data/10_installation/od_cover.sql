@@ -12,14 +12,14 @@ COMMENT ON TABLE qwat_od.cover IS 'Table for installation covers.';
 /* COLUMNS */
 
 ALTER TABLE qwat_od.cover ADD COLUMN fk_type int;
-ALTER TABLE qwat_od.cover ADD COLUMN identification  varchar(15) default ''  ;
+ALTER TABLE qwat_od.cover ADD COLUMN identification  varchar(15)   ;
 ALTER TABLE qwat_od.cover ADD COLUMN fk_distributor  integer                 ;
 ALTER TABLE qwat_od.cover ADD COLUMN fk_status       integer                 ;
 ALTER TABLE qwat_od.cover ADD COLUMN year smallint   CHECK (year IS NULL OR year > 1800 AND year < 2100);
 ALTER TABLE qwat_od.cover ADD COLUMN circular        boolean default true;
 ALTER TABLE qwat_od.cover ADD COLUMN diameter        decimal(10,3);
 ALTER TABLE qwat_od.cover ADD COLUMN altitude_real   decimal(10,3)           ;
-ALTER TABLE qwat_od.cover ADD COLUMN remark text     default '';
+ALTER TABLE qwat_od.cover ADD COLUMN remark text     ;
 
 
 /* GEOMETRY                   (table_name,           is_node, create_node, create_schematic, get_pipe, auto_district, auto_pressurezone)*/

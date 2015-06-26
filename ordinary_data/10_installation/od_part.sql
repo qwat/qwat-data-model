@@ -12,7 +12,7 @@ COMMENT ON TABLE qwat_od.part IS 'Table for installation parts.';
 /* COLUMNS */
 
 ALTER TABLE qwat_od.part ADD COLUMN fk_type          integer not null ;
-ALTER TABLE qwat_od.part ADD COLUMN identification   varchar(15) default '' ;
+ALTER TABLE qwat_od.part ADD COLUMN identification   varchar(15)  ;
 ALTER TABLE qwat_od.part ADD COLUMN fk_distributor   integer not null ;
 ALTER TABLE qwat_od.part ADD COLUMN fk_status        integer not null ;
 ALTER TABLE qwat_od.part ADD COLUMN fk_precision     integer not null ;
@@ -21,7 +21,7 @@ ALTER TABLE qwat_od.part ADD COLUMN year smallint    CHECK (year IS NULL OR year
 ALTER TABLE qwat_od.part ADD COLUMN altitude_real    decimal(10,3)    ;
 ALTER TABLE qwat_od.part ADD COLUMN fk_altitude_reference integer     ;
 ALTER TABLE qwat_od.part ADD COLUMN orientation      smallint         ;
-ALTER TABLE qwat_od.part ADD COLUMN remark           text default ''  ;
+ALTER TABLE qwat_od.part ADD COLUMN remark           text   ;
 
 /* GEOMETRY                    (table_name, is_node, create_node, create_schematic, get_pipe, auto_district, auto_pressurezone)*/
 SELECT qwat_od.fn_geom_tool_point('part',   true,    false,        true,             true,       true,         true);
