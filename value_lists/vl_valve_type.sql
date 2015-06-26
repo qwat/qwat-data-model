@@ -12,16 +12,17 @@ ALTER TABLE qwat_vl.valve_type ADD CONSTRAINT vl_valve_type_pk PRIMARY KEY (id);
 COMMENT ON TABLE qwat_vl.valve_type IS 'Types of valve';
 
 /* COLUMNS */
+INSERT INTO qwat_vl.valve_type ( id, value_en, value_fr, value_ro ) VALUES (6301, 'gate valve',		'vanne à opercule',	'vană cu sertar');
+INSERT INTO qwat_vl.valve_type ( id, value_en, value_fr, value_ro ) VALUES (6302, 'clayton valve',	'vanne clayton',	'vană clayton');
+INSERT INTO qwat_vl.valve_type ( id, value_en, value_fr, value_ro ) VALUES (6303, 'annular valve',	'vanne annulaire',	'vană inelară');
 
-INSERT INTO qwat_vl.valve_type ( id, value_fr, value_ro ) VALUES (6302, 'vanne clayton',	'vană clayton');
-INSERT INTO qwat_vl.valve_type ( id, value_fr, value_ro ) VALUES (6303, 'vanne annulaire',	'vană inelară');
-INSERT INTO qwat_vl.valve_type ( id, value_fr, value_ro ) VALUES (6304, 'inconnu',		'necunoscut');
-INSERT INTO qwat_vl.valve_type ( id, value_fr, value_ro ) VALUES (6305, 'jauge',		'aerisire');
-INSERT INTO qwat_vl.valve_type ( id, value_fr, value_ro ) VALUES (6306, 'limiteur de débit',	'reductor');
-INSERT INTO qwat_vl.valve_type ( id, value_fr, value_ro ) VALUES (6307, 'vanne clapet',         'vană clapet');
-INSERT INTO qwat_vl.valve_type ( id, value_fr, value_ro ) VALUES (6308, 'soupape automatique', 	'supapă automatică');
-INSERT INTO qwat_vl.valve_type ( id, value_fr, value_ro ) VALUES (6309, 'sprinkler',		'sprinkler');
-INSERT INTO qwat_vl.valve_type ( id, value_fr, value_ro ) VALUES (6310, 'vanne',		'vană');
-INSERT INTO qwat_vl.valve_type ( id, value_fr, short_fr, value_ro ) VALUES (6311, 'vanne papillon', 'P','vană fluture');
-INSERT INTO qwat_vl.valve_type ( id, value_fr, value_ro ) VALUES (6312, 'Elgef',		'Elgef');
-INSERT INTO qwat_vl.valve_type ( id, value_fr, value_ro ) VALUES (6313, 'arrêt',		'oprire');
+INSERT INTO qwat_vl.valve_type ( id, value_en, value_fr, value_ro ) VALUES (6306, 'flow control valve',	'limiteur de débit',	'reductor');
+INSERT INTO qwat_vl.valve_type ( id, value_en, value_fr, value_ro ) VALUES (6307, 'check valve',	'vanne clapet',         'vană cu clapetă');
+INSERT INTO qwat_vl.valve_type ( id, value_en, value_fr, value_ro ) VALUES (6308, '',			'soupape automatique', 	'supapă automată');
+INSERT INTO qwat_vl.valve_type ( id, value_en, value_fr, value_ro ) VALUES (6309, '',			'sprinkler',		'sprinkler');
+INSERT INTO qwat_vl.valve_type ( id, value_en, value_fr, value_ro ) VALUES (6310, 'valve',		'vanne',		'vană');
+INSERT INTO qwat_vl.valve_type ( id, value_en, value_fr, short_fr, value_ro ) VALUES (6311, 'butterfly valve',	'vanne papillon', 'P','vană fluture');
+INSERT INTO qwat_vl.valve_type ( id, value_en, value_fr, value_ro ) VALUES (6312, '',			'Elgef',		'Elgef');
+INSERT INTO qwat_vl.valve_type (id, value_en, value_fr, value_ro )  VALUES (10001, 'other', 'autre', 'alta');
+INSERT INTO qwat_vl.valve_type (id, value_en, value_fr, value_ro )  VALUES (10002, 'unknown', 'inconnu', 'necunoscut');
+INSERT INTO qwat_vl.valve_type (id, value_en, value_fr, value_ro )  VALUES (10003, 'to be determined', 'à déterminer', 'de determinat');
