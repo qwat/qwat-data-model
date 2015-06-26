@@ -15,7 +15,7 @@ SELECT
 	valve.fk_type           ,
 	valve.fk_function       ,
 	valve.fk_status         ,
-	valve.fk_precision      ,
+	valve.fk_node_precision ,
 	valve.fk_maintenance    ,
 	valve.fk_pipe           ,
 	valve.diameter_nominal  ,
