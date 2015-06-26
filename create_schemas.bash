@@ -71,6 +71,32 @@ PGOPTIONS='--client-min-messages=warning' psql -v ON_ERROR_STOP=1 -f tmp/qwat_od
 cat tmp/qwat_od.err
 
 #####################################
+# Create/overwrite schemas qwat_dr  #
+#####################################
+
+if [ `psql -c "\dn" $* | grep " qwat_dr " | wc -l` -eq 1 ]
+then
+    read -p "Schema qwat_dr already exists, overwrite ? (y/c): " response
+    if [ $response != "y" ]
+    then
+        exit 0
+    fi
+fi
+echo -e "BEGIN;" > tmp/qwat_dr.sql
+echo -e "DROP SCHEMA IF EXISTS qwat_dr CASCADE;" >> tmp/qwat_dr.sql
+echo -e "CREATE SCHEMA qwat_dr;" >> tmp/qwat_dr.sql
+for f in drawing/*
+do
+    if test -d "$f"; then
+        cat $f/*.sql >> tmp/qwat_dr.sql
+    fi
+done
+echo -e "COMMIT;" >> tmp/qwat_dr.sql
+PGOPTIONS='--client-min-messages=warning' psql -v ON_ERROR_STOP=1 -f tmp/qwat_dr.sql $* 2> tmp/qwat_dr.err
+cat tmp/qwat_dr.err
+
+
+#####################################
 # Create/overwrite schemas qwat_sys  #
 #####################################
 
