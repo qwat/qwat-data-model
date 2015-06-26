@@ -7,9 +7,8 @@
 DROP VIEW IF EXISTS qwat_od.vw_leak CASCADE;
 CREATE VIEW qwat_od.vw_leak AS 
 	SELECT  
-		leak_type.value_fr   AS type,  
 		leak_cause.value_fr  AS cause,
-		leak_damage.value_fr AS damage,
+		widespread_damage,
 		detection_date  ,
 		repair_date     ,
 		_repaired       ,
@@ -19,9 +18,7 @@ CREATE VIEW qwat_od.vw_leak AS
 		repair          ,
 		geometry::geometry(Point,21781)
 	FROM qwat_od.leak
-	INNER      JOIN qwat_vl.leak_type   ON leak.fk_type   = leak_type.id
-	LEFT OUTER JOIN qwat_vl.leak_cause  ON leak.fk_cause  = leak_cause.id
-	INNER      JOIN qwat_vl.leak_damage ON leak.fk_damage = leak_damage.id;
+	INNER JOIN qwat_vl.leak_cause  ON leak.fk_cause  = leak_cause.id;
 
 
 

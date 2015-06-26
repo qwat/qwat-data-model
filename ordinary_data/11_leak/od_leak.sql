@@ -11,16 +11,15 @@ CREATE TABLE qwat_od.leak (id serial PRIMARY KEY);
 COMMENT ON TABLE qwat_od.leak IS 'pipe leaks';
 
 /* columns */
-ALTER TABLE qwat_od.leak ADD COLUMN fk_type        integer not null;
-ALTER TABLE qwat_od.leak ADD COLUMN fk_cause       integer;
-ALTER TABLE qwat_od.leak ADD COLUMN fk_damage      integer not null;
-ALTER TABLE qwat_od.leak ADD COLUMN detection_date date;
-ALTER TABLE qwat_od.leak ADD COLUMN repair_date    date;
-ALTER TABLE qwat_od.leak ADD COLUMN _repaired      boolean;
-ALTER TABLE qwat_od.leak ADD COLUMN address        text default '';
-ALTER TABLE qwat_od.leak ADD COLUMN pipe_replaced  boolean;
-ALTER TABLE qwat_od.leak ADD COLUMN description    text default '';
-ALTER TABLE qwat_od.leak ADD COLUMN repair         text default '';
+ALTER TABLE qwat_od.leak ADD COLUMN fk_cause         integer not null;
+ALTER TABLE qwat_od.leak ADD COLUMN widespread_damage boolean not null;
+ALTER TABLE qwat_od.leak ADD COLUMN detection_date   date;
+ALTER TABLE qwat_od.leak ADD COLUMN repair_date      date;
+ALTER TABLE qwat_od.leak ADD COLUMN _repaired        boolean;
+ALTER TABLE qwat_od.leak ADD COLUMN address          text default '';
+ALTER TABLE qwat_od.leak ADD COLUMN pipe_replaced    boolean;
+ALTER TABLE qwat_od.leak ADD COLUMN description      text default '';
+ALTER TABLE qwat_od.leak ADD COLUMN repair           text default '';
 
 /* geometry */
 SELECT qwat_od.fn_geom_tool_point('leak', false, false, false, true, true, true);
@@ -29,9 +28,7 @@ SELECT qwat_od.fn_geom_tool_point('leak', false, false, false, true, true, true)
 SELECT qwat_od.fn_label_create_fields('leak');
 
 /* constraints */
-ALTER TABLE qwat_od.leak ADD CONSTRAINT leak_fk_type   FOREIGN KEY (fk_type)   REFERENCES qwat_vl.leak_type(id)   MATCH FULL;   CREATE INDEX fki_leak_fk_type   ON qwat_od.leak(fk_type)  ;
-ALTER TABLE qwat_od.leak ADD CONSTRAINT leak_fk_cause  FOREIGN KEY (fk_cause)  REFERENCES qwat_vl.leak_cause(id)  MATCH FULL; CREATE INDEX fki_leak_fk_cause  ON qwat_od.leak(fk_cause) ;
-ALTER TABLE qwat_od.leak ADD CONSTRAINT leak_fk_damage FOREIGN KEY (fk_damage) REFERENCES qwat_vl.leak_damage(id) MATCH FULL;   CREATE INDEX fki_leak_fk_damage ON qwat_od.leak(fk_damage);
+ALTER TABLE qwat_od.leak ADD CONSTRAINT leak_fk_cause FOREIGN KEY (fk_cause) REFERENCES qwat_vl.leak_cause(id) MATCH FULL; CREATE INDEX fki_leak_fk_cause ON qwat_od.leak(fk_cause);
 
 /* Trigger */
 CREATE OR REPLACE FUNCTION qwat_od.ft_leak_repaired() RETURNS trigger AS 
