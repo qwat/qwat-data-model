@@ -24,3 +24,7 @@ ALTER TABLE qwat_vl.visible ADD CONSTRAINT visible_code_int UNIQUE (vl_code_int)
 INSERT INTO qwat_vl.visible (id,vl_code,vl_code_int,value_en,value_fr,value_ro) VALUES (1401,NULL,1,'Auto','Auto','Auto');
 INSERT INTO qwat_vl.visible (id,vl_code,vl_code_int,value_en,value_fr,value_ro) VALUES (1402,True,2,'Visible','Visible','Vizibilă');
 INSERT INTO qwat_vl.visible (id,vl_code,vl_code_int,value_en,value_fr,value_ro) VALUES (1403,False,0,'Invisible','Invisible','Invizibilă');
+
+
+
+

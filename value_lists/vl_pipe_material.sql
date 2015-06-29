@@ -79,7 +79,7 @@ COMMENT ON TRIGGER tr_fancy_value ON qwat_vl.pipe_material IS 'Trigger: updates 
 /* Predefined functions list */
 /* This has to be filled by user to fulfill language preferences */
 INSERT INTO qwat_vl.pipe_material (id, vl_active, short_en, value_en, short_fr, value_fr, short_ro, value_ro, diameter_nominal, code_sire, pressure_nominal) VALUES (101, true, 'Other', 'Other', 'Autre', 'Autre', 'Altul', 'Altul', NULL, 1, NULL);
-INSERT INTO qwat_vl.pipe_material (id, vl_active, short_en, value_en, short_fr, value_fr, short_ro, value_ro, diameter_nominal, code_sire, pressure_nominal) VALUES (102, true, 'Unknown', 'Unknown', 'Inconnu', 'Inconnu', 'Necunoscut', 'Necunoscut', NULL, 1, NULL);
+INSERT INTO qwat_vl.pipe_material (id, vl_active, short_en, value_en, short_fr, value_fr, short_ro, value_ro, diameter_nominal, code_sire, pressure_nominal) VALUES (102, true, 'Unknown', 'Unknown', 'Inc.', 'Inconnu', 'Necunoscut', 'Necunoscut', NULL, 1, NULL);
 INSERT INTO qwat_vl.pipe_material (id, vl_active, short_en, value_en, short_fr, value_fr, short_ro, value_ro, diameter_nominal, code_sire, pressure_nominal) VALUES (103, true, 'To determ.', 'To be determined', 'à dét.', 'à déterminer', 'De det.', 'De determinat', NULL, 1, NULL);
 
 INSERT INTO qwat_vl.pipe_material (id, vl_active, short_en, value_en, short_fr, value_fr, short_ro, value_ro, diameter, diameter_nominal, diameter_internal, diameter_external, code_sire, pressure_nominal, sdr, wall_thickness) VALUES (5508, true, '', '', 'PE', 'Polyéthylène 100', 'PE', 'Polietilenă 100', '25', 20, 20.400, 25.000, 10, 16, 11, 2.3);

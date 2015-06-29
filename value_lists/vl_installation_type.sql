@@ -15,7 +15,7 @@ ALTER TABLE qwat_vl.installation_type ADD COLUMN schema_visible boolean default 
 
 /* VALUES */
 INSERT INTO qwat_vl.installation_type (id, short_en, value_en, short_fr, value_fr, short_ro, value_ro ) VALUES (101, '', 'other', 'autre', 'autre', 'alta','alta');
-INSERT INTO qwat_vl.installation_type (id, short_en, value_en, short_fr, value_fr, short_ro, value_ro ) VALUES (102, '', 'unknown', 'inconnu', 'inconnu', 'nec', 'necunoscută');
+INSERT INTO qwat_vl.installation_type (id, short_en, value_en, short_fr, value_fr, short_ro, value_ro ) VALUES (102, '', 'unknown', 'inc.', 'inconnu', 'nec', 'necunoscută');
 INSERT INTO qwat_vl.installation_type (id, short_en, value_en, short_fr, value_fr, short_ro, value_ro ) VALUES (103, '', 'to be determined', 'à dét.', 'à déterminer', 'de det.', 'de determinat');
 
 INSERT INTO qwat_vl.installation_type (id,short_en,value_en,short_fr,value_fr,short_ro,value_ro) VALUES (2001,'','Tank', 'R' ,'Réservoir'       ,'R'    ,'Rezervor');
