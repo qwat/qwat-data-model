@@ -26,5 +26,5 @@ INSERT INTO qwat_vl.valve_type ( id, value_en, value_fr, value_ro ) VALUES (6309
 INSERT INTO qwat_vl.valve_type ( id, value_en, value_fr, value_ro ) VALUES (6310, 'valve',		'vanne',		'vană');
 INSERT INTO qwat_vl.valve_type ( id, value_en, value_fr, short_fr, value_ro ) VALUES (6311, 'butterfly valve',	'vanne papillon', 'P','vană fluture');
 INSERT INTO qwat_vl.valve_type ( id, value_en, value_fr, value_ro ) VALUES (6312, '',			'Elgef',		'Elgef');
-INSERT INTO qwat_vl.valve_type ( id, value_en, value_fr, value_ro ) VALUES (6313, '',			'1/4 de tour',  '');
+INSERT INTO qwat_vl.valve_type ( id, value_en, value_fr, value_ro ) VALUES (6313, '1/4 of turn', '1/4 de tour', 'sfert de tur');
 

@@ -14,12 +14,20 @@ COMMENT ON TABLE qwat_vl.installation_type IS 'type for installation.';
 ALTER TABLE qwat_vl.installation_type ADD COLUMN schema_visible boolean default true;
 
 /* VALUES */
-INSERT INTO qwat_vl.installation_type (id,short_fr,value_fr,short_ro,value_ro) VALUES (2001,'R'  ,'Réservoir'		,'R'	,'Rezervor');
-INSERT INTO qwat_vl.installation_type (id,short_fr,value_fr,short_ro,value_ro) VALUES (2002,'S'  ,'Source'		,'S'	,'Sursă');
-INSERT INTO qwat_vl.installation_type (id,short_fr,value_fr,short_ro,value_ro) VALUES (2003,'P'  ,'Pompage'		,'P'	,'Staţie pompare');
-INSERT INTO qwat_vl.installation_type (id,short_fr,value_fr,short_ro,value_ro) VALUES (2004,'CV' ,'Chambres de vannes' 	,'CV'	,'Cămin Vane');
-INSERT INTO qwat_vl.installation_type (id,short_fr,value_fr,short_ro,value_ro) VALUES (2005,'CC' ,'Chambre compteur'	,'CAp'  ,'Cămin Apometru');
-INSERT INTO qwat_vl.installation_type (id,short_fr,value_fr,short_ro,value_ro) VALUES (2006,'CT' ,'Chambre de traitement','CT'	,'Cameră de Tratare?');
-INSERT INTO qwat_vl.installation_type (id,short_fr,value_fr,short_ro,value_ro) VALUES (2007,'CR' ,'Chambre réducteur'	,'CR'	,'Cămin reductor presiune?');
-INSERT INTO qwat_vl.installation_type (id,short_fr,value_fr,short_ro,value_ro) VALUES (2008,'CCP','Chambre coupe pression','CRp','Cămin reducere presiune');
-INSERT INTO qwat_vl.installation_type (id,short_fr,value_fr,short_ro,value_ro) VALUES (2009,'CRA','Chambre de rassemblement',''	,'Cameră de captare/colectare');
+INSERT INTO qwat_vl.installation_type (id, short_en, value_en, short_fr, value_fr, short_ro, value_ro ) VALUES (101, '', 'other', 'autre', 'autre', 'alta','alta');
+INSERT INTO qwat_vl.installation_type (id, short_en, value_en, short_fr, value_fr, short_ro, value_ro ) VALUES (102, '', 'unknown', 'inconnu', 'inconnu', 'nec', 'necunoscută');
+INSERT INTO qwat_vl.installation_type (id, short_en, value_en, short_fr, value_fr, short_ro, value_ro ) VALUES (103, '', 'to be determined', 'à dét.', 'à déterminer', 'de det.', 'de determinat');
+
+INSERT INTO qwat_vl.installation_type (id,short_en,value_en,short_fr,value_fr,short_ro,value_ro) VALUES (2001,'','Tank', 'R' ,'Réservoir'       ,'R'    ,'Rezervor');
+INSERT INTO qwat_vl.installation_type (id,short_en,value_en,short_fr,value_fr,short_ro,value_ro) VALUES (2002,'','Reservoir', 'S' ,'Source'     ,'S'    ,'Sursă');
+INSERT INTO qwat_vl.installation_type (id,short_en,value_en,short_fr,value_fr,short_ro,value_ro) VALUES (2003,'','', 'P' ,'Pompage'     ,'P'    ,'Staţie pompare');
+INSERT INTO qwat_vl.installation_type (id,short_en,value_en,short_fr,value_fr,short_ro,value_ro) VALUES (2004,'','', 'CV' ,'Chambres de vannes' ,'CV'   ,'Cămin Vane');
+INSERT INTO qwat_vl.installation_type (id,short_en,value_en,short_fr,value_fr,short_ro,value_ro) VALUES (2005,'','', 'CC' ,'Chambre compteur'   ,'CAp' ,'Cămin Apometru');
+INSERT INTO qwat_vl.installation_type (id,short_en,value_en,short_fr,value_fr,short_ro,value_ro) VALUES (2006,'','', 'CT' ,'Chambre de traitement','CT' ,'Cameră de Tratare?');
+INSERT INTO qwat_vl.installation_type (id,short_en,value_en,short_fr,value_fr,short_ro,value_ro) VALUES (2007,'','', 'CR' ,'Chambre réducteur'  ,'CR'   ,'Cămin reductor presiune?');
+INSERT INTO qwat_vl.installation_type (id,short_en,value_en,short_fr,value_fr,short_ro,value_ro) VALUES (2008,'','', 'CCP','Chambre coupe pression','CRp','Cămin reducere presiune');
+INSERT INTO qwat_vl.installation_type (id,short_en,value_en,short_fr,value_fr,short_ro,value_ro) VALUES (2009,'','', 'CRA','Chambre de rassemblement',''        ,'Cameră de captare/colectare');
+
+
+
+
