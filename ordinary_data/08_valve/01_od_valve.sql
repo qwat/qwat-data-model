@@ -25,6 +25,7 @@ ALTER TABLE qwat_od.valve ADD COLUMN fk_maintenance    		 integer[];
 ALTER TABLE qwat_od.valve ADD COLUMN fk_locationtype 		 integer[];
 ALTER TABLE qwat_od.valve ADD COLUMN diameter_nominal 		 varchar(10) ;
 ALTER TABLE qwat_od.valve ADD COLUMN year              		 smallint CHECK (year IS NULL OR year > 1800 AND year < 2100);
+ALTER TABLE qwat_od.valve ADD COLUMN year_end                smallint CHECK (year_end IS NULL OR year > 1800 AND year < 2100);
 ALTER TABLE qwat_od.valve ADD COLUMN closed            		 boolean  	        default false ;
 ALTER TABLE qwat_od.valve ADD COLUMN networkseparation 		 boolean       	default false ;
 ALTER TABLE qwat_od.valve ADD COLUMN node_altitude_real      decimal(10,3)  ;

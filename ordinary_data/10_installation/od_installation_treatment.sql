@@ -22,6 +22,7 @@ ALTER TABLE qwat_od.installation_treatment ADD COLUMN schema_visible     boolean
 ALTER TABLE qwat_od.installation_treatment ADD COLUMN altitude_real      decimal(10,3)          ;
 ALTER TABLE qwat_od.installation_treatment ADD COLUMN remark             text         ;
 ALTER TABLE qwat_od.installation_treatment ADD COLUMN year               smallint CHECK (year IS NULL OR year > 1800 AND year < 2100);
+ALTER TABLE qwat_od.installation_treatment ADD COLUMN year_end           smallint CHECK (year_end IS NULL OR year > 1800 AND year < 2100);
 ALTER TABLE qwat_od.installation_treatment ADD COLUMN open_water_surface boolean default False  ;
 ALTER TABLE qwat_od.installation_treatment ADD COLUMN parcel             varchar(30)  ;
 ALTER TABLE qwat_od.installation_treatment ADD COLUMN eca                varchar(30)  ;

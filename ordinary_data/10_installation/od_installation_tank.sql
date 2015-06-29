@@ -21,6 +21,7 @@ ALTER TABLE qwat_od.installation_tank ADD COLUMN fk_watertype         integer no
 ALTER TABLE qwat_od.installation_tank ADD COLUMN schema_visible       boolean not null default true ;
 ALTER TABLE qwat_od.installation_tank ADD COLUMN remark               text         ;
 ALTER TABLE qwat_od.installation_tank ADD COLUMN year                 smallint CHECK (year IS NULL OR year > 1800 AND year < 2100);
+ALTER TABLE qwat_od.installation_tank ADD COLUMN year_end             smallint CHECK (year_end IS NULL OR year > 1800 AND year < 2100);
 ALTER TABLE qwat_od.installation_tank ADD COLUMN open_water_surface   boolean default False  ;
 ALTER TABLE qwat_od.installation_tank ADD COLUMN parcel               varchar(30)  ;
 ALTER TABLE qwat_od.installation_tank ADD COLUMN eca                  varchar(30)  ;

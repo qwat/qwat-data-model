@@ -22,6 +22,7 @@ ALTER TABLE qwat_od.hydrant ADD COLUMN fk_precision       integer not null      
 ALTER TABLE qwat_od.hydrant ADD COLUMN fk_precisionalti   integer not null      ;
 ALTER TABLE qwat_od.hydrant ADD COLUMN fk_locationtype    integer[]		;
 ALTER TABLE qwat_od.hydrant ADD COLUMN year               smallint CHECK (year IS NULL OR year > 1800 AND year < 2100);
+ALTER TABLE qwat_od.hydrant ADD COLUMN year_end           smallint CHECK (year_end IS NULL OR year > 1800 AND year < 2100);
 ALTER TABLE qwat_od.hydrant ADD COLUMN model              varchar(30)           ;
 ALTER TABLE qwat_od.hydrant ADD COLUMN underground        boolean default false ;
 ALTER TABLE qwat_od.hydrant ADD COLUMN altitude_real      decimal(10,3)         ;
