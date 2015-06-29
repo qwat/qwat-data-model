@@ -34,7 +34,7 @@ CREATE VIEW qwat_od.vw_hydrant AS
 		distributor.name       AS _distributor,
 		status.value_fr        AS _status,
 		status.active          AS _status_active,
-		hydrant_provider.name  AS _provider,
+		hydrant_provider.value_fr  AS _provider,
 		node.altitude_dtm      AS _altitude_dtm,
 		district.name          AS _district,
 		district.shortname     AS _district_shortname,
