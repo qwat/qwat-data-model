@@ -1,7 +1,7 @@
 /*
 	qWat - QGIS Water Module
 
-	SQL file :: status table
+	SQL file :: part type table
 */
 
 /* CREATE */

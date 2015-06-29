@@ -16,6 +16,10 @@ ALTER TABLE qwat_vl.hydrant_provider ADD COLUMN name varchar(30) not null;
 /* Constraints */
 ALTER TABLE qwat_vl.hydrant_provider ADD CONSTRAINT hydrant_provider_name UNIQUE (name);
 
+/* VALUES */
+INSERT INTO qwat_vl.hydrant_provider (id, value_en, value_fr, value_ro, name ) VALUES (101, 'other', 'autre', 'altul','other');
+INSERT INTO qwat_vl.hydrant_provider (id, value_en, value_fr, value_ro, name ) VALUES (102, 'unknown', 'inconnu', 'necunoscut','unknown');
+INSERT INTO qwat_vl.hydrant_provider (id, value_en, value_fr, value_ro, name ) VALUES (103, 'to be determined', 'à déterminer', 'de determinat','to be determined');
 
 INSERT INTO qwat_vl.hydrant_provider (id,name) VALUES (7101,'+GF+');
 INSERT INTO qwat_vl.hydrant_provider (id,name) VALUES (7102,'Wild');

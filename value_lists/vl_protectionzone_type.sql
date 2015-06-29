@@ -31,10 +31,16 @@ The outer protection zone is designed to ensure that, in the event of an acciden
 Source: http://www.bafu.admin.ch/grundwasser/07483/07485/10037/index.html?lang=en';
 
 /* CONTENT */
-INSERT INTO qwat_vl.protectionzone_type (id,short_fr,value_fr,short_ro,value_ro) VALUES (9501,'S1','Zone de protection S1','S1','Zonă de protecţie S1');
-INSERT INTO qwat_vl.protectionzone_type (id,short_fr,value_fr,short_ro,value_ro) VALUES (9502,'S2','Zone de protection S2','S2','Zonă de protecţie S2');
-INSERT INTO qwat_vl.protectionzone_type (id,short_fr,value_fr,short_ro,value_ro) VALUES (9503,'S3','Zone de protection S3','S3','Zonă de protecţie S3');
-INSERT INTO qwat_vl.protectionzone_type (id,short_fr,value_fr,short_ro,value_ro) VALUES (9504,'PP','Périmètre de protection','PP','Perimetru de protecţie');
-INSERT INTO qwat_vl.protectionzone_type (id,short_fr,value_fr,short_ro,value_ro) VALUES (9505,'Zo','Zone de protection des eaux de surface','Zo','Zonă de protecţie a apelor de suprafaţă');
+INSERT INTO qwat_vl.protectionzone_type (id, short_en, value_en, short_fr, value_fr, short_ro, value_ro ) VALUES (101, 'Other', 'Other', 'Autre', 'Autre', 'Alta', 'Alta');
+INSERT INTO qwat_vl.protectionzone_type (id, short_en, value_en, short_fr, value_fr, short_ro, value_ro ) VALUES (102, 'Unknown', 'Unknown', 'Inconnu', 'Inconnu', 'Nec.', 'Necunoscută');
+INSERT INTO qwat_vl.protectionzone_type (id, short_en, value_en, short_fr, value_fr, short_ro, value_ro ) VALUES (103, 'To determ.', 'To be determined', 'À dét.', 'à déterminer','De det.', 'De determinat');
+
+INSERT INTO qwat_vl.protectionzone_type (id,short_en,value_en,short_fr,value_fr,short_ro,value_ro) VALUES (9501,'S1','S1 protection zone','S1','Zone de protection S1','S1','Zonă de protecţie S1');
+INSERT INTO qwat_vl.protectionzone_type (id,short_en,value_en,short_fr,value_fr,short_ro,value_ro) VALUES (9502,'S2','S2 protection zone','S2','Zone de protection S2','S2','Zonă de protecţie S2');
+INSERT INTO qwat_vl.protectionzone_type (id,short_en,value_en,short_fr,value_fr,short_ro,value_ro) VALUES (9503,'S3','S3 protection zone','S3','Zone de protection S3','S3','Zonă de protecţie S3');
+INSERT INTO qwat_vl.protectionzone_type (id,short_en,value_en,short_fr,value_fr,short_ro,value_ro) VALUES (9504,'PP','Protection perimeter','PP','Périmètre de protection','PP','Perimetru de protecţie');
+INSERT INTO qwat_vl.protectionzone_type (id,short_en,value_en,short_fr,value_fr,short_ro,value_ro) VALUES (9505,'Zo','Surface Water protection zone','Zo','Zone de protection des eaux de surface','Zo','Zonă de protecţie a apelor de suprafaţă');
+
+
 
 

@@ -12,16 +12,14 @@ COMMENT ON TABLE qwat_vl.cover_type IS 'Type of covers';
 
 
 /* VALUES */
-INSERT INTO qwat_vl.cover_type (id, value_fr, value_ro) VALUES (9801,'couvercle acier','capac oţel');
-INSERT INTO qwat_vl.cover_type (id, value_fr, value_ro) VALUES (9802,'couvercle béton','capac beton');
-INSERT INTO qwat_vl.cover_type (id, value_fr, value_ro) VALUES (9803,'couvercle plastique','capac plastic');
-INSERT INTO qwat_vl.cover_type (id, value_fr, value_ro) VALUES (9804,'couvercle fonte','capac fontă');
-INSERT INTO qwat_vl.cover_type (id, value_fr, value_ro) VALUES (9805,'autre','alt tip');
-INSERT INTO qwat_vl.cover_type (id, value_fr, value_ro) VALUES (9806,'inconnu','necunoscut');
+INSERT INTO qwat_vl.cover_type (id, value_en, value_fr, value_ro ) VALUES (101, 'other', 'autre', 'altul');
+INSERT INTO qwat_vl.cover_type (id, value_en, value_fr, value_ro ) VALUES (102, 'unknown', 'inconnu', 'necunoscut');
+INSERT INTO qwat_vl.cover_type (id, value_en, value_fr, value_ro ) VALUES (103, 'to be determined', 'à déterminer', 'de determinat');
 
-
-
-
+INSERT INTO qwat_vl.cover_type (id, value_en, value_fr, value_ro) VALUES (9801,'steel cover','couvercle acier','capac oţel');
+INSERT INTO qwat_vl.cover_type (id, value_en, value_fr, value_ro) VALUES (9802,'concrete cover','couvercle béton','capac beton');
+INSERT INTO qwat_vl.cover_type (id, value_en, value_fr, value_ro) VALUES (9803,'plastic cover','couvercle plastique','capac plastic');
+INSERT INTO qwat_vl.cover_type (id, value_en, value_fr, value_ro) VALUES (9804,'cast-iron cover','couvercle fonte','capac fontă');
 
 
 
