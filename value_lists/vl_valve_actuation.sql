@@ -15,10 +15,15 @@ COMMENT ON TABLE qwat_vl.valve_actuation IS 'valve actuation/actionnement/acţio
 ALTER TABLE qwat_vl.valve_actuation ADD COLUMN schema_visible BOOLEAN NOT NULL default true;
 
 /* VALUES */
+INSERT INTO qwat_vl.valve_actuation (id, value_en, value_fr, value_ro ) VALUES (101, 'other', 'autre', 'altul');
+INSERT INTO qwat_vl.valve_actuation (id, value_en, value_fr, value_ro ) VALUES (102, 'unknown', 'inconnu', 'necunoscut');
+INSERT INTO qwat_vl.valve_actuation (id, value_en, value_fr, value_ro ) VALUES (103, 'to be determined', 'à déterminer', 'de determinat');
+
 INSERT INTO qwat_vl.valve_actuation (id, value_en, value_fr, value_ro )         VALUES (6401, 'hand control', 'manuel', 'manuală');
 INSERT INTO qwat_vl.valve_actuation (id, value_en, value_fr, value_ro )         VALUES (6402, 'left hand control', 'manuel à gauche', 'manuală la stânga');
 INSERT INTO qwat_vl.valve_actuation (id, value_en, value_fr, value_ro )       	VALUES (6403, 'electric drive', 'électrique', 'electrică');
 INSERT INTO qwat_vl.valve_actuation (id, value_en, value_fr, value_ro )       	VALUES (6404, 'remote controlled', 'télécommandée', 'telecomandată');
-INSERT INTO qwat_vl.valve_actuation (id, value_en, value_fr, value_ro ) 	VALUES (6405, 'other', 'autre', 'alta');
-INSERT INTO qwat_vl.valve_actuation (id, value_en, value_fr, value_ro ) 	VALUES (6406, 'unknown', 'inconnu', 'necunoscută');
-INSERT INTO qwat_vl.valve_actuation (id, value_en, value_fr, value_ro )         VALUES (6407, 'to be determined', 'à déterminer', 'de determinat');
+
+
+
+

@@ -13,8 +13,16 @@ COMMENT ON TABLE qwat_vl.subscriber_type IS 'type for subscriber.';
 
 
 /* VALUES */
-INSERT INTO qwat_vl.subscriber_type (id, value_fr,short_fr,value_ro) VALUES (9401, 'Abonnement','abo','abonat');
+INSERT INTO qwat_vl.subscriber_type (id, value_en, value_fr, value_ro ) VALUES (101, 'other', 'autre', 'altul');
+INSERT INTO qwat_vl.subscriber_type (id, value_en, value_fr, value_ro ) VALUES (102, 'unknown', 'inconnu', 'necunoscut');
+INSERT INTO qwat_vl.subscriber_type (id, value_en, value_fr, value_ro ) VALUES (103, 'to be determined', 'à déterminer', 'de determinat');
+
+INSERT INTO qwat_vl.subscriber_type (id, value_en, value_fr,short_fr,value_ro) VALUES (9401, 'Subscriber','Abonnement','abo','abonat');
 INSERT INTO qwat_vl.subscriber_type (id, value_fr,short_fr,value_ro) VALUES (9402, 'Arrosage'  ,'arr','irigare/udare');
-INSERT INTO qwat_vl.subscriber_type (id, value_fr,short_fr,value_ro) VALUES (9403, 'Fontaine'  ,'font','fântană');
-INSERT INTO qwat_vl.subscriber_type (id, value_fr,short_fr,value_ro) VALUES (9404, 'WC'        ,'wc', 'WC');
+INSERT INTO qwat_vl.subscriber_type (id, value_en, value_fr,short_fr,value_ro) VALUES (9403, 'Fountain','Fontaine'  ,'font','fântană');
+INSERT INTO qwat_vl.subscriber_type (id, value_en, value_fr,short_fr,value_ro) VALUES (9404, 'WC', 'WC'        ,'wc', 'WC');
 INSERT INTO qwat_vl.subscriber_type (id, value_fr,short_fr,value_ro) VALUES (9405, 'Sprinkler' ,'spkr','stropitoare/sprinkler');
+
+
+
+
