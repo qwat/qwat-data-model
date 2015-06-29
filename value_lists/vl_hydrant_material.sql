@@ -16,7 +16,7 @@ COMMENT ON COLUMN qwat_vl.hydrant_material.pressure_nominal IS 'nominal pressure
 
 /* Values */
 INSERT INTO qwat_vl.hydrant_material (id, vl_active, short_en, value_en, short_fr, value_fr, short_ro, value_ro, diameter_nominal, code_sire, pressure_nominal) VALUES (101, true, 'Other', 'Other', 'Autre', 'Autre', 'Altul', 'Altul', NULL, 1, NULL);
-INSERT INTO qwat_vl.hydrant_material (id, vl_active, short_en, value_en, short_fr, value_fr, short_ro, value_ro, diameter_nominal, code_sire, pressure_nominal) VALUES (102, true, 'Unknown', 'Unknown', 'Inconnu', 'Inconnu', 'Necunoscut', 'Necunoscut', NULL, 1, NULL);
+INSERT INTO qwat_vl.hydrant_material (id, vl_active, short_en, value_en, short_fr, value_fr, short_ro, value_ro, diameter_nominal, code_sire, pressure_nominal) VALUES (102, true, 'Unknown', 'Unknown', 'Inc.', 'Inconnu', 'Necunoscut', 'Necunoscut', NULL, 1, NULL);
 INSERT INTO qwat_vl.hydrant_material (id, vl_active, short_en, value_en, short_fr, value_fr, short_ro, value_ro, diameter_nominal, code_sire, pressure_nominal) VALUES (103, true, 'To determ.', 'To be determined', 'à dét.', 'à déterminer', 'De det.', 'De determinat', NULL, 1, NULL);
 
 INSERT INTO qwat_vl.hydrant_material (id, vl_active, short_en, value_en, short_fr, value_fr, short_ro, value_ro, diameter_nominal, code_sire, pressure_nominal) VALUES (7002, true, 'Cast iron', 'Cast iron', 'F', 'Fonte', 'F', 'Fontă', 65, 4, 16);
