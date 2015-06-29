@@ -1,6 +1,6 @@
 /*
  qWat - QGIS Water Module
- 
+
  SQL file :: pipe table
 */
 
@@ -10,26 +10,26 @@ CREATE TABLE qwat_od.pipe (id serial PRIMARY KEY);
 COMMENT ON TABLE qwat_od.pipe IS 'Table for pipe. This should not be used for editing/viewing, as a more complete view (pipe_view) exists.';
 
 
-/* columns */                                                                          
-ALTER TABLE qwat_od.pipe ADD COLUMN fk_parent              integer;                                      /* fk_parent            FK */
-ALTER TABLE qwat_od.pipe ADD COLUMN fk_function            integer not null;                             /* fk_function          FK */ 
-ALTER TABLE qwat_od.pipe ADD COLUMN fk_installmethod       integer not null;                             /* fk_installmethod     FK */
-ALTER TABLE qwat_od.pipe ADD COLUMN fk_material            integer not null;                             /* fk_material          FK */
-ALTER TABLE qwat_od.pipe ADD COLUMN fk_distributor         integer not null;                             /* fk_distributor       FK */
-ALTER TABLE qwat_od.pipe ADD COLUMN fk_precision           integer not null;                             /* fk_precision         FK */
-ALTER TABLE qwat_od.pipe ADD COLUMN fk_bedding             integer not null;                             /* fk_bedding           FK */
-ALTER TABLE qwat_od.pipe ADD COLUMN fk_protection          integer;                                      /* fk_protection        FK */
-ALTER TABLE qwat_od.pipe ADD COLUMN fk_status              integer not null;                             /* fk_status            FK */
-ALTER TABLE qwat_od.pipe ADD COLUMN fk_watertype           integer not null;                             /* fk_watertype         FK */
-ALTER TABLE qwat_od.pipe ADD COLUMN fk_locationtype        integer[];
-ALTER TABLE qwat_od.pipe ADD COLUMN year                   smallint CHECK (year IS NULL OR year > 1800 AND year < 2100); /* year  */
-ALTER TABLE qwat_od.pipe ADD COLUMN year_end               smallint CHECK (year_end IS NULL OR year > 1800 AND year < 2100); /* year_end  */
-ALTER TABLE qwat_od.pipe ADD COLUMN tunnel_or_bridge       boolean default false;                        /* tunnel_or_bridge        */
-ALTER TABLE qwat_od.pipe ADD COLUMN pressure_nominal       smallint default 16;                          /* pressure_nominale       */
-ALTER TABLE qwat_od.pipe ADD COLUMN folder                 varchar(20) ;                       /* folder                  */
-ALTER TABLE qwat_od.pipe ADD COLUMN remark                 text         ;                      /* remark                  */
-ALTER TABLE qwat_od.pipe ADD COLUMN _valve_count           smallint default NULL;                        /* _valve_count            */
-ALTER TABLE qwat_od.pipe ADD COLUMN _valve_closed          boolean default NULL;                         /* _valve_closed           */
+/* columns */
+ALTER TABLE qwat_od.pipe ADD COLUMN fk_parent        integer;
+ALTER TABLE qwat_od.pipe ADD COLUMN fk_function      integer not null;
+ALTER TABLE qwat_od.pipe ADD COLUMN fk_installmethod integer not null;
+ALTER TABLE qwat_od.pipe ADD COLUMN fk_material      integer not null;
+ALTER TABLE qwat_od.pipe ADD COLUMN fk_distributor   integer not null;
+ALTER TABLE qwat_od.pipe ADD COLUMN fk_precision     integer not null;
+ALTER TABLE qwat_od.pipe ADD COLUMN fk_bedding       integer not null;
+ALTER TABLE qwat_od.pipe ADD COLUMN fk_protection    integer;
+ALTER TABLE qwat_od.pipe ADD COLUMN fk_status        integer not null;
+ALTER TABLE qwat_od.pipe ADD COLUMN fk_watertype     integer not null;
+ALTER TABLE qwat_od.pipe ADD COLUMN fk_locationtype  integer[];
+ALTER TABLE qwat_od.pipe ADD COLUMN fk_folder        integer ;
+ALTER TABLE qwat_od.pipe ADD COLUMN year             smallint CHECK (year IS NULL OR year > 1800 AND year < 2100);
+ALTER TABLE qwat_od.pipe ADD COLUMN year_end         smallint CHECK (year_end IS NULL OR year > 1800 AND year < 2100);
+ALTER TABLE qwat_od.pipe ADD COLUMN tunnel_or_bridge boolean default false;
+ALTER TABLE qwat_od.pipe ADD COLUMN pressure_nominal smallint default 16;
+ALTER TABLE qwat_od.pipe ADD COLUMN remark           text         ;
+ALTER TABLE qwat_od.pipe ADD COLUMN _valve_count     smallint default NULL;
+ALTER TABLE qwat_od.pipe ADD COLUMN _valve_closed    boolean default NULL;
 
 /* schema view */
 SELECT qwat_od.fn_enable_schemaview( 'pipe' );
@@ -48,11 +48,12 @@ ALTER TABLE qwat_od.pipe ADD CONSTRAINT pipe_fk_bedding        FOREIGN KEY (fk_b
 ALTER TABLE qwat_od.pipe ADD CONSTRAINT pipe_fk_protection     FOREIGN KEY (fk_protection)     REFERENCES qwat_vl.pipe_protection(id)    MATCH FULL; CREATE INDEX fki_pipe_fk_protection    ON qwat_od.pipe(fk_protection);
 ALTER TABLE qwat_od.pipe ADD CONSTRAINT pipe_fk_status         FOREIGN KEY (fk_status)         REFERENCES qwat_vl.status(id)             MATCH FULL; CREATE INDEX fki_pipe_fk_status        ON qwat_od.pipe(fk_status);
 ALTER TABLE qwat_od.pipe ADD CONSTRAINT pipe_fk_watertype      FOREIGN KEY (fk_watertype)      REFERENCES qwat_vl.watertype(id)          MATCH FULL; CREATE INDEX fki_pipe_fk_watertype     ON qwat_od.pipe(fk_watertype);
+ALTER TABLE qwat_od.pipe ADD CONSTRAINT pipe_fk_folder         FOREIGN KEY (fk_folder)         REFERENCES qwat_od.folder(id)             MATCH FULL; CREATE INDEX fki_pipe_fk_folder        ON qwat_od.pipe(fk_folder);
 
 /*----------------!!!---!!!----------------*/
 /* Trigger for tunnel_or_bridge */
 CREATE OR REPLACE FUNCTION qwat_od.ft_pipe_tunnelbridge() RETURNS trigger AS
-$BODY$ 
+$BODY$
  BEGIN
   NEW._length3d := NULL;
   NEW._diff_elevation := NULL;

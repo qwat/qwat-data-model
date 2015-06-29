@@ -18,11 +18,11 @@ CREATE VIEW qwat_od.vw_pipe AS
 		pipe.fk_precision      ,
 		pipe.fk_protection     ,
 		pipe.fk_status         ,
+		pipe.fk_folder            ,
 		pipe.schema_force_visible ,
 		pipe.year              ,
 		pipe.tunnel_or_bridge  ,
 		pipe.pressure_nominal  ,
-		pipe.folder            ,
 		pipe.label_1_text      ,
 		pipe.remark            ,
 		pipe._valve_count      ,
@@ -54,7 +54,8 @@ CREATE VIEW qwat_od.vw_pipe AS
 		status.value_fr          AS _status,
 		status.active            AS _status_active,
 		pressurezone.name        AS _pressurezone,
-		pressurezone.colorcode   AS _pressurezone_colorcode
+		pressurezone.colorcode   AS _pressurezone_colorcode,
+		folder.name              AS folder
 		FROM qwat_od.pipe
 		INNER      JOIN qwat_vl.pipe_function      ON pipe.fk_function      = pipe_function.id
 		INNER      JOIN qwat_vl.pipe_installmethod ON pipe.fk_installmethod = pipe_installmethod.id
@@ -65,7 +66,8 @@ CREATE VIEW qwat_od.vw_pipe AS
 		INNER      JOIN qwat_vl.status             ON pipe.fk_status        = status.id
 		LEFT OUTER JOIN qwat_od.pressurezone       ON pipe.fk_pressurezone  = pressurezone.id 
 		LEFT OUTER JOIN qwat_od.node AS node_a     ON pipe.fk_node_a        = node_a.id
-		LEFT OUTER JOIN qwat_od.node AS node_b     ON pipe.fk_node_b        = node_b.id;
+		LEFT OUTER JOIN qwat_od.node AS node_b     ON pipe.fk_node_b        = node_b.id
+		LEFT OUTER JOIN qwat_od.folder             ON pipe.fk_folder        = folder.id;
 /*----------------!!!---!!!----------------*/
 /* Comment */
 COMMENT ON VIEW qwat_od.vw_pipe IS 'View for pipe. This view is not editable';
