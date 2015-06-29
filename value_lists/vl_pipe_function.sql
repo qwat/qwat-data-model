@@ -23,7 +23,6 @@ INSERT INTO qwat_vl.pipe_function (id, value_en, value_fr, value_ro ) VALUES (10
 INSERT INTO qwat_vl.pipe_function (id,value_fr,value_ro,schema_visible,major,code_sire) VALUES (4101, 'Conduite de transport',      'Conductă de transport',       true,  true,  2);
 INSERT INTO qwat_vl.pipe_function (id,value_fr,value_ro,schema_visible,major,code_sire) VALUES (4102, 'Conduite d''hydrant',        'Conductă de hidrant',         false, true, 0);
 INSERT INTO qwat_vl.pipe_function (id,value_fr,value_ro,schema_visible,major,code_sire) VALUES (4103, 'Conduite de vidange',        'Conductă de golire',          false, false, 4);
-
 INSERT INTO qwat_vl.pipe_function (id,value_fr,value_ro,schema_visible,major,code_sire) VALUES (4105, 'Conduite de distribution',   'Conductă de distribuţie',     true,  true,  2);
 INSERT INTO qwat_vl.pipe_function (id,value_fr,value_ro,schema_visible,major,code_sire) VALUES (4106, 'Branchement commun',         'Branşament comun',            false, false, 3);
 INSERT INTO qwat_vl.pipe_function (id,value_fr,value_ro,schema_visible,major,code_sire) VALUES (4107, 'By-pass',                    'By-pass',                     false, false, 2);
