@@ -20,7 +20,7 @@ INSERT INTO qwat_vl.installation_type (id, short_en, value_en, short_fr, value_f
 
 INSERT INTO qwat_vl.installation_type (id,short_en,value_en,short_fr,value_fr,short_ro,value_ro) VALUES (2001,'','Tank', 'R' ,'Réservoir'       ,'R'    ,'Rezervor');
 INSERT INTO qwat_vl.installation_type (id,short_en,value_en,short_fr,value_fr,short_ro,value_ro) VALUES (2002,'','Reservoir', 'S' ,'Source'     ,'S'    ,'Sursă');
-INSERT INTO qwat_vl.installation_type (id,short_en,value_en,short_fr,value_fr,short_ro,value_ro) VALUES (2003,'','', 'P' ,'Pompage'     ,'P'    ,'Staţie pompare');
+INSERT INTO qwat_vl.installation_type (id,short_en,value_en,short_fr,value_fr,short_ro,value_ro) VALUES (2003,'','', 'P' ,'Pompage'     ,'SP'   ,'Staţie pompare');
 INSERT INTO qwat_vl.installation_type (id,short_en,value_en,short_fr,value_fr,short_ro,value_ro) VALUES (2004,'','', 'CV' ,'Chambres de vannes' ,'CV'   ,'Cămin Vane');
 INSERT INTO qwat_vl.installation_type (id,short_en,value_en,short_fr,value_fr,short_ro,value_ro) VALUES (2005,'','', 'CC' ,'Chambre compteur'   ,'CAp' ,'Cămin Apometru');
 INSERT INTO qwat_vl.installation_type (id,short_en,value_en,short_fr,value_fr,short_ro,value_ro) VALUES (2006,'','', 'CT' ,'Chambre de traitement','CT' ,'Cameră de Tratare?');
