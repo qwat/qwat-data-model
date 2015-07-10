@@ -21,8 +21,8 @@ ALTER TABLE qwat_od.part ADD COLUMN fk_altitude_reference integer     ;
 ALTER TABLE qwat_od.part ADD COLUMN orientation      smallint         ;
 ALTER TABLE qwat_od.part ADD COLUMN remark           text   ;
 
-/* GEOMETRY                    (table_name, is_node, create_node, create_schematic, get_pipe, auto_district, auto_pressurezone)*/
-SELECT qwat_od.fn_geom_tool_point('part',   true,    false,        true,             true,       true,         true);
+/* GEOMETRY                    (table_name, srid, is_node, create_node, create_schematic, get_pipe, auto_district, auto_pressurezone)*/
+SELECT qwat_od.fn_geom_tool_point('part', :SRID,   true,    false,        true,             true,       true,         true);
 
 /* LABELS */
 SELECT qwat_od.fn_label_create_fields('part');

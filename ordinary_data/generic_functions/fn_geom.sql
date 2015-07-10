@@ -1,8 +1,9 @@
 
 
-/* (table_name, is_node, create_node, _create_alt_geom, get_pipe, _auto_district, _auto_pressurezone) */
+/* (table_name, srid, is_node, create_node, _create_alt_geom, get_pipe, _auto_district, _auto_pressurezone) */
 CREATE OR REPLACE FUNCTION qwat_od.fn_geom_tool_point(
 			_table_name text,
+			_srid integer,
 			_is_node boolean,
 			_create_node boolean,
 			_create_alt_geom boolean,
@@ -39,11 +40,11 @@ $func$
 		EXECUTE format($$ALTER TABLE qwat_od.%I ADD COLUMN _printmaps      varchar(100)  ;$$, _table_name);
 
 		/* Enables geometry */
-		EXECUTE format($$ALTER TABLE qwat_od.%1$I ADD COLUMN geometry geometry('POINT',:SRID);$$, _table_name);
+		EXECUTE format($$ALTER TABLE qwat_od.%1$I ADD COLUMN geometry geometry('POINT',%2$I);$$, _table_name, _srid);
 		EXECUTE format($$CREATE INDEX %1$I ON qwat_od.%2$I USING GIST ( geometry );$$, _table_name||'_geoidx', _table_name);
 		IF _create_alt_geom IS TRUE THEN
-			EXECUTE format($$ALTER TABLE qwat_od.%1$I ADD COLUMN geometry_alt1 geometry('POINT',:SRID);$$, _table_name);
-			EXECUTE format($$ALTER TABLE qwat_od.%1$I ADD COLUMN geometry_alt2 geometry('POINT',:SRID);$$, _table_name);
+			EXECUTE format($$ALTER TABLE qwat_od.%1$I ADD COLUMN geometry_alt1 geometry('POINT',%2$I);$$, _table_name, _srid);
+			EXECUTE format($$ALTER TABLE qwat_od.%1$I ADD COLUMN geometry_alt2 geometry('POINT',%2$I);$$, _table_name, _srid);
 			EXECUTE format($$CREATE INDEX %1$I ON qwat_od.%2$I USING GIST ( geometry_alt1 );
 							CREATE INDEX %3$I ON qwat_od.%2$I USING GIST ( geometry_alt2 );
 							ALTER TABLE qwat_od.%2$I  ADD COLUMN _geometry_alt1_used boolean,
@@ -125,7 +126,7 @@ $func$
 						EXECUTE PROCEDURE qwat_od.%3$I();$$,
 				'tr_'||_table_name||'_geom_insert', _table_name, 'ft_'||_table_name||'_geom');
 
-		EXECUTE format($$COMMENT ON TRIGGER %1$I ON qwat_od.%2$I IS ''Trigger: updates auto fields after insert.'';', 'tr_'||_table_name||'_geom_insert$$, _table_name);
+		EXECUTE format($$COMMENT ON TRIGGER %1$I ON qwat_od.%2$I IS 'Trigger: updates auto fields after insert.';$$, 'tr_'||_table_name||'_geom_insert', _table_name);
 
 		EXECUTE format($$CREATE TRIGGER %1$I
 						BEFORE UPDATE OF geometry ON qwat_od.%2$I
@@ -134,7 +135,7 @@ $func$
 						EXECUTE PROCEDURE qwat_od.%3$I();$$,
 				'tr_'||_table_name||'_geom_update', _table_name, 'ft_'||_table_name||'_geom');
 
-		EXECUTE format($$COMMENT ON TRIGGER %1$I ON qwat_od.%2$I IS ''Trigger: updates auto fields after geom update.'';', 'tr_'||_table_name||'_geom_update$$, _table_name);
+		EXECUTE format($$COMMENT ON TRIGGER %1$I ON qwat_od.%2$I IS 'Trigger: updates auto fields after geom update.';$$, 'tr_'||_table_name||'_geom_update', _table_name);
 
 		/* detect if alternatve geom is used */
 		IF _create_alt_geom IS TRUE THEN
@@ -162,5 +163,5 @@ $func$
 	END;
 $func$
 LANGUAGE plpgsql;
-COMMENT ON FUNCTION qwat_od.fn_geom_tool_point(text,boolean,boolean,boolean,boolean,boolean,boolean) IS 'Create geometric columns, constraint and triggers for tables with point on node items. Second argument determines if node has to be created or not if not found.  (table_name, _is_node, _create_node, _create_alt_geom, _get_pipe, _auto_district, _auto_pressurezone)';
+COMMENT ON FUNCTION qwat_od.fn_geom_tool_point(text,integer,boolean,boolean,boolean,boolean,boolean,boolean) IS 'Create geometric columns, constraint and triggers for tables with point on node items. Second argument determines if node has to be created or not if not found.  (table_name, _is_node, _create_node, _create_alt_geom, _get_pipe, _auto_district, _auto_pressurezone)';
 

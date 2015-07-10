@@ -34,8 +34,8 @@ ALTER TABLE qwat_od.hydrant ADD COLUMN flow               decimal(8,2)          
 ALTER TABLE qwat_od.hydrant ADD COLUMN observation_date   date                  ;
 ALTER TABLE qwat_od.hydrant ADD COLUMN observation_source varchar(45)           ;
 
-/* geometry                     (table_name,  is_node, create_node, create_schematic, get_pipe, auto_district, auto_pressurezone)*/
-SELECT qwat_od.fn_geom_tool_point('hydrant',   true,    true,        true,             false,    true,          true);
+/* geometry                     (table_name, srid, is_node, create_node, create_schematic, get_pipe, auto_district, auto_pressurezone)*/
+SELECT qwat_od.fn_geom_tool_point('hydrant', :SRID,  true,    true,        true,          false,    true,          true);
 
 /* labels */
 SELECT qwat_od.fn_label_create_fields('hydrant');

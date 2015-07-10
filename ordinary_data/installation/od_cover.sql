@@ -21,8 +21,8 @@ ALTER TABLE qwat_od.cover ADD COLUMN altitude_real   decimal(10,3)           ;
 ALTER TABLE qwat_od.cover ADD COLUMN remark text     ;
 
 
-/* GEOMETRY                   (table_name,           is_node, create_node, create_schematic, get_pipe, auto_district, auto_pressurezone)*/
-SELECT qwat_od.fn_geom_tool_point('cover', true,    true,        true,            true,       true,         true);
+/* GEOMETRY                   (table_name,           srid, is_node, create_node, create_schematic, get_pipe, auto_district, auto_pressurezone)*/
+SELECT qwat_od.fn_geom_tool_point('cover', :SRID, true,    true,        true,            true,       true,         true);
 
 /* LABELS */
 SELECT qwat_od.fn_label_create_fields('cover');

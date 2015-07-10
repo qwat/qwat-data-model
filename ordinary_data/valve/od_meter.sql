@@ -18,8 +18,8 @@ ALTER TABLE qwat_od.meter ADD COLUMN parcel varchar(12)  ;
 ALTER TABLE qwat_od.meter ADD COLUMN remark  text ;
 ALTER TABLE qwat_od.meter ADD COLUMN year smallint CHECK (year IS NULL OR year > 1800 AND year < 2100);
 
-/* GEOMETRY                     (table_name, is_node, create_node, create_schematic, get_pipe, auto_district, auto_pressurezone)*/
-SELECT qwat_od.fn_geom_tool_point('meter',    false,    false,      false,            false,    true,         true);
+/* GEOMETRY                     (table_name, srid, is_node, create_node, create_schematic, get_pipe, auto_district, auto_pressurezone)*/
+SELECT qwat_od.fn_geom_tool_point('meter', :SRID,    false,    false,      false,            false,    true,         true);
 
 /* LABELS */
 SELECT qwat_od.fn_label_create_fields('meter');

@@ -54,8 +54,8 @@ ALTER TABLE qwat_od.installation_tank ADD COLUMN _cistern2_litrepercm numeric(9,
 
 
 /* geometry */
-/*                                 (table_name,     is_node, create_node, create_schematic, get_pipe, auto_district, auto_pressurezone)*/
-SELECT qwat_od.fn_geom_tool_point('installation_tank',true,    true,       true,             false,    true,          false);
+/*                                 (table_name,     srid, is_node, create_node, create_schematic, get_pipe, auto_district, auto_pressurezone)*/
+SELECT qwat_od.fn_geom_tool_point('installation_tank', :SRID,true,    true,       true,             false,    true,          false);
 
 /* Constraints */
 ALTER TABLE qwat_od.installation_tank ADD CONSTRAINT installation_tank_fk_installation FOREIGN KEY (fk_installation)  REFERENCES qwat_od.installation_building(id) MATCH FULL; CREATE INDEX fki_installation_tank_fk_installation ON qwat_od.installation_tank(fk_installation) ;

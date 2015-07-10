@@ -33,8 +33,8 @@ SELECT qwat_od.fn_label_create_fields('installation_pressurecontrol');
 ALTER TABLE qwat_od.installation_pressurecontrol ADD COLUMN fk_type            integer not null       ;
 
 /* GEOMETRY */
-/*                                 (table_name,                is_node, create_node, create_schematic, get_pipe, auto_district, auto_pressurezone)*/
-SELECT qwat_od.fn_geom_tool_point('installation_pressurecontrol',true,    true,       true,             false,    true,          false);
+/*                                 (table_name,                srid, is_node, create_node, create_schematic, get_pipe, auto_district, auto_pressurezone)*/
+SELECT qwat_od.fn_geom_tool_point('installation_pressurecontrol', :SRID,true,    true,       true,             false,    true,          false);
 
 /* CONSTRAINTS */
 ALTER TABLE qwat_od.installation_pressurecontrol ADD CONSTRAINT installation_pressurecontrol_fk_installation FOREIGN KEY (fk_installation) REFERENCES qwat_od.installation_building(id) MATCH FULL; CREATE INDEX fki_installation_pressurecontrol_fk_installation ON qwat_od.installation_pressurecontrol(fk_installation);

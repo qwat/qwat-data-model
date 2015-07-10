@@ -17,8 +17,8 @@ ALTER TABLE qwat_od.subscriber ADD COLUMN _identification_full varchar(16)  ;
 ALTER TABLE qwat_od.subscriber ADD COLUMN parcel               varchar(12)  ;
 ALTER TABLE qwat_od.subscriber ADD COLUMN remark               text ;
 
-/* GEOMETRY                      (table_name,  is_node, create_node, create_schematic, get_pipe, auto_district, auto_pressurezone)*/
-SELECT qwat_od.fn_geom_tool_point('subscriber', false,   false,       false,            false,    false,         true);
+/* GEOMETRY                      (table_name,  srid, is_node, create_node, create_schematic, get_pipe, auto_district, auto_pressurezone)*/
+SELECT qwat_od.fn_geom_tool_point('subscriber', :SRID, false,   false,       false,            false,    false,         true);
 
 /* LABELS */
 SELECT qwat_od.fn_label_create_fields('subscriber');

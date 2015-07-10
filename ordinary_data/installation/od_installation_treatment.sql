@@ -42,8 +42,8 @@ ALTER TABLE qwat_od.installation_treatment ADD COLUMN settling                  
 ALTER TABLE qwat_od.installation_treatment ADD COLUMN treatment_capacity            decimal(10,2);
 
 /* geometry */
-/*                                 ( table_name,        is_node, create_node, create_schematic, get_pipe, auto_district, auto_pressurezone)*/
-SELECT qwat_od.fn_geom_tool_point('installation_treatment',true,    true,        true,            false,    true,          false);
+/*                                 ( table_name,        srid, is_node, create_node, create_schematic, get_pipe, auto_district, auto_pressurezone)*/
+SELECT qwat_od.fn_geom_tool_point('installation_treatment', :SRID,true,    true,        true,            false,    true,          false);
 
 /* Constraints */
 ALTER TABLE qwat_od.installation_treatment ADD CONSTRAINT installation_treatment_fk_installation FOREIGN KEY (fk_installation) REFERENCES qwat_od.installation_building(id) MATCH FULL; CREATE INDEX fki_installation_treatment_fk_installation ON qwat_od.installation_treatment(fk_installation);

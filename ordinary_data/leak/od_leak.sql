@@ -21,7 +21,7 @@ ALTER TABLE qwat_od.leak ADD COLUMN description      text ;
 ALTER TABLE qwat_od.leak ADD COLUMN repair           text ;
 
 /* geometry */
-SELECT qwat_od.fn_geom_tool_point('leak', false, false, false, true, true, true);
+SELECT qwat_od.fn_geom_tool_point('leak', :SRID, false, false, false, true, true, true);
 
 /* LABELS */
 SELECT qwat_od.fn_label_create_fields('leak');

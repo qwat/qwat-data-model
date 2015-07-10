@@ -25,8 +25,8 @@ ALTER TABLE qwat_od.installation_building ADD COLUMN parcel          varchar(30)
 ALTER TABLE qwat_od.installation_building ADD COLUMN eca             varchar(30) ;
 
 /* geometry */
-/* point                              ( table_name,       is_node, create_node, create_schematic, get_pipe, auto_district, auto_pressurezone)*/
-SELECT qwat_od.fn_geom_tool_point('installation_building',true,    true,        true,             false ,    true         , false);
+/* point                              ( table_name,       srid, is_node, create_node, create_schematic, get_pipe, auto_district, auto_pressurezone)*/
+SELECT qwat_od.fn_geom_tool_point('installation_building', :SRID,true,    true,        true,             false ,    true         , false);
 /* polygon */
 ALTER TABLE qwat_od.installation_building ADD COLUMN geometry_polygon geometry('MULTIPOLYGON',:SRID);
 CREATE INDEX installation_building_poly_geoidx ON qwat_od.installation_building USING GIST ( geometry_polygon ); 
