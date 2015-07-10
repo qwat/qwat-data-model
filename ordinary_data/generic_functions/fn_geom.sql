@@ -39,7 +39,7 @@ $func$
 		EXECUTE format($$ALTER TABLE qwat_od.%I ADD COLUMN _printmaps      varchar(100)  ;$$, _table_name);
 
 		/* Enables geometry */
-		EXECUTE format($$ALTER TABLE qwat_od.%1$I ADD COLUMN geometry geometry('POINT',:SRID);$$, _table_name)
+		EXECUTE format($$ALTER TABLE qwat_od.%1$I ADD COLUMN geometry geometry('POINT',:SRID);$$, _table_name);
 		EXECUTE format($$CREATE INDEX %1$I ON qwat_od.%2$I USING GIST ( geometry );$$, _table_name||'_geoidx', _table_name);
 		IF _create_alt_geom IS TRUE THEN
 			EXECUTE format($$ALTER TABLE qwat_od.%1$I ADD COLUMN geometry_alt1 geometry('POINT',:SRID);$$, _table_name);
@@ -156,7 +156,7 @@ $func$
 							EXECUTE PROCEDURE qwat_od.%3$I();$$,
 					'tr_'||_table_name||'_alternative_geom', _table_name, 'ft_'||_table_name||'_alternative_geom');
 
-			EXECUTE format($$COMMENT ON TRIGGER %1$I ON qwat_od.%2$I IS 'Trigger: when updating, check if alternative geometries are different to fill the boolean fields.';$,
+			EXECUTE format($$COMMENT ON TRIGGER %1$I ON qwat_od.%2$I IS 'Trigger: when updating, check if alternative geometries are different to fill the boolean fields.';$$,
 						'tr_'||_table_name||'_alternative_geom',_table_name);
 		END IF;
 	END;
