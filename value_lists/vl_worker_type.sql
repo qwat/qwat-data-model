@@ -6,7 +6,6 @@
 
 
 /* CREATE */
-DROP TABLE IF EXISTS qwat_vl.worker_type CASCADE;
 CREATE TABLE qwat_vl.worker_type () INHERITS ( qwat_vl.value_list_base);
 ALTER TABLE qwat_vl.worker_type ADD CONSTRAINT vl_worker_type_pk PRIMARY KEY (id);
 COMMENT ON TABLE qwat_vl.worker_type IS 'type for worker.';

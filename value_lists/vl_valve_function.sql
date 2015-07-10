@@ -6,7 +6,6 @@
 
 
 /* CREATE */
-DROP TABLE IF EXISTS qwat_vl.valve_function CASCADE;
 CREATE TABLE qwat_vl.valve_function () INHERITS ( qwat_vl.value_list_base);
 ALTER TABLE qwat_vl.valve_function ADD CONSTRAINT vl_valve_function_pk PRIMARY KEY (id);                    
 COMMENT ON TABLE qwat_vl.valve_function IS 'Functions for valves';

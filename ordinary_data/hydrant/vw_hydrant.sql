@@ -5,8 +5,6 @@
 */
 
 
-
-DROP VIEW IF EXISTS qwat_od.vw_hydrant CASCADE;
 CREATE VIEW qwat_od.vw_hydrant AS 
 	SELECT  
 		hydrant.id             ,

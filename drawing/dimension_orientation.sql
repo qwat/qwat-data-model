@@ -6,7 +6,6 @@
 
 
 /* CREATE TABLE */
-DROP TABLE IF EXISTS qwat_dr.dimension_orientation CASCADE;
 CREATE TABLE qwat_dr.dimension_orientation (id serial PRIMARY KEY);
 COMMENT ON TABLE qwat_dr.dimension_orientation IS 'dimension arcs displays measures done on the field. For example: orientations to buildings corner';
 

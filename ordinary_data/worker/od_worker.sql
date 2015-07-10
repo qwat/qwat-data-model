@@ -4,7 +4,6 @@
 	SQL file :: worker
 */
 
-DROP TABLE IF EXISTS qwat_od.worker CASCADE;
 CREATE TABLE qwat_od.worker (id serial PRIMARY KEY);
 COMMENT ON TABLE qwat_od.worker IS 'Table for worker.';
 

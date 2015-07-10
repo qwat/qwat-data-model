@@ -5,7 +5,6 @@
 */
 
 
-DROP TABLE IF EXISTS qwat_dr.annotationpoint CASCADE;
 CREATE TABLE qwat_dr.annotationpoint (id serial PRIMARY KEY);
 COMMENT ON TABLE qwat_dr.annotationpoint IS 'Table for annotationpoints.';
 

@@ -4,8 +4,6 @@
 	SQL file :: meter table
 */
 
-
-DROP TABLE IF EXISTS qwat_od.part CASCADE;
 CREATE TABLE qwat_od.part (id serial PRIMARY KEY);
 COMMENT ON TABLE qwat_od.part IS 'Table for installation parts.';
 

@@ -7,7 +7,6 @@
 */
 
 /* CREATE TABLE */
-DROP TABLE IF EXISTS qwat_od.node_table CASCADE;
 CREATE TABLE qwat_od.node_table (id integer not null, CONSTRAINT node_table_pk PRIMARY KEY (id) );
 COMMENT ON TABLE qwat_od.node_table IS 'the table node_table contains the names of the tables (i.e. layers) that are typically considered as nodes.
 		   node_type will be used as for the type in the node table if overwrite is true.

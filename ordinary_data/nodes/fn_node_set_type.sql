@@ -22,7 +22,7 @@ $BODY$
 		orientation2    double precision := 0    ;
 		is_under_object boolean          := false;
 		is_under_count  integer          := 0    ;
-		node_geom       geometry(Point, :SRID)   ;
+		node_geom       geometry(Point, 21781)   ; /* TODO: create options table to store SRID */
 		intersects      boolean                  ;
 		node_table      record                   ;
 		stmt            text                     ;
@@ -153,7 +153,6 @@ LANGUAGE plpgsql;
 COMMENT ON FUNCTION qwat_od.fn_node_set_type(integer) IS 'Set the orientation and type for a node. If three pipe arrives at the node: intersection. If one pipe: end. If two: depends on characteristics of pipe: year (is different), material (and year), diameter(and material/year)';
 
 /* reset all node type */
-DROP FUNCTION IF EXISTS qwat_od.fn_node_set_type( node_ids integer[] );
 CREATE OR REPLACE FUNCTION qwat_od.fn_node_set_type( node_ids integer[] DEFAULT NULL ) RETURNS void AS
 $BODY$
 	DECLARE

@@ -5,7 +5,6 @@
 */
 
 /* CREATE */
-DROP TABLE IF EXISTS qwat_vl.altitude_reference CASCADE;
 CREATE TABLE qwat_vl.altitude_reference () INHERITS ( qwat_vl.value_list_base);
 ALTER TABLE qwat_vl.altitude_reference ADD CONSTRAINT vl_altitude_reference_pk PRIMARY KEY (id);
 COMMENT ON TABLE qwat_vl.altitude_reference IS 'Reference for altitudes';

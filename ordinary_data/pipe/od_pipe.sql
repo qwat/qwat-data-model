@@ -5,7 +5,6 @@
 */
 
 /* create */
-DROP TABLE IF EXISTS qwat_od.pipe CASCADE;
 CREATE TABLE qwat_od.pipe (id serial PRIMARY KEY);
 COMMENT ON TABLE qwat_od.pipe IS 'Table for pipe. This should not be used for editing/viewing, as a more complete view (pipe_view) exists.';
 

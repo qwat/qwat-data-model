@@ -4,7 +4,6 @@
 	SQL file :: samplingpoint view
 */
 
-DROP VIEW IF EXISTS qwat_od.vw_samplingpoint CASCADE;
 CREATE VIEW qwat_od.vw_samplingpoint AS 
 	SELECT  
 		samplingpoint.id             ,

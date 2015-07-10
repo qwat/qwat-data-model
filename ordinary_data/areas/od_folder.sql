@@ -5,7 +5,6 @@
 */
 
 /* CREATE TABLE */
-DROP TABLE IF EXISTS qwat_od.folder CASCADE;
 CREATE TABLE qwat_od.folder (id serial PRIMARY KEY);
 COMMENT ON TABLE qwat_od.folder IS 'Technical folders.';
 

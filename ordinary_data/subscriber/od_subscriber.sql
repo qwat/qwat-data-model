@@ -4,8 +4,6 @@
 	SQL file :: subscriber table
 */
 
-
-DROP TABLE IF EXISTS qwat_od.subscriber CASCADE;
 CREATE TABLE qwat_od.subscriber (id serial PRIMARY KEY);
 COMMENT ON TABLE qwat_od.subscriber IS 'Table for subscriber.';
 

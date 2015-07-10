@@ -5,7 +5,6 @@
 */
 
 /* CREATE */
-DROP TABLE IF EXISTS qwat_vl.cover_type CASCADE;
 CREATE TABLE qwat_vl.cover_type () INHERITS ( qwat_vl.value_list_base);
 ALTER TABLE qwat_vl.cover_type ADD CONSTRAINT vl_cover_type_pk PRIMARY KEY (id);
 COMMENT ON TABLE qwat_vl.cover_type IS 'Type of covers';

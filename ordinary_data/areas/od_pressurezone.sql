@@ -5,7 +5,6 @@
 */
 
 /* CREATE TABLE */
-DROP TABLE IF EXISTS qwat_od.pressurezone CASCADE;
 CREATE TABLE qwat_od.pressurezone (id serial PRIMARY KEY);
 COMMENT ON TABLE qwat_od.pressurezone IS 'Pressure zones.';
 

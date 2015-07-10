@@ -5,7 +5,6 @@
 */
 
 
-DROP TABLE IF EXISTS qwat_od.distributor CASCADE;
 CREATE TABLE qwat_od.distributor ( id SERIAL, CONSTRAINT distributor_pk PRIMARY KEY (id) );
 COMMENT ON TABLE qwat_od.distributor IS 'Companies and distributors list.';
 

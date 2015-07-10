@@ -6,7 +6,6 @@
 
 
 /* CREATE TABLE */
-DROP TABLE IF EXISTS qwat_od.installation_building CASCADE;
 CREATE TABLE qwat_od.installation_building (id serial PRIMARY KEY);
 COMMENT ON TABLE qwat_od.installation_building IS 'This table is used to define the buildings of installation.';
 

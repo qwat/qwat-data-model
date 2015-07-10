@@ -5,7 +5,6 @@
 */
 
 /* CREATE TABLE */
-DROP VIEW IF EXISTS qwat_od.vw_consumptionzone CASCADE;
 CREATE VIEW qwat_od.vw_consumptionzone AS
 	SELECT
 		co.id AS id,

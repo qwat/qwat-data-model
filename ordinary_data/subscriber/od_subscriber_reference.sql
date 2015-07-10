@@ -4,8 +4,6 @@
 	SQL file :: subscriber reference
 */
 
-
-DROP TABLE IF EXISTS qwat_od.subscriber_reference CASCADE;
 CREATE TABLE qwat_od.subscriber_reference (id serial PRIMARY KEY);
 COMMENT ON TABLE qwat_od.subscriber_reference IS 'Table for subscriber references. These are used to place references to subscribers if they rely far away from their pipe (i.e. on another printed map). Hence, the reference is printed on the same map than the pipe.';
 

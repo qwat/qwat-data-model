@@ -7,7 +7,6 @@
 
 
 /* CREATE TABLE */
-DROP TABLE IF EXISTS qwat_od.district CASCADE;
 CREATE TABLE qwat_od.district (id serial PRIMARY KEY);
 COMMENT ON TABLE qwat_od.district IS 'Districts.';
 

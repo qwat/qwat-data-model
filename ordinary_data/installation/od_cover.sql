@@ -5,7 +5,6 @@
 */
 
 
-DROP TABLE IF EXISTS qwat_od.cover CASCADE;
 CREATE TABLE qwat_od.cover (id serial PRIMARY KEY);
 COMMENT ON TABLE qwat_od.cover IS 'Table for installation covers.';
 

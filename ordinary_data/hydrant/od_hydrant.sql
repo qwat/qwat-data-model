@@ -7,7 +7,6 @@
 
 
 /* CREATE TABLE */
-DROP TABLE IF EXISTS qwat_od.hydrant CASCADE;
 CREATE TABLE qwat_od.hydrant (id serial PRIMARY KEY);
 
 COMMENT ON TABLE qwat_od.hydrant IS 'hydrant.';

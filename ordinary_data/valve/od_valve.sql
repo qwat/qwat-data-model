@@ -5,7 +5,6 @@
 */
 
 /* create */
-DROP TABLE IF EXISTS qwat_od.valve CASCADE;
 CREATE TABLE qwat_od.valve (id serial , CONSTRAINT valve_pk PRIMARY KEY (id));
 COMMENT ON TABLE qwat_od.valve IS 'Table for valve.';
 

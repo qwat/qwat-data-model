@@ -6,7 +6,6 @@
 
 
 /* create */
-DROP TABLE IF EXISTS qwat_od.samplingpoint CASCADE;
 CREATE TABLE qwat_od.samplingpoint (id serial PRIMARY KEY);
 
 

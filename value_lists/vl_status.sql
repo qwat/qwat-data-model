@@ -5,7 +5,6 @@
 */
 
 /* CREATE */
-DROP TABLE IF EXISTS qwat_vl.status CASCADE;
 CREATE TABLE qwat_vl.status () INHERITS ( qwat_vl.value_list_base);
 ALTER TABLE qwat_vl.status ADD CONSTRAINT vl_status_pk PRIMARY KEY (id);
 COMMENT ON TABLE qwat_vl.status IS 'Status table, with SIRE id.';

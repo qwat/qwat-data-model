@@ -5,8 +5,6 @@
 	SQL file :: valves_lines view
 */
 
-
-DROP VIEW IF EXISTS qwat_od.vw_valve_lines;
 CREATE OR REPLACE VIEW qwat_od.vw_valve_lines AS 
  SELECT valve.id,
     ST_MakeLine(valve.geometry_handle, valve.geometry)::geometry(LineString, :SRID) AS geometry

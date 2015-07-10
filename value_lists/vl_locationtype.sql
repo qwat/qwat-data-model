@@ -4,7 +4,6 @@
 	SQL file :: locationtype
 */
 
-DROP TABLE IF EXISTS qwat_vl.locationtype CASCADE;
 CREATE TABLE qwat_vl.locationtype () INHERITS ( qwat_vl.value_list_base);
 ALTER TABLE qwat_vl.locationtype ADD CONSTRAINT vl_location_pk PRIMARY KEY (id);
 COMMENT ON TABLE qwat_vl.locationtype IS 'Location type for water specific elements';

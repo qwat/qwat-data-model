@@ -6,7 +6,6 @@
 
 
 /* CREATE TABLE */
-DROP TABLE IF EXISTS qwat_vl.pipe_installmethod CASCADE;
 CREATE TABLE qwat_vl.pipe_installmethod () INHERITS ( qwat_vl.value_list_base );
 ALTER TABLE qwat_vl.pipe_installmethod ADD CONSTRAINT vl_pipe_installmethod_pk PRIMARY KEY (id);
 COMMENT ON TABLE qwat_vl.pipe_installmethod IS 'Installation methods.';

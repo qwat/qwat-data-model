@@ -5,7 +5,6 @@
 */
 
 
-DROP TABLE IF EXISTS qwat_dr.annotationline CASCADE;
 CREATE TABLE qwat_dr.annotationline (id serial PRIMARY KEY);
 COMMENT ON TABLE qwat_dr.annotationline IS 'Table for annotationlines.';
 

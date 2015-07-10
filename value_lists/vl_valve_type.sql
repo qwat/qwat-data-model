@@ -6,7 +6,6 @@
 
 
 /* CREATE */
-DROP TABLE IF EXISTS qwat_vl.valve_type CASCADE;
 CREATE TABLE qwat_vl.valve_type () INHERITS ( qwat_vl.value_list_base);
 ALTER TABLE qwat_vl.valve_type ADD CONSTRAINT vl_valve_type_pk PRIMARY KEY (id);
 COMMENT ON TABLE qwat_vl.valve_type IS 'Types of valve';

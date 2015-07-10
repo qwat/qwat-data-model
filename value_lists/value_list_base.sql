@@ -5,7 +5,6 @@
 */
 
 /* CREATE */
-DROP TABLE IF EXISTS qwat_vl.value_list_base CASCADE;
 CREATE TABLE qwat_vl.value_list_base ( id integer not null, CONSTRAINT "value_list_base_pk" PRIMARY KEY (id));
 COMMENT ON TABLE qwat_vl.value_list_base IS 'Master tables for value lists. It will be inherited by value list tables. This table shall not be filled. Be warned that value list table shal have its own unique index on id since PG does not propagate indexes. Therefore unicity of id cannot be garanteed over all value lists.';
 

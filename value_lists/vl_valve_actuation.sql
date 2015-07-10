@@ -6,7 +6,6 @@
 
 
 /* CREATE */
-DROP TABLE IF EXISTS qwat_vl.valve_actuation CASCADE;
 CREATE TABLE qwat_vl.valve_actuation () INHERITS ( qwat_vl.value_list_base);
 ALTER TABLE qwat_vl.valve_actuation ADD CONSTRAINT vl_valve_actuation_pk PRIMARY KEY (id);                    
 COMMENT ON TABLE qwat_vl.valve_actuation IS 'valve actuation/actionnement/acţionare';

@@ -6,7 +6,6 @@
 
 
 /* CREATE TABLE */
-DROP TABLE IF EXISTS qwat_od.printmap CASCADE;
 CREATE TABLE qwat_od.printmap (id serial PRIMARY KEY);
 COMMENT ON TABLE qwat_od.printmap IS 'This table is used for polygons for predefined printable maps. shortname would be used as label string, and long_mame would be used in the print composer.';
 

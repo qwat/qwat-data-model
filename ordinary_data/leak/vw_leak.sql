@@ -4,7 +4,6 @@
 	SQL file :: leak view
 */
 
-DROP VIEW IF EXISTS qwat_od.vw_leak CASCADE;
 CREATE VIEW qwat_od.vw_leak AS 
 	SELECT  
 		leak_cause.value_fr  AS cause,

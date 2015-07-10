@@ -5,7 +5,6 @@
 */
 
 /* CREATE TABLE */
-DROP TABLE IF EXISTS qwat_od.node CASCADE;
 CREATE TABLE qwat_od.node (id serial PRIMARY KEY);
 
 COMMENT ON TABLE qwat_od.node IS 'Nodes. Type:If three pipe or more arrives at the node: three. If one pipe: one. If two: depends on characteristics of pipe: two_same (everything same), two_year (year is different), two_material (and year is/are different), two_diameter (and material/year are different). Orientation is calculated if two pipe arrives to place the symbol in theright direction.';

@@ -5,7 +5,6 @@
 */
 
 
-DROP TABLE IF EXISTS qwat_vl.hydrant_material CASCADE;
 CREATE TABLE qwat_vl.hydrant_material () INHERITS ( qwat_vl.value_list_base);
 ALTER TABLE qwat_vl.hydrant_material ADD CONSTRAINT vl_hydrant_material_pk PRIMARY KEY (id);
 ALTER TABLE qwat_vl.hydrant_material ADD COLUMN diameter_nominal smallint;

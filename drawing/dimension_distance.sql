@@ -6,7 +6,6 @@
 
 
 /* CREATE TABLE */
-DROP TABLE IF EXISTS qwat_dr.dimension_distance CASCADE;
 CREATE TABLE qwat_dr.dimension_distance (id serial PRIMARY KEY);
 COMMENT ON TABLE qwat_dr.dimension_distance IS 'dimension arcs displays measures done on the field. For example: distances to buildings corner';
 

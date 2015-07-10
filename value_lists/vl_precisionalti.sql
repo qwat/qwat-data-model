@@ -5,7 +5,6 @@
 */
 
 /* CREATE TABLE */
-DROP TABLE IF EXISTS qwat_vl.precisionalti CASCADE;
 CREATE TABLE qwat_vl.precisionalti () INHERITS ( qwat_vl.value_list_base);
 ALTER TABLE qwat_vl.precisionalti ADD CONSTRAINT vl_precisionalti_pk PRIMARY KEY (id);
 COMMENT ON TABLE qwat_vl.precisionalti IS 'precision of altitude';

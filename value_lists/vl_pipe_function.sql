@@ -5,7 +5,6 @@
 */
 
 /* CREATE */
-DROP TABLE IF EXISTS qwat_vl.pipe_function CASCADE;
 CREATE TABLE qwat_vl.pipe_function () INHERITS ( qwat_vl.value_list_base);
 ALTER TABLE qwat_vl.pipe_function ADD CONSTRAINT vl_pipe_function_pk PRIMARY KEY (id);
 COMMENT ON TABLE qwat_vl.pipe_function IS 'Function for pipe. Here is determined if pipe should be visible or not in the schematic view, but this can be overidden by the pipe attribute schema_force_visible.';

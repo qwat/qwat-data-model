@@ -5,7 +5,6 @@
 */
 
 /* CREATE */
-DROP TABLE IF EXISTS qwat_vl.part_type CASCADE;
 CREATE TABLE qwat_vl.part_type () INHERITS ( qwat_vl.value_list_base);
 ALTER TABLE qwat_vl.part_type ADD CONSTRAINT vl_part_type_pk PRIMARY KEY (id);
 COMMENT ON TABLE qwat_vl.part_type IS 'table for installation parts. They are supposed to be on top of nodes and might be used to display a specific symbol.';

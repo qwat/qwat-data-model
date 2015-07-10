@@ -5,7 +5,6 @@
 */
 
 /* Cistern types */
-DROP TABLE IF EXISTS qwat_vl.remote_type CASCADE;
 CREATE TABLE qwat_vl.remote_type () INHERITS ( qwat_vl.value_list_base);
 ALTER TABLE qwat_vl.remote_type ADD CONSTRAINT vl_remote_type_pk PRIMARY KEY (id);
 

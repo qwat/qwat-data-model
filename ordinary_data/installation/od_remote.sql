@@ -5,7 +5,6 @@
 */
 
 
-DROP TABLE IF EXISTS qwat_od.remote CASCADE;
 CREATE TABLE qwat_od.remote (id serial PRIMARY KEY);
 COMMENT ON TABLE qwat_od.remote IS 'Table for installation remotes.';
 

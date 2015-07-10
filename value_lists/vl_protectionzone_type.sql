@@ -5,7 +5,6 @@
 */
 
 /* CREATE */
-DROP TABLE IF EXISTS qwat_vl.protectionzone_type CASCADE;
 CREATE TABLE qwat_vl.protectionzone_type () INHERITS ( qwat_vl.value_list_base);
 ALTER TABLE qwat_vl.protectionzone_type ADD CONSTRAINT vl_protectionzone_type_pk PRIMARY KEY (id);
 COMMENT ON TABLE qwat_vl.protectionzone_type

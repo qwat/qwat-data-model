@@ -5,8 +5,6 @@
 */
 
 
-
-DROP VIEW IF EXISTS qwat_od.vw_pipe CASCADE;
 CREATE VIEW qwat_od.vw_pipe AS 
 	SELECT  
 		pipe.id                ,

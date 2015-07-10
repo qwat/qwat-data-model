@@ -5,7 +5,6 @@
 */
 
 /* CREATE TABLE */
-DROP VIEW IF EXISTS qwat_od.vw_protectionzone CASCADE;
 CREATE VIEW qwat_od.vw_protectionzone AS 
 	SELECT 
 		protectionzone.*, 

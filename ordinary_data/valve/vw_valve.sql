@@ -7,7 +7,6 @@
 
 /* TODO: maintenance */
 
-DROP VIEW IF EXISTS qwat_od.vw_valve CASCADE;
 CREATE VIEW qwat_od.vw_valve AS 
 SELECT  
 	valve.id                ,

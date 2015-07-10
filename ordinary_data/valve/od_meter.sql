@@ -4,8 +4,6 @@
 	SQL file :: meter table
 */
 
-
-DROP TABLE IF EXISTS qwat_od.meter CASCADE;
 CREATE TABLE qwat_od.meter (id serial PRIMARY KEY);
 COMMENT ON TABLE qwat_od.meter IS 'Table for meters.';
 

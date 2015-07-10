@@ -5,7 +5,6 @@
 */
 
 /* Fire storages */
-DROP TABLE IF EXISTS qwat_vl.tank_firestorage CASCADE;
 CREATE TABLE qwat_vl.tank_firestorage () INHERITS ( qwat_vl.value_list_base);
 ALTER TABLE qwat_vl.tank_firestorage ADD CONSTRAINT vl_tank_firestorage_pk PRIMARY KEY (id);
 

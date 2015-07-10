@@ -5,7 +5,6 @@
 */
 
 /* source quality */
-DROP TABLE IF EXISTS qwat_vl.source_quality CASCADE;
 CREATE TABLE qwat_vl.source_quality () INHERITS (qwat_vl.value_list_base);
 ALTER TABLE qwat_vl.source_quality ADD CONSTRAINT vl_source_quality_pk PRIMARY KEY (id);
 

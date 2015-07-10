@@ -5,7 +5,6 @@
 */
 
 /* PUMP TYPE */
-DROP TABLE IF EXISTS qwat_vl.pump_type CASCADE;
 CREATE TABLE qwat_vl.pump_type () INHERITS ( qwat_vl.value_list_base);
 ALTER TABLE qwat_vl.pump_type ADD CONSTRAINT vl_pump_type_pk PRIMARY KEY (id);
 

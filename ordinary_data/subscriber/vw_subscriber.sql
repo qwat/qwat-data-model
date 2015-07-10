@@ -4,10 +4,9 @@
 	SQL file :: subscriber view
 */
 
-DROP VIEW IF EXISTS qwat_od.vw_subscriber CASCADE;
 CREATE VIEW qwat_od.vw_subscriber AS 
 	SELECT 
-		subscriber.id			  ,
+		subscriber.id		   ,
 		subscriber.fk_type         ,
 		subscriber.fk_pipe         ,
 		subscriber.identification       ,

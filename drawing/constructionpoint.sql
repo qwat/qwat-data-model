@@ -6,7 +6,6 @@
 
 
 /* CREATE TABLE */
-DROP TABLE IF EXISTS qwat_dr.constructionpoint CASCADE;
 CREATE TABLE qwat_dr.constructionpoint (id serial PRIMARY KEY);
 COMMENT ON TABLE qwat_dr.constructionpoint IS 'construction points are artificials points to build objects.';
 

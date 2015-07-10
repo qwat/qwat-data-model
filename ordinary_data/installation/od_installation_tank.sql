@@ -5,7 +5,6 @@
 */
 
 /* CREATE TABLE */
-DROP TABLE IF EXISTS qwat_od.installation_tank CASCADE;
 CREATE TABLE qwat_od.installation_tank (id serial PRIMARY KEY);
 
 COMMENT ON TABLE qwat_od.installation_tank IS 'storage tanks. These are related to installations and are made of cisterns';

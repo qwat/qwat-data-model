@@ -6,7 +6,6 @@
 
 
 /* CREATE TABLE */
-DROP TABLE IF EXISTS qwat_od.leak CASCADE;
 CREATE TABLE qwat_od.leak (id serial PRIMARY KEY);
 COMMENT ON TABLE qwat_od.leak IS 'pipe leaks';
 

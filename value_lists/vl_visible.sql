@@ -7,7 +7,6 @@
 /*----------------!!!---!!!----------------*/
 
 
-DROP TABLE IF EXISTS qwat_vl.visible;
 CREATE TABLE qwat_vl.visible () INHERITS ( qwat_vl.value_list_base);
 ALTER TABLE qwat_vl.visible ADD CONSTRAINT vl_visible_pk PRIMARY KEY (id);
 COMMENT ON TABLE qwat_vl.visible IS 'Table for editing in qgis tri state boolean (NULL/True/False) by using value relation.';

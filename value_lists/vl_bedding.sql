@@ -5,7 +5,6 @@
 */
 
 /* CREATE */
-DROP TABLE IF EXISTS qwat_vl.bedding CASCADE;
 CREATE TABLE qwat_vl.bedding () INHERITS ( qwat_vl.value_list_base);
 ALTER TABLE qwat_vl.bedding ADD CONSTRAINT vl_bedding_pk PRIMARY KEY (id);
 COMMENT ON TABLE qwat_vl.bedding IS 'Bedding';

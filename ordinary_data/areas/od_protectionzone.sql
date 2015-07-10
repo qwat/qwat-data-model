@@ -7,7 +7,6 @@
 
 
 /* CREATE TABLE */
-DROP TABLE IF EXISTS qwat_od.protectionzone CASCADE;
 CREATE TABLE qwat_od.protectionzone (id serial, CONSTRAINT "protectionzone_pk" PRIMARY KEY (id) );
 COMMENT ON TABLE qwat_od.protectionzone IS 'protectionzones.';
 

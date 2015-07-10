@@ -13,7 +13,6 @@ view pipe_schema               join with pipe_view to get pipe properties
 
 
 /* create a view with the visible items */
-DROP VIEW IF EXISTS qwat_od.vw_pipe_schema_visibleitems CASCADE;
 CREATE VIEW qwat_od.vw_pipe_schema_visibleitems AS 
 	SELECT 	
 		pipe.id,
@@ -105,7 +104,6 @@ COMMENT ON VIEW qwat_od.vw_pipe_schema_merged IS 'Merging of pipe based on the g
 /* 
 Join with pipe_view to get pipe properties
 */
-DROP VIEW IF EXISTS qwat_od.vw_pipe_schema ;
 CREATE VIEW qwat_od.vw_pipe_schema AS
 	SELECT	
 			pipe.id				               ,
@@ -153,7 +151,6 @@ CREATE RULE rl_pipe_schema_label
 /* 
 Add node id
 */
-DROP MATERIALIZED VIEW IF EXISTS qwat_od.vw_pipe_schema_node ;
 CREATE MATERIALIZED VIEW qwat_od.vw_pipe_schema_node AS
 	SELECT 
 		foo.*,

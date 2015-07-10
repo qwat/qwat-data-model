@@ -5,7 +5,6 @@
 */
 
 /* CREATE */
-DROP TABLE IF EXISTS qwat_vl.leak_cause CASCADE;
 CREATE TABLE qwat_vl.leak_cause () INHERITS ( qwat_vl.value_list_base);
 ALTER TABLE qwat_vl.leak_cause ADD CONSTRAINT vl_leak_cause_pk PRIMARY KEY (id);
 COMMENT ON TABLE qwat_vl.leak_cause IS 'Causes of leak';

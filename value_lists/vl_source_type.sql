@@ -5,7 +5,6 @@
 */
 
 /* source type */
-DROP TABLE IF EXISTS qwat_vl.source_type CASCADE;
 CREATE TABLE qwat_vl.source_type () INHERITS ( qwat_vl.value_list_base);
 ALTER TABLE qwat_vl.source_type ADD CONSTRAINT vl_source_type_pk PRIMARY KEY (id);
 

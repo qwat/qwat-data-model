@@ -5,7 +5,6 @@
 */
 
 /* CREATE TABLE */
-DROP TABLE IF EXISTS qwat_od.installation_pressurecontrol CASCADE;
 CREATE TABLE qwat_od.installation_pressurecontrol (id serial PRIMARY KEY);
 
 COMMENT ON TABLE qwat_od.installation_pressurecontrol IS '';
