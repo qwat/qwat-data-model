@@ -14,6 +14,7 @@ ALTER TABLE qwat_od.pressurezone ADD COLUMN fk_distributor     integer not null;
 ALTER TABLE qwat_od.pressurezone ADD COLUMN fk_consumptionzone integer;
 ALTER TABLE qwat_od.pressurezone ADD COLUMN name               varchar(50) not null;
 ALTER TABLE qwat_od.pressurezone ADD COLUMN population         integer default null;
+ALTER TABLE qwat_od.pressurezone ADD COLUMN subscriber         integer default null;
 ALTER TABLE qwat_od.pressurezone ADD COLUMN colorcode          smallint;
 
 /* GEOMETRY */

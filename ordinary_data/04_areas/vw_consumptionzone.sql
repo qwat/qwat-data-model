@@ -13,11 +13,13 @@ CREATE VIEW qwat_od.vw_consumptionzone AS
 		co.population AS population,
 		co.colorcode AS colorcode,
 		_sum_population,
+		_sum_subscriber,
 		geometry
 	FROM qwat_od.consumptionzone co,
 		( SELECT
 			fk_consumptionzone,
 			SUM(population) AS _sum_population,
+			SUM(subscriber) AS _sum_subscriber,
 			ST_Multi(ST_CollectionHomogenize(ST_Union(geometry)))::geometry(MultiPolygon,21781) AS geometry
 		FROM qwat_od.pressurezone pr
 		GROUP BY fk_consumptionzone ) AS pr
