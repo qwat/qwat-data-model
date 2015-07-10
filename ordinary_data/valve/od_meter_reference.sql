@@ -12,7 +12,7 @@ COMMENT ON TABLE qwat_od.meter_reference IS 'Table for meter references. These a
 ALTER TABLE qwat_od.meter_reference ADD COLUMN fk_meter integer ;
 
 /* GEOMETRY */
-SELECT addGeometryColumn('qwat_od', 'meter_reference', 'geometry', :SRID, 'POINT', 2);
+ALTER TABLE qwat_od.meter_reference ADD COLUMN geometry geometry('POINT',:SRID);
 CREATE INDEX meter_reference_geoidx_sch ON qwat_od.meter_reference USING GIST ( geometry );
 			
 /* CONSTRAINTS */

@@ -19,7 +19,7 @@ ALTER TABLE qwat_od.protectionzone ADD COLUMN date      date;
 ALTER TABLE qwat_od.protectionzone ADD COLUMN agent     varchar(40) ;
 
 /* geometry */
-SELECT AddGeometryColumn('qwat_od', 'protectionzone', 'geometry', :SRID, 'MULTIPOLYGON', 2);
+ALTER qwat_od.protectionzone TABLE ADD COLUMN geometry geometry('MULTIPOLYGON',:SRID);
 CREATE INDEX protectionzone_geoidx ON qwat_od.protectionzone USING GIST ( geometry );
 
 /* contraints */

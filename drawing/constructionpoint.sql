@@ -18,7 +18,7 @@ ALTER TABLE qwat_dr.constructionpoint ADD COLUMN measurement_campaign  varchar(2
 ALTER TABLE qwat_dr.constructionpoint ADD COLUMN remark                text ;
 
 /* geometry */
-SELECT AddGeometryColumn('qwat_dr','constructionpoint','geometry',21781,'POINT',2);
+ALTER qwat_dr.constructionpoint TABLE ADD COLUMN geometry geometry('POINT',:SRID);
 CREATE INDEX constructionpoint_geoidx ON qwat_dr.constructionpoint USING GIST ( geometry );
 
 

@@ -19,7 +19,7 @@ ALTER TABLE qwat_od.node ADD COLUMN _status_active  boolean     default false;
 ALTER TABLE qwat_od.node ADD COLUMN _under_object   boolean     default false;
 
 /* geometry */
-SELECT AddGeometryColumn('qwat_od', 'node', 'geometry', :SRID, 'POINT', 2)  ;
+ALTER qwat_od.node TABLE ADD COLUMN geometry geometry('POINT',:SRID);
 CREATE INDEX node_geoidx ON qwat_od.node USING GIST ( geometry );
 
 

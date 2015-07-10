@@ -18,7 +18,7 @@ ALTER TABLE qwat_od.pressurezone ADD COLUMN subscriber         integer default n
 ALTER TABLE qwat_od.pressurezone ADD COLUMN colorcode          smallint;
 
 /* GEOMETRY */
-SELECT AddGeometryColumn('qwat_od', 'pressurezone', 'geometry', :SRID, 'MULTIPOLYGON', 2);
+ALTER qwat_od.pressurezone TABLE ADD COLUMN geometry geometry('MULTIPOLYGON',:SRID);
 CREATE INDEX pressurezone_geoidx ON qwat_od.pressurezone USING GIST ( geometry );
 
 /* LABELS */
