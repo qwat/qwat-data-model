@@ -16,7 +16,7 @@ ALTER TABLE qwat_dr.dimension_distance ADD COLUMN _calculation double precision;
 ALTER TABLE qwat_dr.dimension_distance ADD COLUMN remark       text ;
 
 /* geometry */
-ALTER qwat_dr.dimension_distance TABLE ADD COLUMN geometry geometry('LINESTRING',:SRID);
+ALTER TABLE qwat_dr.dimension_distance ADD COLUMN geometry geometry('LINESTRING',:SRID);
 CREATE INDEX dimension_distance_geoidx ON qwat_dr.dimension_distance USING GIST ( geometry );
 
 

@@ -15,7 +15,7 @@ ALTER TABLE qwat_dr.dimension_orientation ADD COLUMN observation varchar(120) ;
 ALTER TABLE qwat_dr.dimension_orientation ADD COLUMN remark      text ;
 
 /* geometry */
-ALTER qwat_dr.dimension_orientation TABLE ADD COLUMN geometry geometry('LINESTRING',:SRID);
+ALTER TABLE qwat_dr.dimension_orientation ADD COLUMN geometry geometry('LINESTRING',:SRID);
 CREATE INDEX dimension_orientation_geoidx ON qwat_dr.dimension_orientation USING GIST ( geometry );
 
 

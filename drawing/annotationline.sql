@@ -18,5 +18,5 @@ ALTER TABLE qwat_dr.annotationline ADD COLUMN scale_1          boolean default t
 ALTER TABLE qwat_dr.annotationline ADD COLUMN scale_2          boolean default true;
 
 /* GEOMETRY */
-ALTER qwat_dr.annotationline TABLE ADD COLUMN geometry geometry('LINESTRING',:SRID);
+ALTER TABLE qwat_dr.annotationline ADD COLUMN geometry geometry('LINESTRING',:SRID);
 CREATE INDEX annotationline_geoidx ON qwat_dr.annotationline USING GIST ( geometry );
