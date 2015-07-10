@@ -20,7 +20,7 @@ WITH (
   OIDS=FALSE
 );
 
-SELECT AddGeometryColumn('qwat_od','crossing', 'geometry', 21781, 'Point', 2);
+SELECT AddGeometryColumn('qwat_od','crossing', 'geometry', :SRID, 'Point', 2);
 
 CREATE OR REPLACE FUNCTION qwat_od.ft_controled_crossing()
 RETURNS trigger AS

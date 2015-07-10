@@ -31,7 +31,7 @@ SELECT
 	valve._district         ,
 	valve._pressurezone     ,
 	valve._printmaps        ,
-	valve.geometry::geometry(Point,21781)   ,
+	valve.geometry::geometry(Point,:SRID)   ,
 	COALESCE(schema_force_visible, valve_function.schema_visible) AS _schema_visible,
 	valve_function.value_fr AS _function    ,
 	valve_function.short_fr AS _function_shortname ,

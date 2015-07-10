@@ -20,7 +20,7 @@ CREATE VIEW qwat_od.vw_consumptionzone AS
 			fk_consumptionzone,
 			SUM(population) AS _sum_population,
 			SUM(subscriber) AS _sum_subscriber,
-			ST_Multi(ST_CollectionHomogenize(ST_Union(geometry)))::geometry(MultiPolygon,21781) AS geometry
+			ST_Multi(ST_CollectionHomogenize(ST_Union(geometry)))::geometry(MultiPolygon,:SRID) AS geometry
 		FROM qwat_od.pressurezone pr
 		GROUP BY fk_consumptionzone ) AS pr
 	WHERE pr.fk_consumptionzone = co.id;

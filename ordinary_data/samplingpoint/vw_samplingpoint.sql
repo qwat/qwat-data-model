@@ -16,7 +16,7 @@ CREATE VIEW qwat_od.vw_samplingpoint AS
 		samplingpoint._pressurezone  ,
 		samplingpoint._printmaps     ,
 		samplingpoint.remark         ,
-		samplingpoint.geometry::geometry(Point,21781),
+		samplingpoint.geometry::geometry(Point,:SRID),
 		pressurezone.colorcode     AS _pressurezone_colorcode
 		FROM qwat_od.samplingpoint
 		LEFT OUTER JOIN qwat_od.district      ON samplingpoint.fk_district     = district.id       

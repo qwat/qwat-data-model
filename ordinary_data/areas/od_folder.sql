@@ -16,8 +16,8 @@ ALTER TABLE qwat_od.folder ADD COLUMN date_start  date;
 ALTER TABLE qwat_od.folder ADD COLUMN date_end    date;
 
 /* GEOMETRY */
-SELECT AddGeometryColumn('qwat_od', 'folder', 'geometry_polygon', 21781, 'MULTIPOLYGON', 2);
-SELECT AddGeometryColumn('qwat_od', 'folder', 'geometry_line', 21781, 'MULTILINESTRING', 2);
+SELECT AddGeometryColumn('qwat_od', 'folder', 'geometry_polygon', :SRID, 'MULTIPOLYGON', 2);
+SELECT AddGeometryColumn('qwat_od', 'folder', 'geometry_line', :SRID, 'MULTILINESTRING', 2);
 CREATE INDEX folder_geoidx_polygon ON qwat_od.folder USING GIST ( geometry_polygon );
 CREATE INDEX folder_geoidx_line ON qwat_od.folder    USING GIST ( geometry_line );
 

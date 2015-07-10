@@ -30,7 +30,7 @@ CREATE VIEW qwat_od.vw_hydrant AS
 		hydrant.fk_pressurezone,
 		hydrant.fk_printmap    ,
 		hydrant._printmaps     ,
-		hydrant.geometry::geometry(Point,21781),
+		hydrant.geometry::geometry(Point,:SRID),
 		distributor.name       AS _distributor,
 		status.value_fr        AS _status,
 		status.active          AS _status_active,

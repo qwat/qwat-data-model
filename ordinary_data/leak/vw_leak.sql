@@ -16,7 +16,7 @@ CREATE VIEW qwat_od.vw_leak AS
 		pipe_replaced   ,
 		description     ,
 		repair          ,
-		geometry::geometry(Point,21781)
+		geometry::geometry(Point,:SRID)
 	FROM qwat_od.leak
 	INNER JOIN qwat_vl.leak_cause  ON leak.fk_cause  = leak_cause.id;
 

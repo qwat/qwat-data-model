@@ -22,7 +22,7 @@ CREATE VIEW qwat_od.vw_pipe_schema_visibleitems AS
 		pipe._length2d,
 		pipe._length3d,
 		pipe.tunnel_or_bridge,
-		pipe.geometry_alt2::geometry(LineString,21781) AS geometry,
+		pipe.geometry_alt2::geometry(LineString,:SRID) AS geometry,
 		pipe._valve_count,
 		pipe._valve_closed
 	FROM qwat_od.pipe
@@ -42,7 +42,7 @@ CREATE OR REPLACE RULE rl_pipe_update_alternative AS
 CREATE OR REPLACE RULE rl_pipe_delete_alternative AS
 	ON DELETE TO qwat_od.vw_pipe_schema_visibleitems DO INSTEAD
 		UPDATE qwat_od.pipe SET
-			geometry_alt2 = NULL::geometry(LineString,21781)
+			geometry_alt2 = NULL::geometry(LineString,:SRID)
 		WHERE id = OLD.id;	
 
 /* 
@@ -77,7 +77,7 @@ View of pipe with group ID
 */
 CREATE OR REPLACE VIEW qwat_od.vw_pipe_schema_items AS 
 	SELECT 
-		geometry::geometry(LineString,21781),
+		geometry::geometry(LineString,:SRID),
 		qwat_od.fn_get_parent(id,fk_parent) AS groupid,
 		_length2d,
 		_length3d,
@@ -91,7 +91,7 @@ Merging of pipe based on the group ID
 */
 CREATE OR REPLACE VIEW qwat_od.vw_pipe_schema_merged AS
 	SELECT	groupid AS id, 
-			ST_LineMerge(ST_Union(geometry))::geometry(LineString,21781) AS geometry,
+			ST_LineMerge(ST_Union(geometry))::geometry(LineString,:SRID) AS geometry,
 			COUNT(groupid) AS number_of_pipe,
 			SUM(_length2d) AS _length2d,
 			SUM(_length3d) AS _length3d,
@@ -136,7 +136,7 @@ CREATE VIEW qwat_od.vw_pipe_schema AS
 			vw_pipe_schema_merged._valve_closed   ,
 			pressurezone.name AS _pressurezone ,
 			pressurezone.colorcode AS _pressurezone_colorcode,
-			vw_pipe_schema_merged.geometry::geometry(LineString,21781) AS geometry
+			vw_pipe_schema_merged.geometry::geometry(LineString,:SRID) AS geometry
 	  FROM qwat_od.vw_pipe_schema_merged
 	 INNER JOIN qwat_od.pipe         ON pipe.id = vw_pipe_schema_merged.id
 	 INNER JOIN qwat_od.pressurezone ON pipe.fk_pressurezone = pressurezone.id;

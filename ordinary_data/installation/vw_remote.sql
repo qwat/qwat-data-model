@@ -21,7 +21,7 @@ label_2_x      	,
 label_2_y      	,
 label_2_rotation     	,
 label_2_text 	,
-remote.geometry::geometry(MultiLineString,21781) AS geometry
+remote.geometry::geometry(MultiLineString,:SRID) AS geometry
 FROM qwat_od.remote
 INNER      JOIN qwat_od.distributor   ON remote.fk_distributor = distributor.id
 INNER      JOIN qwat_vl.status        ON remote.fk_status      = status.id

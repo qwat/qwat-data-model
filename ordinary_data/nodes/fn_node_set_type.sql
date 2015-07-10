@@ -22,7 +22,7 @@ $BODY$
 		orientation2    double precision := 0    ;
 		is_under_object boolean          := false;
 		is_under_count  integer          := 0    ;
-		node_geom       geometry(Point, 21781)   ;
+		node_geom       geometry(Point, :SRID)   ;
 		intersects      boolean                  ;
 		node_table      record                   ;
 		stmt            text                     ;

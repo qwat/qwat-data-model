@@ -9,7 +9,7 @@
 DROP VIEW IF EXISTS qwat_od.vw_valve_lines;
 CREATE OR REPLACE VIEW qwat_od.vw_valve_lines AS 
  SELECT valve.id,
-    ST_MakeLine(valve.geometry_handle, valve.geometry)::geometry(LineString, 21781) AS geometry
+    ST_MakeLine(valve.geometry_handle, valve.geometry)::geometry(LineString, :SRID) AS geometry
    FROM qwat_od.valve
   WHERE valve.geometry_handle IS NOT NULL AND valve.geometry IS NOT NULL;
 

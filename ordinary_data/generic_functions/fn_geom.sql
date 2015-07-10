@@ -39,11 +39,11 @@ $func$
 		EXECUTE format('ALTER TABLE qwat_od.%I ADD COLUMN _printmaps      varchar(100)  ;', _table_name);
 
 		/* Enables geometry */
-		PERFORM addGeometryColumn('qwat_od', _table_name, 'geometry', 21781, 'POINT', 2);
+		PERFORM addGeometryColumn('qwat_od', _table_name, 'geometry', :SRID, 'POINT', 2);
 		EXECUTE format('CREATE INDEX %1$I ON qwat_od.%2$I USING GIST ( geometry );', _table_name||'_geoidx', _table_name);
 		IF _create_alt_geom IS TRUE THEN
-			PERFORM addGeometryColumn('qwat_od', _table_name, 'geometry_alt1', 21781, 'POINT', 2);
-			PERFORM addGeometryColumn('qwat_od', _table_name, 'geometry_alt2', 21781, 'POINT', 2);
+			PERFORM addGeometryColumn('qwat_od', _table_name, 'geometry_alt1', :SRID, 'POINT', 2);
+			PERFORM addGeometryColumn('qwat_od', _table_name, 'geometry_alt2', :SRID, 'POINT', 2);
 			EXECUTE format('CREATE INDEX %1$I ON qwat_od.%2$I USING GIST ( geometry_alt1 );
 							CREATE INDEX %3$I ON qwat_od.%2$I USING GIST ( geometry_alt2 );
 							ALTER TABLE qwat_od.%2$I  ADD COLUMN _geometry_alt1_used boolean,

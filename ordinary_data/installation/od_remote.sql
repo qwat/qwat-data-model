@@ -22,7 +22,7 @@ ALTER TABLE qwat_od.remote ADD COLUMN folder          varchar(50)  ;
 ALTER TABLE qwat_od.remote ADD COLUMN plan            varchar(50) ;
 ALTER TABLE qwat_od.remote ADD COLUMN remark text     ;
 
-SELECT AddGeometryColumn('qwat_od', 'remote', 'geometry', 21781, 'MULTILINESTRING', 2)  ;
+SELECT AddGeometryColumn('qwat_od', 'remote', 'geometry', :SRID, 'MULTILINESTRING', 2)  ;
 CREATE INDEX remote_geoidx_line ON qwat_od.remote USING GIST ( geometry );
 
 /* LABELS */
