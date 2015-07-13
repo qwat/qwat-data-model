@@ -79,7 +79,7 @@ if [[ "$PGSERVICEGIVEN" -eq 0 ]] && [[ "$DROPSCHEMA" -eq 1 ]]; then
 	    usage
 	    exit 0
 	fi
-    read -p "PG service is not explicitly given and schema will be dropped. Are you sure to continue ? (y/n) " response
+    read -p "PG service is not explicitly given and schema will be dropped. Are you sure you want to continue ? (y/n) " response
     if [ $response != "y" ]
     then
         exit 0
