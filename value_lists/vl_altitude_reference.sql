@@ -1,7 +1,7 @@
 /*
 	qWat - QGIS Water Module
 
-	SQL file :: bedding table
+	SQL file :: altitude reference table
 */
 
 /* CREATE */
