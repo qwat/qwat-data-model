@@ -16,7 +16,7 @@ ALTER TABLE qwat_od.part ADD COLUMN fk_status        integer not null ;
 ALTER TABLE qwat_od.part ADD COLUMN fk_precision     integer not null ;
 ALTER TABLE qwat_od.part ADD COLUMN fk_precisionalti integer not null ;
 ALTER TABLE qwat_od.part ADD COLUMN year smallint    CHECK (year IS NULL OR year > 1800 AND year < 2100);
-ALTER TABLE qwat_od.part ADD COLUMN altitude_real    decimal(10,3)    ;
+ALTER TABLE qwat_od.part ADD COLUMN altitude         decimal(10,3)    ;
 ALTER TABLE qwat_od.part ADD COLUMN fk_object_reference integer     ;
 ALTER TABLE qwat_od.part ADD COLUMN orientation      smallint         ;
 ALTER TABLE qwat_od.part ADD COLUMN remark           text   ;

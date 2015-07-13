@@ -15,7 +15,7 @@ CREATE VIEW qwat_od.vw_hydrant AS
 		hydrant.year           ,
 		hydrant.model          ,
 		hydrant.underground    ,
-		hydrant.altitude_real  ,
+		hydrant.altitude       ,
 		hydrant.marked         ,
 		hydrant.remark         ,
 		hydrant.pressure_static   ,

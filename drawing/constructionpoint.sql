@@ -10,7 +10,7 @@ CREATE TABLE qwat_dr.constructionpoint (id serial PRIMARY KEY);
 COMMENT ON TABLE qwat_dr.constructionpoint IS 'construction points are artificials points to build objects.';
 
 /* columns */
-ALTER TABLE qwat_dr.constructionpoint ADD COLUMN altitude_real         decimal(10,3)  ;
+ALTER TABLE qwat_dr.constructionpoint ADD COLUMN altitude         decimal(10,3)  ;
 ALTER TABLE qwat_dr.constructionpoint ADD COLUMN fk_object_reference integer     ;
 ALTER TABLE qwat_dr.constructionpoint ADD COLUMN code                  varchar(15) ;
 ALTER TABLE qwat_dr.constructionpoint ADD COLUMN measurement_campaign  varchar(200) ;

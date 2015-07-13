@@ -19,8 +19,8 @@ ALTER TABLE qwat_od.installation_chamber ADD COLUMN fk_remote          integer  
 ALTER TABLE qwat_od.installation_chamber ADD COLUMN fk_watertype       integer not null       ;
 ALTER TABLE qwat_od.installation_chamber ADD COLUMN fk_object_reference integer not null    ;
 ALTER TABLE qwat_od.installation_chamber ADD COLUMN schema_visible     boolean not null default true ;
-ALTER TABLE qwat_od.installation_chamber ADD COLUMN altitude_real      decimal(10,3)          ;
-ALTER TABLE qwat_od.installation_chamber ADD COLUMN altitude 	       decimal(10,3) ;
+ALTER TABLE qwat_od.installation_chamber ADD COLUMN altitude           decimal(10,3)          ;
+ALTER TABLE qwat_od.installation_chamber ADD COLUMN depth 	       decimal(10,3)          ;
 ALTER TABLE qwat_od.installation_chamber ADD COLUMN remark             text         ;
 ALTER TABLE qwat_od.installation_chamber ADD COLUMN year               smallint    CHECK (year IS NULL OR year > 1800 AND year < 2100);
 ALTER TABLE qwat_od.installation_chamber ADD COLUMN year_end           smallint    CHECK (year_end IS NULL OR year > 1800 AND year < 2100);
@@ -29,7 +29,7 @@ ALTER TABLE qwat_od.installation_chamber ADD COLUMN parcel             varchar(3
 ALTER TABLE qwat_od.installation_chamber ADD COLUMN eca                varchar(30)  ;
 ALTER TABLE qwat_od.installation_chamber ADD COLUMN no_valves 	       smallint     ;
 
-COMMENT ON COLUMN qwat_od.installation_chamber.altitude IS 'Altitude having the reference specified by the fk_object_reference column unlike the altitude_real column which is always measured with reference to the sea level.';
+COMMENT ON COLUMN qwat_od.installation_chamber.depth IS 'Measured depth having the reference specified by the fk_object_reference column';
 
 /* LABELS */
 SELECT qwat_od.fn_label_create_fields('installation_chamber');
