@@ -216,6 +216,8 @@ psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f ordinary_data/finish/search_view.sql
 
 # System
 psql -v ON_ERROR_STOP=1 -c "CREATE SCHEMA qwat_sys;"
+psql -v ON_ERROR_STOP=1 -f system/settings.sql
+psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f system/settings_insert.sql
 psql -v ON_ERROR_STOP=1 -f system/audit.sql
 psql -v ON_ERROR_STOP=1 -f system/audit_tables.sql
 
