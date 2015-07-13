@@ -11,7 +11,7 @@ COMMENT ON TABLE qwat_dr.constructionpoint IS 'construction points are artificia
 
 /* columns */
 ALTER TABLE qwat_dr.constructionpoint ADD COLUMN altitude_real         decimal(10,3)  ;
-ALTER TABLE qwat_dr.constructionpoint ADD COLUMN fk_altitude_reference integer     ;
+ALTER TABLE qwat_dr.constructionpoint ADD COLUMN fk_object_reference integer     ;
 ALTER TABLE qwat_dr.constructionpoint ADD COLUMN code                  varchar(15) ;
 ALTER TABLE qwat_dr.constructionpoint ADD COLUMN measurement_campaign  varchar(200) ;
 ALTER TABLE qwat_dr.constructionpoint ADD COLUMN remark                text ;
@@ -22,7 +22,7 @@ CREATE INDEX constructionpoint_geoidx ON qwat_dr.constructionpoint USING GIST ( 
 
 
 /* constraints */
-ALTER TABLE qwat_dr.constructionpoint ADD CONSTRAINT constructionpoint_fk_altitude_reference FOREIGN KEY (fk_altitude_reference) REFERENCES qwat_vl.altitude_reference(id) MATCH FULL; CREATE INDEX fki_constructionpoint_fk_altitude_reference ON qwat_dr.constructionpoint(fk_altitude_reference);
+ALTER TABLE qwat_dr.constructionpoint ADD CONSTRAINT constructionpoint_fk_object_reference FOREIGN KEY (fk_object_reference) REFERENCES qwat_vl.object_reference(id) MATCH FULL; CREATE INDEX fki_constructionpoint_fk_object_reference ON qwat_dr.constructionpoint(fk_object_reference);
 
 
 
