@@ -17,14 +17,19 @@ ALTER TABLE qwat_od.installation_chamber ADD COLUMN fk_status          integer n
 ALTER TABLE qwat_od.installation_chamber ADD COLUMN fk_distributor     integer not null       ;
 ALTER TABLE qwat_od.installation_chamber ADD COLUMN fk_remote          integer                ;
 ALTER TABLE qwat_od.installation_chamber ADD COLUMN fk_watertype       integer not null       ;
+ALTER TABLE qwat_od.installation_chamber ADD COLUMN fk_object_reference integer not null    ;
 ALTER TABLE qwat_od.installation_chamber ADD COLUMN schema_visible     boolean not null default true ;
-ALTER TABLE qwat_od.installation_chamber ADD COLUMN altitude_real      decimal(10,3)          ;
+ALTER TABLE qwat_od.installation_chamber ADD COLUMN altitude           decimal(10,3)          ;
+ALTER TABLE qwat_od.installation_chamber ADD COLUMN depth 	       decimal(10,3)          ;
 ALTER TABLE qwat_od.installation_chamber ADD COLUMN remark             text         ;
 ALTER TABLE qwat_od.installation_chamber ADD COLUMN year               smallint    CHECK (year IS NULL OR year > 1800 AND year < 2100);
 ALTER TABLE qwat_od.installation_chamber ADD COLUMN year_end           smallint    CHECK (year_end IS NULL OR year > 1800 AND year < 2100);
 ALTER TABLE qwat_od.installation_chamber ADD COLUMN open_water_surface boolean     default false  ;
 ALTER TABLE qwat_od.installation_chamber ADD COLUMN parcel             varchar(30)  ;
 ALTER TABLE qwat_od.installation_chamber ADD COLUMN eca                varchar(30)  ;
+ALTER TABLE qwat_od.installation_chamber ADD COLUMN no_valves 	       smallint     ;
+
+COMMENT ON COLUMN qwat_od.installation_chamber.depth IS 'Measured depth having the reference specified by the fk_object_reference column';
 
 /* LABELS */
 SELECT qwat_od.fn_label_create_fields('installation_chamber');
@@ -44,6 +49,7 @@ ALTER TABLE qwat_od.installation_chamber ADD CONSTRAINT installation_chamber_fk_
 ALTER TABLE qwat_od.installation_chamber ADD CONSTRAINT installation_chamber_fk_distributor  FOREIGN KEY (fk_distributor)  REFERENCES qwat_od.distributor(id)           MATCH FULL;   CREATE INDEX fki_installation_chamber_fk_distributor  ON qwat_od.installation_chamber(fk_distributor) ;
 ALTER TABLE qwat_od.installation_chamber ADD CONSTRAINT installation_chamber_fk_remote       FOREIGN KEY (fk_remote)       REFERENCES qwat_vl.remote_type(id)           MATCH FULL; CREATE INDEX fki_installation_chamber_fk_remote       ON qwat_od.installation_chamber(fk_remote)      ;
 ALTER TABLE qwat_od.installation_chamber ADD CONSTRAINT installation_chamber_fk_watertype    FOREIGN KEY (fk_watertype)    REFERENCES qwat_vl.watertype(id)             MATCH FULL;   CREATE INDEX fki_installation_chamber_watertype    ON qwat_od.installation_chamber(fk_watertype)   ;
+ALTER TABLE qwat_od.installation_chamber ADD CONSTRAINT installation_chamber_fk_object_reference FOREIGN KEY (fk_object_reference) REFERENCES qwat_vl.object_reference(id) MATCH FULL; CREATE INDEX fki_installation_chamber_fk_object_reference ON qwat_od.installation_chamber(fk_object_reference);
 
 /* VIEW */
 CREATE OR REPLACE VIEW qwat_od.vw_installation_chamber_fr AS

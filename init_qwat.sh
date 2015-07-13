@@ -79,7 +79,7 @@ if [[ "$PGSERVICEGIVEN" -eq 0 ]] && [[ "$DROPSCHEMA" -eq 1 ]]; then
 	    usage
 	    exit 0
 	fi
-    read -p "PG service is not explicietly given and schema will be dropped. Are you sure to continue ? (y/n) " response
+    read -p "PG service is not explicitly given and schema will be dropped. Are you sure you want to continue ? (y/n) " response
     if [ $response != "y" ]
     then
         exit 0
@@ -108,7 +108,7 @@ psql -v ON_ERROR_STOP=1 -c "CREATE EXTENSION IF NOT EXISTS postgis;"
 # Value lists
 psql -v ON_ERROR_STOP=1 -c "CREATE SCHEMA qwat_vl;"
 psql -v ON_ERROR_STOP=1 -f value_lists/value_list_base.sql
-psql -v ON_ERROR_STOP=1 -f value_lists/vl_altitude_reference.sql
+psql -v ON_ERROR_STOP=1 -f value_lists/vl_object_reference.sql
 psql -v ON_ERROR_STOP=1 -f value_lists/vl_bedding.sql
 psql -v ON_ERROR_STOP=1 -f value_lists/vl_cistern.sql
 psql -v ON_ERROR_STOP=1 -f value_lists/vl_cover_type.sql

@@ -42,7 +42,7 @@ They will have 101, 102 and 103 as code, respectively.
 71 hydrant_provider
 
 /* various */
-9000-9040 altitude_reference
+9000-9040 object_reference
 
 9100-9120 leak_cause
 9161-9199 node_table

@@ -19,7 +19,6 @@ ALTER TABLE qwat_od.installation_pump ADD COLUMN fk_distributor     integer not 
 ALTER TABLE qwat_od.installation_pump ADD COLUMN fk_remote          integer                ;
 ALTER TABLE qwat_od.installation_pump ADD COLUMN fk_watertype       integer not null       ;
 ALTER TABLE qwat_od.installation_pump ADD COLUMN schema_visible     boolean not null default true ;
-ALTER TABLE qwat_od.installation_pump ADD COLUMN altitude_real      decimal(10,3)          ;
 ALTER TABLE qwat_od.installation_pump ADD COLUMN remark             text  ;
 ALTER TABLE qwat_od.installation_pump ADD COLUMN year smallint CHECK (year IS NULL OR year > 1800 AND year < 2100);
 ALTER TABLE qwat_od.installation_pump ADD COLUMN year_end smallint CHECK (year_end IS NULL OR year > 1800 AND year < 2100);
