@@ -1,0 +1,9 @@
+language: python
+
+addons:
+  postgresql: "9.4"
+
+before_script: 
+  - printf "[qwat]\nhost=localhost\ndbname=qwat\nuser=postgres" > ~/.pg_service.conf
+  - psql -c 'CREATE DATABASE qwat;' -U postgres
+  - $TRAVIS_BUILD_DIR/init-qwat.sh -p qwat -s 21781 -r
