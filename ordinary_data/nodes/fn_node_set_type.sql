@@ -28,7 +28,7 @@ $BODY$
 		stmt            text                     ;
 		keep_type       boolean          := false;
 		complement_col  varchar(50)      := ''   ;
-		srid            integer                  ;
+		srid_var        integer                  ;
 	BEGIN
 		/* determine if the node is under an object (hydrant, valve, etc.)
 		   the table node_table contains the names of the tables (i.e. layers) that are typically considered as nodes.
@@ -128,8 +128,8 @@ $BODY$
 			END LOOP;
 			IF keep_type IS FALSE AND grouped.count = 1 THEN
 				/* if the node is only on 1 pipe, check if it intersects another pipe. If yes, hide it */
-				select srid into srid from geometry_columns where f_table_schema = 'qwat_od' and f_table_name = 'node';
-				node_geom := geometry::geometry(Point, srid) FROM qwat_od.node WHERE id = node_id;
+				select srid into srid_var from geometry_columns where f_table_schema = 'qwat_od' and f_table_name = 'node';
+				node_geom := geometry::geometry(POINT,21781) FROM qwat_od.node WHERE id = node_id;
 				/* st_intersects does not work as expected. */
 				intersects := bool_or(ST_DWithin(node_geom, pipe.geometry, 0.0001)) FROM qwat_od.pipe WHERE id != pipe_id;
 				IF intersects IS TRUE THEN
