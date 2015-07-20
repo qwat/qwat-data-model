@@ -18,7 +18,7 @@ Usage: $0 [options]
 -p| --pgservice      PG service to connect to the database.
                      If not given, use current one defined by PGSERVICE env. variable.
 -s|--srid            PostGIS SRID. Default to 21781 (ch1903)
--d|--drop-schema     drop schema (cascaded) if they exist
+-d|--drop-schema     drop schemas (cascaded) if they exist
 -r|--create-roles    create roles in the database
 EOF
     
