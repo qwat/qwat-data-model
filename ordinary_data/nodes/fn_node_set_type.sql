@@ -28,7 +28,6 @@ $BODY$
 		stmt            text                     ;
 		keep_type       boolean          := false;
 		complement_col  varchar(50)      := ''   ;
-		srid_var        integer                  ;
 	BEGIN
 		/* determine if the node is under an object (hydrant, valve, etc.)
 		   the table node_table contains the names of the tables (i.e. layers) that are typically considered as nodes.
