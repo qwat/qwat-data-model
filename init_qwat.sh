@@ -105,6 +105,12 @@ fi
 psql -v ON_ERROR_STOP=1 -c "CREATE EXTENSION IF NOT EXISTS hstore;"
 psql -v ON_ERROR_STOP=1 -c "CREATE EXTENSION IF NOT EXISTS postgis;"
 
+# System
+psql -v ON_ERROR_STOP=1 -c "CREATE SCHEMA qwat_sys;"
+psql -v ON_ERROR_STOP=1 -f system/settings.sql
+psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f system/settings_insert.sql
+psql -v ON_ERROR_STOP=1 -f system/audit.sql
+
 # Value lists
 psql -v ON_ERROR_STOP=1 -c "CREATE SCHEMA qwat_vl;"
 psql -v ON_ERROR_STOP=1 -f value_lists/value_list_base.sql
@@ -214,11 +220,7 @@ psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f ordinary_data/worker/od_worker.sql
 psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f ordinary_data/finish/node_control.sql
 psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f ordinary_data/finish/search_view.sql
 
-# System
-psql -v ON_ERROR_STOP=1 -c "CREATE SCHEMA qwat_sys;"
-psql -v ON_ERROR_STOP=1 -f system/settings.sql
-psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f system/settings_insert.sql
-psql -v ON_ERROR_STOP=1 -f system/audit.sql
+# Finalize System
 psql -v ON_ERROR_STOP=1 -f system/audit_tables.sql
 
 # Create roles
