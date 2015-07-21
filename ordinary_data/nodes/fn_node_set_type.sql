@@ -127,7 +127,7 @@ $BODY$
 			END LOOP;
 			IF keep_type IS FALSE AND grouped.count = 1 THEN
 				/* if the node is only on 1 pipe, check if it intersects another pipe. If yes, hide it */
-				node_geom := geometry::geometry(Point, qwat_sys.fn_setting_srid()) FROM qwat_od.node WHERE id = node_id;
+				node_geom := geometry FROM qwat_od.node WHERE id = node_id;
 				/* st_intersects does not work as expected. */
 				intersects := bool_or(ST_DWithin(node_geom, pipe.geometry, 0.0001)) FROM qwat_od.pipe WHERE id != pipe_id;
 				IF intersects IS TRUE THEN
