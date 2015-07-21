@@ -8,7 +8,7 @@
 
 
 /*
-view to sraw arrows from children to parent
+view to draw arrows from child pipe to parent pipe
 this shoud be used as soon as ST_lineToCurve works for 3 points
 		ST_CurveToLine(ST_LineToCurve( ST_AddPoint( vector , ST_MakePoint( ST_X(middle_point)+distance*cos(azimuth),ST_Y(middle_point)+distance*sin(azimuth) ) , 1 ) ) ,15)::geometry(LineString,:SRID) AS geometry
 then this should be added to select of foo2
@@ -17,7 +17,7 @@ then this should be added to select of foo2
 
 CREATE OR REPLACE VIEW qwat_od.vw_pipe_child_parent AS
 	SELECT child, parent,
-		 ST_CurveToLine(ST_GeomFromEWKT('SRID=:SRID;CIRCULARSTRING('
+		 ST_CurveToLine(ST_GeomFromEWKT('SRID='||qwat_sys.fn_setting_srid()||';CIRCULARSTRING('
 			||ST_X(start_point)||' '||ST_Y(start_point)
 			||','||
 			ST_X(middle_point)+distance*cos(azimuth)||' '||ST_Y(middle_point)+distance*sin(azimuth)
