@@ -21,8 +21,3 @@ INSERT INTO qwat_vl.precision (id,code_sire,value_en,value_fr,value_ro) VALUES (
 INSERT INTO qwat_vl.precision (id,code_sire,value_en,value_fr,value_ro) VALUES (1102,0, 'Precise',      'Précis',       'Precisă');     /*TB: P  => 2 */
 INSERT INTO qwat_vl.precision (id,code_sire,value_en,value_fr,value_ro) VALUES (1103,1, 'Localized',    'Localisé',     'Localizată');  /*TB: L  => 3 */
 INSERT INTO qwat_vl.precision (id,code_sire,value_en,value_fr,value_ro) VALUES (1104,1, 'Digitalized',  'Digitalisé',   'Digitizată');  /*TB: D  => 4 */
-INSERT INTO qwat_vl.precision (id,code_sire,value_en,value_fr,value_ro) VALUES (1105,1, 'Unknown',      'Inconnu',      'Necunoscută'); /*TB: I  => 5 */
-
-
-
-
