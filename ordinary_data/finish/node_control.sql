@@ -35,7 +35,6 @@ CREATE OR REPLACE VIEW qwat_od.vw_node_control AS
 		FROM qwat_od.pipe 
 		WHERE fk_node_a IS NULL 
 		OR    fk_node_b IS NULL
-	UNION
 	ORDER BY problem
 	;
 
