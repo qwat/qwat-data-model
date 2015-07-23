@@ -26,24 +26,3 @@ CREATE INDEX node_geoidx ON qwat_od.node USING GIST ( geometry );
 ALTER TABLE qwat_od.node ADD CONSTRAINT node_fk_precisionalti FOREIGN KEY (fk_precisionalti) REFERENCES qwat_vl.precisionalti(id) MATCH FULL; CREATE INDEX fki_node_fk_precisionalti ON qwat_od.node(fk_precisionalti);
 
 
-
-/*----------------!!!---!!!----------------*/
-/* Trigger for geometry (=> altitude) */
-CREATE OR REPLACE FUNCTION qwat_od.ft_node_geom() RETURNS trigger AS 
-$BODY$ 
-	BEGIN
-		NEW.altitude_dtm := NULL;
-		RETURN NEW;
-	END;
-$BODY$
-LANGUAGE plpgsql;
-COMMENT ON FUNCTION qwat_od.ft_node_geom() IS 'Fcn/Trigger: set uptodate to false for altitude when geometry changes.';
-
-CREATE TRIGGER tr_node_geom
-	BEFORE UPDATE OF geometry ON qwat_od.node
-		FOR EACH ROW
-		EXECUTE PROCEDURE qwat_od.ft_node_geom();
-COMMENT ON TRIGGER tr_node_geom ON qwat_od.node IS 'Trigger: uset uptodate to false for altitude when geometry changes.';
-
-
-

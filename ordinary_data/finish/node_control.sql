@@ -36,11 +36,6 @@ CREATE OR REPLACE VIEW qwat_od.vw_node_control AS
 		WHERE fk_node_a IS NULL 
 		OR    fk_node_b IS NULL
 	UNION
-	/* Non up-to-date geometries */
-	SELECT 'Non up-to-date altitudes' AS problem, COUNT(id)::integer AS id, 'number of node' AS comment
-		FROM qwat_od.node
-		WHERE altitude_dtm IS NULL
-	/* */
 	ORDER BY problem
 	;
 

@@ -39,9 +39,9 @@ SELECT
 		WHEN valve_function.short_fr IS NULL THEN valve.identification::varchar
 		ELSE valve_function.short_fr || valve.identification::varchar
 	END AS _label,
-	status.value_fr          AS _status,
-	status.active            AS _status_active,
-	node.altitude_dtm       AS _altitude_dtm,
+	status.value_fr         AS _status,
+	status.active           AS _status_active,
+	node.altitude           AS _altitude,
 	pressurezone.colorcode  AS _pressurezone_colorcode
 	FROM qwat_od.valve
 	INNER JOIN      qwat_vl.valve_type     ON valve.fk_type         = valve_type.id

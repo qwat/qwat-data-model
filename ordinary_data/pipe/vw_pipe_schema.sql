@@ -156,11 +156,11 @@ CREATE MATERIALIZED VIEW qwat_od.vw_pipe_schema_node AS
 		foo.*,
 		CASE
 			WHEN tunnel_or_bridge IS TRUE THEN NULL
-			ELSE abs(node_a.altitude_dtm-node_b.altitude_dtm)
+			ELSE abs(node_a.altitude-node_b.altitude)
 		END AS _diff_elevation,
 		CASE
 			WHEN tunnel_or_bridge IS TRUE THEN NULL
-			ELSE abs(node_a.altitude_dtm-node_b.altitude_dtm)/_length3d
+			ELSE abs(node_a.altitude-node_b.altitude)/_length3d
 		END AS _slope
 	FROM
 		( SELECT	
