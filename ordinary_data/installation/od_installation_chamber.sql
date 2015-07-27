@@ -1,7 +1,7 @@
 	/*
 	qWat - QGIS Water Module
 
-	SQL file :: installation pressure control
+	SQL file :: installation chamber
 */
 
 /* CREATE TABLE */
