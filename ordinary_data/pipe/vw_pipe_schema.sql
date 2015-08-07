@@ -5,15 +5,14 @@
 
 Creation of schema
 view pipe_schema_visibleitems select pipe which are visible in schema with the alternative geometry
-view pipe_schema_items         get the parent id of each pipe
-view pipe_schema_merged        merge the pipe by grouping by id
-view pipe_schema               join with pipe_view to get pipe properties
+view pipe_schema_merged       merge the pipes and aggregate (length, closed, etc)
+view pipe_schema              join with pipe_view to get pipe properties
 */
 
 
 
 /* create a view with the visible items */
-CREATE VIEW qwat_od.vw_pipe_schema_visibleitems AS 
+CREATE OR REPLACE VIEW qwat_od.vw_pipe_schema_visibleitems AS 
 	SELECT 	
 		pipe.id,
 		pipe.fk_parent,
@@ -43,68 +42,55 @@ CREATE OR REPLACE RULE rl_pipe_delete_alternative AS
 		UPDATE qwat_od.pipe SET
 			geometry_alt2 = NULL::geometry(LineString,:SRID)
 		WHERE id = OLD.id;	
+		
+		
 
-/* 
-Function to get a group ID (parent/children).
-Also works in case of sub-parent
-*/
-CREATE OR REPLACE FUNCTION qwat_od.fn_get_parent(integer,integer) RETURNS integer AS '
-	DECLARE
-		childid ALIAS FOR $1;
-		parentid ALIAS FOR $2;
-	BEGIN
-		IF parentid IS NULL THEN
-			RETURN childid;
-		END IF;
-		LOOP
-			SELECT fk_parent INTO childid 
-			FROM qwat_od.vw_pipe_schema_visibleitems
-			WHERE id = parentid;
-
-			IF childid IS NOT NULL THEN
-				parentid := childid;
-			ELSE
-				RETURN parentid;
-			END IF;
-		END LOOP;
-	END
-' LANGUAGE plpgsql;
-COMMENT ON FUNCTION qwat_od.fn_get_parent(integer,integer) IS 'Function to get a group ID (parent/children). Also works in case of sub-parent';
-
-/* 
-View of pipe with group ID
-*/
-CREATE OR REPLACE VIEW qwat_od.vw_pipe_schema_items AS 
+CREATE OR REPLACE VIEW qwat_od.vw_pipe_schema_merged AS	
+WITH RECURSIVE pipe_find_parent(/*path,*/ depth_level, id, groupid, geometry, _length2d, _length3d, tunnel_or_bridge, _valve_count, _valve_closed) AS (
+    SELECT 
+        --pipe.id::varchar AS path,
+		1 AS depth_level,
+		pipe.id,
+		pipe.id,
+		pipe.geometry::geometry(LineString,21781),
+		pipe._length2d,
+		pipe._length3d,
+		pipe.tunnel_or_bridge,
+		pipe._valve_count,
+		pipe._valve_closed
+    FROM qwat_od.vw_pipe_schema_visibleitems pipe WHERE pipe.fk_parent IS NULL
+UNION ALL
+    SELECT 
+		--fp.path || '<-' || pipe.id,
+		fp.depth_level + 1 AS depth_level,
+		pipe.id,
+		fp.groupid,
+		pipe.geometry::geometry(LineString,21781),
+		pipe._length2d,
+		pipe._length3d,
+		pipe.tunnel_or_bridge,
+		pipe._valve_count,
+		pipe._valve_closed
+    FROM pipe_find_parent AS fp
+    INNER JOIN qwat_od.vw_pipe_schema_visibleitems pipe on fp.id = pipe.fk_parent
+    AND fp.depth_level < 20
+) 
 	SELECT 
-		geometry::geometry(LineString,:SRID),
-		qwat_od.fn_get_parent(id,fk_parent) AS groupid,
-		_length2d,
-		_length3d,
-		tunnel_or_bridge,
-		_valve_count,
-		_valve_closed
-	  FROM qwat_od.vw_pipe_schema_visibleitems;
-	  
-/* 
-Merging of pipe based on the group ID
-*/
-CREATE OR REPLACE VIEW qwat_od.vw_pipe_schema_merged AS
-	SELECT	groupid AS id, 
-			ST_LineMerge(ST_Union(geometry))::geometry(LineString,:SRID) AS geometry,
-			COUNT(groupid) AS number_of_pipe,
-			SUM(_length2d) AS _length2d,
-			SUM(_length3d) AS _length3d,
-			bool_or(tunnel_or_bridge) AS tunnel_or_bridge,
-			SUM(_valve_count) AS _valve_count,
-			bool_or(_valve_closed) AS _valve_closed
-	  FROM qwat_od.vw_pipe_schema_items
-	 GROUP BY groupid ;
-COMMENT ON VIEW qwat_od.vw_pipe_schema_merged IS 'Merging of pipe based on the group ID';
+		groupid AS id,
+		ST_LineMerge(ST_Union(geometry))::geometry(LineString,21781) AS geometry,
+		COUNT(groupid) AS number_of_pipe,
+		SUM(_length2d) AS _length2d,
+		SUM(_length3d) AS _length3d,
+		bool_or(tunnel_or_bridge) AS tunnel_or_bridge,
+		SUM(_valve_count) AS _valve_count,
+		bool_or(_valve_closed) AS _valve_closed
+	 FROM pipe_find_parent GROUP BY groupid ;
+
 
 /* 
 Join with pipe_view to get pipe properties
 */
-CREATE VIEW qwat_od.vw_pipe_schema AS
+CREATE OR REPLACE VIEW qwat_od.vw_pipe_schema AS
 	SELECT	
 			pipe.id				               ,
 			pipe.fk_function                   ,
@@ -177,14 +163,45 @@ COMMENT ON MATERIALIZED VIEW qwat_od.vw_pipe_schema_node IS 'Final view for sche
 Report schema errors
 */
 CREATE OR REPLACE VIEW qwat_od.vw_pipe_schema_error AS
-	SELECT id, geometry FROM 
-	 ( 	SELECT 	groupid AS id, 
-				ST_Multi(ST_LineMerge(ST_Union(geometry))) AS geometry
-		  FROM qwat_od.vw_pipe_schema_items
-		 GROUP BY groupid 
-	 ) AS foo
-	 WHERE geometryType(ST_CollectionHomogenize(geometry)) != 'LINESTRING';
-COMMENT ON VIEW qwat_od.vw_pipe_schema_error IS 'Report IDs of parent pipe where pipe concatenation leads to a MultiLineString and not to a LineString.';
+WITH RECURSIVE pipe_find_parent_error(PATH, depth_level, id, groupid, geometry) AS (
+    SELECT 
+		pipe.id::varchar AS path,
+		1 AS depth_level,
+		pipe.id,
+		pipe.id,
+		pipe.geometry::geometry(LineString,21781)
+		FROM qwat_od.vw_pipe_schema_visibleitems pipe WHERE pipe.fk_parent IS NULL
+UNION ALL
+    SELECT 
+		fp.path || '<-' || pipe.id,
+		fp.depth_level + 1 AS depth_level,
+		pipe.id,
+		fp.groupid,
+		pipe.geometry::geometry(LineString,21781)
+    FROM pipe_find_parent_error AS fp
+    INNER JOIN qwat_od.vw_pipe_schema_visibleitems pipe on fp.id = pipe.fk_parent
+    AND fp.depth_level < 20
+) 
+	SELECT * 
+		FROM
+		( SELECT
+				groupid, 
+				ST_Multi(ST_LineMerge(ST_Union(geometry))) AS geometry,
+				'lines cannot be joined'::varchar AS error_desc
+			FROM pipe_find_parent_error
+			GROUP BY groupid
+		) AS foo
+		WHERE geometryType(ST_CollectionHomogenize(geometry)) != 'LINESTRING'
+	UNION 
+	SELECT 
+		groupid,
+		geometry,
+		'circular referencing loop'::varchar AS error_desc
+	FROM pipe_find_parent_error
+	WHERE depth_level > 19;
+COMMENT ON VIEW qwat_od.vw_pipe_schema_error IS 'Report IDs of parent pipe where pipe concatenation leads to a MultiLineString and not to a LineString or if an infinite referencing loop has been detected.';
+
+
 
 
 
