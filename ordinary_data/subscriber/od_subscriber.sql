@@ -15,6 +15,8 @@ ALTER TABLE qwat_od.subscriber ADD COLUMN fk_pipe              integer;
 ALTER TABLE qwat_od.subscriber ADD COLUMN identification       varchar(12)  ;
 ALTER TABLE qwat_od.subscriber ADD COLUMN _identification_full varchar(16)  ;
 ALTER TABLE qwat_od.subscriber ADD COLUMN parcel               varchar(12)  ;
+ALTER TABLE qwat_od.subscriber ADD COLUMN flow_current         decimal(8,2);
+ALTER TABLE qwat_od.subscriber ADD COLUMN flow_planned         decimal(8,2);
 ALTER TABLE qwat_od.subscriber ADD COLUMN remark               text ;
 
 /* GEOMETRY                      (table_name,  srid, is_node, create_node, create_schematic, get_pipe, auto_district, auto_pressurezone)*/
@@ -24,9 +26,9 @@ SELECT qwat_od.fn_geom_tool_point('subscriber', :SRID, false,   false,       fal
 SELECT qwat_od.fn_label_create_fields('subscriber');
 
 /* CONSTRAINTS */
-ALTER TABLE qwat_od.subscriber ADD CONSTRAINT subscriber_fk_type  FOREIGN KEY (fk_type)   REFERENCES qwat_vl.subscriber_type (id) MATCH FULL  ; CREATE INDEX fki_subscriber_fk_type   ON qwat_od.subscriber(fk_type)        ;
-ALTER TABLE qwat_od.subscriber ADD CONSTRAINT pipe_fk_status      FOREIGN KEY (fk_status) REFERENCES qwat_vl.status(id)           MATCH FULL  ; CREATE INDEX fki_subscriber_fk_status ON qwat_od.subscriber(fk_status)	  	;
-ALTER TABLE qwat_od.subscriber ADD CONSTRAINT subscriber_fk_pipe  FOREIGN KEY (fk_pipe)   REFERENCES qwat_od.pipe (id)            MATCH SIMPLE; CREATE INDEX fki_subscriber_fk_pipe   ON qwat_od.subscriber(fk_pipe)        ;
+ALTER TABLE qwat_od.subscriber ADD CONSTRAINT subscriber_fk_type FOREIGN KEY (fk_type)   REFERENCES qwat_vl.subscriber_type (id) MATCH FULL  ; CREATE INDEX fki_subscriber_fk_type   ON qwat_od.subscriber(fk_type)  ;
+ALTER TABLE qwat_od.subscriber ADD CONSTRAINT pipe_fk_status     FOREIGN KEY (fk_status) REFERENCES qwat_vl.status(id)           MATCH FULL  ; CREATE INDEX fki_subscriber_fk_status ON qwat_od.subscriber(fk_status);
+ALTER TABLE qwat_od.subscriber ADD CONSTRAINT subscriber_fk_pipe FOREIGN KEY (fk_pipe)   REFERENCES qwat_od.pipe (id)            MATCH SIMPLE; CREATE INDEX fki_subscriber_fk_pipe   ON qwat_od.subscriber(fk_pipe)  ;
 
 
 /* Trigger */
