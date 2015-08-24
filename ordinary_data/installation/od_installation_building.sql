@@ -15,6 +15,7 @@ ALTER TABLE qwat_od.installation_building ADD COLUMN identification  varchar(25)
 ALTER TABLE qwat_od.installation_building ADD COLUMN fk_status       integer not null      ;
 ALTER TABLE qwat_od.installation_building ADD COLUMN fk_type         integer not null      ;
 ALTER TABLE qwat_od.installation_building ADD COLUMN fk_locationtype integer[]		   ; 
+ALTER TABLE qwat_od.installation_building ADD COLUMN fk_precisionalti integer;
 ALTER TABLE qwat_od.installation_building ADD COLUMN _displayname_en varchar(50) ;
 ALTER TABLE qwat_od.installation_building ADD COLUMN _displayname_fr varchar(50) ;
 ALTER TABLE qwat_od.installation_building ADD COLUMN _displayname_ro varchar(50) ;
@@ -23,6 +24,8 @@ ALTER TABLE qwat_od.installation_building ADD COLUMN year            smallint   
 ALTER TABLE qwat_od.installation_building ADD COLUMN year_end        smallint    CHECK (year_end IS NULL OR year > 1800 AND year < 2100);
 ALTER TABLE qwat_od.installation_building ADD COLUMN parcel          varchar(30) ;
 ALTER TABLE qwat_od.installation_building ADD COLUMN eca             varchar(30) ;
+ALTER TABLE qwat_od.installation_building ADD COLUMN altitude        decimal(10,3)          ;
+ALTER TABLE qwat_od.installation_building ADD COLUMN remark          text                   ;
 
 /* geometry */
 /* point                              ( table_name,       srid, is_node, create_node, create_schematic, get_pipe, auto_district, auto_pressurezone)*/
@@ -37,6 +40,7 @@ SELECT qwat_od.fn_label_create_fields('installation_building');
 /* Constraints */
 ALTER TABLE qwat_od.installation_building ADD CONSTRAINT installation_fk_status FOREIGN KEY (fk_status) REFERENCES qwat_vl.status(id)            MATCH FULL; CREATE INDEX fki_installation_fk_status ON qwat_od.installation_building(fk_status);
 ALTER TABLE qwat_od.installation_building ADD CONSTRAINT installation_fk_type   FOREIGN KEY (fk_type)   REFERENCES qwat_vl.installation_type(id) MATCH FULL; CREATE INDEX fki_installation_fk_type   ON qwat_od.installation_building(fk_type) ;
+ALTER TABLE qwat_od.installation_building ADD CONSTRAINT installation_building_fk_precisionalti FOREIGN KEY (fk_precisionalti) REFERENCES qwat_vl.precisionalti(id) MATCH FULL; CREATE INDEX fki_installation_building_fk_precisionalti ON qwat_od.installation_building(fk_precisionalti);
 
 /* TRIGGERS */
 CREATE OR REPLACE FUNCTION qwat_od.ft_installation_building() RETURNS trigger AS
