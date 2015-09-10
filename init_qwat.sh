@@ -201,7 +201,7 @@ psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f ordinary_data/subscriber/od_subscriber.
 psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f ordinary_data/subscriber/od_subscriber_reference.sql
 psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f ordinary_data/subscriber/vw_subscriber_pipe_relation.sql
 psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f ordinary_data/subscriber/vw_subscriber.sql
-psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f ordinary_data/installation/od_installation_building.sql
+psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f ordinary_data/installation/od_installation_base.sql
 psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f ordinary_data/installation/od_cover.sql
 psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f ordinary_data/installation/od_installation_chamber.sql
 psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f ordinary_data/installation/od_installation_pressurecontrol.sql
