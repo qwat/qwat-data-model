@@ -76,11 +76,11 @@ $BODY$
 		EXECUTE format(' 
 			CREATE OR REPLACE VIEW %1$I AS
 				SELECT i.id, %2$s, %3$s
-			FROM %4$I j INNER JOIN qwat_od.installation i ON j.id = i.id;'
+			FROM qwat_od.%4$I j INNER JOIN qwat_od.installation i ON j.id = i.id;'
 			, 'qwat_od.vw_edit'||_installation_name
 			, 'i.' || array_to_string(main_fields, ', i.'::text)
 			, 'j.' || array_to_string(_fields, ', j.'::text)
-			, 'qwat_od.'||_installation_name 
+			, _installation_name 
 		);
 			
 		-- update rule
@@ -122,7 +122,7 @@ $BODY$
 					   )
 					   RETURNING id INTO NEW.id;
 
-					INSERT INTO %4$I (
+					INSERT INTO qwat_od.%4$I (
 						 id,
 						 %5$s
 					   )
@@ -137,7 +137,7 @@ $BODY$
 		'qwat_od.ft_'||_installation_name||'_insert', --1
 		array_to_string(main_fields, ', '), --2
 		'NEW.'||array_to_string(main_fields, ', NEW.'), --3
-		'qwat_od.'||_installation_name, --4
+		_installation_name, --4
 		array_to_string(_fields, ', '), --5
 		'NEW.'||array_to_string(_fields, ', NEW.') --6
 		);
