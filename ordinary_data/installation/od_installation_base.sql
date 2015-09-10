@@ -80,7 +80,7 @@ $BODY$
 			, 'qwat_od.vw_edit'||_installation_name
 			, 'i.' || array_to_string(main_fields, ', i.'::text)
 			, 'j.' || array_to_string(_fields, ', j.'::text)
-			, _installation_name 
+			, 'qwat_od.'||_installation_name 
 		);
 			
 		-- update rule
