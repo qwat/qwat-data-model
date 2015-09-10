@@ -5,7 +5,7 @@
 */
 
 /* CREATE TABLE */
-CREATE TABLE qwat_od.installation_chamber ();
+CREATE TABLE qwat_od.installation_chamber();
 
 /* specific to chambers */
 ALTER TABLE qwat_od.installation_chamber ADD COLUMN id integer NOT NULL REFERENCES qwat_od.installation(id) PRIMARY KEY ;
