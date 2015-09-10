@@ -85,18 +85,18 @@ $BODY$
 			
 		-- update rule
 		SELECT array_to_string(f, ', ') 
-			FROM ( SELECT array_agg('i.'||f||' = NEW.'||f) AS f
+			FROM ( SELECT array_agg(f||' = NEW.'||f) AS f
 			FROM unnest(main_fields) AS f ) foo
 			INTO fieldlist1;
 		SELECT array_to_string(f, ', ') 
-			FROM ( SELECT array_agg('j.'||f||' = NEW.'||f) AS f
+			FROM ( SELECT array_agg(f||' = NEW.'||f) AS f
 			FROM unnest(_fields)     AS f ) foo
 			INTO fieldlist2;
 		EXECUTE format('
 			CREATE OR REPLACE RULE %1$I AS ON UPDATE TO qwat_od.%2$I DO INSTEAD
 			(
-			UPDATE qwat_od.installation i SET %3$s WHERE id = NEW.id;
-			UPDATE qwat_od.%4$I         j SET %5$s WHERE id = NEW.id;
+			UPDATE qwat_od.installation SET %3$s WHERE id = NEW.id;
+			UPDATE qwat_od.%4$I         SET %5$s WHERE id = NEW.id;
 			)',			
 			'vw_edit_'||_installation_name||'_update', --1
 			'vw_edit_'||_installation_name, --2
