@@ -68,6 +68,9 @@ $BODY$
 								'altitude',
 								'remark',
 								'open_water_surface'];
+								
+		fieldlist1 text;
+		fieldlist2 text;
 	BEGIN
 		-- create view
 		EXECUTE format(' 
@@ -81,6 +84,14 @@ $BODY$
 		);
 			
 		-- update rule
+		SELECT array_to_string(f, ', ') 
+			FROM ( SELECT array_agg('i.'||f||' = NEW.'||f) AS f
+			FROM unnest(main_fields) AS f ) foo
+			INTO fieldlist1;
+		SELECT array_to_string(f, ', ') 
+			FROM ( SELECT array_agg('j.'||f||' = NEW.'||f) AS f
+			FROM unnest(_fields)     AS f ) foo
+			INTO fieldlist2;
 		EXECUTE format('
 			CREATE OR UPDATE RULE %$1I AS ON UPDATE TO %2$I DO INSTEAD
 			(
@@ -90,9 +101,9 @@ $BODY$
 			',			
 			'vw_edit_'||_installation_name||'_update',
 			'qwat_od.vw_edit_'||_installation_name,
-			array_to_string(f, ', ') FROM ( SELECT array_agg('i.'||f||' = NEW.'||f) AS f FROM unnest(main_fields) AS f ) foo,
+			fieldlist1,
 			'qwat_od.'||_installation_name,
-			array_to_string(f, ', ') FROM ( SELECT array_agg('j.'||f||' = NEW.'||f) AS f FROM unnest(_fields)     AS f ) foo
+			fieldlist2
 		);
 		
 		-- create trigger function
