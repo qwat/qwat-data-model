@@ -74,13 +74,13 @@ $BODY$
 	BEGIN
 		-- create view
 		EXECUTE format(' 
-			CREATE OR REPLACE VIEW %1$I AS
+			CREATE OR REPLACE VIEW qwat_od.%1$I AS
 				SELECT i.id, %2$s, %3$s
 			FROM qwat_od.%4$I j INNER JOIN qwat_od.installation i ON j.id = i.id;'
-			, 'qwat_od.vw_edit'||_installation_name
-			, 'i.' || array_to_string(main_fields, ', i.'::text)
-			, 'j.' || array_to_string(_fields, ', j.'::text)
-			, _installation_name 
+			, 'vw_edit'||_installation_name --1
+			, 'i.' || array_to_string(main_fields, ', i.'::text) --2
+			, 'j.' || array_to_string(_fields, ', j.'::text) --3
+			, _installation_name --4
 		);
 			
 		-- update rule
@@ -93,21 +93,21 @@ $BODY$
 			FROM unnest(_fields)     AS f ) foo
 			INTO fieldlist2;
 		EXECUTE format('
-			CREATE OR REPLACE RULE %1$I AS ON UPDATE TO %2$I DO INSTEAD
+			CREATE OR REPLACE RULE %1$I AS ON UPDATE TO qwat_od.%2$I DO INSTEAD
 			(
 			UPDATE qwat_od.installation i SET %3$s WHERE id = NEW.id;
 			UPDATE qwat_od.%4$I         j SET %5$s WHERE id = NEW.id;
 			)',			
-			'vw_edit_'||_installation_name||'_update',
-			'qwat_od.vw_edit_'||_installation_name,
-			fieldlist1,
-			_installation_name,
-			fieldlist2
+			'vw_edit_'||_installation_name||'_update', --1
+			'vw_edit_'||_installation_name, --2
+			fieldlist1, --3
+			_installation_name, --4
+			fieldlist2 --5
 		);
 		
 		-- create trigger function
 		EXECUTE format('
-			CREATE OR REPLACE FUNCTION %1$I()
+			CREATE OR REPLACE FUNCTION qwat_od.%1$I()
 				RETURNS trigger AS
 				$$
 				BEGIN
@@ -133,7 +133,7 @@ $BODY$
 				END; 
 				$$
 				LANGUAGE plpgsql;',
-		'qwat_od.ft_'||_installation_name||'_insert', --1
+		'ft_'||_installation_name||'_insert', --1
 		array_to_string(main_fields, ', '), --2
 		'NEW.'||array_to_string(main_fields, ', NEW.'), --3
 		_installation_name, --4
@@ -145,12 +145,12 @@ $BODY$
 		EXECUTE format('
 		CREATE TRIGGER %1$I
 			  INSTEAD OF INSERT
-			  ON %2$I
+			  ON qwat_od.%2$I
 			  FOR EACH ROW
-			  EXECUTE PROCEDURE %3$I();',
+			  EXECUTE PROCEDURE qwat_od.%3$I();',
 		'vw_edit'||_installation_name||'_insert',
-		'qwat_od.'||_installation_name,
-		'qwat_od.ft_'||_installation_name||'_insert');
+		_installation_name,
+		'ft_'||_installation_name||'_insert');
 	
 	
 	
