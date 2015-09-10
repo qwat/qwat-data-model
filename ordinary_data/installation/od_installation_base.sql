@@ -78,8 +78,8 @@ $BODY$
 				SELECT i.id, %2$s, %3$s
 			FROM %4$I j INNER JOIN qwat_od.installation i ON j.id = i.id;'
 			, 'qwat_od.vw_edit'||_installation_name
-			, 'i.' || array_to_string(main_fields, ', i.')
-			, 'j.' || array_to_string(_fields, ', j.')
+			, 'i.' || array_to_string(main_fields, ', i.'::text)
+			, 'j.' || array_to_string(_fields, ', j.'::text)
 			, _installation_name 
 		);
 			
