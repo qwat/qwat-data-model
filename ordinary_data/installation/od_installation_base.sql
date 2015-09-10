@@ -139,7 +139,7 @@ $BODY$
 		'NEW.'||array_to_string(main_fields, ', NEW.'), --3
 		'qwat_od.'||_installation_name, --4
 		array_to_string(_fields, ', '), --5
-		'NEW.'||array_to_string(_fields, ', NEW.'), --6
+		'NEW.'||array_to_string(_fields, ', NEW.') --6
 		);
 		
 		-- create trigger
