@@ -99,7 +99,7 @@ $BODY$
 		EXECUTE format('
 			CREATE OR REPLACE FUNCTION %1$I()
 				RETURNS trigger AS
-				$BODY$
+				$$
 				BEGIN
 					INSERT INTO qwat_od.installation (
 						 id,
@@ -121,7 +121,7 @@ $BODY$
 					   );
 					RETURN NEW;
 				END; 
-				$BODY$
+				$$
 				LANGUAGE plpgsql;',
 		'qwat_od.ft_'||_installation_name||'_insert', --1
 		array_to_string(main_fields, ', '), --2
