@@ -96,13 +96,13 @@ $BODY$
 			CREATE OR UPDATE RULE %$1I AS ON UPDATE TO %2$I DO INSTEAD
 			(
 			UPDATE qwat_od.installation i SET %3$s WHERE id = NEW.id;
-			UPDATE %4$I                 j SET %5$s WHERE id = NEW.id;
+			UPDATE qwat_od.%4$I         j SET %5$s WHERE id = NEW.id;
 			)
 			',			
 			'vw_edit_'||_installation_name||'_update',
 			'qwat_od.vw_edit_'||_installation_name,
 			fieldlist1,
-			'qwat_od.'||_installation_name,
+			_installation_name,
 			fieldlist2
 		);
 		
