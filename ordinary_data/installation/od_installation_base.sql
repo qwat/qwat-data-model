@@ -52,7 +52,7 @@ ALTER TABLE qwat_od.installation ADD CONSTRAINT installation_fk_precisionalti FO
 CREATE OR REPLACE FUNCTION qwat_sys.fn_installation_view_create(_installation_name text, _fields text[]) RETURNS void AS
 $BODY$
 	DECLARE 
-		main_fields text := ARRAY['name', 
+		main_fields text[] := ARRAY['name', 
 								'identification',
 								'fk_parent',
 								'fk_status',
