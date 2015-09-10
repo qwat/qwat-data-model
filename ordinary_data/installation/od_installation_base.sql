@@ -93,7 +93,7 @@ $BODY$
 			FROM unnest(_fields)     AS f ) foo
 			INTO fieldlist2;
 		EXECUTE format('
-			CREATE OR UPDATE RULE %1$I AS ON UPDATE TO %2$I DO INSTEAD
+			CREATE OR REPLACE RULE %1$I AS ON UPDATE TO %2$I DO INSTEAD
 			(
 			UPDATE qwat_od.installation i SET %3$s WHERE id = NEW.id;
 			UPDATE qwat_od.%4$I         j SET %5$s WHERE id = NEW.id;
