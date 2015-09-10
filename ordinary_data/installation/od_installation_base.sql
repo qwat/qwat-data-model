@@ -93,12 +93,11 @@ $BODY$
 			FROM unnest(_fields)     AS f ) foo
 			INTO fieldlist2;
 		EXECUTE format('
-			CREATE OR UPDATE RULE %$1I AS ON UPDATE TO %2$I DO INSTEAD
+			CREATE OR UPDATE RULE %1$I AS ON UPDATE TO %2$I DO INSTEAD
 			(
 			UPDATE qwat_od.installation i SET %3$s WHERE id = NEW.id;
 			UPDATE qwat_od.%4$I         j SET %5$s WHERE id = NEW.id;
-			)
-			',			
+			)',			
 			'vw_edit_'||_installation_name||'_update',
 			'qwat_od.vw_edit_'||_installation_name,
 			fieldlist1,
@@ -148,7 +147,7 @@ $BODY$
 			  INSTEAD OF INSERT
 			  ON %2$I
 			  FOR EACH ROW
-			  EXECUTE PROCEDURE %$3I();',
+			  EXECUTE PROCEDURE %3$I();',
 		'vw_edit'||_installation_name||'_insert',
 		'qwat_od.'||_installation_name,
 		'qwat_od.ft_'||_installation_name||'_insert');
