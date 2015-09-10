@@ -77,7 +77,7 @@ $BODY$
 			CREATE OR REPLACE VIEW qwat_od.%1$I AS
 				SELECT i.id, %2$s, %3$s
 			FROM qwat_od.%4$I j INNER JOIN qwat_od.installation i ON j.id = i.id;'
-			, 'vw_edit'||_installation_name --1
+			, 'vw_edit_'||installation_name --1
 			, 'i.' || array_to_string(main_fields, ', i.'::text) --2
 			, 'j.' || array_to_string(_fields, ', j.'::text) --3
 			, _installation_name --4
