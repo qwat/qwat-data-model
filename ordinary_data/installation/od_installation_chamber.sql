@@ -8,7 +8,7 @@
 CREATE TABLE qwat_od.installation_chamber ();
 
 /* specific to chambers */
-ALTER TABLE qwat_od.installation_chamber ADD COLUMN id NOT NULL REFERENCES qwat_od.installation(id) PRIMARY KEY ;
+ALTER TABLE qwat_od.installation_chamber ADD COLUMN id integer NOT NULL REFERENCES qwat_od.installation(id) PRIMARY KEY ;
 ALTER TABLE qwat_od.installation_chamber ADD COLUMN fk_object_reference integer not null;
 ALTER TABLE qwat_od.installation_chamber ADD COLUMN networkseparation   boolean         ;
 ALTER TABLE qwat_od.installation_chamber ADD COLUMN meter               boolean         ;
