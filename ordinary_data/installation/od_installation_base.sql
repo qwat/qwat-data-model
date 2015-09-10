@@ -149,7 +149,7 @@ $BODY$
 			  FOR EACH ROW
 			  EXECUTE PROCEDURE qwat_od.%3$I();',
 		'vw_edit'||_installation_name||'_insert',
-		_installation_name,
+		'vw_edit'||_installation_name,
 		'ft_'||_installation_name||'_insert');
 	
 	
