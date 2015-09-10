@@ -68,8 +68,6 @@ $BODY$
 								'altitude',
 								'remark',
 								'open_water_surface'];
-		;
-		
 	BEGIN
 		-- create view
 		EXECUTE format(' 
@@ -79,7 +77,8 @@ $BODY$
 			, 'qwat_od.vw_edit'||_installation_name
 			, 'i.' || array_to_string(main_fields, ', i.')
 			, 'j.' || array_to_string(_fields, ', j.')
-			, _installation_name );
+			, _installation_name 
+		);
 			
 		-- update rule
 		EXECUTE format('
@@ -123,7 +122,7 @@ $BODY$
 					RETURN NEW;
 				END; 
 				$BODY$
-			LANGUAGE plpgsql;',
+				LANGUAGE plpgsql;',
 		'qwat_od.ft_'||_installation_name||'_insert', --1
 		array_to_string(main_fields, ', '), --2
 		'NEW.'||array_to_string(main_fields, ', NEW.'), --3
