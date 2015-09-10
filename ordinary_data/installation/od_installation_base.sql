@@ -90,9 +90,9 @@ $BODY$
 			',			
 			'vw_edit_'||_installation_name||'_update',
 			'qwat_od.vw_edit_'||_installation_name,
-			array_to_string(ff, ', ') FROM ( SELECT array_agg('i.'||f||' = NEW.'||f) AS ff FROM unnest(main_fields) AS f ) foo,
+			array_to_string(f, ', ') FROM ( SELECT array_agg('i.'||f||' = NEW.'||f) AS f FROM unnest(main_fields) AS f ) foo,
 			'qwat_od.'||_installation_name,
-			array_to_string(ff, ', ') FROM ( SELECT array_agg('j.'||f||' = NEW.'||f) AS ff FROM unnest(_fields)     AS f ) foo
+			array_to_string(f, ', ') FROM ( SELECT array_agg('j.'||f||' = NEW.'||f) AS f FROM unnest(_fields)     AS f ) foo
 		);
 		
 		-- create trigger function
