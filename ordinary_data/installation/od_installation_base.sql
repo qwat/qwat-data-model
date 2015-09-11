@@ -69,7 +69,17 @@ $BODY$
 								'remark',
 								'open_water_surface',
 								'geometry',
-								'geometry_polygon'];
+								'geometry_polygon',
+								'label_1_visible',
+								'label_1_x',
+								'label_1_y',
+								'label_1_rotation',
+								'label_1_text',
+								'label_2_visible',
+								'label_2_x',
+								'label_2_y',
+								'label_2_rotation',
+								'label_2_text'];
 								
 		fieldlist1 text;
 		fieldlist2 text;
