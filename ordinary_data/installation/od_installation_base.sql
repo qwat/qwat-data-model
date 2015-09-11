@@ -69,6 +69,10 @@ $BODY$
 								'remark',
 								'open_water_surface',
 								'geometry',
+								'geometry_alt1',
+								'geometry_alt2',
+								'_geometry_alt1_used',
+								'_geometry_alt2_used',
 								'geometry_polygon',
 								'label_1_visible',
 								'label_1_x',
@@ -140,7 +144,7 @@ $BODY$
 						 %2$s
 					   )
 					VALUES ( 
-						nextval(qwat_od.installation_id_seq)  --id
+						nextval(''qwat_od.installation_id_seq'')  --id
 						, %3$s
 					   )
 					   RETURNING id INTO NEW.id;
