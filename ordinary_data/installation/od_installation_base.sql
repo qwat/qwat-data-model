@@ -49,45 +49,20 @@ ALTER TABLE qwat_od.installation ADD CONSTRAINT installation_fk_precisionalti FO
 
 
 /* FUNCTION TO CREATE VIEWS */
-CREATE OR REPLACE FUNCTION qwat_sys.fn_installation_view_create(_installation_name text, _fields text[]) RETURNS void AS
+CREATE OR REPLACE FUNCTION qwat_sys.fn_installation_view_create(_parent_table text, _children_tables text[]) RETURNS void AS
 $BODY$
 	DECLARE 
-		main_fields text[] := ARRAY['name', 
-								'identification',
-								'fk_parent',
-								'fk_status',
-								'fk_distributor',
-								'fk_remote',
-								'fk_watertype',
-								'fk_locationtype',
-								'fk_precisionalti',
-								'year',
-								'year_end',
-								'parcel',
-								'eca',
-								'altitude',
-								'remark',
-								'open_water_surface',
-								'geometry',
-								'geometry_alt1',
-								'geometry_alt2',
-								'_geometry_alt1_used',
-								'_geometry_alt2_used',
-								'geometry_polygon',
-								'label_1_visible',
-								'label_1_x',
-								'label_1_y',
-								'label_1_rotation',
-								'label_1_text',
-								'label_2_visible',
-								'label_2_x',
-								'label_2_y',
-								'label_2_rotation',
-								'label_2_text'];
-								
+		_field_array_1 text[];
+		_field_array_2 text[];
+		
 		fieldlist1 text;
 		fieldlist2 text;
 	BEGIN
+		EXECUTE format(	$$ SELECT * FROM information_schema.columns WHERE table_schema = 'qwat_od' AND table_name = %1$I
+  				INTO $2$L $$, _parent_table, _field_array_1);
+  		FOR EACH 
+  		EXECUTE format(	$$ SELECT * FROM information_schema.columns WHERE table_schema = 'qwat_od' AND table_name = %1$I
+  				INTO $2$L $$, _installation_name, _field_array_1);
 		-- create view
 		EXECUTE format(' 
 			CREATE OR REPLACE VIEW qwat_od.%1$I AS
