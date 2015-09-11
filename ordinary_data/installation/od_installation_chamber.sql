@@ -24,14 +24,14 @@ SELECT qwat_sys.fn_installation_view_create('installation_chamber', ARRAY['fk_ob
 /* EXPORT VIEW */
 CREATE OR REPLACE VIEW qwat_od.vw_installation_chamber_fr AS
 SELECT
-	installation_chamber.*,
+	i.*,
 	status.value_fr AS status,
 	status.active AS active,
 	distributor.name AS distributor,
 	remote_type.value_fr AS remote,
 	watertype.value_fr AS watertype
-	FROM qwat_od.installation_chamber
-	INNER JOIN      qwat_vl.status          ON status.id          = installation_chamber.fk_status
-	INNER JOIN      qwat_od.distributor     ON distributor.id     = installation_chamber.fk_distributor
-	LEFT OUTER JOIN qwat_vl.remote_type     ON remote_type.id     = installation_chamber.fk_remote
-	INNER JOIN      qwat_vl.watertype       ON watertype.id       = installation_chamber.fk_watertype;
+	FROM qwat_od.vw_edit_installation_chamber i
+	INNER JOIN      qwat_vl.status      ON status.id      = i.fk_status
+	INNER JOIN      qwat_od.distributor ON distributor.id = i.fk_distributor
+	LEFT OUTER JOIN qwat_vl.remote_type ON remote_type.id = i.fk_remote
+	INNER JOIN      qwat_vl.watertype   ON watertype.id   = i.fk_watertype;

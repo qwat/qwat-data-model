@@ -8,7 +8,7 @@ SELECT qwat_sys.audit_table('qwat_dr.dimension_orientation');
 SELECT qwat_sys.audit_table('qwat_od.distributor');
 SELECT qwat_sys.audit_table('qwat_od.district');
 SELECT qwat_sys.audit_table('qwat_od.hydrant');
-SELECT qwat_sys.audit_table('qwat_od.installation_building');
+SELECT qwat_sys.audit_table('qwat_od.installation');
 SELECT qwat_sys.audit_table('qwat_od.installation_pressurecontrol');
 SELECT qwat_sys.audit_table('qwat_od.installation_pump');
 SELECT qwat_sys.audit_table('qwat_od.installation_source');

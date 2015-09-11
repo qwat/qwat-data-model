@@ -67,7 +67,9 @@ $BODY$
 								'eca',
 								'altitude',
 								'remark',
-								'open_water_surface'];
+								'open_water_surface',
+								'geometry',
+								'geometry_polygon'];
 								
 		fieldlist1 text;
 		fieldlist2 text;
@@ -103,6 +105,18 @@ $BODY$
 			fieldlist1, --3
 			_installation_name, --4
 			fieldlist2 --5
+		);
+		
+		-- delete rule
+		EXECUTE format('
+			CREATE OR REPLACE RULE %1$I AS ON UPDATE TO qwat_od.%2$I DO INSTEAD
+			(
+			DELETE FROM qwat_od.%3$I         WHERE id = NEW.id;
+			DELETE FROM qwat_od.installation WHERE id = NEW.id;
+			)',			
+			'vw_edit_'||_installation_name||'_delete', --1
+			'vw_edit_'||_installation_name, --2
+			_installation_name --3
 		);
 		
 		-- create trigger function
@@ -152,9 +166,6 @@ $BODY$
 		'vw_edit_'||_installation_name,
 		'ft_'||_installation_name||'_insert');
 	
-	
-	
-	-- DELETE RULE!!!!
 	
 	
 	
