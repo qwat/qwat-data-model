@@ -38,33 +38,6 @@ ALTER TABLE qwat_od.installation_tank ADD CONSTRAINT installation_tank_fk_firest
 ALTER TABLE qwat_od.installation_tank ADD CONSTRAINT installation_tank_cistern1type    FOREIGN KEY (cistern1_fk_type) REFERENCES qwat_vl.cistern(id)               MATCH FULL; CREATE INDEX fki_installation_tank_cistern1type    ON qwat_od.installation_tank(cistern1_fk_type);
 ALTER TABLE qwat_od.installation_tank ADD CONSTRAINT installation_tank_cistern2type    FOREIGN KEY (cistern2_fk_type) REFERENCES qwat_vl.cistern(id)               MATCH FULL; CREATE INDEX fki_installation_tank_cistern2type    ON qwat_od.installation_tank(cistern2_fk_type);
 
-/* EDITABE VIEW */
-SELECT qwat_sys.fn_installation_view_create('installation_tank', ARRAY['fk_overflow','fk_firestorage','storage_total','storage_supply','storage_fire','altitude_overflow','altitude_apron','height_max','fire_valve','fire_remote','_litrepercm','cistern1_fk_type','cistern1_dimension_1','cistern1_dimension_2','cistern1_storage','_cistern1_litrepercm','cistern2_fk_type','cistern2_dimension_1','cistern2_dimension_2','cistern2_storage','_cistern2_litrepercm']);
-
-/* EXPORT VIEW */
-CREATE OR REPLACE VIEW qwat_od.vw_installation_tank_fr AS
-SELECT
-	i.*,
-	status.value_fr AS status,
-	status.active AS active,
-	distributor.name AS distributor,
-	remote_type.value_fr AS remote,
-	watertype.value_fr AS watertype,
-	overflow.value_fr AS overflow,
-	tank_firestorage.value_fr AS firestorage,
-	cis1.value_fr AS cistern1,
-	cis2.value_fr AS cistern2
-	FROM qwat_od.vw_edit_installation_tank i
-	INNER JOIN      qwat_vl.status           ON status.id           = i.fk_status
-	INNER JOIN      qwat_od.distributor      ON distributor.id      = i.fk_distributor
-	LEFT OUTER JOIN qwat_vl.remote_type      ON remote_type.id      = i.fk_remote
-	INNER JOIN      qwat_vl.watertype        ON watertype.id        = i.fk_watertype
-	-- specific
-	LEFT OUTER JOIN qwat_vl.overflow         ON overflow.id         = i.fk_overflow    
-	LEFT OUTER JOIN qwat_vl.tank_firestorage ON tank_firestorage.id = i.fk_firestorage
-	LEFT OUTER JOIN qwat_vl.cistern    cis1  ON cis1.id             = i.cistern1_fk_type
-	LEFT OUTER JOIN qwat_vl.cistern    cis2  ON cis2.id             = i.cistern2_fk_type;
-
 
 /* Function */
 CREATE OR REPLACE FUNCTION qwat_od.fn_litres_per_cm(fk_type integer,dim1 double precision, dim2 double precision) RETURNS double precision AS

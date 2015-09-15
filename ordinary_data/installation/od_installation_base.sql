@@ -49,114 +49,145 @@ ALTER TABLE qwat_od.installation ADD CONSTRAINT installation_fk_precisionalti FO
 
 
 /* FUNCTION TO CREATE VIEWS */
-CREATE OR REPLACE FUNCTION qwat_sys.fn_installation_view_create(_parent_table text, _children_tables text[]) RETURNS void AS
+CREATE OR REPLACE FUNCTION qwat_sys.fn_installation_view_create(_parent_table json, _children_tables json[], _destination_schema text) RETURNS void AS
 $BODY$
 	DECLARE 
-		_field_array_1 text[];
-		_field_array_2 text[];
+		_parent_field_array text[];
+		_child_field_array text[];
 		
-		fieldlist1 text;
-		fieldlist2 text;
+		_parent_field_list text;
+		_child_field_list text;
+		
+		_view_rootname text;
+		_view_name text;
+		_function_trigger text;
+		
+		_child_table json;
 	BEGIN
-		EXECUTE format(	$$ SELECT * FROM information_schema.columns WHERE table_schema = 'qwat_od' AND table_name = %1$I
-  				INTO $2$L $$, _parent_table, _field_array_1);
-  		FOR EACH 
-  		EXECUTE format(	$$ SELECT * FROM information_schema.columns WHERE table_schema = 'qwat_od' AND table_name = %1$I
-  				INTO $2$L $$, _installation_name, _field_array_1);
-		-- create view
-		EXECUTE format(' 
-			CREATE OR REPLACE VIEW qwat_od.%1$I AS
-				SELECT i.id, %2$s, %3$s
-			FROM qwat_od.%4$I j INNER JOIN qwat_od.installation i ON j.id = i.id;'
-			, 'vw_edit_'||_installation_name --1
-			, 'i.' || array_to_string(main_fields, ', i.'::text) --2
-			, 'j.' || array_to_string(_fields, ', j.'::text) --3
-			, _installation_name --4
-		);
+		-- get array of fields for parent table
+		EXECUTE format(	$$ SELECT ARRAY( SELECT attname FROM pg_attribute WHERE attrelid = %1$L::regclass AND attnum > 0 ORDER BY attnum ASC ) $$, _parent_table->>'table_name') INTO _parent_field_array;
+		_parent_field_array := array_remove(_parent_field_array, 'id'); -- remove pkey from field list
+		
+		-- create command of update rule for parent fiels
+		SELECT array_to_string(f, ', ') 
+			FROM ( SELECT array_agg(f||' = NEW.'||f) AS f
+			FROM unnest(_parent_field_array) AS f ) foo
+			INTO _parent_field_list;
 			
-		-- update rule
-		SELECT array_to_string(f, ', ') 
-			FROM ( SELECT array_agg(f||' = NEW.'||f) AS f
-			FROM unnest(main_fields) AS f ) foo
-			INTO fieldlist1;
-		SELECT array_to_string(f, ', ') 
-			FROM ( SELECT array_agg(f||' = NEW.'||f) AS f
-			FROM unnest(_fields)     AS f ) foo
-			INTO fieldlist2;
-		EXECUTE format('
-			CREATE OR REPLACE RULE %1$I AS ON UPDATE TO qwat_od.%2$I DO INSTEAD
-			(
-			UPDATE qwat_od.installation SET %3$s WHERE id = NEW.id;
-			UPDATE qwat_od.%4$I         SET %5$s WHERE id = NEW.id;
-			)',			
-			'vw_edit_'||_installation_name||'_update', --1
-			'vw_edit_'||_installation_name, --2
-			fieldlist1, --3
-			_installation_name, --4
-			fieldlist2 --5
-		);
+  		-- create view and triggers/rules for 1:1 joined view
+  		FOREACH _child_table IN ARRAY _children_tables LOOP
+			RAISE NOTICE 'edit view for %', _child_table->>'shortname';	
+  		
+			-- define view name
+			_view_rootname := 'vw_'||(_parent_table->>'shortname')||'_'||(_child_table->>'shortname');
+			_view_name := _destination_schema||'.'||_view_rootname;
+			_function_trigger := _destination_schema||'.ft_'||(_parent_table->>'shortname')||'_'||(_child_table->>'shortname')||'_insert';
+  		
+			-- get array of fields for child table
+			EXECUTE format(	$$ SELECT ARRAY( SELECT attname FROM pg_attribute WHERE attrelid = %1$L::regclass AND attnum > 0 ORDER BY attnum ASC ) $$, _child_table->>'table_name') INTO _child_field_array;
+			_child_field_array := array_remove(_child_field_array, 'id'); -- remove pkey from field list
+  				
+			-- view
+			EXECUTE format(' 
+				CREATE OR REPLACE VIEW %1$s AS
+					SELECT i.id, %2$s, %3$s
+				FROM %4$s j INNER JOIN %5$s i ON j.id = i.id;'
+				, _view_name --1
+				, 'i.' || array_to_string(_parent_field_array, ', i.'::text) --2
+				, 'j.' || array_to_string(_child_field_array, ', j.'::text) --3
+				, (_child_table->>'table_name')::regclass --4
+				, (_parent_table->>'table_name')::regclass --5
+			);
+			
+			-- update rule
+			RAISE NOTICE '  update rule';
+			SELECT array_to_string(f, ', ') -- create command of update rule for parent fiels
+				FROM ( SELECT array_agg(f||' = NEW.'||f) AS f
+				FROM unnest(_child_field_array)     AS f ) foo
+				INTO _child_field_list;
+			EXECUTE format('
+				CREATE OR REPLACE RULE %1$I AS ON UPDATE TO %2$s DO INSTEAD
+				(
+				UPDATE %3$s SET %4$s WHERE id = NEW.id;
+				UPDATE %5$s SET %6$s WHERE id = NEW.id;
+				)',			
+				_view_rootname||'_update', --1
+				_view_name::regclass, --2
+				(_parent_table->>'table_name')::regclass, --3
+				_parent_field_list, --4
+				(_child_table->>'table_name')::regclass, --5
+				_child_field_list --6
+			);
 		
-		-- delete rule
-		EXECUTE format('
-			CREATE OR REPLACE RULE %1$I AS ON UPDATE TO qwat_od.%2$I DO INSTEAD
-			(
-			DELETE FROM qwat_od.%3$I         WHERE id = NEW.id;
-			DELETE FROM qwat_od.installation WHERE id = NEW.id;
-			)',			
-			'vw_edit_'||_installation_name||'_delete', --1
-			'vw_edit_'||_installation_name, --2
-			_installation_name --3
-		);
+			-- delete rule
+			RAISE NOTICE '  delete rule';
+			EXECUTE format('
+				CREATE OR REPLACE RULE %1$I AS ON UPDATE TO %2$s DO INSTEAD
+				(
+				DELETE FROM %3$s WHERE id = NEW.id;
+				DELETE FROM %4$s WHERE id = NEW.id;
+				)',			
+				_view_rootname||'_delete', --1
+				_view_name::regclass, --2
+				(_parent_table->>'table_name')::regclass, --3
+				(_child_table->>'table_name')::regclass --4
+			);
 		
-		-- create trigger function
-		EXECUTE format('
-			CREATE OR REPLACE FUNCTION qwat_od.%1$I()
-				RETURNS trigger AS
-				$$
-				BEGIN
-					INSERT INTO qwat_od.installation (
-						 id,
-						 %2$s
-					   )
-					VALUES ( 
-						nextval(''qwat_od.installation_id_seq'')  --id
-						, %3$s
-					   )
-					   RETURNING id INTO NEW.id;
+			-- create trigger function
+			RAISE NOTICE '  trigger function';
+			EXECUTE format('
+				CREATE OR REPLACE FUNCTION %1$I()
+					RETURNS trigger AS
+					$$
+					BEGIN
+						INSERT INTO %2$s (
+							 id,
+							 %3$s
+						   )
+						VALUES ( 
+							nextval(''%4$s'')  --id
+							, %5$s
+						   )
+						   RETURNING id INTO NEW.id;
 
-					INSERT INTO qwat_od.%4$I (
-						 id,
-						 %5$s
-					   )
-					VALUES (
-						NEW.id -- id
-					   , %6$s
-					   );
-					RETURN NEW;
-				END; 
-				$$
-				LANGUAGE plpgsql;',
-		'ft_'||_installation_name||'_insert', --1
-		array_to_string(main_fields, ', '), --2
-		'NEW.'||array_to_string(main_fields, ', NEW.'), --3
-		_installation_name, --4
-		array_to_string(_fields, ', '), --5
-		'NEW.'||array_to_string(_fields, ', NEW.') --6
-		);
+						INSERT INTO %6$s (
+							 id,
+							 %7$s
+						   )
+						VALUES (
+							NEW.id -- id
+						   , %8$s
+						   );
+						RETURN NEW;
+					END; 
+					$$
+					LANGUAGE plpgsql;',
+			_function_trigger, --1
+			(_parent_table->>'table_name')::regclass, --2
+			array_to_string(_parent_field_array, ', '), --3
+			(_parent_table->>'pkey_nextval')::regclass, --4
+			'NEW.'||array_to_string(_parent_field_array, ', NEW.'), --5
+			(_child_table->>'table_name')::regclass, --6
+			array_to_string(_child_field_array, ', '), --7
+			'NEW.'||array_to_string(_child_field_array, ', NEW.') --8
+			);
 		
-		-- create trigger
-		EXECUTE format('
-		CREATE TRIGGER %1$I
-			  INSTEAD OF INSERT
-			  ON qwat_od.%2$I
-			  FOR EACH ROW
-			  EXECUTE PROCEDURE qwat_od.%3$I();',
-		'vw_edit_'||_installation_name||'_insert',
-		'vw_edit_'||_installation_name,
-		'ft_'||_installation_name||'_insert');
+			-- create trigger
+			RAISE NOTICE '  trigger';
+			EXECUTE format('
+			CREATE TRIGGER %1$I
+				  INSTEAD OF INSERT
+				  ON %2$s
+				  FOR EACH ROW
+				  EXECUTE PROCEDURE %3$I();',
+			_view_rootname||'_insert', --1
+			_view_name::regclass, --2
+			_function_trigger --3
+			); 
+			
+		END LOOP;
 	
-	
-	
+		-- merged views (all children tables)
 	
 	END;
 $BODY$
