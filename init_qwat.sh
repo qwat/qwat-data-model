@@ -209,6 +209,7 @@ psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f ordinary_data/installation/od_installat
 psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f ordinary_data/installation/od_installation_source.sql
 psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f ordinary_data/installation/od_installation_tank.sql
 psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f ordinary_data/installation/od_installation_treatment.sql
+psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f ordinary_data/installation/vw_installation_views.sql
 psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f ordinary_data/installation/od_part.sql
 psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f ordinary_data/installation/od_remote.sql
 psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f ordinary_data/installation/vw_remote.sql
