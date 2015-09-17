@@ -104,6 +104,43 @@ $BODY$
 				, (_parent_table->>'table_name')::regclass --5
 			);
 
+			-- insert trigger function
+			RAISE NOTICE '  trigger function';
+			EXECUTE format('
+				CREATE OR REPLACE FUNCTION %1$s()
+					RETURNS trigger AS
+					$$
+					BEGIN
+						INSERT INTO %2$s ( id, %3$s ) VALUES ( nextval(''%4$s''), %5$s ) RETURNING id INTO NEW.id;
+						INSERT INTO %6$s ( id, %7$s )VALUES (NEW.id, %8$s );
+						RETURN NEW;
+					END;
+					$$
+					LANGUAGE plpgsql;',
+				_function_trigger, --1
+				(_parent_table->>'table_name')::regclass, --2
+				array_to_string(_parent_field_array, ', '), --3
+				(_parent_table->>'pkey_nextval')::regclass, --4
+				'NEW.'||array_to_string(_parent_field_array, ', NEW.'), --5
+				(_child_table->>'table_name')::regclass, --6
+				array_to_string(_child_field_array, ', '), --7
+				'NEW.'||array_to_string(_child_field_array, ', NEW.') --8
+			);
+
+			-- insert trigger
+			RAISE NOTICE '  trigger';
+			EXECUTE format('
+				CREATE TRIGGER %1$I
+					  INSTEAD OF INSERT
+					  ON %2$s
+					  FOR EACH ROW
+					  EXECUTE PROCEDURE %3$s();',
+				'tr_'||_view_rootname||'_insert', --1
+				_view_name::regclass, --2
+				_function_trigger::regproc --3
+			);
+			
+			
 			-- update rule
 			RAISE NOTICE '  update rule';
 			SELECT array_to_string(f, ', ') -- create command of update rule for parent fiels
@@ -137,64 +174,11 @@ $BODY$
 				(_parent_table->>'table_name')::regclass, --3
 				(_child_table->>'table_name')::regclass --4
 			);
-
-			-- create trigger function
-			RAISE NOTICE '  trigger function';
-			EXECUTE format('
-				CREATE OR REPLACE FUNCTION %1$s()
-					RETURNS trigger AS
-					$$
-					BEGIN
-						INSERT INTO %2$s (
-							 id,
-							 %3$s
-						   )
-						VALUES (
-							nextval(''%4$s'')  --id
-							, %5$s
-						   )
-						   RETURNING id INTO NEW.id;
-
-						INSERT INTO %6$s (
-							 id,
-							 %7$s
-						   )
-						VALUES (
-							NEW.id -- id
-						   , %8$s
-						   );
-						RETURN NEW;
-					END;
-					$$
-					LANGUAGE plpgsql;',
-				_function_trigger, --1
-				(_parent_table->>'table_name')::regclass, --2
-				array_to_string(_parent_field_array, ', '), --3
-				(_parent_table->>'pkey_nextval')::regclass, --4
-				'NEW.'||array_to_string(_parent_field_array, ', NEW.'), --5
-				(_child_table->>'table_name')::regclass, --6
-				array_to_string(_child_field_array, ', '), --7
-				'NEW.'||array_to_string(_child_field_array, ', NEW.') --8
-			);
-
-			-- create trigger
-			RAISE NOTICE '  trigger';
-			EXECUTE format('
-				CREATE TRIGGER %1$I
-					  INSTEAD OF INSERT
-					  ON %2$s
-					  FOR EACH ROW
-					  EXECUTE PROCEDURE %3$s();',
-				'tr_'||_view_rootname||'_insert', --1
-				_view_name::regclass, --2
-				_function_trigger::regproc --3
-			);
-
 		END LOOP;
 
 
 
-		-- merged views (all children tables)
+		-- merge view (all children tables)
 		_merge_view_rootname := 'vw_'||(_parent_table->>'shortname')||'_merge';
 		_merge_view_name := _destination_schema||'.'||_merge_view_rootname;
 		_merge_view_cmd_1 := format('CREATE OR REPLACE VIEW %s AS SELECT CASE ', _merge_view_name); -- create field to determine inherited table
@@ -223,7 +207,47 @@ $BODY$
 		EXECUTE( _merge_view_cmd_1 || _merge_view_cmd_2 ||_merge_view_cmd_3 );
 
 
-
+		-- insert function trigger for merge view
+		_sql_cmd := format('
+			CREATE OR REPLACE FUNCTION %1$s() RETURNS TRIGGER AS $$
+			BEGIN
+				INSERT INTO %2$s ( id, %3$s ) VALUES ( nextval(''%4$s''), %5$s ) RETURNING id INTO NEW.id;
+				CASE',
+			_destination_schema||'.ft_'||_merge_view_rootname||'_insert', --1
+			(_parent_table->>'table_name')::regclass, --2
+			array_to_string(_parent_field_array, ', '), --3
+			(_parent_table->>'pkey_nextval')::regclass, --4
+			'NEW.'||array_to_string(_parent_field_array, ', NEW.') --5
+		);
+		FOREACH _child_table IN ARRAY _children_tables LOOP
+			EXECUTE format(	$$ SELECT ARRAY( SELECT attname FROM pg_attribute WHERE attrelid = %1$L::regclass AND attnum > 0 ORDER BY attnum ASC ) $$, _child_table->>'table_name') INTO _child_field_array;
+			_child_field_array := array_remove(_child_field_array, 'id'); -- remove pkey from field list
+			_sql_cmd := _sql_cmd || format('
+				WHEN NEW.%1$I = %2$L THEN INSERT INTO %3$s ( id, %4$s )VALUES (NEW.id, %5$s );',
+				(_parent_table->>'shortname') || '_type', --1
+				_child_table->>'shortname'::text, --2
+				(_child_table->>'table_name')::regclass, --3
+				array_to_string(_child_field_array, ', '), --4
+				'NEW.'||array_to_string(_child_field_array, ', NEW.') --5
+			);
+		END LOOP;
+		_sql_cmd := _sql_cmd || '
+			END CASE;
+			RETURN NEW;
+			END;
+			$$
+			LANGUAGE plpgsql;';
+		EXECUTE( _sql_cmd );
+		EXECUTE format('
+			CREATE TRIGGER %1$I
+				  INSTEAD OF INSERT
+				  ON %2$s
+				  FOR EACH ROW
+				  EXECUTE PROCEDURE %3$s();',
+			'tr_'||_merge_view_rootname||'_insert', --1
+			_merge_view_name::regclass, --2
+			(_destination_schema||'.ft_'||_merge_view_rootname||'_insert')::regproc --3
+		);
 
 		-- update function trigger for merge view
 		_sql_cmd := format('
