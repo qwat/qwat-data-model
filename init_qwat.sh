@@ -117,7 +117,7 @@ psql -v ON_ERROR_STOP=1 -c "CREATE SCHEMA qwat_sys;"
 psql -v ON_ERROR_STOP=1 -f system/settings.sql
 psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f system/settings_insert.sql
 psql -v ON_ERROR_STOP=1 -f system/audit.sql
-psql -v ON_ERROR_STOP=1 -f system/fn_inherited_table_view.sql
+psql -v ON_ERROR_STOP=1 -v SCHEMA=qwat_sys -f system/fn_inherited_table_view.sql
 
 # Value lists
 psql -v ON_ERROR_STOP=1 -c "CREATE SCHEMA qwat_vl;"

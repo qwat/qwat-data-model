@@ -4,7 +4,7 @@
 	SQL file :: function to create views/trigger/rules to join parent table with multiple inherited tables
 */
 
-CREATE OR REPLACE FUNCTION qwat_sys.fn_inherited_table_view(_parent_table json, _children_tables json[], _destination_schema text) RETURNS void AS
+CREATE OR REPLACE FUNCTION :SCHEMA.fn_inherited_table_view(_parent_table json, _children_tables json[], _destination_schema text) RETURNS void AS
 $BODY$
 	DECLARE
 		_parent_field_array text[];
