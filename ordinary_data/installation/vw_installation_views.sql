@@ -4,39 +4,39 @@
 
 SELECT qwat_sys.fn_inherited_table_view(
 	'{
-		"shortname": "installation",
+		"readable": "installation",
 		"table_name":"qwat_od.installation",
 		"pkey": "id",
 		"pkey_nextval":"nextval(''qwat_od.installation_id_seq'')"
 	}'::json,
 	ARRAY[
 		'{
-			"shortname": "chamber",
+			"readable": "chamber",
 			"table_name":"qwat_od.installation_chamber",
 			"pkey": "id"
 		}',
 		'{
-			"shortname": "pressurecontrol",
+			"readable": "pressurecontrol",
 			"table_name":"qwat_od.installation_pressurecontrol",
 			"pkey": "id"
 		}',
 		'{
-			"shortname": "pump",
+			"readable": "pump",
 			"table_name":"qwat_od.installation_pump",
 			"pkey": "id"
 		}',
 		'{
-			"shortname": "source",
+			"readable": "source",
 			"table_name":"qwat_od.installation_source",
 			"pkey": "id"
 		}',
 		'{
-			"shortname": "tank",
+			"readable": "tank",
 			"table_name":"qwat_od.installation_tank",
 			"pkey": "id"
 		}',
 		'{
-			"shortname": "treatment",
+			"readable": "treatment",
 			"table_name":"qwat_od.installation_treatment",
 			"pkey": "id"
 		}'

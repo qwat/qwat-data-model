@@ -19,7 +19,6 @@ $BODY$
 		_merge_view_name text;
 		_sql_cmd text;
 		_merge_delete_cmd text;
-		_count integer := 0;
 	BEGIN
 		-- get array of fields for parent table
 		EXECUTE format(	$$ SELECT ARRAY( SELECT attname FROM pg_attribute WHERE attrelid = %1$L::regclass AND attnum > 0 ORDER BY attnum ASC ) $$, _parent_table->>'table_name') INTO _parent_field_array;
@@ -33,12 +32,12 @@ $BODY$
 
   		-- create view and triggers/rules for 1:1 joined view
   		FOREACH _child_table IN ARRAY _children_tables LOOP
-			RAISE NOTICE 'edit view for %', _child_table->>'shortname';
+			RAISE NOTICE 'edit view for %', _child_table->>'readable';
 
 			-- define view name
-			_view_rootname := 'vw_'||(_parent_table->>'shortname')||'_'||(_child_table->>'shortname');
+			_view_rootname := 'vw_'||(_parent_table->>'readable')||'_'||(_child_table->>'readable');
 			_view_name := _destination_schema||'.'||_view_rootname;
-			_function_trigger := _destination_schema||'.ft_'||(_parent_table->>'shortname')||'_'||(_child_table->>'shortname')||'_insert';
+			_function_trigger := _destination_schema||'.ft_'||(_parent_table->>'readable')||'_'||(_child_table->>'readable')||'_insert';
 
 			-- get array of fields for child table
 			EXECUTE format(	$$ SELECT ARRAY( SELECT attname FROM pg_attribute WHERE attrelid = %1$L::regclass AND attnum > 0 ORDER BY attnum ASC ) $$, _child_table->>'table_name') INTO _child_field_array;
@@ -47,15 +46,17 @@ $BODY$
 			-- view
 			EXECUTE format('
 				CREATE OR REPLACE VIEW %1$s AS
-					SELECT t1.%7$I, %2$s, %3$s
-				FROM %4$s t2 INNER JOIN %5$s t1 ON t1.%6$I = t2.%7$I;'
+					SELECT %6$I.%8$I, %2$s, %3$s
+				FROM %5$s %7$I INNER JOIN %4$s %6$I ON %6$I.%8$I = %7$I.%9$I;'
 				, _view_name --1
-				, 't1.' || array_to_string(_parent_field_array, ', t1.') --2
-				, 't2.' || array_to_string(_child_field_array,  ', t2.') --3
-				, (_child_table->>'table_name')::regclass --4
-				, (_parent_table->>'table_name')::regclass --5
-				, _parent_table->>'pkey' --7
-				, _child_table->>'pkey' --8
+				, (_parent_table->>'readable')::text ||'.' || array_to_string(_parent_field_array, ', '||(_parent_table->>'readable')::text||'.') --2
+				, (_child_table->>'readable')::text  ||'.' || array_to_string(_child_field_array,  ', '||(_child_table->>'readable')::text ||'.') --3
+				, (_parent_table->>'table_name')::regclass --4
+				, (_child_table->>'table_name')::regclass --5
+				, _parent_table->>'readable' --6
+				, _child_table->>'readable' --7
+				, _parent_table->>'pkey' --8
+				, _child_table->>'pkey' --9
 			);
 
 			-- insert trigger function
@@ -139,42 +140,40 @@ $BODY$
 
 
 		-- merge view (all children tables)
-		_merge_view_rootname := 'vw_'||(_parent_table->>'shortname')||'_merge';
+		_merge_view_rootname := 'vw_'||(_parent_table->>'readable')||'_merge';
 		_merge_view_name := _destination_schema||'.'||_merge_view_rootname;
 		_sql_cmd := format('CREATE OR REPLACE VIEW %s AS SELECT CASE ', _merge_view_name); -- create field to determine inherited table
-		_count := 0;
+		
 		FOREACH _child_table IN ARRAY _children_tables LOOP
-			_count = _count + 1;
-
 			_sql_cmd := _sql_cmd || format('
-				WHEN t%1$s.%2$I IS NOT NULL THEN %3$L::text '
-				, _count --1
+				WHEN %1$I.%2$I IS NOT NULL THEN %1$L::text '
+				, _child_table->>'readable' --1
 				, (_child_table->>'pkey')::text --2
-				, _child_table->>'shortname' --3
 			);
 		END LOOP;
-		_sql_cmd := _sql_cmd || format(' ELSE ''unknown''::text END AS %1$s_type, t0.%2$I, %3$s '
-			, _parent_table->>'shortname' --1
+		_sql_cmd := _sql_cmd || format(' ELSE ''unknown''::text END AS %1$s_type, %1$I.%2$I, %3$s '
+			, _parent_table->>'readable' --1
 			, (_parent_table->>'pkey')::text --2
-			, 't0.' || array_to_string(_parent_field_array, ', t0.') --3
+			, (_parent_table->>'readable')::text || '.' || array_to_string(_parent_field_array, ', ' || (_parent_table->>'readable')::text || '.') --3
 		);
-		_count := 0;
 		FOREACH _child_table IN ARRAY _children_tables LOOP
-			_count = _count + 1;
 			EXECUTE format(	$$ SELECT ARRAY( SELECT attname FROM pg_attribute WHERE attrelid = %1$L::regclass AND attnum > 0 ORDER BY attnum ASC ) $$, _child_table->>'table_name') INTO _child_field_array;
 			_child_field_array := array_remove(_child_field_array, (_child_table->>'pkey')::text); -- remove pkey from field list
-			_sql_cmd := _sql_cmd || ', t' || _count || '.' || array_to_string(_child_field_array, ', t'||_count||'.');
+			_sql_cmd := _sql_cmd || ', ' || (_child_table->>'readable')::text || '.' || array_to_string(_child_field_array, ', '||(_child_table->>'readable')::text||'.');
 		END LOOP;
-		_sql_cmd := _sql_cmd || format(' FROM %s t0', (_parent_table->>'table_name')::regclass);
-		_count := 0;
+		_sql_cmd := _sql_cmd || format(' 
+			FROM %1$s %2$I'
+			, (_parent_table->>'table_name')::regclass
+			, (_parent_table->>'readable')::text
+		);
 		FOREACH _child_table IN ARRAY _children_tables LOOP
-			_count = _count + 1;
 			_sql_cmd := _sql_cmd || format('
-				LEFT JOIN %1$s t%2$s ON t0.%3$I=t%2$s.%4$I '
+				LEFT JOIN %1$s %2$I ON %3$I.%4$I = %2$s.%5$I '
 				, (_child_table->>'table_name')::regclass --1 
-				, _count --2
-				, (_parent_table->>'pkey')::text --3
-				, (_child_table->>'pkey')::text --4
+				, _child_table->>'readable' --2
+				, _parent_table->>'readable' --3
+				, (_parent_table->>'pkey')::text --4
+				, (_child_table->>'pkey')::text --5
 			);
 		END LOOP;
 		EXECUTE( _sql_cmd );
@@ -199,8 +198,8 @@ $BODY$
 			_child_field_array := array_remove(_child_field_array, (_child_table->>'pkey')::text); -- remove pkey from field list
 			_sql_cmd := _sql_cmd || format('
 				WHEN NEW.%1$I = %2$L THEN INSERT INTO %3$s ( %4$I, %5$s )VALUES (NEW.%6$I, %7$s );'
-				, (_parent_table->>'shortname') || '_type' --1
-				, _child_table->>'shortname'::text --2
+				, (_parent_table->>'readable') || '_type' --1
+				, _child_table->>'readable'::text --2
 				, (_child_table->>'table_name')::regclass --3
 				, (_child_table->>'pkey')::text --4
 				, array_to_string(_child_field_array, ', ') --5
@@ -239,13 +238,13 @@ $BODY$
 			, (_parent_table->>'table_name')::regclass --2
 			, _parent_field_list --3
 			, (_parent_table->>'pkey')::text --4
-			, (_parent_table->>'shortname') || '_type' --5
+			, (_parent_table->>'readable') || '_type' --5
 		);
 		FOREACH _child_table IN ARRAY _children_tables LOOP
 			_sql_cmd := _sql_cmd || format('
 				WHEN OLD.%1$I = %2$L THEN DELETE FROM %3$s WHERE %4$I = OLD.%4$I;'
-				, (_parent_table->>'shortname') || '_type' --1
-				, _child_table->>'shortname'::text --2
+				, (_parent_table->>'readable') || '_type' --1
+				, _child_table->>'readable'::text --2
 				, (_child_table->>'table_name')::regclass --3
 				, (_child_table->>'pkey')::text --3
 			);
@@ -256,8 +255,8 @@ $BODY$
 		FOREACH _child_table IN ARRAY _children_tables LOOP
 			_sql_cmd := _sql_cmd || format('
 				WHEN NEW.%1$I = %2$L THEN INSERT INTO %3$s (%4$I) VALUES (OLD.%5$I);'
-				, (_parent_table->>'shortname') || '_type' --1
-				, _child_table->>'shortname'::text --2
+				, (_parent_table->>'readable') || '_type' --1
+				, _child_table->>'readable'::text --2
 				, (_child_table->>'table_name')::regclass --3
 				, (_child_table->>'pkey')::text --4
 				, (_parent_table->>'pkey')::text --5
@@ -278,8 +277,8 @@ $BODY$
 
 			_sql_cmd := _sql_cmd || format('
 				WHEN NEW.%1$I = %2$L THEN UPDATE %3$s SET %4$s WHERE %5$I = OLD.%5$I;'
-				, (_parent_table->>'shortname') || '_type' --1
-				, _child_table->>'shortname'::text --2
+				, (_parent_table->>'readable') || '_type' --1
+				, _child_table->>'readable'::text --2
 				, (_child_table->>'table_name')::regclass --3
 				, _child_field_list --4
 				, (_child_table->>'pkey')::text --5
