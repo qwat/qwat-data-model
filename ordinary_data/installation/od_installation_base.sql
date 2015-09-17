@@ -65,7 +65,7 @@ $BODY$
 		_merge_view_cmd_1 text;
 		_merge_view_cmd_2 text;
 		_merge_view_cmd_3 text;
-		_merge_update_cmd text;
+		_sql_cmd text;
 		_merge_delete_cmd text;
 		_count integer := 0;
 	BEGIN
@@ -127,7 +127,7 @@ $BODY$
 			-- delete rule
 			RAISE NOTICE '  delete rule';
 			EXECUTE format('
-				CREATE OR REPLACE RULE %1$I AS ON UPDATE TO %2$s DO INSTEAD
+				CREATE OR REPLACE RULE %1$I AS ON DELETE TO %2$s DO INSTEAD
 				(
 				DELETE FROM %3$s WHERE id = OLD.id;
 				DELETE FROM %4$s WHERE id = OLD.id;
@@ -225,8 +225,8 @@ $BODY$
 
 
 
-		-- update rule for merge view
-		_merge_update_cmd := format('
+		-- update function trigger for merge view
+		_sql_cmd := format('
 			CREATE OR REPLACE FUNCTION %1$s() RETURNS TRIGGER AS $$
 			BEGIN
 			UPDATE %2$s SET %3$s WHERE id = OLD.id;
@@ -239,25 +239,25 @@ $BODY$
 			(_parent_table->>'shortname') || '_type' --4
 		);
 		FOREACH _child_table IN ARRAY _children_tables LOOP
-			_merge_update_cmd := _merge_update_cmd || format('
+			_sql_cmd := _sql_cmd || format('
 				WHEN OLD.%1$I = %2$L THEN DELETE FROM %3$s WHERE id = OLD.id;',
 				(_parent_table->>'shortname') || '_type', --1
 				_child_table->>'shortname'::text, --2
 				(_child_table->>'table_name')::regclass --3
 			);
 		END LOOP;
-		_merge_update_cmd := _merge_update_cmd || '
+		_sql_cmd := _sql_cmd || '
 			END CASE;
 			CASE';
 		FOREACH _child_table IN ARRAY _children_tables LOOP
-			_merge_update_cmd := _merge_update_cmd || format('
+			_sql_cmd := _sql_cmd || format('
 				WHEN NEW.%1$I = %2$L THEN INSERT INTO %3$s (id) VALUES (OLD.id);',
 				(_parent_table->>'shortname') || '_type', --1
 				_child_table->>'shortname'::text, --2
 				(_child_table->>'table_name')::regclass --3
 			);
 		END LOOP;
-		_merge_update_cmd := _merge_update_cmd || '
+		_sql_cmd := _sql_cmd || '
 			END CASE;
 			END IF;
 			CASE ';
@@ -270,7 +270,7 @@ $BODY$
 				FROM unnest(_child_field_array)     AS f ) foo
 				INTO _child_field_list;
 
-			_merge_update_cmd := _merge_update_cmd || format('
+			_sql_cmd := _sql_cmd || format('
 				WHEN NEW.%1$I = %2$L THEN UPDATE %3$s SET %4$s WHERE id = OLD.id;',
 				(_parent_table->>'shortname') || '_type', --1
 				_child_table->>'shortname'::text, --2
@@ -278,23 +278,42 @@ $BODY$
 				_child_field_list --4
 				);
 		END LOOP;
-		_merge_update_cmd := _merge_update_cmd || '
+		_sql_cmd := _sql_cmd || '
 			END CASE;
 			RETURN NEW;
 			END;
 			$$
 			LANGUAGE plpgsql;';
-		EXECUTE( _merge_update_cmd );
+		EXECUTE( _sql_cmd );
 		EXECUTE format('
 			CREATE TRIGGER %1$I
-				  INSTEAD OF INSERT
+				  INSTEAD OF UPDATE
 				  ON %2$s
 				  FOR EACH ROW
 				  EXECUTE PROCEDURE %3$s();',
-			'tr_'||_merge_view_rootname||'_insert', --1
+			'tr_'||_merge_view_rootname||'_update', --1
 			_merge_view_name::regclass, --2
 			(_destination_schema||'.ft_'||_merge_view_rootname||'_update')::regproc --3
 		);
+
+		-- delete function trigger for merge view
+		_sql_cmd := format('
+			CREATE OR REPLACE RULE %1$I AS ON DELETE TO %2$s DO INSTEAD	(',
+			'rl_'||_merge_view_rootname||'_delete', --1
+			_merge_view_name::regclass --2
+		);
+		FOREACH _child_table IN ARRAY _children_tables LOOP
+			_sql_cmd := _sql_cmd || format('
+				DELETE FROM %1$s WHERE id = OLD.id;
+				)',
+				(_child_table->>'table_name')::regclass --1
+			);
+		END LOOP;
+		_sql_cmd := _sql_cmd || format('
+			DELETE FROM %1$s WHERE id = OLD.id;)',
+			(_parent_table->>'table_name')::regclass
+		);
+
 	END;
 $BODY$
 LANGUAGE plpgsql;
