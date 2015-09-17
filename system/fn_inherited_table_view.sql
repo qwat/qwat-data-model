@@ -47,11 +47,11 @@ $BODY$
 			-- view
 			EXECUTE format('
 				CREATE OR REPLACE VIEW %1$s AS
-					SELECT %2$s, %3$s
+					SELECT t1.%7$I, %2$s, %3$s
 				FROM %4$s t2 INNER JOIN %5$s t1 ON t1.%6$I = t2.%7$I;'
 				, _view_name --1
-				, 't1.id, t1.' || array_to_string(_parent_field_array, ', t1.') --2
-				,        't2.' || array_to_string(_child_field_array,  ', t2.') --3
+				, 't1.' || array_to_string(_parent_field_array, ', t1.') --2
+				, 't2.' || array_to_string(_child_field_array,  ', t2.') --3
 				, (_child_table->>'table_name')::regclass --4
 				, (_parent_table->>'table_name')::regclass --5
 				, _parent_table->>'pkey' --7
@@ -65,8 +65,8 @@ $BODY$
 					RETURNS trigger AS
 					$$
 					BEGIN
-						INSERT INTO %2$s ( %3$I, %4$s ) VALUES ( %5$s, %6$s ) RETURNING id INTO NEW.id;
-						INSERT INTO %7$s ( %8$I, %9$s )VALUES ( NEW.%3$I, %10$s );
+						INSERT INTO %2$s ( %3$I, %4$s ) VALUES ( %5$s, %6$s ) RETURNING %3$I INTO NEW.%3$I;
+						INSERT INTO %7$s ( %8$I, %9$s ) VALUES ( NEW.%3$I, %10$s );
 						RETURN NEW;
 					END;
 					$$
@@ -147,14 +147,16 @@ $BODY$
 			_count = _count + 1;
 
 			_sql_cmd := _sql_cmd || format('
-				WHEN t%1$s.id IS NOT NULL THEN %2$L::text ',
-				_count,
-				_child_table->>'shortname'
+				WHEN t%1$s.%2$I IS NOT NULL THEN %3$L::text '
+				, _count --1
+				, (_child_table->>'pkey')::text --2
+				, _child_table->>'shortname' --3
 			);
 		END LOOP;
-		_sql_cmd := _sql_cmd || format(' ELSE ''unknown''::text END AS %1$s_type, %2$s ',
-			_parent_table->>'shortname',
-			't0.id, t0.' || array_to_string(_parent_field_array, ', t0.')
+		_sql_cmd := _sql_cmd || format(' ELSE ''unknown''::text END AS %1$s_type, t0.%2$I, %3$s '
+			, _parent_table->>'shortname' --1
+			, (_parent_table->>'pkey')::text --2
+			, 't0.' || array_to_string(_parent_field_array, ', t0.') --3
 		);
 		_count := 0;
 		FOREACH _child_table IN ARRAY _children_tables LOOP
