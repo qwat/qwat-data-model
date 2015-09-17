@@ -63,7 +63,7 @@ $BODY$
 					RETURNS trigger AS
 					$$
 					BEGIN
-						INSERT INTO %2$s ( id, %3$s ) VALUES ( nextval(''%4$s''), %5$s ) RETURNING id INTO NEW.id;
+						INSERT INTO %2$s ( id, %3$s ) VALUES ( %4$s, %5$s ) RETURNING id INTO NEW.id;
 						INSERT INTO %6$s ( id, %7$s )VALUES (NEW.id, %8$s );
 						RETURN NEW;
 					END;
@@ -72,7 +72,7 @@ $BODY$
 				_function_trigger, --1
 				(_parent_table->>'table_name')::regclass, --2
 				array_to_string(_parent_field_array, ', '), --3
-				(_parent_table->>'pkey_nextval')::regclass, --4
+				_parent_table->>'pkey_nextval', --4
 				'NEW.'||array_to_string(_parent_field_array, ', NEW.'), --5
 				(_child_table->>'table_name')::regclass, --6
 				array_to_string(_child_field_array, ', '), --7
@@ -172,12 +172,12 @@ $BODY$
 		_sql_cmd := format('
 			CREATE OR REPLACE FUNCTION %1$s() RETURNS TRIGGER AS $$
 			BEGIN
-				INSERT INTO %2$s ( id, %3$s ) VALUES ( nextval(''%4$s''), %5$s ) RETURNING id INTO NEW.id;
+				INSERT INTO %2$s ( id, %3$s ) VALUES ( %4$s, %5$s ) RETURNING id INTO NEW.id;
 				CASE',
 			_destination_schema||'.ft_'||_merge_view_rootname||'_insert', --1
 			(_parent_table->>'table_name')::regclass, --2
 			array_to_string(_parent_field_array, ', '), --3
-			(_parent_table->>'pkey_nextval')::regclass, --4
+			_parent_table->>'pkey_nextval', --4
 			'NEW.'||array_to_string(_parent_field_array, ', NEW.') --5
 		);
 		FOREACH _child_table IN ARRAY _children_tables LOOP
