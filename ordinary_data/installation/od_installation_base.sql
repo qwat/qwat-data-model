@@ -60,10 +60,14 @@ $BODY$
 		_view_name text;
 		_function_trigger text;
 		_child_table json;
+		_merge_view_rootname text;
+		_merge_view_name text;
 		_merge_view_cmd_1 text;
 		_merge_view_cmd_2 text;
+		_merge_view_cmd_3 text;
+		_merge_update_cmd text;
+		_merge_delete_cmd text;
 		_count integer := 0;
-		_tname text;
 	BEGIN
 		-- get array of fields for parent table
 		EXECUTE format(	$$ SELECT ARRAY( SELECT attname FROM pg_attribute WHERE attrelid = %1$L::regclass AND attnum > 0 ORDER BY attnum ASC ) $$, _parent_table->>'table_name') INTO _parent_field_array;
@@ -75,16 +79,8 @@ $BODY$
 			FROM unnest(_parent_field_array) AS f ) foo
 			INTO _parent_field_list;
 			
-		-- init merged views (all children tables)
-		_merge_view_cmd_1 := format('CREATE OR REPLACE VIEW %1$s AS SELECT %2$s ',
-									_destination_schema||'.vw_'||(_parent_table->>'shortname')||'_merge',
-									't0.id, t0.' || array_to_string(_parent_field_array, ', t0.')
-								);
-		_merge_view_cmd_2 := format(' FROM %s t0', (_parent_table->>'table_name')::regclass);
-			
   		-- create view and triggers/rules for 1:1 joined view
   		FOREACH _child_table IN ARRAY _children_tables LOOP
-			_count = _count + 1;
 			RAISE NOTICE 'edit view for %', _child_table->>'shortname';	
   		
 			-- define view name
@@ -117,10 +113,10 @@ $BODY$
 			EXECUTE format('
 				CREATE OR REPLACE RULE %1$I AS ON UPDATE TO %2$s DO INSTEAD
 				(
-				UPDATE %3$s SET %4$s WHERE id = NEW.id;
-				UPDATE %5$s SET %6$s WHERE id = NEW.id;
+				UPDATE %3$s SET %4$s WHERE id = OLD.id;
+				UPDATE %5$s SET %6$s WHERE id = OLD.id;
 				)',			
-				_view_rootname||'_update', --1
+				'rl_'||_view_rootname||'_update', --1
 				_view_name::regclass, --2
 				(_parent_table->>'table_name')::regclass, --3
 				_parent_field_list, --4
@@ -133,10 +129,10 @@ $BODY$
 			EXECUTE format('
 				CREATE OR REPLACE RULE %1$I AS ON UPDATE TO %2$s DO INSTEAD
 				(
-				DELETE FROM %3$s WHERE id = NEW.id;
-				DELETE FROM %4$s WHERE id = NEW.id;
+				DELETE FROM %3$s WHERE id = OLD.id;
+				DELETE FROM %4$s WHERE id = OLD.id;
 				)',			
-				_view_rootname||'_delete', --1
+				'rl_'||_view_rootname||'_delete', --1
 				_view_name::regclass, --2
 				(_parent_table->>'table_name')::regclass, --3
 				(_child_table->>'table_name')::regclass --4
@@ -145,7 +141,7 @@ $BODY$
 			-- create trigger function
 			RAISE NOTICE '  trigger function';
 			EXECUTE format('
-				CREATE OR REPLACE FUNCTION %1$I()
+				CREATE OR REPLACE FUNCTION %1$s()
 					RETURNS trigger AS
 					$$
 					BEGIN
@@ -171,38 +167,124 @@ $BODY$
 					END; 
 					$$
 					LANGUAGE plpgsql;',
-			_function_trigger, --1
-			(_parent_table->>'table_name')::regclass, --2
-			array_to_string(_parent_field_array, ', '), --3
-			(_parent_table->>'pkey_nextval')::regclass, --4
-			'NEW.'||array_to_string(_parent_field_array, ', NEW.'), --5
-			(_child_table->>'table_name')::regclass, --6
-			array_to_string(_child_field_array, ', '), --7
-			'NEW.'||array_to_string(_child_field_array, ', NEW.') --8
+				_function_trigger, --1
+				(_parent_table->>'table_name')::regclass, --2
+				array_to_string(_parent_field_array, ', '), --3
+				(_parent_table->>'pkey_nextval')::regclass, --4
+				'NEW.'||array_to_string(_parent_field_array, ', NEW.'), --5
+				(_child_table->>'table_name')::regclass, --6
+				array_to_string(_child_field_array, ', '), --7
+				'NEW.'||array_to_string(_child_field_array, ', NEW.') --8
 			);
 		
 			-- create trigger
 			RAISE NOTICE '  trigger';
 			EXECUTE format('
-			CREATE TRIGGER %1$I
-				  INSTEAD OF INSERT
-				  ON %2$s
-				  FOR EACH ROW
-				  EXECUTE PROCEDURE %3$I();',
-			_view_rootname||'_insert', --1
-			_view_name::regclass, --2
-			_function_trigger --3
+				CREATE TRIGGER %1$I
+					  INSTEAD OF INSERT
+					  ON %2$s
+					  FOR EACH ROW
+					  EXECUTE PROCEDURE %3$I();',
+				'tr_'||_view_rootname||'_insert', --1
+				_view_name::regclass, --2
+				_function_trigger --3
 			); 
-			
-			-- merge view (all children tables)
-			_merge_view_cmd_1 := _merge_view_cmd_1 || ', t' || _count || '.' || array_to_string(_child_field_array, ', t'||_count||'.');
-			_merge_view_cmd_2 := _merge_view_cmd_2 || format(' LEFT JOIN %1$s t%2$s ON t0.id=t%2$s.id ', (_child_table->>'table_name')::regclass, _count);
 			
 		END LOOP;
 		
-		-- execute merge view
-		RAISE NOTICE '%', _merge_view_cmd_1 || _merge_view_cmd_2;
-		EXECUTE( _merge_view_cmd_1 || _merge_view_cmd_2 );
+		
+		
+		-- merged views (all children tables)
+		_merge_view_rootname := 'vw_'||(_parent_table->>'shortname')||'_merge';
+		_merge_view_name := _destination_schema||'.'||_merge_view_rootname;
+		_merge_view_cmd_1 := format('CREATE OR REPLACE VIEW %s AS SELECT CASE ', _merge_view_name); -- create field to determine inherited table
+		_merge_view_cmd_2 := format(' %s ', 't0.id, t0.' || array_to_string(_parent_field_array, ', t0.'));
+		_merge_view_cmd_3 := format(' FROM %s t0', (_parent_table->>'table_name')::regclass);
+		_count := 0;
+		FOREACH _child_table IN ARRAY _children_tables LOOP
+			_count = _count + 1;
+			
+			EXECUTE format(	$$ SELECT ARRAY( SELECT attname FROM pg_attribute WHERE attrelid = %1$L::regclass AND attnum > 0 ORDER BY attnum ASC ) $$, _child_table->>'table_name') INTO _child_field_array;
+			_child_field_array := array_remove(_child_field_array, 'id'); -- remove pkey from field list
+			
+			_merge_view_cmd_1 := _merge_view_cmd_1 || format('
+				WHEN t%1$s.id IS NOT NULL THEN %2$L::text ',
+				_count,
+				_child_table->>'shortname'
+			);
+			_merge_view_cmd_2 := _merge_view_cmd_2 || ', t' || _count || '.' || array_to_string(_child_field_array, ', t'||_count||'.');
+			_merge_view_cmd_3 := _merge_view_cmd_3 || format(' 
+				LEFT JOIN %1$s t%2$s ON t0.id=t%2$s.id ',
+				(_child_table->>'table_name')::regclass,
+				_count
+			);
+		END LOOP;
+		_merge_view_cmd_1 := _merge_view_cmd_1 || ' ELSE ''unknown''::text END AS '|| (_parent_table->>'shortname') || '_type, ';
+		EXECUTE( _merge_view_cmd_1 || _merge_view_cmd_2 ||_merge_view_cmd_3 );
+		
+		
+		
+		
+		-- update rule for merge view
+		_merge_update_cmd := format('
+			CREATE OR REPLACE FUNCTION %1$s() RETURNS TRIGGER AS $$
+			BEGIN
+			UPDATE %2$s SET %3$s WHERE id = OLD.id;
+			/* Allow change type */
+			IF OLD.%4$I <> NEW.%4$I THEN CASE
+			',
+			_destination_schema||'.ft_'||_merge_view_rootname||'_update', --1
+			(_parent_table->>'table_name')::regclass, --2
+			_parent_field_list, --3
+			(_parent_table->>'shortname') || '_type' --4
+		);
+		FOREACH _child_table IN ARRAY _children_tables LOOP
+			_merge_update_cmd := _merge_update_cmd || format('
+				WHEN OLD.%1$I = %2$L THEN DELETE FROM %3$s WHERE id = OLD.id;',
+				(_parent_table->>'shortname') || '_type', --1
+				_child_table->>'shortname'::text, --2
+				(_child_table->>'table_name')::regclass --3
+			);
+		END LOOP;
+		_merge_update_cmd := _merge_update_cmd || '
+			END CASE;
+			CASE';
+		FOREACH _child_table IN ARRAY _children_tables LOOP
+			_merge_update_cmd := _merge_update_cmd || format('
+				WHEN NEW.%1$I = %2$L THEN INSERT INTO %3$s (id) VALUES (OLD.id);',
+				(_parent_table->>'shortname') || '_type', --1
+				_child_table->>'shortname'::text, --2
+				(_child_table->>'table_name')::regclass --3
+			);
+		END LOOP;		
+		_merge_update_cmd := _merge_update_cmd || '
+			END CASE;
+			END IF;
+			CASE ';	
+		FOREACH _child_table IN ARRAY _children_tables LOOP
+			-- write list of fields for update command
+			EXECUTE format(	$$ SELECT ARRAY( SELECT attname FROM pg_attribute WHERE attrelid = %1$L::regclass AND attnum > 0 ORDER BY attnum ASC ) $$, _child_table->>'table_name') INTO _child_field_array;
+			_child_field_array := array_remove(_child_field_array, 'id'); -- remove pkey from field list
+			SELECT array_to_string(f, ', ') -- create command of update rule for parent fiels
+				FROM ( SELECT array_agg(f||' = NEW.'||f) AS f
+				FROM unnest(_child_field_array)     AS f ) foo
+				INTO _child_field_list;
+		
+			_merge_update_cmd := _merge_update_cmd || format('
+				WHEN NEW.%1$I = %2$L THEN UPDATE %3$s SET %4$s WHERE id = OLD.id;',
+				(_parent_table->>'shortname') || '_type', --1
+				_child_table->>'shortname'::text, --2
+				(_child_table->>'table_name')::regclass, --3
+				_child_field_list --4
+				); 	
+		END LOOP;
+		_merge_update_cmd := _merge_update_cmd || '
+			END CASE;
+			RETURN NEW;
+			END;
+			$$
+			LANGUAGE plpgsql;';
+		EXECUTE( _merge_update_cmd );
 	
 	END;
 $BODY$
