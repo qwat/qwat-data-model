@@ -23,7 +23,7 @@ $BODY$
 	BEGIN
 		-- get array of fields for parent table
 		EXECUTE format(	$$ SELECT ARRAY( SELECT attname FROM pg_attribute WHERE attrelid = %1$L::regclass AND attnum > 0 ORDER BY attnum ASC ) $$, _parent_table->>'table_name') INTO _parent_field_array;
-		_parent_field_array := array_remove(_parent_field_array, 'id'); -- remove pkey from field list
+		_parent_field_array := array_remove(_parent_field_array, (_parent_table->>'pkey')::text ); -- remove pkey from field list
 
 		-- create command of update rule for parent fiels
 		SELECT array_to_string(f, ', ')
@@ -42,18 +42,20 @@ $BODY$
 
 			-- get array of fields for child table
 			EXECUTE format(	$$ SELECT ARRAY( SELECT attname FROM pg_attribute WHERE attrelid = %1$L::regclass AND attnum > 0 ORDER BY attnum ASC ) $$, _child_table->>'table_name') INTO _child_field_array;
-			_child_field_array := array_remove(_child_field_array, 'id'); -- remove pkey from field list
+			_child_field_array := array_remove(_child_field_array, (_child_table->>'pkey')::text); -- remove pkey from field list
 
 			-- view
 			EXECUTE format('
 				CREATE OR REPLACE VIEW %1$s AS
 					SELECT %2$s, %3$s
-				FROM %4$s t2 INNER JOIN %5$s t1 ON t1.id = t2.id;'
+				FROM %4$s t2 INNER JOIN %5$s t1 ON t1.%6$I = t2.%7$I;'
 				, _view_name --1
 				, 't1.id, t1.' || array_to_string(_parent_field_array, ', t1.') --2
 				,        't2.' || array_to_string(_child_field_array,  ', t2.') --3
 				, (_child_table->>'table_name')::regclass --4
 				, (_parent_table->>'table_name')::regclass --5
+				, _parent_table->>'pkey' --7
+				, _child_table->>'pkey' --8
 			);
 
 			-- insert trigger function
@@ -63,20 +65,22 @@ $BODY$
 					RETURNS trigger AS
 					$$
 					BEGIN
-						INSERT INTO %2$s ( id, %3$s ) VALUES ( %4$s, %5$s ) RETURNING id INTO NEW.id;
-						INSERT INTO %6$s ( id, %7$s )VALUES (NEW.id, %8$s );
+						INSERT INTO %2$s ( %3$I, %4$s ) VALUES ( %5$s, %6$s ) RETURNING id INTO NEW.id;
+						INSERT INTO %7$s ( %8$I, %9$s )VALUES ( NEW.%3$I, %10$s );
 						RETURN NEW;
 					END;
 					$$
-					LANGUAGE plpgsql;',
-				_function_trigger, --1
-				(_parent_table->>'table_name')::regclass, --2
-				array_to_string(_parent_field_array, ', '), --3
-				_parent_table->>'pkey_nextval', --4
-				'NEW.'||array_to_string(_parent_field_array, ', NEW.'), --5
-				(_child_table->>'table_name')::regclass, --6
-				array_to_string(_child_field_array, ', '), --7
-				'NEW.'||array_to_string(_child_field_array, ', NEW.') --8
+					LANGUAGE plpgsql;'
+				, _function_trigger --1
+				, (_parent_table->>'table_name')::regclass --2
+				, (_parent_table->>'pkey')::text --3
+				, array_to_string(_parent_field_array, ', ') --4
+				, _parent_table->>'pkey_nextval' --5
+				, 'NEW.'||array_to_string(_parent_field_array, ', NEW.') --6
+				, (_child_table->>'table_name')::regclass --7
+				, (_child_table->>'pkey')::text --8
+				, array_to_string(_child_field_array, ', ') --9
+				, 'NEW.'||array_to_string(_child_field_array, ', NEW.') --10
 			);
 
 			-- insert trigger
@@ -102,15 +106,17 @@ $BODY$
 			EXECUTE format('
 				CREATE OR REPLACE RULE %1$I AS ON UPDATE TO %2$s DO INSTEAD
 				(
-				UPDATE %3$s SET %4$s WHERE id = OLD.id;
-				UPDATE %5$s SET %6$s WHERE id = OLD.id;
-				)',
-				'rl_'||_view_rootname||'_update', --1
-				_view_name::regclass, --2
-				(_parent_table->>'table_name')::regclass, --3
-				_parent_field_list, --4
-				(_child_table->>'table_name')::regclass, --5
-				_child_field_list --6
+				UPDATE %3$s SET %4$s WHERE %5$I = OLD.%5$I;
+				UPDATE %6$s SET %7$s WHERE %8$I = OLD.%8$I;
+				)'
+				, 'rl_'||_view_rootname||'_update' --1
+				, _view_name::regclass --2
+				, (_parent_table->>'table_name')::regclass --3
+				, _parent_field_list --4
+				, (_parent_table->>'pkey')::text --5
+				, (_child_table->>'table_name')::regclass --6
+				, _child_field_list --7
+				, (_child_table->>'pkey')::text --8
 			);
 
 			-- delete rule
@@ -118,13 +124,15 @@ $BODY$
 			EXECUTE format('
 				CREATE OR REPLACE RULE %1$I AS ON DELETE TO %2$s DO INSTEAD
 				(
-				DELETE FROM %3$s WHERE id = OLD.id;
-				DELETE FROM %4$s WHERE id = OLD.id;
-				)',
-				'rl_'||_view_rootname||'_delete', --1
-				_view_name::regclass, --2
-				(_parent_table->>'table_name')::regclass, --3
-				(_child_table->>'table_name')::regclass --4
+				DELETE FROM %3$s WHERE %4$I = OLD.%4$I;
+				DELETE FROM %5$s WHERE %6$I = OLD.%6$I;
+				)'
+				, 'rl_'||_view_rootname||'_delete' --1
+				, _view_name::regclass --2
+				, (_child_table->>'table_name')::regclass --3
+				, (_child_table->>'pkey')::text --4
+				, (_parent_table->>'table_name')::regclass --5
+				, (_parent_table->>'pkey')::text --6
 			);
 		END LOOP;
 
@@ -152,7 +160,7 @@ $BODY$
 		FOREACH _child_table IN ARRAY _children_tables LOOP
 			_count = _count + 1;
 			EXECUTE format(	$$ SELECT ARRAY( SELECT attname FROM pg_attribute WHERE attrelid = %1$L::regclass AND attnum > 0 ORDER BY attnum ASC ) $$, _child_table->>'table_name') INTO _child_field_array;
-			_child_field_array := array_remove(_child_field_array, 'id'); -- remove pkey from field list
+			_child_field_array := array_remove(_child_field_array, (_child_table->>'pkey')::text); -- remove pkey from field list
 			_sql_cmd := _sql_cmd || ', t' || _count || '.' || array_to_string(_child_field_array, ', t'||_count||'.');
 		END LOOP;
 		_sql_cmd := _sql_cmd || format(' FROM %s t0', (_parent_table->>'table_name')::regclass);
@@ -160,36 +168,42 @@ $BODY$
 		FOREACH _child_table IN ARRAY _children_tables LOOP
 			_count = _count + 1;
 			_sql_cmd := _sql_cmd || format('
-				LEFT JOIN %1$s t%2$s ON t0.id=t%2$s.id ',
-				(_child_table->>'table_name')::regclass,
-				_count
+				LEFT JOIN %1$s t%2$s ON t0.%3$I=t%2$s.%4$I '
+				, (_child_table->>'table_name')::regclass --1 
+				, _count --2
+				, (_parent_table->>'pkey')::text --3
+				, (_child_table->>'pkey')::text --4
 			);
 		END LOOP;
 		EXECUTE( _sql_cmd );
+
 
 
 		-- insert function trigger for merge view
 		_sql_cmd := format('
 			CREATE OR REPLACE FUNCTION %1$s() RETURNS TRIGGER AS $$
 			BEGIN
-				INSERT INTO %2$s ( id, %3$s ) VALUES ( %4$s, %5$s ) RETURNING id INTO NEW.id;
-				CASE',
-			_destination_schema||'.ft_'||_merge_view_rootname||'_insert', --1
-			(_parent_table->>'table_name')::regclass, --2
-			array_to_string(_parent_field_array, ', '), --3
-			_parent_table->>'pkey_nextval', --4
-			'NEW.'||array_to_string(_parent_field_array, ', NEW.') --5
+				INSERT INTO %2$s ( %3$I, %4$s ) VALUES ( %5$s, %6$s ) RETURNING %3$I INTO NEW.%3$I;
+				CASE'
+			, _destination_schema||'.ft_'||_merge_view_rootname||'_insert' --1
+			, (_parent_table->>'table_name')::regclass --2
+			, (_parent_table->>'pkey')::text --3
+			, array_to_string(_parent_field_array, ', ') --4
+			, _parent_table->>'pkey_nextval' --5
+			, 'NEW.'||array_to_string(_parent_field_array, ', NEW.') --6
 		);
 		FOREACH _child_table IN ARRAY _children_tables LOOP
 			EXECUTE format(	$$ SELECT ARRAY( SELECT attname FROM pg_attribute WHERE attrelid = %1$L::regclass AND attnum > 0 ORDER BY attnum ASC ) $$, _child_table->>'table_name') INTO _child_field_array;
-			_child_field_array := array_remove(_child_field_array, 'id'); -- remove pkey from field list
+			_child_field_array := array_remove(_child_field_array, (_child_table->>'pkey')::text); -- remove pkey from field list
 			_sql_cmd := _sql_cmd || format('
-				WHEN NEW.%1$I = %2$L THEN INSERT INTO %3$s ( id, %4$s )VALUES (NEW.id, %5$s );',
-				(_parent_table->>'shortname') || '_type', --1
-				_child_table->>'shortname'::text, --2
-				(_child_table->>'table_name')::regclass, --3
-				array_to_string(_child_field_array, ', '), --4
-				'NEW.'||array_to_string(_child_field_array, ', NEW.') --5
+				WHEN NEW.%1$I = %2$L THEN INSERT INTO %3$s ( %4$I, %5$s )VALUES (NEW.%6$I, %7$s );'
+				, (_parent_table->>'shortname') || '_type' --1
+				, _child_table->>'shortname'::text --2
+				, (_child_table->>'table_name')::regclass --3
+				, (_child_table->>'pkey')::text --4
+				, array_to_string(_child_field_array, ', ') --5
+				, (_parent_table->>'pkey')::text --6
+				, 'NEW.'||array_to_string(_child_field_array, ', NEW.') --7
 			);
 		END LOOP;
 		_sql_cmd := _sql_cmd || '
@@ -210,25 +224,28 @@ $BODY$
 			(_destination_schema||'.ft_'||_merge_view_rootname||'_insert')::regproc --3
 		);
 
+
+
 		-- update function trigger for merge view
 		_sql_cmd := format('
 			CREATE OR REPLACE FUNCTION %1$s() RETURNS TRIGGER AS $$
 			BEGIN
-			UPDATE %2$s SET %3$s WHERE id = OLD.id;
+			UPDATE %2$s SET %3$s WHERE %4$I = OLD.%4$I;
 			/* Allow change type */
-			IF OLD.%4$I <> NEW.%4$I THEN CASE
-			',
-			_destination_schema||'.ft_'||_merge_view_rootname||'_update', --1
-			(_parent_table->>'table_name')::regclass, --2
-			_parent_field_list, --3
-			(_parent_table->>'shortname') || '_type' --4
+			IF OLD.%5$I <> NEW.%5$I THEN CASE'
+			, _destination_schema||'.ft_'||_merge_view_rootname||'_update' --1
+			, (_parent_table->>'table_name')::regclass --2
+			, _parent_field_list --3
+			, (_parent_table->>'pkey')::text --4
+			, (_parent_table->>'shortname') || '_type' --5
 		);
 		FOREACH _child_table IN ARRAY _children_tables LOOP
 			_sql_cmd := _sql_cmd || format('
-				WHEN OLD.%1$I = %2$L THEN DELETE FROM %3$s WHERE id = OLD.id;',
-				(_parent_table->>'shortname') || '_type', --1
-				_child_table->>'shortname'::text, --2
-				(_child_table->>'table_name')::regclass --3
+				WHEN OLD.%1$I = %2$L THEN DELETE FROM %3$s WHERE %4$I = OLD.%4$I;'
+				, (_parent_table->>'shortname') || '_type' --1
+				, _child_table->>'shortname'::text --2
+				, (_child_table->>'table_name')::regclass --3
+				, (_child_table->>'pkey')::text --3
 			);
 		END LOOP;
 		_sql_cmd := _sql_cmd || '
@@ -236,10 +253,12 @@ $BODY$
 			CASE';
 		FOREACH _child_table IN ARRAY _children_tables LOOP
 			_sql_cmd := _sql_cmd || format('
-				WHEN NEW.%1$I = %2$L THEN INSERT INTO %3$s (id) VALUES (OLD.id);',
-				(_parent_table->>'shortname') || '_type', --1
-				_child_table->>'shortname'::text, --2
-				(_child_table->>'table_name')::regclass --3
+				WHEN NEW.%1$I = %2$L THEN INSERT INTO %3$s (%4$I) VALUES (OLD.%5$I);'
+				, (_parent_table->>'shortname') || '_type' --1
+				, _child_table->>'shortname'::text --2
+				, (_child_table->>'table_name')::regclass --3
+				, (_child_table->>'pkey')::text --4
+				, (_parent_table->>'pkey')::text --5
 			);
 		END LOOP;
 		_sql_cmd := _sql_cmd || '
@@ -249,18 +268,19 @@ $BODY$
 		FOREACH _child_table IN ARRAY _children_tables LOOP
 			-- write list of fields for update command
 			EXECUTE format(	$$ SELECT ARRAY( SELECT attname FROM pg_attribute WHERE attrelid = %1$L::regclass AND attnum > 0 ORDER BY attnum ASC ) $$, _child_table->>'table_name') INTO _child_field_array;
-			_child_field_array := array_remove(_child_field_array, 'id'); -- remove pkey from field list
+			_child_field_array := array_remove(_child_field_array, (_child_table->>'pkey')::text); -- remove pkey from field list
 			SELECT array_to_string(f, ', ') -- create command of update rule for parent fiels
 				FROM ( SELECT array_agg(f||' = NEW.'||f) AS f
 				FROM unnest(_child_field_array)     AS f ) foo
 				INTO _child_field_list;
 
 			_sql_cmd := _sql_cmd || format('
-				WHEN NEW.%1$I = %2$L THEN UPDATE %3$s SET %4$s WHERE id = OLD.id;',
-				(_parent_table->>'shortname') || '_type', --1
-				_child_table->>'shortname'::text, --2
-				(_child_table->>'table_name')::regclass, --3
-				_child_field_list --4
+				WHEN NEW.%1$I = %2$L THEN UPDATE %3$s SET %4$s WHERE %5$I = OLD.%5$I;'
+				, (_parent_table->>'shortname') || '_type' --1
+				, _child_table->>'shortname'::text --2
+				, (_child_table->>'table_name')::regclass --3
+				, _child_field_list --4
+				, (_child_table->>'pkey')::text --5
 				);
 		END LOOP;
 		_sql_cmd := _sql_cmd || '
@@ -280,6 +300,8 @@ $BODY$
 			_merge_view_name::regclass, --2
 			(_destination_schema||'.ft_'||_merge_view_rootname||'_update')::regproc --3
 		);
+		
+		
 
 		-- delete function trigger for merge view
 		_sql_cmd := format('
@@ -289,14 +311,16 @@ $BODY$
 		);
 		FOREACH _child_table IN ARRAY _children_tables LOOP
 			_sql_cmd := _sql_cmd || format('
-				DELETE FROM %1$s WHERE id = OLD.id;
-				)',
-				(_child_table->>'table_name')::regclass --1
+				DELETE FROM %1$s WHERE %2$I = OLD.%2$I;
+				)'
+				, (_child_table->>'table_name')::regclass --1
+				, (_child_table->>'pkey')::text --2
 			);
 		END LOOP;
 		_sql_cmd := _sql_cmd || format('
-			DELETE FROM %1$s WHERE id = OLD.id;)',
-			(_parent_table->>'table_name')::regclass
+			DELETE FROM %1$s WHERE %2$I = OLD.%2$I;)'
+			, (_parent_table->>'table_name')::regclass --1
+			, (_parent_table->>'pkey')::text --2
 		);
 
 	END;
