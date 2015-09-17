@@ -17,9 +17,6 @@ $BODY$
 		_child_table json;
 		_merge_view_rootname text;
 		_merge_view_name text;
-		_merge_view_cmd_1 text;
-		_merge_view_cmd_2 text;
-		_merge_view_cmd_3 text;
 		_sql_cmd text;
 		_merge_delete_cmd text;
 		_count integer := 0;
@@ -136,30 +133,39 @@ $BODY$
 		-- merge view (all children tables)
 		_merge_view_rootname := 'vw_'||(_parent_table->>'shortname')||'_merge';
 		_merge_view_name := _destination_schema||'.'||_merge_view_rootname;
-		_merge_view_cmd_1 := format('CREATE OR REPLACE VIEW %s AS SELECT CASE ', _merge_view_name); -- create field to determine inherited table
-		_merge_view_cmd_2 := format(' %s ', 't0.id, t0.' || array_to_string(_parent_field_array, ', t0.'));
-		_merge_view_cmd_3 := format(' FROM %s t0', (_parent_table->>'table_name')::regclass);
+		_sql_cmd := format('CREATE OR REPLACE VIEW %s AS SELECT CASE ', _merge_view_name); -- create field to determine inherited table
 		_count := 0;
 		FOREACH _child_table IN ARRAY _children_tables LOOP
 			_count = _count + 1;
 
-			EXECUTE format(	$$ SELECT ARRAY( SELECT attname FROM pg_attribute WHERE attrelid = %1$L::regclass AND attnum > 0 ORDER BY attnum ASC ) $$, _child_table->>'table_name') INTO _child_field_array;
-			_child_field_array := array_remove(_child_field_array, 'id'); -- remove pkey from field list
-
-			_merge_view_cmd_1 := _merge_view_cmd_1 || format('
+			_sql_cmd := _sql_cmd || format('
 				WHEN t%1$s.id IS NOT NULL THEN %2$L::text ',
 				_count,
 				_child_table->>'shortname'
 			);
-			_merge_view_cmd_2 := _merge_view_cmd_2 || ', t' || _count || '.' || array_to_string(_child_field_array, ', t'||_count||'.');
-			_merge_view_cmd_3 := _merge_view_cmd_3 || format('
+		END LOOP;
+		_sql_cmd := _sql_cmd || format(' ELSE ''unknown''::text END AS %1$s_type, %2$s ',
+			_parent_table->>'shortname',
+			't0.id, t0.' || array_to_string(_parent_field_array, ', t0.')
+		);
+		_count := 0;
+		FOREACH _child_table IN ARRAY _children_tables LOOP
+			_count = _count + 1;
+			EXECUTE format(	$$ SELECT ARRAY( SELECT attname FROM pg_attribute WHERE attrelid = %1$L::regclass AND attnum > 0 ORDER BY attnum ASC ) $$, _child_table->>'table_name') INTO _child_field_array;
+			_child_field_array := array_remove(_child_field_array, 'id'); -- remove pkey from field list
+			_sql_cmd := _sql_cmd || ', t' || _count || '.' || array_to_string(_child_field_array, ', t'||_count||'.');
+		END LOOP;
+		_sql_cmd := _sql_cmd || format(' FROM %s t0', (_parent_table->>'table_name')::regclass);
+		_count := 0;
+		FOREACH _child_table IN ARRAY _children_tables LOOP
+			_count = _count + 1;
+			_sql_cmd := _sql_cmd || format('
 				LEFT JOIN %1$s t%2$s ON t0.id=t%2$s.id ',
 				(_child_table->>'table_name')::regclass,
 				_count
 			);
 		END LOOP;
-		_merge_view_cmd_1 := _merge_view_cmd_1 || ' ELSE ''unknown''::text END AS '|| (_parent_table->>'shortname') || '_type, ';
-		EXECUTE( _merge_view_cmd_1 || _merge_view_cmd_2 ||_merge_view_cmd_3 );
+		EXECUTE( _sql_cmd );
 
 
 		-- insert function trigger for merge view
