@@ -54,15 +54,16 @@ $BODY$
 	DECLARE 
 		_parent_field_array text[];
 		_child_field_array text[];
-		
 		_parent_field_list text;
 		_child_field_list text;
-		
 		_view_rootname text;
 		_view_name text;
 		_function_trigger text;
-		
 		_child_table json;
+		_merge_view_cmd_1 text;
+		_merge_view_cmd_2 text;
+		_count integer := 0;
+		_tname text;
 	BEGIN
 		-- get array of fields for parent table
 		EXECUTE format(	$$ SELECT ARRAY( SELECT attname FROM pg_attribute WHERE attrelid = %1$L::regclass AND attnum > 0 ORDER BY attnum ASC ) $$, _parent_table->>'table_name') INTO _parent_field_array;
@@ -74,8 +75,16 @@ $BODY$
 			FROM unnest(_parent_field_array) AS f ) foo
 			INTO _parent_field_list;
 			
+		-- init merged views (all children tables)
+		_merge_view_cmd_1 := format('CREATE OR REPLACE VIEW %1$s AS SELECT %2$s ',
+									_destination_schema||'.vw_'||(_parent_table->>'shortname')||'_merge',
+									't0.id, t0.' || array_to_string(_parent_field_array, ', t0.')
+								);
+		_merge_view_cmd_2 := format(' FROM %s t0', (_parent_table->>'table_name')::regclass);
+			
   		-- create view and triggers/rules for 1:1 joined view
   		FOREACH _child_table IN ARRAY _children_tables LOOP
+			_count = _count + 1;
 			RAISE NOTICE 'edit view for %', _child_table->>'shortname';	
   		
 			-- define view name
@@ -90,11 +99,11 @@ $BODY$
 			-- view
 			EXECUTE format(' 
 				CREATE OR REPLACE VIEW %1$s AS
-					SELECT i.id, %2$s, %3$s
-				FROM %4$s j INNER JOIN %5$s i ON j.id = i.id;'
+					SELECT %2$s, %3$s
+				FROM %4$s t2 INNER JOIN %5$s t1 ON t1.id = t2.id;'
 				, _view_name --1
-				, 'i.' || array_to_string(_parent_field_array, ', i.'::text) --2
-				, 'j.' || array_to_string(_child_field_array, ', j.'::text) --3
+				, 't1.id, t1.' || array_to_string(_parent_field_array, ', t1.') --2
+				,        't2.' || array_to_string(_child_field_array,  ', t2.') --3
 				, (_child_table->>'table_name')::regclass --4
 				, (_parent_table->>'table_name')::regclass --5
 			);
@@ -185,9 +194,15 @@ $BODY$
 			_function_trigger --3
 			); 
 			
+			-- merge view (all children tables)
+			_merge_view_cmd_1 := _merge_view_cmd_1 || ', t' || _count || '.' || array_to_string(_child_field_array, ', t'||_count||'.');
+			_merge_view_cmd_2 := _merge_view_cmd_2 || format(' LEFT JOIN %1$s t%2$s ON t0.id=t%2$s.id ', (_child_table->>'table_name')::regclass, _count);
+			
 		END LOOP;
-	
-		-- merged views (all children tables)
+		
+		-- execute merge view
+		RAISE NOTICE '%', _merge_view_cmd_1 || _merge_view_cmd_2;
+		EXECUTE( _merge_view_cmd_1 || _merge_view_cmd_2 );
 	
 	END;
 $BODY$

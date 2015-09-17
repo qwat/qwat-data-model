@@ -20,11 +20,12 @@ Usage: $0 [options]
 -s|--srid            PostGIS SRID. Default to 21781 (ch1903)
 -d|--drop-schema     drop schemas (cascaded) if they exist
 -r|--create-roles    create roles in the database
+-v|--verbose         be verbose
 EOF
     
 }
 
-ARGS=$(getopt -o p:s:dr -l "pgservice:,srid:,drop-schema,create-roles" -- "$@");
+ARGS=$(getopt -o p:s:drv -l "pgservice:,srid:,drop-schema,create-roles,verbose" -- "$@");
 if [ $? -ne 0 ];
 then
   usage
@@ -37,6 +38,7 @@ eval set -- "$ARGS";
 SRID=21781
 DROPSCHEMA=0
 CREATEROLES=0
+VERBOSE=0
 
 PGSERVICEGIVEN=0
 
@@ -65,6 +67,10 @@ while true; do
       shift;
       CREATEROLES=1
       ;;
+    -v|--verbose)
+      shift;
+      VERBOSE=1
+      ;;
     --)
       shift;
       break;
@@ -88,8 +94,9 @@ fi
 
 
 # config pgsql
-export PGOPTIONS='--client-min-messages=warning'
-
+if [[ "$VERBOSE" -eq 0 ]]; then
+	export PGOPTIONS='--client-min-messages=warning'
+fi
 
 # Drop schema
 if [[ "$DROPSCHEMA" -eq 1 ]]; then
