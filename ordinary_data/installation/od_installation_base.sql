@@ -51,7 +51,7 @@ ALTER TABLE qwat_od.installation ADD CONSTRAINT installation_fk_precisionalti FO
 /* FUNCTION TO CREATE VIEWS */
 CREATE OR REPLACE FUNCTION qwat_sys.fn_installation_view_create(_parent_table json, _children_tables json[], _destination_schema text) RETURNS void AS
 $BODY$
-	DECLARE 
+	DECLARE
 		_parent_field_array text[];
 		_child_field_array text[];
 		_parent_field_list text;
@@ -72,28 +72,28 @@ $BODY$
 		-- get array of fields for parent table
 		EXECUTE format(	$$ SELECT ARRAY( SELECT attname FROM pg_attribute WHERE attrelid = %1$L::regclass AND attnum > 0 ORDER BY attnum ASC ) $$, _parent_table->>'table_name') INTO _parent_field_array;
 		_parent_field_array := array_remove(_parent_field_array, 'id'); -- remove pkey from field list
-		
+
 		-- create command of update rule for parent fiels
-		SELECT array_to_string(f, ', ') 
+		SELECT array_to_string(f, ', ')
 			FROM ( SELECT array_agg(f||' = NEW.'||f) AS f
 			FROM unnest(_parent_field_array) AS f ) foo
 			INTO _parent_field_list;
-			
+
   		-- create view and triggers/rules for 1:1 joined view
   		FOREACH _child_table IN ARRAY _children_tables LOOP
-			RAISE NOTICE 'edit view for %', _child_table->>'shortname';	
-  		
+			RAISE NOTICE 'edit view for %', _child_table->>'shortname';
+
 			-- define view name
 			_view_rootname := 'vw_'||(_parent_table->>'shortname')||'_'||(_child_table->>'shortname');
 			_view_name := _destination_schema||'.'||_view_rootname;
 			_function_trigger := _destination_schema||'.ft_'||(_parent_table->>'shortname')||'_'||(_child_table->>'shortname')||'_insert';
-  		
+
 			-- get array of fields for child table
 			EXECUTE format(	$$ SELECT ARRAY( SELECT attname FROM pg_attribute WHERE attrelid = %1$L::regclass AND attnum > 0 ORDER BY attnum ASC ) $$, _child_table->>'table_name') INTO _child_field_array;
 			_child_field_array := array_remove(_child_field_array, 'id'); -- remove pkey from field list
-  				
+
 			-- view
-			EXECUTE format(' 
+			EXECUTE format('
 				CREATE OR REPLACE VIEW %1$s AS
 					SELECT %2$s, %3$s
 				FROM %4$s t2 INNER JOIN %5$s t1 ON t1.id = t2.id;'
@@ -103,7 +103,7 @@ $BODY$
 				, (_child_table->>'table_name')::regclass --4
 				, (_parent_table->>'table_name')::regclass --5
 			);
-			
+
 			-- update rule
 			RAISE NOTICE '  update rule';
 			SELECT array_to_string(f, ', ') -- create command of update rule for parent fiels
@@ -115,7 +115,7 @@ $BODY$
 				(
 				UPDATE %3$s SET %4$s WHERE id = OLD.id;
 				UPDATE %5$s SET %6$s WHERE id = OLD.id;
-				)',			
+				)',
 				'rl_'||_view_rootname||'_update', --1
 				_view_name::regclass, --2
 				(_parent_table->>'table_name')::regclass, --3
@@ -123,7 +123,7 @@ $BODY$
 				(_child_table->>'table_name')::regclass, --5
 				_child_field_list --6
 			);
-		
+
 			-- delete rule
 			RAISE NOTICE '  delete rule';
 			EXECUTE format('
@@ -131,13 +131,13 @@ $BODY$
 				(
 				DELETE FROM %3$s WHERE id = OLD.id;
 				DELETE FROM %4$s WHERE id = OLD.id;
-				)',			
+				)',
 				'rl_'||_view_rootname||'_delete', --1
 				_view_name::regclass, --2
 				(_parent_table->>'table_name')::regclass, --3
 				(_child_table->>'table_name')::regclass --4
 			);
-		
+
 			-- create trigger function
 			RAISE NOTICE '  trigger function';
 			EXECUTE format('
@@ -149,7 +149,7 @@ $BODY$
 							 id,
 							 %3$s
 						   )
-						VALUES ( 
+						VALUES (
 							nextval(''%4$s'')  --id
 							, %5$s
 						   )
@@ -164,7 +164,7 @@ $BODY$
 						   , %8$s
 						   );
 						RETURN NEW;
-					END; 
+					END;
 					$$
 					LANGUAGE plpgsql;',
 				_function_trigger, --1
@@ -176,7 +176,7 @@ $BODY$
 				array_to_string(_child_field_array, ', '), --7
 				'NEW.'||array_to_string(_child_field_array, ', NEW.') --8
 			);
-		
+
 			-- create trigger
 			RAISE NOTICE '  trigger';
 			EXECUTE format('
@@ -184,16 +184,16 @@ $BODY$
 					  INSTEAD OF INSERT
 					  ON %2$s
 					  FOR EACH ROW
-					  EXECUTE PROCEDURE %3$I();',
+					  EXECUTE PROCEDURE %3$s();',
 				'tr_'||_view_rootname||'_insert', --1
 				_view_name::regclass, --2
-				_function_trigger --3
-			); 
-			
+				_function_trigger::regproc --3
+			);
+
 		END LOOP;
-		
-		
-		
+
+
+
 		-- merged views (all children tables)
 		_merge_view_rootname := 'vw_'||(_parent_table->>'shortname')||'_merge';
 		_merge_view_name := _destination_schema||'.'||_merge_view_rootname;
@@ -203,17 +203,17 @@ $BODY$
 		_count := 0;
 		FOREACH _child_table IN ARRAY _children_tables LOOP
 			_count = _count + 1;
-			
+
 			EXECUTE format(	$$ SELECT ARRAY( SELECT attname FROM pg_attribute WHERE attrelid = %1$L::regclass AND attnum > 0 ORDER BY attnum ASC ) $$, _child_table->>'table_name') INTO _child_field_array;
 			_child_field_array := array_remove(_child_field_array, 'id'); -- remove pkey from field list
-			
+
 			_merge_view_cmd_1 := _merge_view_cmd_1 || format('
 				WHEN t%1$s.id IS NOT NULL THEN %2$L::text ',
 				_count,
 				_child_table->>'shortname'
 			);
 			_merge_view_cmd_2 := _merge_view_cmd_2 || ', t' || _count || '.' || array_to_string(_child_field_array, ', t'||_count||'.');
-			_merge_view_cmd_3 := _merge_view_cmd_3 || format(' 
+			_merge_view_cmd_3 := _merge_view_cmd_3 || format('
 				LEFT JOIN %1$s t%2$s ON t0.id=t%2$s.id ',
 				(_child_table->>'table_name')::regclass,
 				_count
@@ -221,10 +221,10 @@ $BODY$
 		END LOOP;
 		_merge_view_cmd_1 := _merge_view_cmd_1 || ' ELSE ''unknown''::text END AS '|| (_parent_table->>'shortname') || '_type, ';
 		EXECUTE( _merge_view_cmd_1 || _merge_view_cmd_2 ||_merge_view_cmd_3 );
-		
-		
-		
-		
+
+
+
+
 		-- update rule for merge view
 		_merge_update_cmd := format('
 			CREATE OR REPLACE FUNCTION %1$s() RETURNS TRIGGER AS $$
@@ -256,11 +256,11 @@ $BODY$
 				_child_table->>'shortname'::text, --2
 				(_child_table->>'table_name')::regclass --3
 			);
-		END LOOP;		
+		END LOOP;
 		_merge_update_cmd := _merge_update_cmd || '
 			END CASE;
 			END IF;
-			CASE ';	
+			CASE ';
 		FOREACH _child_table IN ARRAY _children_tables LOOP
 			-- write list of fields for update command
 			EXECUTE format(	$$ SELECT ARRAY( SELECT attname FROM pg_attribute WHERE attrelid = %1$L::regclass AND attnum > 0 ORDER BY attnum ASC ) $$, _child_table->>'table_name') INTO _child_field_array;
@@ -269,14 +269,14 @@ $BODY$
 				FROM ( SELECT array_agg(f||' = NEW.'||f) AS f
 				FROM unnest(_child_field_array)     AS f ) foo
 				INTO _child_field_list;
-		
+
 			_merge_update_cmd := _merge_update_cmd || format('
 				WHEN NEW.%1$I = %2$L THEN UPDATE %3$s SET %4$s WHERE id = OLD.id;',
 				(_parent_table->>'shortname') || '_type', --1
 				_child_table->>'shortname'::text, --2
 				(_child_table->>'table_name')::regclass, --3
 				_child_field_list --4
-				); 	
+				);
 		END LOOP;
 		_merge_update_cmd := _merge_update_cmd || '
 			END CASE;
@@ -285,7 +285,16 @@ $BODY$
 			$$
 			LANGUAGE plpgsql;';
 		EXECUTE( _merge_update_cmd );
-	
+		EXECUTE format('
+			CREATE TRIGGER %1$I
+				  INSTEAD OF INSERT
+				  ON %2$s
+				  FOR EACH ROW
+				  EXECUTE PROCEDURE %3$s();',
+			'tr_'||_merge_view_rootname||'_insert', --1
+			_merge_view_name::regclass, --2
+			(_destination_schema||'.ft_'||_merge_view_rootname||'_update')::regproc --3
+		);
 	END;
 $BODY$
 LANGUAGE plpgsql;
