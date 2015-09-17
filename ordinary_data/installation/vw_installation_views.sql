@@ -2,7 +2,7 @@
 
 
 
-SELECT qwat_sys.fn_installation_view_create(
+SELECT qwat_sys.fn_inherited_table_view(
 	'{
 		"shortname": "installation",
 		"table_name":"qwat_od.installation",
