@@ -8,7 +8,9 @@ SELECT qwat_sys.fn_inherited_table_view(
 		"table_name":"qwat_od.installation",
 		"pkey": "id",
 		"pkey_nextval":"nextval(''qwat_od.installation_id_seq'')",
-		"view_name":"vw_qwat_installation"
+		"merge_view": {
+			"view_name":"vw_qwat_installation"
+		}
 	}'::json,
 	ARRAY[
 		'{
