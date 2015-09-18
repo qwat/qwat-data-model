@@ -15,7 +15,6 @@ $BODY$
 		_view_name text;
 		_function_trigger text;
 		_child_table json;
-		_merge_view_rootname text;
 		_merge_view_name text;
 		_sql_cmd text;
 		_merge_delete_cmd text;
@@ -140,8 +139,7 @@ $BODY$
 
 
 		-- merge view (all children tables)
-		_merge_view_rootname := 'vw_'||(_parent_table->>'readable')||'_merge';
-		_merge_view_name := _destination_schema||'.'||_merge_view_rootname;
+		_merge_view_name := _destination_schema||'.'||(_parent_table->>'view_name');
 		_sql_cmd := format('CREATE OR REPLACE VIEW %s AS SELECT CASE ', _merge_view_name); -- create field to determine inherited table
 		
 		FOREACH _child_table IN ARRAY _children_tables LOOP
@@ -186,7 +184,7 @@ $BODY$
 			BEGIN
 				INSERT INTO %2$s ( %3$I, %4$s ) VALUES ( %5$s, %6$s ) RETURNING %3$I INTO NEW.%3$I;
 				CASE'
-			, _destination_schema||'.ft_'||_merge_view_rootname||'_insert' --1
+			, _destination_schema||'.ft_'||(_parent_table->>'view_name')||'_insert' --1
 			, (_parent_table->>'table_name')::regclass --2
 			, (_parent_table->>'pkey')::text --3
 			, array_to_string(_parent_field_array, ', ') --4
@@ -220,9 +218,9 @@ $BODY$
 				  ON %2$s
 				  FOR EACH ROW
 				  EXECUTE PROCEDURE %3$s();',
-			'tr_'||_merge_view_rootname||'_insert', --1
+			'tr_'||(_parent_table->>'view_name')||'_insert', --1
 			_merge_view_name::regclass, --2
-			(_destination_schema||'.ft_'||_merge_view_rootname||'_insert')::regproc --3
+			(_destination_schema||'.ft_'||(_parent_table->>'view_name')||'_insert')::regproc --3
 		);
 
 
@@ -234,7 +232,7 @@ $BODY$
 			UPDATE %2$s SET %3$s WHERE %4$I = OLD.%4$I;
 			/* Allow change type */
 			IF OLD.%5$I <> NEW.%5$I THEN CASE'
-			, _destination_schema||'.ft_'||_merge_view_rootname||'_update' --1
+			, _destination_schema||'.ft_'||(_parent_table->>'view_name')||'_update' --1
 			, (_parent_table->>'table_name')::regclass --2
 			, _parent_field_list --3
 			, (_parent_table->>'pkey')::text --4
@@ -297,9 +295,9 @@ $BODY$
 				  ON %2$s
 				  FOR EACH ROW
 				  EXECUTE PROCEDURE %3$s();',
-			'tr_'||_merge_view_rootname||'_update', --1
+			'tr_'||(_parent_table->>'view_name')||'_update', --1
 			_merge_view_name::regclass, --2
-			(_destination_schema||'.ft_'||_merge_view_rootname||'_update')::regproc --3
+			(_destination_schema||'.ft_'||(_parent_table->>'view_name')||'_update')::regproc --3
 		);
 		
 		
@@ -307,7 +305,7 @@ $BODY$
 		-- delete function trigger for merge view
 		_sql_cmd := format('
 			CREATE OR REPLACE RULE %1$I AS ON DELETE TO %2$s DO INSTEAD	(',
-			'rl_'||_merge_view_rootname||'_delete', --1
+			'rl_'||(_parent_table->>'view_name')||'_delete', --1
 			_merge_view_name::regclass --2
 		);
 		FOREACH _child_table IN ARRAY _children_tables LOOP
