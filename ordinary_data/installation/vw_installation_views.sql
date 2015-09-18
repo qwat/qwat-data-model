@@ -10,27 +10,27 @@ SELECT qwat_sys.fn_inherited_table_view(
 			"pkey_nextval":"nextval(''qwat_od.installation_id_seq'')",
 			"inherited_by": {
 				"chamber": {
-					"table_name":"qwat_od.installation_chamber",
+					"table_name":"qwat_od.chamber",
 					"pkey": "id"
 				},
 				"pressurecontrol": {
-					"table_name":"qwat_od.installation_pressurecontrol",
+					"table_name":"qwat_od.pressurecontrol",
 					"pkey": "id"
 				},
 				"pump": {
-					"table_name":"qwat_od.installation_pump",
+					"table_name":"qwat_od.pump",
 					"pkey": "id"
 				},
 				"source": {
-					"table_name":"qwat_od.installation_source",
+					"table_name":"qwat_od.source",
 					"pkey": "id"
 				},
 				"tank": {
-					"table_name":"qwat_od.installation_tank",
+					"table_name":"qwat_od.tank",
 					"pkey": "id"
 				},
 				"treatment": {
-					"table_name":"qwat_od.installation_treatment",
+					"table_name":"qwat_od.treatment",
 					"pkey": "id"
 				}
 			},
@@ -47,7 +47,7 @@ SELECT qwat_sys.fn_inherited_table_view(
 
 
 /* EXPORT VIEWS */
-CREATE OR REPLACE VIEW qwat_od.vw_installation_chamber_fr AS
+CREATE OR REPLACE VIEW qwat_od.vw_chamber_fr AS
 SELECT
 	i.*,
 	status.value_fr AS status,
@@ -62,7 +62,7 @@ SELECT
 	INNER JOIN      qwat_vl.watertype   ON watertype.id   = i.fk_watertype;
 
 
-CREATE OR REPLACE VIEW qwat_od.vw_installation_pressurecontrol_fr AS
+CREATE OR REPLACE VIEW qwat_od.vw_pressurecontrol_fr AS
 SELECT
 	i.*,
 	status.value_fr AS status,
@@ -79,7 +79,7 @@ SELECT
 	-- specific
 	INNER JOIN      qwat_vl.pressurecontrol_type ON pressurecontrol_type.id = i.fk_pressurecontrol_type;
 
-CREATE OR REPLACE VIEW qwat_od.vw_installation_pump_fr AS
+CREATE OR REPLACE VIEW qwat_od.vw_pump_fr AS
 SELECT
 	i.*,
 	status.value_fr      AS status,
@@ -97,7 +97,7 @@ SELECT
 	INNER JOIN      qwat_vl.pump_type       ON pump_type.id   = i.fk_pump_type;
 
 
-CREATE OR REPLACE VIEW qwat_od.vw_installation_source_fr AS
+CREATE OR REPLACE VIEW qwat_od.vw_source_fr AS
 SELECT
 	i.*,
 	status.value_fr AS status,
@@ -117,7 +117,7 @@ SELECT
 	LEFT OUTER JOIN qwat_vl.source_quality ON source_quality.id = i.fk_quality;
 
 
-CREATE OR REPLACE VIEW qwat_od.vw_installation_tank_fr AS
+CREATE OR REPLACE VIEW qwat_od.vw_tank_fr AS
 SELECT
 	i.*,
 	status.value_fr AS status,
@@ -141,7 +141,7 @@ SELECT
 	LEFT OUTER JOIN qwat_vl.cistern    cis2  ON cis2.id             = i.cistern2_fk_type;
 
 
-CREATE OR REPLACE VIEW qwat_od.vw_installation_treatment_fr AS
+CREATE OR REPLACE VIEW qwat_od.vw_treatment_fr AS
 SELECT
 	i.*,
 	status.value_fr AS status,

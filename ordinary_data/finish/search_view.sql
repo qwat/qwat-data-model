@@ -7,37 +7,37 @@ CREATE OR REPLACE VIEW qwat_od.vw_search_view AS
 		'Ouvrages' as layer_name,
 		'Réservoir ' || identification || ' ' || name as search_text,
 		geometry
-		FROM qwat_od.vw_installation_tank_fr
+		FROM qwat_od.vw_tank_fr
 		WHERE active IS TRUE
 	UNION SELECT
 		'Ouvrages' as layer_name,
 		'Pompage ' || identification || ' ' || name as search_text,
 		geometry
-		FROM qwat_od.vw_installation_pump_fr
+		FROM qwat_od.vw_pump_fr
 		WHERE active IS TRUE
 	UNION SELECT
 		'Ouvrages' as layer_name,
 		'Source ' || identification || ' ' || name as search_text,
 		geometry
-		FROM qwat_od.vw_installation_source_fr
+		FROM qwat_od.vw_source_fr
 		WHERE active IS TRUE
 	UNION SELECT
 		'Ouvrages' as layer_name,
 		'Traitement ' || identification || ' ' || name as search_text,
 		geometry
-		FROM qwat_od.vw_installation_treatment_fr
+		FROM qwat_od.vw_treatment_fr
 		WHERE active IS TRUE
 	UNION SELECT
 		'Ouvrages' as layer_name,
 		'Régulation de pression ' || identification || ' ' || name as search_text,
 		geometry
-		FROM qwat_od.vw_installation_pressurecontrol_fr
+		FROM qwat_od.vw_pressurecontrol_fr
 		WHERE active IS TRUE
 	UNION SELECT
 		'Ouvrages' as layer_name,
 		'Chambre de vannes ' || identification || ' ' || name as search_text,
 		geometry
-		FROM qwat_od.vw_installation_chamber_fr
+		FROM qwat_od.vw_chamber_fr
 		WHERE active IS TRUE
 
 	UNION SELECT

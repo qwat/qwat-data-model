@@ -128,7 +128,6 @@ psql -v ON_ERROR_STOP=1 -f value_lists/vl_cistern.sql
 psql -v ON_ERROR_STOP=1 -f value_lists/vl_cover_type.sql
 psql -v ON_ERROR_STOP=1 -f value_lists/vl_hydrant_material.sql
 psql -v ON_ERROR_STOP=1 -f value_lists/vl_hydrant_provider.sql
-psql -v ON_ERROR_STOP=1 -f value_lists/vl_installation_type.sql
 psql -v ON_ERROR_STOP=1 -f value_lists/vl_leak_cause.sql
 psql -v ON_ERROR_STOP=1 -f value_lists/vl_locationtype.sql
 psql -v ON_ERROR_STOP=1 -f value_lists/vl_overflow.sql

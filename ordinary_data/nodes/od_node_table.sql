@@ -18,13 +18,13 @@ ALTER TABLE qwat_od.node_table ADD COLUMN node_type  varchar(60);
 ALTER TABLE qwat_od.node_table ADD COLUMN overwrite  boolean default false not null; COMMENT ON COLUMN qwat_od.node_table.overwrite IS 'if true, the type will be affected to the node even if two pipes are on it. e.g. useful for meters (node should be meter and not a two_XXXX).';
 
 /* fill */
-INSERT INTO qwat_od.node_table (id,table_name,node_type) VALUES (9161,'installation_building'       , 'installation');
-INSERT INTO qwat_od.node_table (id,table_name,node_type) VALUES (9162,'installation_pressurecontrol', 'installation');
-INSERT INTO qwat_od.node_table (id,table_name,node_type) VALUES (9163,'installation_pump'           , 'installation');
-INSERT INTO qwat_od.node_table (id,table_name,node_type) VALUES (9164,'installation_source'         , 'installation');
-INSERT INTO qwat_od.node_table (id,table_name,node_type) VALUES (9165,'installation_tank'           , 'installation');
-INSERT INTO qwat_od.node_table (id,table_name,node_type) VALUES (9166,'installation_treatment'      , 'installation');
-INSERT INTO qwat_od.node_table (id,table_name,node_type) VALUES (9167,'installation_chamber'   , 'installation');
+INSERT INTO qwat_od.node_table (id,table_name,node_type) VALUES (9161,'installation'       , 'installation');
+INSERT INTO qwat_od.node_table (id,table_name,node_type) VALUES (9162,'pressurecontrol', 'installation');
+INSERT INTO qwat_od.node_table (id,table_name,node_type) VALUES (9163,'pump'           , 'installation');
+INSERT INTO qwat_od.node_table (id,table_name,node_type) VALUES (9164,'source'         , 'installation');
+INSERT INTO qwat_od.node_table (id,table_name,node_type) VALUES (9165,'tank'           , 'installation');
+INSERT INTO qwat_od.node_table (id,table_name,node_type) VALUES (9166,'treatment'      , 'installation');
+INSERT INTO qwat_od.node_table (id,table_name,node_type) VALUES (9167,'chamber'   , 'installation');
 INSERT INTO qwat_od.node_table (id,table_name,node_type) VALUES (9168,'valve'  , 'valve');
 INSERT INTO qwat_od.node_table (id,table_name,node_type) VALUES (9169,'hydrant', 'hydrant');
 INSERT INTO qwat_od.node_table (id,table_name,node_type) VALUES (9170,'part', 'part');
