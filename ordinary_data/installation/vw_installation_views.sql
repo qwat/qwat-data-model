@@ -4,47 +4,42 @@
 
 SELECT qwat_sys.fn_inherited_table_view(
 	'{
-		"readable": "installation",
-		"table_name":"qwat_od.installation",
-		"pkey": "id",
-		"pkey_nextval":"nextval(''qwat_od.installation_id_seq'')",
-		"merge_view": {
-			"view_name":"vw_qwat_installation"
-		}
-	}'::json,
-	ARRAY[
-		'{
-			"readable": "chamber",
-			"table_name":"qwat_od.installation_chamber",
-			"pkey": "id"
-		}',
-		'{
-			"readable": "pressurecontrol",
-			"table_name":"qwat_od.installation_pressurecontrol",
-			"pkey": "id"
-		}',
-		'{
-			"readable": "pump",
-			"table_name":"qwat_od.installation_pump",
-			"pkey": "id"
-		}',
-		'{
-			"readable": "source",
-			"table_name":"qwat_od.installation_source",
-			"pkey": "id"
-		}',
-		'{
-			"readable": "tank",
-			"table_name":"qwat_od.installation_tank",
-			"pkey": "id"
-		}',
-		'{
-			"readable": "treatment",
-			"table_name":"qwat_od.installation_treatment",
-			"pkey": "id"
-		}'
-	]::json[],
-	'qwat_od'::text
+		"installation": {
+			"table_name":"qwat_od.installation",
+			"pkey": "id",
+			"pkey_nextval":"nextval(''qwat_od.installation_id_seq'')",
+			"inherited_by": {
+				"chamber": {
+					"table_name":"qwat_od.installation_chamber",
+					"pkey": "id"
+				},
+				"pressurecontrol": {
+					"table_name":"qwat_od.installation_pressurecontrol",
+					"pkey": "id"
+				},
+				"pump": {
+					"table_name":"qwat_od.installation_pump",
+					"pkey": "id"
+				},
+				"source": {
+					"table_name":"qwat_od.installation_source",
+					"pkey": "id"
+				},
+				"tank": {
+					"table_name":"qwat_od.installation_tank",
+					"pkey": "id"
+				},
+				"treatment": {
+					"table_name":"qwat_od.installation_treatment",
+					"pkey": "id"
+				}
+			},
+			"merge_view": {
+				"view_name":"vw_qwat_installation",
+				"destination_schema": "qwat_od"
+			}
+		}	
+	}'::json
 );
 
 
