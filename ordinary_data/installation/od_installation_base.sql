@@ -23,7 +23,6 @@ ALTER TABLE qwat_od.installation ADD COLUMN year               smallint    CHECK
 ALTER TABLE qwat_od.installation ADD COLUMN year_end           smallint    CHECK (year_end IS NULL OR year > 1800 AND year < 2100);
 ALTER TABLE qwat_od.installation ADD COLUMN parcel             varchar(30)  ;
 ALTER TABLE qwat_od.installation ADD COLUMN eca                varchar(30)  ;
-ALTER TABLE qwat_od.installation ADD COLUMN altitude           decimal(10,3);
 ALTER TABLE qwat_od.installation ADD COLUMN remark             text         ;
 ALTER TABLE qwat_od.installation ADD COLUMN open_water_surface boolean     default false  ;
 

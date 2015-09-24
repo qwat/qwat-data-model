@@ -11,8 +11,6 @@ CREATE VIEW qwat_od.vw_samplingpoint AS
 		samplingpoint.fk_district    ,
 		samplingpoint.fk_printmap    ,
 		samplingpoint.fk_pressurezone,
-		samplingpoint._district      ,
-		samplingpoint._pressurezone  ,
 		samplingpoint._printmaps     ,
 		samplingpoint.remark         ,
 		samplingpoint.geometry::geometry(Point,:SRID),

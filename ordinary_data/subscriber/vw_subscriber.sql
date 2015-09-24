@@ -15,7 +15,6 @@ CREATE VIEW qwat_od.vw_subscriber AS
 		subscriber.fk_district     ,
 		subscriber.fk_pressurezone ,
 		subscriber.fk_printmap     ,
-		subscriber._pressurezone   ,
 		subscriber._printmaps      ,
 		subscriber.geometry::geometry(Point,:SRID),	
 		subscriber_type.value_fr AS _type     ,

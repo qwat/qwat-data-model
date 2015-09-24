@@ -10,7 +10,7 @@ begin
   FOR node_table IN SELECT * FROM qwat_od.node_table
     LOOP
     RAISE NOTICE '%', node_table.table_name;
-    stmt := 'UPDATE qwat_od.' || node_table.table_name || ' SET fk_node = qwat_od.fn_node_get_id(geometry,false);';
+    stmt := 'UPDATE qwat_od.' || node_table.table_name || ' SET fk_node = qwat_od.fn_get_node(geometry,false);';
     EXECUTE stmt;
   END LOOP;
 end;

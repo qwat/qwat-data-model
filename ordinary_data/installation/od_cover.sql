@@ -17,7 +17,6 @@ ALTER TABLE qwat_od.cover ADD COLUMN fk_status       integer                 ;
 ALTER TABLE qwat_od.cover ADD COLUMN year smallint   CHECK (year IS NULL OR year > 1800 AND year < 2100);
 ALTER TABLE qwat_od.cover ADD COLUMN circular        boolean default true    ;
 ALTER TABLE qwat_od.cover ADD COLUMN diameter        decimal(10,3)           ;
-ALTER TABLE qwat_od.cover ADD COLUMN altitude        decimal(10,3)           ;
 ALTER TABLE qwat_od.cover ADD COLUMN remark          text                    ;
 
 

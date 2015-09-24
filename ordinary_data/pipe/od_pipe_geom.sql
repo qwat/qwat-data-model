@@ -43,8 +43,8 @@ CREATE INDEX fki_pipe_fk_pressurezone ON qwat_od.pipe(fk_pressurezone);
 CREATE OR REPLACE FUNCTION qwat_od.ft_pipe_geom() RETURNS TRIGGER AS
 	$BODY$
 	BEGIN
-		NEW.fk_node_a                := qwat_od.fn_node_get_id(ST_StartPoint(NEW.geometry),true);
-		NEW.fk_node_b                := qwat_od.fn_node_get_id(ST_EndPoint(  NEW.geometry),true);
+		NEW.fk_node_a                := qwat_od.fn_get_node(ST_StartPoint(NEW.geometry),true);
+		NEW.fk_node_b                := qwat_od.fn_get_node(ST_EndPoint(  NEW.geometry),true);
 		NEW.fk_district              := qwat_od.fn_get_district_id(NEW.geometry)                ;
 		NEW.fk_pressurezone          := qwat_od.fn_get_pressurezone_id(NEW.geometry)            ;
 		NEW.fk_printmap              := qwat_od.fn_get_printmap_id(NEW.geometry)                ;

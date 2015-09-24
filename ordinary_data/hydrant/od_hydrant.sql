@@ -25,7 +25,6 @@ ALTER TABLE qwat_od.hydrant ADD COLUMN year               smallint CHECK (year I
 ALTER TABLE qwat_od.hydrant ADD COLUMN year_end           smallint CHECK (year_end IS NULL OR year > 1800 AND year < 2100);
 ALTER TABLE qwat_od.hydrant ADD COLUMN model              varchar(30)           ;
 ALTER TABLE qwat_od.hydrant ADD COLUMN underground        boolean default false ;
-ALTER TABLE qwat_od.hydrant ADD COLUMN altitude      	  decimal(10,3)         ;
 ALTER TABLE qwat_od.hydrant ADD COLUMN marked        	  boolean default false ; COMMENT ON COLUMN qwat_od.hydrant.marked IS 'does it have markings pointing to it';
 ALTER TABLE qwat_od.hydrant ADD COLUMN remark             text        ;
 ALTER TABLE qwat_od.hydrant ADD COLUMN pressure_static    decimal(5,2)          ; COMMENT ON COLUMN qwat_od.hydrant.pressure_static IS 'pression statique [bar]';

@@ -151,8 +151,8 @@ CREATE MATERIALIZED VIEW qwat_od.vw_pipe_schema_node AS
 	FROM
 		( SELECT	
 			vw_pipe_schema.*,
-			qwat_od.fn_node_get_id(ST_StartPoint(geometry),true) AS fk_node_a,
-			qwat_od.fn_node_get_id(ST_EndPoint(  geometry),true) AS fk_node_b	
+			qwat_od.fn_get_node(ST_StartPoint(geometry),true) AS fk_node_a,
+			qwat_od.fn_get_node(ST_EndPoint(  geometry),true) AS fk_node_b	
 			FROM qwat_od.vw_pipe_schema 
 		) AS foo
 		LEFT OUTER JOIN qwat_od.node AS node_a ON fk_node_a = node_a.id

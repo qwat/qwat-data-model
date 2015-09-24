@@ -27,8 +27,6 @@ SELECT
 	valve.fk_district       ,
 	valve.fk_pressurezone   ,
 	valve.fk_printmap       ,
-	valve._district         ,
-	valve._pressurezone     ,
 	valve._printmaps        ,
 	valve.geometry::geometry(Point,:SRID)   ,
 	COALESCE(schema_force_visible, valve_function.schema_visible) AS _schema_visible,
@@ -42,7 +40,8 @@ SELECT
 	status.value_fr         AS _status,
 	status.active           AS _status_active,
 	node.altitude           AS _altitude,
-	pressurezone.colorcode  AS _pressurezone_colorcode
+	pressurezone.colorcode  AS _pressurezone_colorcode,
+	district.name 			AS _district
 	FROM qwat_od.valve
 	INNER JOIN      qwat_vl.valve_type     ON valve.fk_type         = valve_type.id
 	INNER JOIN      qwat_vl.valve_function ON valve.fk_function     = valve_function.id
