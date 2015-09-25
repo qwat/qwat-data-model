@@ -28,13 +28,13 @@ ALTER TABLE qwat_od.installation ADD COLUMN open_water_surface boolean     defau
 
 /* GEOMETRY */
 /* POINT                              ( table_name,       srid, is_node, create_node, create_schematic, get_pipe, auto_district, auto_pressurezone)*/
-SELECT qwat_od.fn_geom_tool_point('installation', :SRID,true,    true,        true,             false ,    true         , false);
+-- SELECT qwat_od.fn_geom_tool_point('installation', :SRID,true,    true,        true,             false ,    true         , false);
 /* POLYGON */
 ALTER TABLE qwat_od.installation ADD COLUMN geometry_polygon geometry('MULTIPOLYGON',:SRID);
 CREATE INDEX installation_poly_geoidx ON qwat_od.installation USING GIST ( geometry_polygon );
 
 /* LABELS */
-SELECT qwat_od.fn_label_create_fields('installation');
+-- SELECT qwat_od.fn_label_create_fields('installation');
 
 
 /* CONSTRAINTS AND INDEXES */

@@ -30,8 +30,8 @@ $BODY$
 	BEGIN
 		/* determine if the node is under an object (hydrant, valve, etc.)
 		   the table node_table contains the names of the tables (i.e. layers) that are typically considered as nodes.
-		   node_type will be used as for the type in the node table if overwrite is true.
-		   overwrite determines if the object type will be used instead of the computed node type.
+		   node_table.node_type will be used for the type in qwat_od.node table if node_table.overwrite is true.
+		   otherwise the computed node type is used.
 		*/
 
 		FOR node_table IN SELECT * FROM qwat_od.node_table

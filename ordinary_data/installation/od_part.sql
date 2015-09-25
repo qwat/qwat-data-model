@@ -21,10 +21,10 @@ ALTER TABLE qwat_od.part ADD COLUMN orientation      smallint         ;
 ALTER TABLE qwat_od.part ADD COLUMN remark           text   ;
 
 /* GEOMETRY                    (table_name, srid, is_node, create_node, create_schematic, get_pipe, auto_district, auto_pressurezone)*/
-SELECT qwat_od.fn_geom_tool_point('part', :SRID,   true,    false,        true,             true,       true,         true);
+-- SELECT qwat_od.fn_geom_tool_point('part', :SRID,   true,    false,        true,             true,       true,         true);
 
 /* LABELS */
-SELECT qwat_od.fn_label_create_fields('part');
+-- SELECT qwat_od.fn_label_create_fields('part');
 
 /* CONSTRAINTS */
 ALTER TABLE qwat_od.part ADD CONSTRAINT part_fk_type               FOREIGN KEY (fk_type)               REFERENCES qwat_vl.part_type(id)          MATCH FULL; CREATE INDEX fki_part_fk_type               ON qwat_od.part(fk_type) ;
