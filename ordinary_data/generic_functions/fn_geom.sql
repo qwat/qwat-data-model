@@ -213,6 +213,7 @@ $func$
 						ELSIF ST_Z(NEW.geometry) <> ST_Z(OLD.geometry) THEN
 							NEW.altitude := ST_Z(NEW.geometry);
 						END IF;
+						RETURN NEW;
 					END;
 					'
 					LANGUAGE plpgsql;
