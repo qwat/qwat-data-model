@@ -16,7 +16,7 @@ INSERT INTO qwat_vl.locationtype (id, value_en, value_fr, value_ro ) VALUES (103
 INSERT INTO qwat_vl.locationtype (id,value_en,value_fr,value_ro) VALUES (9601,'none','aucun','niciunul');
 INSERT INTO qwat_vl.locationtype (id,value_en,value_fr,value_ro) VALUES (9604,'sidewalk','trottoir','trotuar');
 INSERT INTO qwat_vl.locationtype (id,value_en,value_fr,value_ro) VALUES (9605,'carriageable','carrossable','carosabil');
-INSERT INTO qwat_vl.locationtype (id,value_en,value_fr,value_ro) VALUES (9606,'cubic street stones','','piatră cubică');
+INSERT INTO qwat_vl.locationtype (id,value_en,value_fr,value_ro) VALUES (9606,'cubic street stones','pavés','piatră cubică');
 INSERT INTO qwat_vl.locationtype (id,value_en,value_fr,value_ro) VALUES (9607,'gravle','gravier','pietriş');
 INSERT INTO qwat_vl.locationtype (id,value_en,value_fr,value_ro) VALUES (9608,'sand','sable','nisip');
 INSERT INTO qwat_vl.locationtype (id,value_en,value_fr,value_ro) VALUES (9609,'soil','terre','pământ');
