@@ -37,9 +37,6 @@ SELECT qwat_sys.fn_inherited_table_view(
 			"merge_view": {
 				"view_name":"vw_qwat_installation",
 				"destination_schema": "qwat_od",
-				"additional_columns": {
-					"_installation_type_short": "CASE WHEN chamber.id IS NOT NULL THEN ''C.'' WHEN pressurecontrol.id IS NOT NULL AND fk_pressurecontrol_type = 2801 THEN ''CR.'' WHEN  pressurecontrol.id IS NOT NULL AND fk_pressurecontrol_type = 2802 THEN ''CCP.'' WHEN  pressurecontrol.id IS NOT NULL AND fk_pressurecontrol_type = 2803 THEN ''CRA.'' WHEN  pump.id IS NOT NULL THEN ''P.'' WHEN  source.id IS NOT NULL THEN ''S.'' WHEN  tank.id IS NOT NULL THEN ''R.'' WHEN  treatment.id IS NOT NULL THEN ''T.'' ELSE '''' END"
-				},
 				"allow_type_change": false
 			}
 		}	
