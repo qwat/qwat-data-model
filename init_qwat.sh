@@ -126,12 +126,12 @@ psql -v ON_ERROR_STOP=1 -f value_lists/vl_object_reference.sql
 psql -v ON_ERROR_STOP=1 -f value_lists/vl_bedding.sql
 psql -v ON_ERROR_STOP=1 -f value_lists/vl_cistern.sql
 psql -v ON_ERROR_STOP=1 -f value_lists/vl_cover_type.sql
+psql -v ON_ERROR_STOP=1 -f value_lists/vl_element_type.sql
 psql -v ON_ERROR_STOP=1 -f value_lists/vl_hydrant_material.sql
 psql -v ON_ERROR_STOP=1 -f value_lists/vl_hydrant_provider.sql
 psql -v ON_ERROR_STOP=1 -f value_lists/vl_leak_cause.sql
 psql -v ON_ERROR_STOP=1 -f value_lists/vl_locationtype.sql
 psql -v ON_ERROR_STOP=1 -f value_lists/vl_overflow.sql
-psql -v ON_ERROR_STOP=1 -f value_lists/vl_part_type.sql
 psql -v ON_ERROR_STOP=1 -f value_lists/vl_pipe_function.sql
 psql -v ON_ERROR_STOP=1 -f value_lists/vl_pipe_installmethod.sql
 psql -v ON_ERROR_STOP=1 -f value_lists/vl_pipe_material.sql
@@ -170,11 +170,6 @@ psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f ordinary_data/generic_functions/fn_enab
 psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f ordinary_data/generic_functions/fn_geom.sql
 psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f ordinary_data/generic_functions/fn_label.sql
 psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f ordinary_data/generic_functions/fn_update_sequences.sql
-psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f ordinary_data/nodes/od_node.sql
-psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f ordinary_data/nodes/od_node_table.sql
-psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f ordinary_data/nodes/fn_node_get_id.sql
-psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f ordinary_data/nodes/fn_node_set_type.sql
-psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f ordinary_data/nodes/fn_node_update_id.sql
 psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f ordinary_data/areas/od_consumptionzone.sql
 psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f ordinary_data/areas/od_distributor.sql
 psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f ordinary_data/areas/od_pressurezone.sql
@@ -188,8 +183,14 @@ psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f ordinary_data/areas/vw_protectionzone.s
 psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f ordinary_data/areas/fn_get_district.sql
 psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f ordinary_data/areas/fn_get_printmap.sql
 psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f ordinary_data/areas/fn_pressurezone.sql
+psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f ordinary_data/nodes/od_node.sql
+psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f ordinary_data/nodes/od_element.sql
+psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f ordinary_data/nodes/od_node_table.sql
+psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f ordinary_data/nodes/fn_node_get_id.sql
+psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f ordinary_data/nodes/fn_node_set_type.sql
+psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f ordinary_data/nodes/fn_node_update_id.sql
 psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f ordinary_data/hydrant/od_hydrant.sql
-psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f ordinary_data/hydrant/vw_hydrant.sql
+#psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f ordinary_data/hydrant/vw_hydrant.sql
 psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f ordinary_data/pipe/od_pipe.sql
 psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f ordinary_data/pipe/od_pipe_geom.sql
 psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f ordinary_data/pipe/od_crossing.sql
@@ -199,15 +200,13 @@ psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f ordinary_data/pipe/vw_pipe_child_parent
 psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f ordinary_data/pipe/vw_pipe_schema.sql
 psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f ordinary_data/pipe/vw_pipe.sql
 psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f ordinary_data/valve/od_valve.sql
-psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f ordinary_data/valve/tr_valve_pipe.sql
 psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f ordinary_data/valve/od_meter.sql
 psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f ordinary_data/valve/od_meter_reference.sql
-psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f ordinary_data/valve/vw_valve.sql
-psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f ordinary_data/valve/vw_valve_lines.sql
+#psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f ordinary_data/valve/vw_valve.sql
 psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f ordinary_data/subscriber/od_subscriber.sql
 psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f ordinary_data/subscriber/od_subscriber_reference.sql
-psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f ordinary_data/subscriber/vw_subscriber_pipe_relation.sql
-psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f ordinary_data/subscriber/vw_subscriber.sql
+#psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f ordinary_data/subscriber/vw_subscriber_pipe_relation.sql
+#psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f ordinary_data/subscriber/vw_subscriber.sql
 psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f ordinary_data/installation/od_installation_base.sql
 psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f ordinary_data/installation/od_cover.sql
 psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f ordinary_data/installation/od_installation_chamber.sql
@@ -216,17 +215,20 @@ psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f ordinary_data/installation/od_installat
 psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f ordinary_data/installation/od_installation_source.sql
 psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f ordinary_data/installation/od_installation_tank.sql
 psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f ordinary_data/installation/od_installation_treatment.sql
-psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f ordinary_data/installation/vw_installation_views.sql
-psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f ordinary_data/installation/od_part.sql
+psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f ordinary_data/installation/vw_installation_inheritance.sql
 psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f ordinary_data/installation/od_remote.sql
 psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f ordinary_data/installation/vw_remote.sql
+psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f ordinary_data/samplingpoint/od_samplingpoint.sql
+psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f ordinary_data/nodes/od_node_inheritance.sql
+psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f ordinary_data/valve/tr_valve_pipe.sql
+psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f ordinary_data/valve/vw_valve_lines.sql
+psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f ordinary_data/installation/vw_installation_export_views.sql
 psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f ordinary_data/leak/od_leak.sql
 psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f ordinary_data/leak/vw_leak.sql
-psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f ordinary_data/samplingpoint/od_samplingpoint.sql
-psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f ordinary_data/samplingpoint/vw_samplingpoint.sql
+#psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f ordinary_data/samplingpoint/vw_samplingpoint.sql
 psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f ordinary_data/worker/od_worker.sql
-psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f ordinary_data/finish/node_control.sql
-psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f ordinary_data/finish/search_view.sql
+#psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f ordinary_data/finish/node_control.sql
+#psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f ordinary_data/finish/search_view.sql
 
 # Finalize System
 psql -v ON_ERROR_STOP=1 -f system/audit_tables.sql

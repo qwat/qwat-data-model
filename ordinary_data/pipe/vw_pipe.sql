@@ -36,7 +36,7 @@ CREATE VIEW qwat_od.vw_pipe AS
 		pipe._printmaps        ,
 		pipe._district         ,
 		pipe.geometry::geometry(LineString,:SRID),
-		COALESCE(schema_force_visible, pipe_function.schema_visible) AS _schema_visible,
+		COALESCE(pipe.schema_force_visible, pipe_function.schema_visible) AS _schema_visible,
  		pipe_function.value_fr          AS _function, 
  		pipe_function.code_sire         AS _function_code_sire, 
 		pipe_installmethod.value_fr     AS _installmethod,
