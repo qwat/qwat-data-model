@@ -10,7 +10,7 @@ SELECT qwat_sys.fn_inherited_table_view(
 		"node": {
 			"table_name":"qwat_od.node",
 			"pkey": "id",
-			"pkey_nextval":"nextval(''qwat_od.node_id_seq'')",
+			"pkey_value":"nextval(''qwat_od.node_id_seq'')",
 			"inherited_by": {
 				"installation": {
 					"table_name":"qwat_od.vw_qwat_installation",

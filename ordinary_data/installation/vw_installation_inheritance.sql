@@ -7,7 +7,7 @@ SELECT qwat_sys.fn_inherited_table_view(
 		"installation": {
 			"table_name":"qwat_od.installation",
 			"pkey": "id",
-			"pkey_nextval":"nextval(''qwat_od.installation_id_seq'')",
+			"pkey_value":"NEW.id",
 			"inherited_by": {
 				"chamber": {
 					"table_name":"qwat_od.chamber",
