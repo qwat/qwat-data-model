@@ -5,13 +5,13 @@
 */
 
 
-CREATE OR REPLACE FUNCTION qwat_od.fn_create_node( _point geometry ) RETURNS integer AS
+CREATE OR REPLACE FUNCTION qwat_od.fn_node_create( _point geometry ) RETURNS integer AS
 $BODY$
 	DECLARE
 		_node_id integer;
 	BEGIN
 		SELECT id FROM qwat_od.node WHERE ST_DWithin(_point,geometry,0.0) IS TRUE LIMIT 1 INTO _node_id;
-		IF _node_id IS NULL AND _create_node IS TRUE THEN
+		IF _node_id IS NULL THEN
 			INSERT INTO qwat_od.node (geometry) VALUES (_point) RETURNING id INTO _node_id;
 			IF _node_id IS NULL THEN
 				RAISE EXCEPTION 'Node is null although it should have been created';
@@ -21,4 +21,4 @@ $BODY$
 	END;
 $BODY$
 LANGUAGE plpgsql;
-COMMENT ON FUNCTION qwat_od.fn_create_node(geometry) IS 'Returns the node for a given geometry (point). If node does not exist, create it.';
+COMMENT ON FUNCTION qwat_od.fn_node_create(geometry) IS 'Returns the node for a given geometry (point). If node does not exist, create it.';
