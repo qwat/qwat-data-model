@@ -4,27 +4,42 @@
 	SQL file :: node
 */
 
+
+
+CREATE TYPE qwat_od.pipe_connection AS ENUM (
+	'pipe_end', -- at the end of a single pipe
+	'couple_same', -- connects two pipes with the same material/diameter/year
+	'couple_year', -- connects two pipe with the same material/diameter but not the same year
+	'couple_diameter', -- connects two pipes with same material but different diameter
+	'couple_material', -- connects two pipes with same diameter but different material
+	'couple_other', -- connects two different pipes
+	'T' -- connects three or more pipes
+	);
+
 /* CREATE TABLE */
 CREATE TABLE qwat_od.node (id serial PRIMARY KEY);
 
-COMMENT ON TABLE qwat_od.node IS 'Nodes. Type:If three pipe or more arrives at the node: three. If one pipe: one. If two: depends on characteristics of pipe: two_same (everything same), two_year (year is different), two_material (and year is/are different), two_diameter (and material/year are different). Orientation is calculated if two pipe arrives to place the symbol in theright direction.';
+COMMENT ON TABLE qwat_od.node IS 'Tables for network nodes.
+Every element of the network (hydrants, valves, element, installations, etc.) inherit from node.
+
+:If three pipe or more arrives at the node: three. If one pipe: one. If two: depends on characteristics of pipe: two_same (everything same), two_year (year is different), two_material (and year is/are different), two_diameter (and material/year are different). Orientation is calculated if two pipe arrives to place the symbol in theright direction.';
 
 /* columns */
-ALTER TABLE qwat_od.node ADD COLUMN identification   varchar(20);
-ALTER TABLE qwat_od.node ADD COLUMN fk_distributor   integer not null;
-ALTER TABLE qwat_od.node ADD COLUMN fk_status        integer not null;
-ALTER TABLE qwat_od.node ADD COLUMN fk_folder        integer ;
-ALTER TABLE qwat_od.node ADD COLUMN fk_pipe          integer ;
+ALTER TABLE qwat_od.node ADD COLUMN identification      varchar(20);
+ALTER TABLE qwat_od.node ADD COLUMN fk_distributor      integer not null;
+ALTER TABLE qwat_od.node ADD COLUMN fk_status           integer not null;
+ALTER TABLE qwat_od.node ADD COLUMN fk_folder           integer ;
+ALTER TABLE qwat_od.node ADD COLUMN fk_pipe             integer ;
 ALTER TABLE qwat_od.node ADD COLUMN fk_object_reference integer;
-ALTER TABLE qwat_od.node ADD COLUMN fk_precision     integer not null;
-ALTER TABLE qwat_od.node ADD COLUMN fk_precisionalti integer;
-ALTER TABLE qwat_od.node ADD COLUMN fk_locationtype  integer[];
-ALTER TABLE qwat_od.node ADD COLUMN year             smallint CHECK (year     IS NULL OR year     > 1800 AND year     < 2100);
-ALTER TABLE qwat_od.node ADD COLUMN year_end         smallint CHECK (year_end IS NULL OR year_end > 1800 AND year_end < 2100);
-ALTER TABLE qwat_od.node ADD COLUMN altitude         decimal(10,3);
-ALTER TABLE qwat_od.node ADD COLUMN remark           text;
+ALTER TABLE qwat_od.node ADD COLUMN fk_precision        integer not null;
+ALTER TABLE qwat_od.node ADD COLUMN fk_precisionalti    integer;
+ALTER TABLE qwat_od.node ADD COLUMN fk_locationtype     integer[];
+ALTER TABLE qwat_od.node ADD COLUMN year                smallint CHECK (year     IS NULL OR year     > 1800 AND year     < 2100);
+ALTER TABLE qwat_od.node ADD COLUMN year_end            smallint CHECK (year_end IS NULL OR year_end > 1800 AND year_end < 2100);
+ALTER TABLE qwat_od.node ADD COLUMN altitude            decimal(10,3);
+ALTER TABLE qwat_od.node ADD COLUMN remark              text;
 -- fields calculated depending on connected pipes
-ALTER TABLE qwat_od.node ADD COLUMN _pipe_node_type      varchar(40) default null;
+ALTER TABLE qwat_od.node ADD COLUMN _pipe_node_type      qwat_od.pipe_connection default null;
 ALTER TABLE qwat_od.node ADD COLUMN _pipe_orientation    float       default 0;
 ALTER TABLE qwat_od.node ADD COLUMN _pipe_schema_visible boolean     default false;
 ALTER TABLE qwat_od.node ADD COLUMN _pipe_status_active  boolean     default false;

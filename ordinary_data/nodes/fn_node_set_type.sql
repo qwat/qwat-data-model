@@ -10,48 +10,69 @@
 CREATE OR REPLACE FUNCTION qwat_od.fn_node_set_type(_node_id integer) RETURNS void AS
 $BODY$
 	DECLARE
-		pipeitem        record                   ;
-		pipe_id         integer                  ;
-		grouped         record                   ;
-		Tyear           integer                  ;
-		Tmaterial       varchar(50)              ;
-		Tdiameter       smallint                 ;
-		looppos         integer          := 0    ;
-		type            varchar(25)              ;
-		orientation     double precision := 0    ;
-		orientation2    double precision := 0    ;
-
-		is_under_count  integer          := 0    ;
-		node_geom       geometry                 ;
-		intersects      boolean                  ;
-
-
-		complement_col  varchar(50)      := ''   ;
+		_pipeitem     record;
+		_pipe_id      integer;
+		_grouped      record;
+		_year         integer;
+		_material     varchar(50);
+		_diameter     smallint;
+		_looppos      integer          := 0;
+		_type         qwat_od.pipe_connection;
+		_orientation  double precision := 0;
+		_orientation2 double precision := 0;
+		_node_geom    geometry;
+		_pipe_geom    geometry;
+		_sub_geom     geometry;
+		_lin_ref      float;
 	BEGIN
-		/* count the active pipes associated to this node */
+
+		-- get the geoemetry
+		_node_geom := geometry FROM qwat_od.node WHERE id = _node_id;
+
+		-- count the active pipes associated to this node
 		SELECT
-			COUNT(pipe.id)            AS count         ,
-			bool_or(coalesce(schema_force_visible,pipe_function.schema_visible)) AS schema_visible
-			INTO grouped
+				COUNT(pipe.id) AS count,
+				bool_or(coalesce(schema_force_visible,pipe_function.schema_visible)) AS schema_visible
+			INTO _grouped
 			FROM qwat_od.pipe
-			INNER JOIN qwat_vl.status ON pipe.fk_status = status.id
-			INNER JOIN qwat_vl.pipe_function ON pipe.fk_function = pipe_function.id
+				INNER JOIN qwat_vl.status ON pipe.fk_status = status.id
+				INNER JOIN qwat_vl.pipe_function ON pipe.fk_function = pipe_function.id
 			WHERE (fk_node_a = _node_id OR fk_node_b = _node_id)
-			AND status.active IS TRUE;
-		/* if not connected not under any object, delete the node */
-		IF grouped.count = 0 AND is_under_object IS false AND keep_type IS FALSE THEN
-			/* check it is not associated to inactive pipes */
+				AND status.active IS TRUE;
+
+		-- if not connected to any pipe, delete the node if it is not something else (i.e. is not inherited)
+		IF _grouped.count = 0 THEN
+			-- check it is not associated to inactive pipe
 			IF _node_id NOT IN (SELECT fk_node_a FROM qwat_od.pipe UNION SELECT fk_node_b FROM qwat_od.pipe) THEN
-				RAISE NOTICE 'Delete node %' , _node_id ;
-				DELETE FROM qwat_od.node WHERE id = _node_id ;
+				-- if it is not something else
+				IF ( SELECT node_type <> 'node'::qwat_od.node_type FROM qwat_od.vw_qwat_node WHERE id = _node_id) THEN
+					-- delet it
+					RAISE NOTICE 'Delete node %' , _node_id;
+					DELETE FROM qwat_od.node WHERE id = _node_id; -- delete on table level for safety (do not delete on the merge view)
+				-- otherwise this means the node is node at the end of a pipe, it must be on a vertex
+				ELSE
+					-- calculate the orientation on that vertex
+					_pipe_geom := geometry FROM qwat_od.pipe WHERE ST_Intersects(_node_geom, pipe.geometry);
+					_lin_ref := ST_LineLocatePoint(_pipe_geometry,_node_geom); -- shouldn't be 0 or 1 as it would mean that the node is a pipe end
+					
+					_sub_geom := ST_LineSubstring( _pipe_geom, 0, _lin_ref);
+					_orientation  := pi()/2 + ST_Azimuth( 	ST_EndPoint(_pipe_geom),
+															ST_PointN(_pipe_geom, ST_NumPoints(_pipe_geom-1)) );
+					_sub_geom := ST_LineSubstring( _pipe_geom, _lin_ref, 1);
+					_orientation2 := pi()/2 - ST_Azimuth( 	ST_StartPoint(_pipe_geom),
+															ST_PointN(_pipe_geom, 2) );
+															
+					_orientation := -pi()/2 + ATAN2( (COS(_orientation)+COS(_orientation))/2 , (-SIN(_orientation)+SIN(_orientation2))/2 );
+					RAISE NOTICE 'orientation %', _orientation;
+				END IF;
 			ELSE
-				type := 'inactive' ;
+				_type := NULL::qwat_od.pipe_connection;
 			END IF;
-		/* if 1 or 2 pipes associated */
-		ELSEIF grouped.count <= 2 THEN
+		-- if 1 or 2 pipes associated
+		ELSEIF _grouped.count <= 2 THEN
 			/* loop over them, and take the 2 first/last vertices
 			 of the pipe to determine orientation (used for symbology) */
-			FOR pipeitem IN (
+			FOR _pipeitem IN (
 				SELECT 	pipe.id, pipe.year, pipe_material.value_fr AS material, pipe_material.diameter_nominal AS diameter,
 						ST_StartPoint(geometry) AS point_1,
 						ST_PointN(geometry,2)   AS point_2
@@ -68,65 +89,68 @@ $BODY$
 						INNER JOIN qwat_vl.status        ON pipe.fk_status = status.id
 						WHERE fk_node_b = _node_id AND status.active IS TRUE
 			) LOOP
-				IF looppos=0 THEN
-					/* first pipe */
-					IF keep_type IS FALSE THEN
-						type := 'one';
-					END IF;
-					Tyear     := pipeitem.year;
-					Tmaterial := pipeitem.material;
-					Tdiameter := pipeitem.diameter;
-					pipe_id   := pipeitem.id;
-					looppos   := 1;
-					orientation := pi()/2 + ST_Azimuth(pipeitem.point_1,pipeitem.point_2) ;
+				IF _looppos=0 THEN
+					-- first pipe
+					_type := 'pipe_end'::qwat_od.pipe_connection;
+					_year     := _pipeitem.year;
+					_material := _pipeitem.material;
+					_diameter := _pipeitem.diameter;
+					_pipe_id   := _pipeitem.id;
+					_looppos   := 1;
+					_orientation := pi()/2 + ST_Azimuth(_pipeitem.point_1,_pipeitem.point_2);
 				ELSE
-					/* second pipe if exists */
+					-- second pipe if exists
 					IF keep_type IS FALSE THEN
-						IF Tmaterial = pipeitem.material AND Tdiameter = pipeitem.diameter THEN
-							type := 'diff_year';
-						ELSIF Tmaterial = pipeitem.material THEN
-							type := 'diff_diameter';
-						ELSIF Tdiameter = pipeitem.diameter THEN
-							type := 'diff_material';
+						IF _material = _pipeitem.material AND _diameter = _pipeitem.diameter AND _year = _pipeitem.year THEN
+							_type := 'couple_same'::qwat_od.pipe_connection;
+						ELSIF _material = _pipeitem.material AND _diameter = _pipeitem.diameter THEN
+							_type := 'couple_year'::qwat_od.pipe_connection;
+						ELSIF _material = _pipeitem.material THEN
+							_type := 'couple_diameter'::qwat_od.pipe_connection;
+						ELSIF _diameter = _pipeitem.diameter THEN
+							_type := 'couple_material'::qwat_od.pipe_connection;
 						ELSE
-							type := 'diff_diameter_material';
+							_type := 'couple_other';
 						END IF;
 					END IF;
-					orientation := -orientation; /* not azimuth but angle + switch direction */
-					orientation2 := pi()/2 - ST_Azimuth(pipeitem.point_1,pipeitem.point_2) ;
-					orientation := -pi()/2 + ATAN2( (COS(orientation)+COS(orientation))/2 , (SIN(orientation)+SIN(orientation2))/2 ) ;
-					/* reverse arrow according to diameter reduction */
-					IF pipeitem.diameter > Tdiameter THEN
-						orientation := orientation + pi();
+					_orientation := -_orientation; /* not azimuth but angle + switch direction */
+					_orientation2 := pi()/2 - ST_Azimuth(_pipeitem.point_1,_pipeitem.point_2);
+					_orientation := -pi()/2 + ATAN2( (COS(_orientation)+COS(_orientation))/2 , (SIN(_orientation)+SIN(_orientation2))/2 );
+					-- reverse arrow according to diameter reduction
+					IF _pipeitem.diameter > _diameter THEN
+						_orientation := _orientation + pi();
 					END IF;
 				END IF;
 			END LOOP;
-			IF keep_type IS FALSE AND grouped.count = 1 THEN
-				/* if the node is only on 1 pipe, check if it intersects another pipe. If yes, hide it */
-				node_geom := geometry FROM qwat_od.node WHERE id = _node_id;
-				/* st_intersects does not work as expected. */
-				intersects := bool_or(ST_DWithin(node_geom, pipe.geometry, 0.0001)) FROM qwat_od.pipe WHERE id != pipe_id;
-				IF intersects IS TRUE THEN
-					type := 'one_intersection';
+			IF _grouped.count = 1 THEN
+				-- if the node has only on 1 active pipe, check if it intersects another pipe.
+				-- if yes, set it to pipe_end (the connection with inactive pipes is not meaningful
+				-- st_intersects does not work as expected.
+				IF bool_or(ST_DWithin(_node_geom, pipe.geometry, 0.0001)) FROM qwat_od.pipe WHERE id != _pipe_id IS TRUE THEN
+					_type := 'pipe_end'::qwat_od.pipe_connection;
 				END IF;
 			END IF;
-		/* more than 2 pipes connected, nothing to calculate */
-		ELSEIF keep_type IS FALSE AND grouped.count > 2 THEN
-			type := 'three';
+		-- more than 2 pipes connected, nothing to calculate
+		ELSEIF _grouped.count > 2 THEN
+			_type := 'T'::qwat_od.pipe_connection;
 		END IF;
-		/* update the node table */
+
+		-- update the node table
 		UPDATE qwat_od.node SET
-			_type           = type,
-			_orientation    = degrees(orientation),
-			_schema_visible = grouped.schema_visible,
-			_status_active  = grouped.status_active,
-			_under_object   = is_under_object
+			_pipe_node_type      = _type,
+			_pipe_orientation    = degrees(_orientation),
+			_pipe_schema_visible = _grouped.schema_visible,
+			_pipe_status_active  = _grouped.status_active
 			WHERE id = _node_id;
-		/*RAISE NOTICE '% %' , _node_id , orientation;*/
+		--RAISE NOTICE '% %' , _node_id , _orientation;
 	END;
 $BODY$
 LANGUAGE plpgsql;
 COMMENT ON FUNCTION qwat_od.fn_node_set_type(integer) IS 'Set the orientation and type for a node. If three pipe arrives at the node: intersection. If one pipe: end. If two: depends on characteristics of pipe: year (is different), material (and year), diameter(and material/year)';
+
+
+
+
 
 /* reset all node type */
 CREATE OR REPLACE FUNCTION qwat_od.fn_node_set_type( _node_ids integer[] DEFAULT NULL ) RETURNS void AS
@@ -142,7 +166,7 @@ $BODY$
 		ELSE
 			FOREACH _node_id IN ARRAY _node_ids LOOP
 				PERFORM qwat_od.fn_node_set_type(_node_id);
-			END LOOP;			
+			END LOOP;
 		END IF;
 	END;
 $BODY$
