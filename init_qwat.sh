@@ -186,6 +186,7 @@ psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f ordinary_data/areas/fn_pressurezone.sql
 psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f ordinary_data/nodes/od_node.sql
 psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f ordinary_data/nodes/od_element.sql
 psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f ordinary_data/nodes/od_node_table.sql
+psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f ordinary_data/nodes/fn_node_create.sql
 psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f ordinary_data/nodes/fn_node_get_id.sql
 psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f ordinary_data/nodes/fn_node_set_type.sql
 psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f ordinary_data/nodes/fn_node_update_id.sql
