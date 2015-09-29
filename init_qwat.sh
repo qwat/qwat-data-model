@@ -167,7 +167,6 @@ psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f drawing/dimension_orientation.sql
 # Ordinary data
 psql -v ON_ERROR_STOP=1 -c "CREATE SCHEMA qwat_od;"
 psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f ordinary_data/generic_functions/fn_enable_schemaview.sql
-psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f ordinary_data/generic_functions/fn_geom.sql
 psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f ordinary_data/generic_functions/fn_label.sql
 psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f ordinary_data/generic_functions/fn_update_sequences.sql
 psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f ordinary_data/areas/od_consumptionzone.sql
