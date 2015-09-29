@@ -10,7 +10,7 @@ SELECT qwat_sys.fn_inherited_table_view(
 		"node": {
 			"table_name":"qwat_od.node",
 			"pkey": "id",
-			"pkey_value": "qwat_od.fn_get_node(NEW.geometry)",
+			"pkey_value": "qwat_od.fn_node_create(NEW.geometry)",
 			"pkey_value_create_entry": true,
 			"inherited_by": {
 				"installation": {

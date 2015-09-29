@@ -137,6 +137,7 @@ CREATE RULE rl_pipe_schema_label
 /* 
 Add node id
 */
+/*
 CREATE MATERIALIZED VIEW qwat_od.vw_pipe_schema_node AS
 	SELECT 
 		foo.*,
@@ -151,14 +152,14 @@ CREATE MATERIALIZED VIEW qwat_od.vw_pipe_schema_node AS
 	FROM
 		( SELECT	
 			vw_pipe_schema.*,
-			qwat_od.fn_get_node(ST_StartPoint(geometry),true) AS fk_node_a,
-			qwat_od.fn_get_node(ST_EndPoint(  geometry),true) AS fk_node_b	
+			qwat_od.fn_get_node(ST_StartPoint(geometry)) AS fk_node_a,
+			qwat_od.fn_get_node(ST_EndPoint(  geometry)) AS fk_node_b	
 			FROM qwat_od.vw_pipe_schema 
 		) AS foo
 		LEFT OUTER JOIN qwat_od.node AS node_a ON fk_node_a = node_a.id
 		LEFT OUTER JOIN qwat_od.node AS node_b ON fk_node_b = node_b.id; 
 COMMENT ON MATERIALIZED VIEW qwat_od.vw_pipe_schema_node IS 'Final view for schema completed with node.';
-
+*/
 /*
 Report schema errors
 */
