@@ -20,43 +20,18 @@ $BODY$
 		type            varchar(25)              ;
 		orientation     double precision := 0    ;
 		orientation2    double precision := 0    ;
-		is_under_object boolean          := false;
+
 		is_under_count  integer          := 0    ;
 		node_geom       geometry                 ;
 		intersects      boolean                  ;
-		node_table      record                   ;
-		keep_type       boolean          := false;
+
+
 		complement_col  varchar(50)      := ''   ;
 	BEGIN
-		/* determine if the node is under an object (hydrant, valve, etc.)
-		   the table node_table contains the names of the tables (i.e. layers) that are typically considered as nodes.
-		   node_table.node_type will be used for the type in qwat_od.node table if node_table.overwrite is true.
-		   otherwise the computed node type is used.
-		*/
-
-		FOR node_table IN SELECT * FROM qwat_od.node_table
-		LOOP
-			EXECUTE format( 'SELECT COUNT(id) FROM qwat_od.%1$I WHERE fk_node=%s;'
-				, node_table.table_name
-				, _node_id
-				) INTO is_under_count;
-			IF is_under_count > 0 THEN
-				type := node_table.node_type;
-				is_under_object := true;
-				/* if overwrite is true, we keep the object type for the node type
-				 and we consider it is not under an object anymore */
-				IF node_table.overwrite IS true THEN
-					keep_type := true;
-					is_under_object := false;
-					EXIT;
-				END IF;
-			END IF;
-		END LOOP;
 		/* count the active pipes associated to this node */
 		SELECT
 			COUNT(pipe.id)            AS count         ,
-			bool_or(coalesce(schema_force_visible,pipe_function.schema_visible)) AS schema_visible,
-			bool_or(status.active) AS status_active
+			bool_or(coalesce(schema_force_visible,pipe_function.schema_visible)) AS schema_visible
 			INTO grouped
 			FROM qwat_od.pipe
 			INNER JOIN qwat_vl.status ON pipe.fk_status = status.id

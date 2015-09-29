@@ -39,7 +39,7 @@ SELECT qwat_sys.fn_inherited_table_view(
 				"destination_schema": "qwat_od",
 				"allow_type_change": false
 			}
-		}	
+		}
 	}'::json
 );
 

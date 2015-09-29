@@ -24,7 +24,7 @@ ALTER TABLE qwat_od.node ADD COLUMN year_end         smallint CHECK (year_end IS
 ALTER TABLE qwat_od.node ADD COLUMN altitude         decimal(10,3);
 ALTER TABLE qwat_od.node ADD COLUMN remark           text;
 -- fields calculated depending on connected pipes
-ALTER TABLE qwat_od.node ADD COLUMN _pipe_type           varchar(40) default null;
+ALTER TABLE qwat_od.node ADD COLUMN _pipe_node_type      varchar(40) default null;
 ALTER TABLE qwat_od.node ADD COLUMN _pipe_orientation    float       default 0;
 ALTER TABLE qwat_od.node ADD COLUMN _pipe_schema_visible boolean     default false;
 ALTER TABLE qwat_od.node ADD COLUMN _pipe_status_active  boolean     default false;

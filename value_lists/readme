@@ -52,3 +52,4 @@ They will have 101, 102 and 103 as code, respectively.
 96 location_type
 97 bedding
 98 cover_type
+99 survey_type

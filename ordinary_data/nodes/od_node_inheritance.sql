@@ -44,12 +44,17 @@ SELECT qwat_sys.fn_inherited_table_view(
 				"samplingpoint": {
 					"table_name":"qwat_od.samplingpoint",
 					"pkey": "id"
+				},
+				"surveypoint": {
+					"table_name":"qwat_od.surveypoint",
+					"pkey": "id"
 				}
 			},
 			"merge_view": {
 				"view_name":"vw_qwat_node",
 				"destination_schema": "qwat_od",
 				"allow_type_change": false,
+				"allow_parent_only": true,
 				"merge_columns": {
 					"parcel": {
 						"meter": "parcel",
