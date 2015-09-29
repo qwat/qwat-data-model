@@ -108,7 +108,6 @@ CREATE OR REPLACE VIEW qwat_od.vw_pipe_schema AS
 			pipe.fk_district                   ,
 			pipe.fk_pressurezone               ,
 			pipe.fk_printmap                   ,
-			pipe._district                     ,
 			pipe._printmaps                    ,
 			pipe.label_2_visible               ,
 			pipe.label_2_text                  ,

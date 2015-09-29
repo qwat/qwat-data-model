@@ -2,15 +2,13 @@
 /* -------- COLUMNS ---------- */
 ALTER TABLE qwat_od.pipe ADD COLUMN fk_node_a       integer    not null;
 ALTER TABLE qwat_od.pipe ADD COLUMN fk_node_b       integer    not null;
-ALTER TABLE qwat_od.pipe ADD COLUMN fk_district     integer   ;
-ALTER TABLE qwat_od.pipe ADD COLUMN fk_pressurezone integer   ;
-ALTER TABLE qwat_od.pipe ADD COLUMN fk_printmap     integer[] ;
-ALTER TABLE qwat_od.pipe ADD COLUMN _length2d       decimal(8,2) ;
-ALTER TABLE qwat_od.pipe ADD COLUMN _length3d       decimal(8,2) ;
-ALTER TABLE qwat_od.pipe ADD COLUMN _diff_elevation decimal(8,2) ;
-ALTER TABLE qwat_od.pipe ADD COLUMN _district       varchar(255)  ;
-ALTER TABLE qwat_od.pipe ADD COLUMN _pressurezone   varchar(100)  ;
-ALTER TABLE qwat_od.pipe ADD COLUMN _printmaps      varchar(100)  ;
+ALTER TABLE qwat_od.pipe ADD COLUMN fk_district     integer;
+ALTER TABLE qwat_od.pipe ADD COLUMN fk_pressurezone integer;
+ALTER TABLE qwat_od.pipe ADD COLUMN fk_printmap     integer[];
+ALTER TABLE qwat_od.pipe ADD COLUMN _length2d       decimal(8,2);
+ALTER TABLE qwat_od.pipe ADD COLUMN _length3d       decimal(8,2);
+ALTER TABLE qwat_od.pipe ADD COLUMN _diff_elevation decimal(8,2);
+ALTER TABLE qwat_od.pipe ADD COLUMN _printmaps      varchar(100);
 ALTER TABLE qwat_od.pipe ADD COLUMN _geometry_alt1_used boolean;
 ALTER TABLE qwat_od.pipe ADD COLUMN _geometry_alt2_used boolean;
 
@@ -45,19 +43,21 @@ CREATE OR REPLACE FUNCTION qwat_od.ft_pipe_geom() RETURNS TRIGGER AS
 	BEGIN
 		NEW.fk_node_a           := qwat_od.fn_get_node(ST_StartPoint(NEW.geometry));
 		NEW.fk_node_b           := qwat_od.fn_get_node(ST_EndPoint(  NEW.geometry));
-		NEW.fk_district         := qwat_od.fn_get_district_id(NEW.geometry)        ;
-		NEW.fk_pressurezone     := qwat_od.fn_get_pressurezone_id(NEW.geometry)    ;
-		NEW.fk_printmap         := qwat_od.fn_get_printmap_id(NEW.geometry)        ;
-		NEW.geometry_alt1       := NEW.geometry                                    ;
-		NEW.geometry_alt2       := NEW.geometry                                    ;
-		NEW._geometry_alt1_used := false                                           ;
-		NEW._geometry_alt2_used := false                                           ;
-		NEW._district           := qwat_od.fn_get_districts(NEW.geometry)          ;
-		NEW._pressurezone       := qwat_od.fn_get_pressurezone(NEW.geometry)       ;
-		NEW._printmaps          := qwat_od.fn_get_printmaps(NEW.geometry)          ;
-		NEW._length2d           := ST_Length(NEW.geometry)                      ;
-		NEW._length3d           := NULL                                         ;
-		NEW._diff_elevation     := NULL                                         ;
+		NEW.fk_district         := qwat_od.fn_get_district(NEW.geometry);
+		NEW.fk_pressurezone     := qwat_od.fn_get_pressurezone(NEW.geometry);
+		NEW.fk_printmap         := qwat_od.fn_get_printmap_id(NEW.geometry);
+		IF NEW.geometry_alt1 IS NULL THEN
+			NEW.geometry_alt1 := NEW.geometry;
+		END IF;
+		IF NEW.geometry_alt2 IS NULL THEN
+			NEW.geometry_alt2       := NEW.geometry;
+		END IF;
+		NEW._geometry_alt1_used := false;
+		NEW._geometry_alt2_used := false;
+		NEW._printmaps          := qwat_od.fn_get_printmaps(NEW.geometry);
+		NEW._length2d           := ST_Length(NEW.geometry);
+		NEW._length3d           := NULL;
+		NEW._diff_elevation     := NULL;
 		RETURN NEW;
 	END;
 	$BODY$
@@ -87,6 +87,7 @@ CREATE OR REPLACE FUNCTION qwat_od.ft_pipe_node_type() RETURNS TRIGGER AS
 		IF TG_OP = 'INSERT' THEN
 			node_ids := ARRAY[NEW.fk_node_a, NEW.fk_node_b];
 		ELSE
+			-- delete or update (OLD exists)
 			node_ids := ARRAY[OLD.fk_node_a, OLD.fk_node_b];
 		END IF;
 		IF TG_OP = 'UPDATE' THEN
