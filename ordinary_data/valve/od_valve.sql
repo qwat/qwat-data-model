@@ -51,7 +51,7 @@ CREATE OR REPLACE FUNCTION qwat_od.ft_valve_pipe() RETURNS TRIGGER AS
 CREATE TRIGGER valve_pipe_update_trigger
 	BEFORE UPDATE OF geometry ON qwat_od.valve
 	FOR EACH ROW
-	WHEN ( NEW.handle_geometry <> OLD.handle_geometry )
+	WHEN ( st_asbinary(NEW.handle_geometry) <> st_asbinary(OLD.handle_geometry) )
 	EXECUTE PROCEDURE qwat_od.ft_valve_pipe();
 COMMENT ON TRIGGER valve_pipe_update_trigger ON qwat_od.valve IS 'Trigger: when updating, check if altitude or Z value of geometry changed and synchronize them.';
 
