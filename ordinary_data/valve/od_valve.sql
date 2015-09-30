@@ -15,7 +15,7 @@ ALTER TABLE qwat_od.valve ADD COLUMN fk_valve_function       integer not null ;
 ALTER TABLE qwat_od.valve ADD COLUMN fk_actuation      		 integer not null ;
 ALTER TABLE qwat_od.valve ADD COLUMN fk_handle_precision     integer ;
 ALTER TABLE qwat_od.valve ADD COLUMN fk_handle_precisionalti integer ;
-ALTER TABLE qwat_od.node ADD COLUMN fk_pipe             integer ;
+ALTER TABLE qwat_od.valve ADD COLUMN fk_pipe             integer ;
 ALTER TABLE qwat_od.valve ADD COLUMN fk_maintenance    		 integer[];
 ALTER TABLE qwat_od.valve ADD COLUMN diameter_nominal 		 varchar(10) ;
 ALTER TABLE qwat_od.valve ADD COLUMN closed            		 boolean default false ;
