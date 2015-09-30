@@ -30,7 +30,6 @@ ALTER TABLE qwat_od.node ADD COLUMN fk_pressurezone     integer not null;
 ALTER TABLE qwat_od.node ADD COLUMN fk_printmap         integer[];
 ALTER TABLE qwat_od.node ADD COLUMN fk_status           integer not null;
 ALTER TABLE qwat_od.node ADD COLUMN fk_folder           integer ;
-ALTER TABLE qwat_od.node ADD COLUMN fk_pipe             integer ;
 ALTER TABLE qwat_od.node ADD COLUMN fk_object_reference integer;
 ALTER TABLE qwat_od.node ADD COLUMN fk_precision        integer not null;
 ALTER TABLE qwat_od.node ADD COLUMN fk_precisionalti    integer;

@@ -15,6 +15,7 @@ ALTER TABLE qwat_od.valve ADD COLUMN fk_valve_function       integer not null ;
 ALTER TABLE qwat_od.valve ADD COLUMN fk_actuation      		 integer not null ;
 ALTER TABLE qwat_od.valve ADD COLUMN fk_handle_precision     integer ;
 ALTER TABLE qwat_od.valve ADD COLUMN fk_handle_precisionalti integer ;
+ALTER TABLE qwat_od.node ADD COLUMN fk_pipe             integer ;
 ALTER TABLE qwat_od.valve ADD COLUMN fk_maintenance    		 integer[];
 ALTER TABLE qwat_od.valve ADD COLUMN diameter_nominal 		 varchar(10) ;
 ALTER TABLE qwat_od.valve ADD COLUMN closed            		 boolean default false ;
@@ -30,15 +31,39 @@ ALTER TABLE qwat_od.valve ADD CONSTRAINT valve_fk_function    FOREIGN KEY (fk_va
 ALTER TABLE qwat_od.valve ADD CONSTRAINT valve_fk_actuation   FOREIGN KEY (fk_actuation)      REFERENCES qwat_vl.valve_actuation(id) MATCH FULL; CREATE INDEX fki_valve_fk_actuation   ON qwat_od.valve(fk_actuation)    ;
 ALTER TABLE qwat_od.valve ADD CONSTRAINT valve_fk_handle_precision     FOREIGN KEY (fk_handle_precision)     REFERENCES qwat_vl.precision(id)     MATCH FULL; CREATE INDEX fki_valve_fk_handle_precision     ON qwat_od.valve(fk_handle_precision)    ;
 ALTER TABLE qwat_od.valve ADD CONSTRAINT valve_fk_handle_precisionalti FOREIGN KEY (fk_handle_precisionalti) REFERENCES qwat_vl.precisionalti(id) MATCH FULL; CREATE INDEX fki_valve_fk_handle_precisionalti ON qwat_od.valve(fk_handle_precisionalti);
+ALTER TABLE qwat_od.valve ADD CONSTRAINT valve_fk_pipe        FOREIGN KEY (fk_pipe) REFERENCES qwat_od.pipe(id) MATCH FULL; CREATE INDEX fki_valve_fk_pipe ON qwat_od.valve(fk_pipe);
 
 
 /* cannot create constraint on arrays yet
 ALTER TABLE qwat_od.valve ADD CONSTRAINT valve_fk_maintenance FOREIGN KEY (fk_maintenance) REFERENCES qwat_vl.valve_maintenance(id) MATCH FULL ; CREATE INDEX fki_valve_fk_maintenance ON qwat_od.valve(fk_maintenance) ;
 */
-	
-	
-	
-/* Handle altitude triggers */
+
+/* Get pipe trigger */
+CREATE OR REPLACE FUNCTION qwat_od.ft_valve_pipe() RETURNS TRIGGER AS
+	$BODY$
+	BEGIN
+			NEW.fk_pipe = qwat_od.fn_pipe_get_id(NEW.geometry);
+		RETURN NEW;
+	END;
+	$BODY$
+	LANGUAGE plpgsql;
+
+CREATE TRIGGER valve_pipe_update_trigger
+	BEFORE UPDATE OF geometry ON qwat_od.valve
+	FOR EACH ROW
+	WHEN ( NEW.handle_geometry <> OLD.handle_geometry )
+	EXECUTE PROCEDURE qwat_od.ft_valve_pipe();
+COMMENT ON TRIGGER valve_pipe_update_trigger ON qwat_od.valve IS 'Trigger: when updating, check if altitude or Z value of geometry changed and synchronize them.';
+
+CREATE TRIGGER valve_pipe_insert_trigger
+	BEFORE INSERT ON qwat_od.valve
+	FOR EACH ROW
+	EXECUTE PROCEDURE qwat_od.ft_valve_pipe();
+COMMENT ON TRIGGER valve_pipe_insert_trigger ON qwat_od.valve IS 'Trigger: when updating, check if altitude or Z value of geometry changed and synchronize them.';
+
+
+
+/* Handle altitude trigger */
 CREATE OR REPLACE FUNCTION qwat_od.ft_valve_handle_altitude() RETURNS TRIGGER AS
 	$BODY$
 	BEGIN
@@ -61,7 +86,7 @@ CREATE OR REPLACE FUNCTION qwat_od.ft_valve_handle_altitude() RETURNS TRIGGER AS
 	END;
 	$BODY$
 	LANGUAGE plpgsql;
-	
+
 CREATE TRIGGER valve_handle_altitude_update_trigger
 	BEFORE UPDATE OF handle_altitude, handle_geometry ON qwat_od.valve
 	FOR EACH ROW
@@ -74,8 +99,3 @@ CREATE TRIGGER valve_handle_altitude_insert_trigger
 	FOR EACH ROW
 	EXECUTE PROCEDURE qwat_od.ft_valve_handle_altitude();
 COMMENT ON TRIGGER valve_handle_altitude_insert_trigger ON qwat_od.valve IS 'Trigger: when updating, check if altitude or Z value of geometry changed and synchronize them.';
-
-
-
-
-
