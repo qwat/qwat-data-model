@@ -10,7 +10,7 @@ $BODY$
 	DECLARE
 		_node_id integer;
 	BEGIN
-		SELECT id FROM qwat_od.node WHERE ST_DWithin(_point,geometry,0.0) IS TRUE LIMIT 1 INTO _node_id;
+		SELECT id FROM qwat_od.node WHERE ST_DWithin(ST_Force2d(_point),ST_Force2d(geometry),0.0) IS TRUE LIMIT 1 INTO _node_id;
 		IF _node_id IS NULL THEN
 			INSERT INTO qwat_od.node (geometry) VALUES (_point) RETURNING id INTO _node_id;
 			IF _node_id IS NULL THEN
