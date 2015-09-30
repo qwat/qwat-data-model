@@ -44,7 +44,7 @@ SELECT qwat_sys.fn_inherited_table_view(
 				"samplingpoint": {
 					"table_name":"qwat_od.samplingpoint",
 					"pkey": "id"
-				},
+				}
 			},
 			"merge_view": {
 				"view_name":"vw_qwat_node",
