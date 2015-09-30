@@ -45,10 +45,6 @@ SELECT qwat_sys.fn_inherited_table_view(
 					"table_name":"qwat_od.samplingpoint",
 					"pkey": "id"
 				},
-				"surveypoint": {
-					"table_name":"qwat_od.surveypoint",
-					"pkey": "id"
-				}
 			},
 			"merge_view": {
 				"view_name":"vw_qwat_node",
@@ -67,6 +63,6 @@ SELECT qwat_sys.fn_inherited_table_view(
 					}
 				}
 			}
-		}	
+		}
 	}'::json
 );

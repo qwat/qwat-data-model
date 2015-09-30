@@ -1,6 +1,6 @@
 /*
 	qWat - QGIS Water Module
-	
+
 	SQL file :: node
 */
 
@@ -128,7 +128,7 @@ CREATE OR REPLACE FUNCTION qwat_od.ft_node_altitude() RETURNS TRIGGER AS
 	END;
 	$BODY$
 	LANGUAGE plpgsql;
-	
+
 CREATE TRIGGER node_altitude_update_trigger
 	BEFORE UPDATE OF altitude, geometry ON qwat_od.node
 	FOR EACH ROW
@@ -141,6 +141,3 @@ CREATE TRIGGER node_altitude_insert_trigger
 	FOR EACH ROW
 	EXECUTE PROCEDURE qwat_od.ft_node_altitude();
 COMMENT ON TRIGGER node_altitude_insert_trigger ON qwat_od.node IS 'Trigger: when updating, check if altitude or Z value of geometry changed and synchronize them.';
-
-
-
