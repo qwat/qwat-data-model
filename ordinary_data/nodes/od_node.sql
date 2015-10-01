@@ -26,8 +26,9 @@ ALTER TABLE qwat_od.node ADD COLUMN fk_pressurezone     integer;
 ALTER TABLE qwat_od.node ADD COLUMN fk_printmap         integer[];
 ALTER TABLE qwat_od.node ADD COLUMN fk_precision        integer;
 ALTER TABLE qwat_od.node ADD COLUMN fk_precisionalti    integer;
-ALTER TABLE qwat_od.node ADD COLUMN fk_object_reference integer CHECK (fk_object_reference IS NOT NULL OR altitude IS NULL);
+ALTER TABLE qwat_od.node ADD COLUMN fk_object_reference integer;
 ALTER TABLE qwat_od.node ADD COLUMN altitude            decimal(10,3);
+
 ALTER TABLE qwat_od.node ADD COLUMN _printmaps          text; -- list of printmap where it is included
 ALTER TABLE qwat_od.node ADD COLUMN _geometry_alt1_used boolean;
 ALTER TABLE qwat_od.node ADD COLUMN _geometry_alt2_used boolean;
@@ -37,7 +38,8 @@ ALTER TABLE qwat_od.node ADD COLUMN _pipe_orientation    float       default 0;
 ALTER TABLE qwat_od.node ADD COLUMN _pipe_schema_visible boolean     default false;
 ALTER TABLE qwat_od.node ADD COLUMN _pipe_status_active  boolean     default false;
 
-
+/* altitude - fk_object_reference constraint */
+ALTER TABLE qwat_od.node ADD CONSTRAINT chk_node_altitude_obj_ref CHECK (fk_object_reference IS NOT NULL OR altitude IS NULL);
 
 /* GEOMETRY */
 ALTER TABLE qwat_od.node ADD COLUMN geometry geometry('POINTZ',:SRID);
