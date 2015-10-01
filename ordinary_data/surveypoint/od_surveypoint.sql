@@ -39,7 +39,7 @@ CREATE OR REPLACE FUNCTION qwat_od.ft_surveypoint_altitude() RETURNS TRIGGER AS
 				NEW.geometry := ST_SetSRID( ST_MakePoint( ST_X(NEW.geometry), ST_Y(NEW.geometry), COALESCE(NEW.altitude,-9999) ), ST_SRID(NEW.geometry) );
 			END IF;
 		ELSIF TG_OP = 'UPDATE' THEN
-			IF NEW.altitue <> OLD.altitude THEN
+			IF NEW.altitude <> OLD.altitude THEN
 				NEW.geometry := ST_SetSRID( ST_MakePoint( ST_X(NEW.geometry), ST_Y(NEW.geometry), COALESCE(NEW.altitude,-9999) ), ST_SRID(NEW.geometry) );
 			ELSIF ST_Z(NEW.geometry) <> ST_Z(OLD.geometry) THEN
 				NEW.altitude := ST_Z(NEW.geometry);
