@@ -46,18 +46,18 @@ CREATE OR REPLACE FUNCTION qwat_od.ft_pipe_geom() RETURNS TRIGGER AS
 		NEW.fk_district         := qwat_od.fn_get_district(NEW.geometry);
 		NEW.fk_pressurezone     := qwat_od.fn_get_pressurezone(NEW.geometry);
 		NEW.fk_printmap         := qwat_od.fn_get_printmap_id(NEW.geometry);
-		IF NEW.geometry_alt1 IS NULL THEN
+		IF NEW.geometry_alt1 IS NULL THEN --TODO prompt user if update shall overwrite alternative geom
 			NEW.geometry_alt1 := NEW.geometry;
 		END IF;
 		IF NEW.geometry_alt2 IS NULL THEN
 			NEW.geometry_alt2       := NEW.geometry;
 		END IF;
-		NEW._geometry_alt1_used := ST_AsBinary(NEW.geometry_alt1) <> ST_AsBinary(NEW.geometry) ;
-		NEW._geometry_alt2_used := ST_AsBinary(NEW.geometry_alt2) <> ST_AsBinary(NEW.geometry) ;
+		NEW._geometry_alt1_used := ST_AsBinary(ST_Force2d(NEW.geometry_alt1)) <> ST_AsBinary(ST_Force2d(NEW.geometry)) ;
+		NEW._geometry_alt2_used := ST_AsBinary(ST_Force2d(NEW.geometry_alt2)) <> ST_AsBinary(ST_Force2d(NEW.geometry)) ;
 		NEW._printmaps          := qwat_od.fn_get_printmaps(NEW.geometry);
 		NEW._length2d           := ST_Length(NEW.geometry);
 		NEW._length3d           := ST_3DLength(NEW.geometry);
-		NEW._diff_elevation     := @(ST_Z(ST_FirstPoint(NEW.geometry))-ST_Z(ST_EndPoint(NEW.geometry)));
+		NEW._diff_elevation     := @(ST_Z(ST_StartPoint(NEW.geometry))-ST_Z(ST_EndPoint(NEW.geometry)));
 		RETURN NEW;
 	END;
 	$BODY$
@@ -122,8 +122,8 @@ COMMENT ON TRIGGER tr_pipe_node_type_update ON qwat_od.pipe IS 'Trigger: after u
 CREATE OR REPLACE FUNCTION qwat_od.ft_pipe_alternative_geom() RETURNS TRIGGER AS
 	$BODY$
 	BEGIN
-		NEW._geometry_alt1_used := NEW.geometry_alt1 IS NOT NULL AND ST_AsBinary(NEW.geometry_alt1) <> ST_AsBinary(NEW.geometry);
-		NEW._geometry_alt2_used := NEW.geometry_alt2 IS NOT NULL AND ST_AsBinary(NEW.geometry_alt2) <> ST_AsBinary(NEW.geometry);
+		NEW._geometry_alt1_used := NEW.geometry_alt1 IS NOT NULL AND ST_AsBinary(ST_Force2d(NEW.geometry_alt1)) <> ST_AsBinary(ST_Force2d(NEW.geometry));
+		NEW._geometry_alt2_used := NEW.geometry_alt2 IS NOT NULL AND ST_AsBinary(ST_Force2d(NEW.geometry_alt2)) <> ST_AsBinary(ST_Force2d(NEW.geometry));
 		RETURN NEW;
 	END;
 	$BODY$

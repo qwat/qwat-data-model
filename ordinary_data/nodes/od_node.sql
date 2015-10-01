@@ -79,7 +79,6 @@ $BODY$
 		NEW.fk_district         := qwat_od.fn_get_district(NEW.geometry);
 		NEW.fk_pressurezone     := qwat_od.fn_get_pressurezone(NEW.geometry);
 		NEW.fk_printmap         := qwat_od.fn_get_printmap_id(NEW.geometry);
-		NEW.fk_pipe             := qwat_od.fn_get_pipe_id(NEW.geometry);
 		NEW.geometry_alt1       := NEW.geometry; --TODO PROMT USER
 		NEW.geometry_alt2       := NEW.geometry;
 		NEW._geometry_alt1_used := false;
