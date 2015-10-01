@@ -11,7 +11,7 @@ $BODY$
 	BEGIN
 		SELECT id FROM qwat_od.node WHERE ST_DWithin(ST_Force2d(_point),ST_Force2d(geometry),0.0) IS TRUE LIMIT 1 INTO _node_id;
 		IF _node_id IS NULL THEN
-			IF ST_Z(_point) = 0 THEN
+			IF ST_Z(_point) = 0.0 THEN
 				_point := ST_SetSRID( ST_MakePoint(ST_X(_point), ST_Y(_point), -9999), ST_SRID(_point) );
 			END IF;
 			INSERT INTO qwat_od.node (geometry) VALUES (_point) RETURNING id INTO _node_id;

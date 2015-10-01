@@ -18,7 +18,7 @@ ALTER TABLE qwat_od.surveypoint ADD COLUMN date             date;
 ALTER TABLE qwat_od.surveypoint ADD COLUMN fk_folder        integer ;
 ALTER TABLE qwat_od.surveypoint ADD COLUMN altitude         decimal(10,3) default null;
 ALTER TABLE qwat_od.surveypoint ADD COLUMN geometry         geometry(POINTZ,:SRID);
-
+-- TODO add fk_object_reference
 
 /* constraints */
 ALTER TABLE qwat_od.surveypoint ADD CONSTRAINT surveypoint_fk_type   FOREIGN KEY (fk_survey_type) REFERENCES qwat_vl.survey_type(id) MATCH FULL; CREATE INDEX fki_surveypoint_fk_type   ON qwat_od.surveypoint(fk_survey_type);
@@ -31,19 +31,11 @@ CREATE OR REPLACE FUNCTION qwat_od.ft_surveypoint_altitude() RETURNS TRIGGER AS
 	$BODY$
 	BEGIN
 		-- altitude is prioritary on Z value of the geometry (if both changed, only altitude is taken into account)
-		IF TG_OP = 'INSERT' THEN
-			IF NEW.altitude IN (NULL,-9999) THEN
-				NEW.altitude := ST_Z(NEW.geometry);
-			END IF;
-			IF ST_Z(NEW.geometry) = -9999 THEN
-				NEW.geometry := ST_SetSRID( ST_MakePoint( ST_X(NEW.geometry), ST_Y(NEW.geometry), COALESCE(NEW.altitude,-9999) ), ST_SRID(NEW.geometry) );
-			END IF;
-		ELSIF TG_OP = 'UPDATE' THEN
-			IF NEW.altitude <> OLD.altitude THEN
-				NEW.geometry := ST_SetSRID( ST_MakePoint( ST_X(NEW.geometry), ST_Y(NEW.geometry), COALESCE(NEW.altitude,-9999) ), ST_SRID(NEW.geometry) );
-			ELSIF ST_Z(NEW.geometry) <> ST_Z(OLD.geometry) THEN
-				NEW.altitude := ST_Z(NEW.geometry);
-			END IF;
+		IF NEW.altitude IN (NULL,-9999) THEN
+			NEW.altitude := NULLIF( ST_Z(NEW.geometry), 0.0); -- if geom is 2d, ST_Z will return 0 (this case happens only on insert since null is -9999)
+		END IF;
+		IF ST_Z(NEW.geometry) = -9999 THEN
+			NEW.geometry := ST_SetSRID( ST_MakePoint( ST_X(NEW.geometry), ST_Y(NEW.geometry), COALESCE(NEW.altitude,-9999) ), ST_SRID(NEW.geometry) );
 		END IF;
 
 		IF NEW.altitude = -9999 THEN
