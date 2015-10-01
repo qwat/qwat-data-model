@@ -15,9 +15,9 @@ ALTER TABLE qwat_od.pipe ADD COLUMN _geometry_alt2_used boolean;
 
 /* ---------------------------- */
 /* -------- ADD GEOM ---------- */
-ALTER TABLE qwat_od.pipe ADD COLUMN geometry      geometry('LINESTRING',:SRID);
-ALTER TABLE qwat_od.pipe ADD COLUMN geometry_alt1 geometry('LINESTRING',:SRID);
-ALTER TABLE qwat_od.pipe ADD COLUMN geometry_alt2 geometry('LINESTRING',:SRID);
+ALTER TABLE qwat_od.pipe ADD COLUMN geometry      geometry('LINESTRINGZ',:SRID);
+ALTER TABLE qwat_od.pipe ADD COLUMN geometry_alt1 geometry('LINESTRINGZ',:SRID);
+ALTER TABLE qwat_od.pipe ADD COLUMN geometry_alt2 geometry('LINESTRINGZ',:SRID);
 
 CREATE INDEX pipe_geoidx      ON qwat_od.pipe USING GIST ( geometry );
 CREATE INDEX pipe_geoidx_alt1 ON qwat_od.pipe USING GIST ( geometry_alt1 );
@@ -41,8 +41,8 @@ CREATE INDEX fki_pipe_fk_pressurezone ON qwat_od.pipe(fk_pressurezone);
 CREATE OR REPLACE FUNCTION qwat_od.ft_pipe_geom() RETURNS TRIGGER AS
 	$BODY$
 	BEGIN
-		NEW.fk_node_a           := qwat_od.fn_get_node(ST_StartPoint(NEW.geometry));
-		NEW.fk_node_b           := qwat_od.fn_get_node(ST_EndPoint(  NEW.geometry));
+		NEW.fk_node_a           := qwat_od.fn_node_create(ST_StartPoint(NEW.geometry));
+		NEW.fk_node_b           := qwat_od.fn_node_create(ST_EndPoint(  NEW.geometry));
 		NEW.fk_district         := qwat_od.fn_get_district(NEW.geometry);
 		NEW.fk_pressurezone     := qwat_od.fn_get_pressurezone(NEW.geometry);
 		NEW.fk_printmap         := qwat_od.fn_get_printmap_id(NEW.geometry);
@@ -52,12 +52,12 @@ CREATE OR REPLACE FUNCTION qwat_od.ft_pipe_geom() RETURNS TRIGGER AS
 		IF NEW.geometry_alt2 IS NULL THEN
 			NEW.geometry_alt2       := NEW.geometry;
 		END IF;
-		NEW._geometry_alt1_used := false;
-		NEW._geometry_alt2_used := false;
+		NEW._geometry_alt1_used := ST_AsBinary(NEW.geometry_alt1) <> ST_AsBinary(NEW.geometry) ;
+		NEW._geometry_alt2_used := ST_AsBinary(NEW.geometry_alt2) <> ST_AsBinary(NEW.geometry) ;
 		NEW._printmaps          := qwat_od.fn_get_printmaps(NEW.geometry);
 		NEW._length2d           := ST_Length(NEW.geometry);
-		NEW._length3d           := NULL;
-		NEW._diff_elevation     := NULL;
+		NEW._length3d           := ST_3DLength(NEW.geometry);
+		NEW._diff_elevation     := @(ST_Z(ST_FirstPoint(NEW.geometry))-ST_Z(ST_EndPoint(NEW.geometry)));
 		RETURN NEW;
 	END;
 	$BODY$
