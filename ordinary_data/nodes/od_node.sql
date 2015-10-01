@@ -49,19 +49,19 @@ ALTER TABLE qwat_od.node ADD COLUMN _pipe_orientation    float       default 0;
 ALTER TABLE qwat_od.node ADD COLUMN _pipe_schema_visible boolean     default false;
 ALTER TABLE qwat_od.node ADD COLUMN _pipe_status_active  boolean     default false;
 
-/* schema view */
+/* SCHEMA VIEW */
 SELECT qwat_od.fn_enable_schemaview('node');
 
-/* labels */
+/* LABELS */
 SELECT qwat_od.fn_label_create_fields('node');
 
-/* geometry */
+/* GEOMETRY */
 ALTER TABLE qwat_od.node ADD COLUMN geometry geometry('POINTZ',:SRID);
 ALTER TABLE qwat_od.node ADD COLUMN geometry_alt1 geometry('POINTZ',:SRID);
 ALTER TABLE qwat_od.node ADD COLUMN geometry_alt2 geometry('POINTZ',:SRID);
 CREATE INDEX node_geoidx ON qwat_od.node USING GIST ( geometry );
 
-/* constraints */
+/* CONSTRAINTS */
 ALTER TABLE qwat_od.node ADD CONSTRAINT node_fk_distributor   FOREIGN KEY (fk_distributor)   REFERENCES qwat_od.distributor(id)   MATCH FULL; CREATE INDEX fki_node_fk_distributor   ON qwat_od.node(fk_distributor);
 ALTER TABLE qwat_od.node ADD CONSTRAINT node_fk_district      FOREIGN KEY (fk_district)      REFERENCES qwat_od.district(id)      MATCH FULL; CREATE INDEX fki_node_fk_district      ON qwat_od.node(fk_district);
 ALTER TABLE qwat_od.node ADD CONSTRAINT node_fk_pressurezone  FOREIGN KEY (fk_pressurezone)  REFERENCES qwat_od.pressurezone(id)  MATCH FULL; CREATE INDEX fki_node_fk_pressurezone  ON qwat_od.node(fk_pressurezone);
@@ -73,7 +73,7 @@ ALTER TABLE qwat_od.node ADD CONSTRAINT node_fk_precision     FOREIGN KEY (fk_pr
 ALTER TABLE qwat_od.node ADD CONSTRAINT node_fk_precisionalti FOREIGN KEY (fk_precisionalti) REFERENCES qwat_vl.precisionalti(id) MATCH FULL; CREATE INDEX fki_node_fk_precisionalti ON qwat_od.node(fk_precisionalti);
 
 
-/* geometry triggers */
+/* GEOMETRY TRIGGERS */
 CREATE OR REPLACE FUNCTION qwat_od.ft_node_geom()
   RETURNS trigger AS
 $BODY$
@@ -87,6 +87,11 @@ $BODY$
 		NEW._geometry_alt1_used := false;
 		NEW._geometry_alt2_used := false;
 		NEW._printmaps          := qwat_od.fn_get_printmaps(NEW.geometry);
+		IF TG_OP = 'UPDATE' THEN
+			-- reaasign nodes to pipes if a node moved
+			UPDATE qwat_od.pipe SET pipe.fk_node_a = qwat_od.fn_node_create(pipe.geometry) WHERE pipe.fk_node_a = OLD.id;
+			UPDATE qwat_od.pipe SET pipe.fk_node_b = qwat_od.fn_node_create(pipe.geometry) WHERE pipe.fk_node_a = OLD.id;
+		END IF;
 		RETURN NEW;
 	END;
 $BODY$

@@ -35,6 +35,7 @@ ALTER TABLE qwat_od.valve ADD CONSTRAINT valve_fk_handle_precisionalti FOREIGN K
 ALTER TABLE qwat_od.valve ADD CONSTRAINT valve_fk_maintenance FOREIGN KEY (fk_maintenance) REFERENCES qwat_vl.valve_maintenance(id) MATCH FULL ; CREATE INDEX fki_valve_fk_maintenance ON qwat_od.valve(fk_maintenance) ;
 */
 
+
 /* NODE TRIGGER */
 CREATE OR REPLACE FUNCTION qwat_od.ft_valve_node_set_type() RETURNS TRIGGER AS
 $BODY$
@@ -46,11 +47,13 @@ $BODY$
 LANGUAGE plpgsql;
 COMMENT ON FUNCTION qwat_od.ft_valve_node_set_type()  IS 'Trigger: set-type of node after inserting a valve (to get orientation).';
 	
-CREATE OR REPLACE TRIGGER valve_node_set_type
+CREATE TRIGGER valve_node_set_type
 	AFTER INSERT ON qwat_od.valve
 	FOR EACH ROW
 	EXECUTE PROCEDURE qwat_od.ft_valve_node_set_type();
 COMMENT ON TRIGGER valve_node_set_type ON qwat_od.valve IS 'Trigger: set-type of node after inserting a valve (to get orientation).';
+
+
 
 /* HANDLE ALTITUDE TRIGGER */
 CREATE OR REPLACE FUNCTION qwat_od.ft_valve_handle_altitude() RETURNS TRIGGER AS
