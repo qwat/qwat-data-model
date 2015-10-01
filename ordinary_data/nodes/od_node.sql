@@ -26,6 +26,7 @@ ALTER TABLE qwat_od.node ADD COLUMN fk_pressurezone     integer;
 ALTER TABLE qwat_od.node ADD COLUMN fk_printmap         integer[];
 ALTER TABLE qwat_od.node ADD COLUMN fk_precision        integer;
 ALTER TABLE qwat_od.node ADD COLUMN fk_precisionalti    integer;
+ALTER TABLE qwat_od.node ADD COLUMN fk_object_reference integer CHECK (fk_object_reference IS NOT NULL OR altitude IS NULL);
 ALTER TABLE qwat_od.node ADD COLUMN altitude            decimal(10,3);
 ALTER TABLE qwat_od.node ADD COLUMN _printmaps          text; -- list of printmap where it is included
 ALTER TABLE qwat_od.node ADD COLUMN _geometry_alt1_used boolean;
@@ -52,6 +53,7 @@ ALTER TABLE qwat_od.node ADD CONSTRAINT element_fk_district      FOREIGN KEY (fk
 ALTER TABLE qwat_od.node ADD CONSTRAINT element_fk_pressurezone  FOREIGN KEY (fk_pressurezone)  REFERENCES qwat_od.pressurezone(id)  MATCH FULL; CREATE INDEX fki_node_fk_pressurezone  ON qwat_od.node(fk_pressurezone);
 ALTER TABLE qwat_od.node ADD CONSTRAINT element_fk_precision     FOREIGN KEY (fk_precision)     REFERENCES qwat_vl.precision(id)     MATCH FULL; CREATE INDEX fki_node_fk_precision     ON qwat_od.node(fk_precision);
 ALTER TABLE qwat_od.node ADD CONSTRAINT element_fk_precisionalti FOREIGN KEY (fk_precisionalti) REFERENCES qwat_vl.precisionalti(id) MATCH FULL; CREATE INDEX fki_node_fk_precisionalti ON qwat_od.node(fk_precisionalti);
+ALTER TABLE qwat_od.node ADD CONSTRAINT node_fk_object_reference FOREIGN KEY (fk_object_reference) REFERENCES qwat_vl.object_reference(id) MATCH FULL; CREATE INDEX fki_node_fk_object_reference ON qwat_od.node(fk_object_reference);
 
 /* GEOMETRY TRIGGERS */
 CREATE OR REPLACE FUNCTION qwat_od.ft_node_geom()
