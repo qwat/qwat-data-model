@@ -124,7 +124,7 @@ $BODY$
 				-- if the node has only on 1 active pipe, check if it intersects another pipe.
 				-- if yes, set it to pipe_end (the connection with inactive pipes is not meaningful
 				-- st_intersects does not work as expected.
-				IF bool_or(ST_DWithin(_node_geom, pipe.geometry, 0.0001)) FROM qwat_od.pipe WHERE id != _pipe_id IS TRUE THEN
+				IF bool_or(ST_DWithin(_node_geom, pipe.geometry, 0.0)) IS TRUE FROM qwat_od.pipe WHERE id != _pipe_id THEN
 					_type := 'pipe_end'::qwat_od.pipe_connection;
 				END IF;
 			END IF;

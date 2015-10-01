@@ -15,7 +15,7 @@ $BODY$
 			WITH pipes AS (
 			SELECT id, geometry
 				FROM qwat_od.pipe
-				WHERE ST_DWithin(point,geometry,0.0001)
+				WHERE ST_DWithin(point,geometry,0.0)
 				ORDER BY ST_Distance(point,geometry)
 			)
 			SELECT pipes.id INTO _pipe_id
@@ -24,7 +24,7 @@ $BODY$
 				AND   ST_AsBinary(_geometry) <> ST_AsBinary(ST_EndPoint( pipes.geometry))
 				LIMIT 1;
 		ELSE
-			_pipe_id := id FROM qwat_od.pipe WHERE ST_DWithin(point,geometry,0.0001) ORDER BY ST_Distance(point,geometry) ASC LIMIT 1;
+			_pipe_id := id FROM qwat_od.pipe WHERE ST_DWithin(point,geometry,0.0) ORDER BY ST_Distance(point,geometry) ASC LIMIT 1;
 		END IF;
 		RETURN _pipe_id;
 	END;
