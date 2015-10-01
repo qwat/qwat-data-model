@@ -35,9 +35,26 @@ ALTER TABLE qwat_od.valve ADD CONSTRAINT valve_fk_handle_precisionalti FOREIGN K
 ALTER TABLE qwat_od.valve ADD CONSTRAINT valve_fk_maintenance FOREIGN KEY (fk_maintenance) REFERENCES qwat_vl.valve_maintenance(id) MATCH FULL ; CREATE INDEX fki_valve_fk_maintenance ON qwat_od.valve(fk_maintenance) ;
 */
 
-/* Handle altitude trigger */
+/* NODE TRIGGER */
+CREATE OR REPLACE FUNCTION qwat_od.ft_valve_node_set_type() RETURNS TRIGGER AS
+$BODY$
+	BEGIN
+		PERFORM qwat_od.fn_node_set_type(NEW.id);
+	RETURN NEW;
+	END;
+$BODY$
+LANGUAGE plpgsql;
+COMMENT ON FUNCTION qwat_od.ft_valve_node_set_type()  IS 'Trigger: set-type of node after inserting a valve (to get orientation).';
+	
+CREATE OR REPLACE TRIGGER valve_node_set_type
+	AFTER INSERT ON qwat_od.valve
+	FOR EACH ROW
+	EXECUTE PROCEDURE qwat_od.ft_valve_node_set_type();
+COMMENT ON TRIGGER valve_node_set_type ON qwat_od.valve IS 'Trigger: set-type of node after inserting a valve (to get orientation).';
+
+/* HANDLE ALTITUDE TRIGGER */
 CREATE OR REPLACE FUNCTION qwat_od.ft_valve_handle_altitude() RETURNS TRIGGER AS
-	$BODY$
+$BODY$
 	BEGIN
 		-- altitude is prioritary on Z value of the geometry (if both changed, only altitude is taken into account)
 		IF TG_OP = 'INSERT' THEN
@@ -54,10 +71,10 @@ CREATE OR REPLACE FUNCTION qwat_od.ft_valve_handle_altitude() RETURNS TRIGGER AS
 				NEW.handle_altitude := ST_Z(NEW.handle_geometry);
 			END IF;
 		END IF;
-		RETURN NEW;
+	RETURN NEW;
 	END;
-	$BODY$
-	LANGUAGE plpgsql;
+$BODY$
+LANGUAGE plpgsql;
 
 CREATE TRIGGER valve_handle_altitude_update_trigger
 	BEFORE UPDATE OF handle_altitude, handle_geometry ON qwat_od.valve
