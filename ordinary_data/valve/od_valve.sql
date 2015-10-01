@@ -10,29 +10,29 @@ COMMENT ON TABLE qwat_od.valve IS 'Table for valve. Inherits from node.';
 
 /* columns */
 ALTER TABLE qwat_od.valve ADD COLUMN id integer NOT NULL REFERENCES qwat_od.node(id) PRIMARY KEY;
-ALTER TABLE qwat_od.valve ADD COLUMN fk_valve_type     		 integer not null ;
-ALTER TABLE qwat_od.valve ADD COLUMN fk_valve_function       integer not null ;
-ALTER TABLE qwat_od.valve ADD COLUMN fk_actuation      		 integer not null ;
-ALTER TABLE qwat_od.valve ADD COLUMN fk_handle_precision     integer ;
-ALTER TABLE qwat_od.valve ADD COLUMN fk_handle_precisionalti integer ;
+ALTER TABLE qwat_od.valve ADD COLUMN fk_valve_type     		 integer not null;
+ALTER TABLE qwat_od.valve ADD COLUMN fk_valve_function       integer not null;
+ALTER TABLE qwat_od.valve ADD COLUMN fk_actuation      		 integer not null;
+ALTER TABLE qwat_od.valve ADD COLUMN fk_handle_precision     integer;
+ALTER TABLE qwat_od.valve ADD COLUMN fk_handle_precisionalti integer;
 ALTER TABLE qwat_od.valve ADD COLUMN fk_maintenance    		 integer[]; --TODO should use n:m relations!
-ALTER TABLE qwat_od.valve ADD COLUMN diameter_nominal 		 varchar(10) ;
-ALTER TABLE qwat_od.valve ADD COLUMN closed            		 boolean default false ;
-ALTER TABLE qwat_od.valve ADD COLUMN networkseparation 		 boolean default false ;
-ALTER TABLE qwat_od.valve ADD COLUMN node_altitude      decimal(10,3)  ;
-ALTER TABLE qwat_od.valve ADD COLUMN handle_altitude    decimal(10,3)  ;
-ALTER TABLE qwat_od.valve ADD COLUMN handle_geometry geometry(PointZ,:SRID);
+ALTER TABLE qwat_od.valve ADD COLUMN diameter_nominal 		 varchar(10);
+ALTER TABLE qwat_od.valve ADD COLUMN closed            		 boolean default false;
+ALTER TABLE qwat_od.valve ADD COLUMN networkseparation 		 boolean default false;
+ALTER TABLE qwat_od.valve ADD COLUMN node_altitude           decimal(10,3);
+ALTER TABLE qwat_od.valve ADD COLUMN handle_altitude         decimal(10,3);
+ALTER TABLE qwat_od.valve ADD COLUMN handle_geometry         geometry(PointZ,:SRID);
 
 
 /* constraints */
-ALTER TABLE qwat_od.valve ADD CONSTRAINT valve_fk_type        FOREIGN KEY (fk_valve_type)     REFERENCES qwat_vl.valve_type(id)      MATCH FULL; CREATE INDEX fki_valve_fk_type        ON qwat_od.valve(fk_valve_type)   ;
-ALTER TABLE qwat_od.valve ADD CONSTRAINT valve_fk_function    FOREIGN KEY (fk_valve_function) REFERENCES qwat_vl.valve_function(id)  MATCH FULL; CREATE INDEX fki_valve_fk_function    ON qwat_od.valve(fk_valve_function);
-ALTER TABLE qwat_od.valve ADD CONSTRAINT valve_fk_actuation   FOREIGN KEY (fk_actuation)      REFERENCES qwat_vl.valve_actuation(id) MATCH FULL; CREATE INDEX fki_valve_fk_actuation   ON qwat_od.valve(fk_actuation)    ;
-ALTER TABLE qwat_od.valve ADD CONSTRAINT valve_fk_handle_precision     FOREIGN KEY (fk_handle_precision)     REFERENCES qwat_vl.precision(id)     MATCH FULL; CREATE INDEX fki_valve_fk_handle_precision     ON qwat_od.valve(fk_handle_precision)    ;
+ALTER TABLE qwat_od.valve ADD CONSTRAINT valve_fk_type      FOREIGN KEY (fk_valve_type)     REFERENCES qwat_vl.valve_type(id)      MATCH FULL; CREATE INDEX fki_valve_fk_type      ON qwat_od.valve(fk_valve_type);
+ALTER TABLE qwat_od.valve ADD CONSTRAINT valve_fk_function  FOREIGN KEY (fk_valve_function) REFERENCES qwat_vl.valve_function(id)  MATCH FULL; CREATE INDEX fki_valve_fk_function  ON qwat_od.valve(fk_valve_function);
+ALTER TABLE qwat_od.valve ADD CONSTRAINT valve_fk_actuation FOREIGN KEY (fk_actuation)      REFERENCES qwat_vl.valve_actuation(id) MATCH FULL; CREATE INDEX fki_valve_fk_actuation ON qwat_od.valve(fk_actuation);
+ALTER TABLE qwat_od.valve ADD CONSTRAINT valve_fk_handle_precision     FOREIGN KEY (fk_handle_precision)     REFERENCES qwat_vl.precision(id)     MATCH FULL; CREATE INDEX fki_valve_fk_handle_precision     ON qwat_od.valve(fk_handle_precision);
 ALTER TABLE qwat_od.valve ADD CONSTRAINT valve_fk_handle_precisionalti FOREIGN KEY (fk_handle_precisionalti) REFERENCES qwat_vl.precisionalti(id) MATCH FULL; CREATE INDEX fki_valve_fk_handle_precisionalti ON qwat_od.valve(fk_handle_precisionalti);
 
 /* cannot create constraint on arrays yet
-ALTER TABLE qwat_od.valve ADD CONSTRAINT valve_fk_maintenance FOREIGN KEY (fk_maintenance) REFERENCES qwat_vl.valve_maintenance(id) MATCH FULL ; CREATE INDEX fki_valve_fk_maintenance ON qwat_od.valve(fk_maintenance) ;
+ALTER TABLE qwat_od.valve ADD CONSTRAINT valve_fk_maintenance FOREIGN KEY (fk_maintenance) REFERENCES qwat_vl.valve_maintenance(id) MATCH FULL; CREATE INDEX fki_valve_fk_maintenance ON qwat_od.valve(fk_maintenance);
 */
 
 
@@ -45,7 +45,7 @@ $BODY$
 	END;
 $BODY$
 LANGUAGE plpgsql;
-COMMENT ON FUNCTION qwat_od.ft_valve_node_set_type()  IS 'Trigger: set-type of node after inserting a valve (to get orientation).';
+COMMENT ON FUNCTION qwat_od.ft_valve_node_set_type() IS 'Trigger: set-type of node after inserting a valve (to get orientation).';
 	
 CREATE TRIGGER valve_node_set_type
 	AFTER INSERT ON qwat_od.valve
@@ -78,6 +78,7 @@ $BODY$
 	END;
 $BODY$
 LANGUAGE plpgsql;
+COMMENT ON FUNCTION qwat_od.ft_valve_handle_altitude() IS 'Trigger: when updating, check if altitude or Z value of geometry changed and synchronize them.';
 
 CREATE TRIGGER valve_handle_altitude_update_trigger
 	BEFORE UPDATE OF handle_altitude, handle_geometry ON qwat_od.valve
