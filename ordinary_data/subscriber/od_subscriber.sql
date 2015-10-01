@@ -7,7 +7,7 @@
 CREATE TABLE qwat_od.subscriber ();
 COMMENT ON TABLE qwat_od.subscriber IS 'Table for subscriber. Inherits from node.';
 
-ALTER TABLE qwat_od.subscriber ADD COLUMN id                 integer NOT NULL REFERENCES qwat_od.node(id) PRIMARY KEY;
+ALTER TABLE qwat_od.subscriber ADD COLUMN id                 integer NOT NULL REFERENCES qwat_od.network_element(id) PRIMARY KEY;
 ALTER TABLE qwat_od.subscriber ADD COLUMN fk_subscriber_type integer not null;
 ALTER TABLE qwat_od.subscriber ADD COLUMN parcel             varchar(12)  ;
 ALTER TABLE qwat_od.subscriber ADD COLUMN flow_current       decimal(8,2);

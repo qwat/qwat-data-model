@@ -8,6 +8,7 @@ SELECT qwat_sys.fn_inherited_table_view(
 			"table_name":"qwat_od.installation",
 			"pkey": "id",
 			"pkey_value":"NEW.id",
+			"destination_schema": "qwat_od",
 			"inherited_by": {
 				"chamber": {
 					"table_name":"qwat_od.chamber",
@@ -36,7 +37,6 @@ SELECT qwat_sys.fn_inherited_table_view(
 			},
 			"merge_view": {
 				"view_name":"vw_qwat_installation",
-				"destination_schema": "qwat_od",
 				"allow_type_change": false
 			}
 		}

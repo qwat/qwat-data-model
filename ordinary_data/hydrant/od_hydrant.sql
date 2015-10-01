@@ -12,7 +12,7 @@ CREATE TABLE qwat_od.hydrant ();
 COMMENT ON TABLE qwat_od.hydrant IS 'hydrant. Inherits from node.';
 
 /* COLUMNS */
-ALTER TABLE qwat_od.hydrant ADD COLUMN id                 integer NOT NULL REFERENCES qwat_od.node(id) PRIMARY KEY;
+ALTER TABLE qwat_od.hydrant ADD COLUMN id                 integer NOT NULL REFERENCES qwat_od.network_element(id) PRIMARY KEY;
 ALTER TABLE qwat_od.hydrant ADD COLUMN fk_provider        integer               ;
 ALTER TABLE qwat_od.hydrant ADD COLUMN fk_material        integer not null      ;
 ALTER TABLE qwat_od.hydrant ADD COLUMN model              varchar(30)           ;

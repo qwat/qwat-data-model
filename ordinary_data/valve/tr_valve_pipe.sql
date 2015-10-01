@@ -46,12 +46,12 @@ CREATE OR REPLACE FUNCTION qwat_od.ft_valve_update_pipe() RETURNS TRIGGER AS
 	LANGUAGE plpgsql;
 
 CREATE TRIGGER tr_valve_update_pipe_insdel
-	AFTER INSERT OR DELETE ON qwat_od.vw_node_valve
+	AFTER INSERT OR DELETE ON qwat_od.valve
 	EXECUTE PROCEDURE qwat_od.ft_valve_update_pipe();
-COMMENT ON TRIGGER tr_valve_update_pipe_insdel ON qwat_od.vw_node_valve IS 'Trigger: after insert or delete of a valve, update valve count and pipe opening of the associated pipe.';
+COMMENT ON TRIGGER tr_valve_update_pipe_insdel ON qwat_od.valve IS 'Trigger: after insert or delete of a valve, update valve count and pipe opening of the associated pipe.';
 
 CREATE TRIGGER tr_valve_update_pipe_update
-	AFTER UPDATE ON qwat_od.vw_node_valve
+	AFTER UPDATE ON qwat_od.valve
 	EXECUTE PROCEDURE qwat_od.ft_valve_update_pipe();
-COMMENT ON TRIGGER tr_valve_update_pipe_update ON qwat_od.vw_node_valve IS 'Trigger: after updating of a valve, update valve count and pipe opening of the associated pipe.';
+COMMENT ON TRIGGER tr_valve_update_pipe_update ON qwat_od.valve IS 'Trigger: after updating of a valve, update valve count and pipe opening of the associated pipe.';
 

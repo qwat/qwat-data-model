@@ -9,7 +9,7 @@ CREATE TABLE qwat_od.valve ();
 COMMENT ON TABLE qwat_od.valve IS 'Table for valve. Inherits from node.';
 
 /* columns */
-ALTER TABLE qwat_od.valve ADD COLUMN id integer NOT NULL REFERENCES qwat_od.node(id) PRIMARY KEY;
+ALTER TABLE qwat_od.valve ADD COLUMN id integer NOT NULL REFERENCES qwat_od.network_element(id) PRIMARY KEY;
 ALTER TABLE qwat_od.valve ADD COLUMN fk_valve_type     		 integer not null;
 ALTER TABLE qwat_od.valve ADD COLUMN fk_valve_function       integer not null;
 ALTER TABLE qwat_od.valve ADD COLUMN fk_actuation      		 integer not null;

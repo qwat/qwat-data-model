@@ -9,7 +9,7 @@ CREATE TABLE qwat_od.installation ();
 COMMENT ON TABLE qwat_od.installation IS 'This is the base table for all installation types.';
 
 /* COLUMNS */
-ALTER TABLE qwat_od.installation ADD COLUMN id                 integer NOT NULL REFERENCES qwat_od.node(id) PRIMARY KEY;
+ALTER TABLE qwat_od.installation ADD COLUMN id                 integer NOT NULL REFERENCES qwat_od.network_element(id) PRIMARY KEY;
 ALTER TABLE qwat_od.installation ADD COLUMN name               varchar(60)      ;
 ALTER TABLE qwat_od.installation ADD COLUMN fk_parent          integer          ;
 ALTER TABLE qwat_od.installation ADD COLUMN fk_remote          integer          ;

@@ -2,13 +2,10 @@
 	qWat - QGIS Water Module
 
 	SQL file :: node inheritance
-	
+
 	This file creates the view that allow editing all node inherited tables
-	
+
 */
-
-
-
 
 SELECT qwat_sys.fn_inherited_table_view(
 	'{
@@ -17,6 +14,26 @@ SELECT qwat_sys.fn_inherited_table_view(
 			"pkey": "id",
 			"pkey_value": "qwat_od.fn_node_create(NEW.geometry)",
 			"pkey_value_create_entry": true,
+			"destination_schema": "qwat_od",
+			"inherited_by": {
+				"element": {
+					"table_name":"qwat_od.network_element",
+					"pkey": "id"
+				}
+			}
+		}
+	}'::json
+);
+
+
+
+SELECT qwat_sys.fn_inherited_table_view(
+	'{
+		"element": {
+			"table_name":"qwat_od.vw_node_element",
+			"pkey": "id",
+			"pkey_value": "NEW.id",
+			"destination_schema": "qwat_od",
 			"inherited_by": {
 				"installation": {
 					"table_name":"qwat_od.vw_qwat_installation",
@@ -30,8 +47,8 @@ SELECT qwat_sys.fn_inherited_table_view(
 					"table_name":"qwat_od.hydrant",
 					"pkey": "id"
 				},
-				"element": {
-					"table_name":"qwat_od.element",
+				"part": {
+					"table_name":"qwat_od.part",
 					"pkey": "id"
 				},
 				"meter": {
@@ -52,8 +69,7 @@ SELECT qwat_sys.fn_inherited_table_view(
 				}
 			},
 			"merge_view": {
-				"view_name":"vw_qwat_node",
-				"destination_schema": "qwat_od",
+				"view_name":"vw_qwat_network_element",
 				"allow_type_change": false,
 				"allow_parent_only": true,
 				"merge_columns": {

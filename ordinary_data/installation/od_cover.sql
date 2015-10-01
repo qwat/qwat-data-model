@@ -9,7 +9,7 @@ CREATE TABLE qwat_od.cover ();
 COMMENT ON TABLE qwat_od.cover IS 'Table for installation covers.  Inherits from node.';
 
 /* COLUMNS */
-ALTER TABLE qwat_od.cover ADD COLUMN id            integer NOT NULL REFERENCES qwat_od.node(id) PRIMARY KEY;
+ALTER TABLE qwat_od.cover ADD COLUMN id            integer NOT NULL REFERENCES qwat_od.network_element(id) PRIMARY KEY;
 ALTER TABLE qwat_od.cover ADD COLUMN fk_cover_type integer;
 ALTER TABLE qwat_od.cover ADD COLUMN circular      boolean default true    ;
 ALTER TABLE qwat_od.cover ADD COLUMN diameter      decimal(10,3)           ;

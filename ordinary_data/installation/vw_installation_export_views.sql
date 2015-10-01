@@ -8,7 +8,7 @@ SELECT
 	distributor.name AS distributor,
 	remote_type.value_fr AS remote,
 	watertype.value_fr AS watertype
-	FROM qwat_od.vw_node_installation i
+	FROM qwat_od.vw_element_installation i
 	INNER JOIN      qwat_vl.status      ON status.id      = i.fk_status
 	INNER JOIN      qwat_od.distributor ON distributor.id = i.fk_distributor
 	LEFT OUTER JOIN qwat_vl.remote_type ON remote_type.id = i.fk_remote
@@ -25,7 +25,7 @@ SELECT
 	remote_type.value_fr AS remote,
 	watertype.value_fr AS watertype,
 	pressurecontrol_type.value_fr AS type
-	FROM qwat_od.vw_node_installation i
+	FROM qwat_od.vw_element_installation i
 	INNER JOIN      qwat_vl.status               ON status.id               = i.fk_status
 	INNER JOIN      qwat_od.distributor          ON distributor.id          = i.fk_distributor
 	LEFT OUTER JOIN qwat_vl.remote_type          ON remote_type.id          = i.fk_remote
@@ -43,7 +43,7 @@ SELECT
 	remote_type.value_fr AS remote,
 	watertype.value_fr   AS watertype,
 	pump_type.value_fr   AS type
-	FROM qwat_od.vw_node_installation i
+	FROM qwat_od.vw_element_installation i
 	INNER JOIN      qwat_vl.status          ON status.id      = i.fk_status
 	INNER JOIN      qwat_od.distributor     ON distributor.id = i.fk_distributor
 	LEFT OUTER JOIN qwat_vl.remote_type     ON remote_type.id = i.fk_remote
@@ -63,7 +63,7 @@ SELECT
 	watertype.value_fr AS watertype,
 	source_type.value_fr AS type,
 	source_quality.value_fr AS quality
-	FROM qwat_od.vw_node_installation i
+	FROM qwat_od.vw_element_installation i
 	INNER JOIN      qwat_vl.status         ON status.id         = i.fk_status
 	INNER JOIN      qwat_od.distributor    ON distributor.id    = i.fk_distributor
 	LEFT OUTER JOIN qwat_vl.remote_type    ON remote_type.id    = i.fk_remote
@@ -86,7 +86,7 @@ SELECT
 	tank_firestorage.value_fr AS firestorage,
 	cis1.value_fr AS cistern1,
 	cis2.value_fr AS cistern2
-	FROM qwat_od.vw_node_installation i
+	FROM qwat_od.vw_element_installation i
 	INNER JOIN      qwat_vl.status           ON status.id           = i.fk_status
 	INNER JOIN      qwat_od.distributor      ON distributor.id      = i.fk_distributor
 	LEFT OUTER JOIN qwat_vl.remote_type      ON remote_type.id      = i.fk_remote
@@ -108,7 +108,7 @@ SELECT
 	distributor.name AS distributor,
 	remote_type.value_fr AS remote,
 	watertype.value_fr AS watertype
-	FROM qwat_od.vw_node_installation i
+	FROM qwat_od.vw_element_installation i
 	INNER JOIN      qwat_vl.status          ON status.id          = i.fk_status
 	INNER JOIN      qwat_od.distributor     ON distributor.id     = i.fk_distributor
 	LEFT OUTER JOIN qwat_vl.remote_type     ON remote_type.id     = i.fk_remote

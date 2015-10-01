@@ -126,12 +126,12 @@ psql -v ON_ERROR_STOP=1 -f value_lists/vl_object_reference.sql
 psql -v ON_ERROR_STOP=1 -f value_lists/vl_bedding.sql
 psql -v ON_ERROR_STOP=1 -f value_lists/vl_cistern.sql
 psql -v ON_ERROR_STOP=1 -f value_lists/vl_cover_type.sql
-psql -v ON_ERROR_STOP=1 -f value_lists/vl_element_type.sql
 psql -v ON_ERROR_STOP=1 -f value_lists/vl_hydrant_material.sql
 psql -v ON_ERROR_STOP=1 -f value_lists/vl_hydrant_provider.sql
 psql -v ON_ERROR_STOP=1 -f value_lists/vl_leak_cause.sql
 psql -v ON_ERROR_STOP=1 -f value_lists/vl_locationtype.sql
 psql -v ON_ERROR_STOP=1 -f value_lists/vl_overflow.sql
+psql -v ON_ERROR_STOP=1 -f value_lists/vl_part_type.sql
 psql -v ON_ERROR_STOP=1 -f value_lists/vl_pipe_function.sql
 psql -v ON_ERROR_STOP=1 -f value_lists/vl_pipe_installmethod.sql
 psql -v ON_ERROR_STOP=1 -f value_lists/vl_pipe_material.sql
@@ -185,7 +185,8 @@ psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f ordinary_data/areas/fn_get_district.sql
 psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f ordinary_data/areas/fn_get_printmap.sql
 psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f ordinary_data/areas/fn_pressurezone.sql
 psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f ordinary_data/nodes/od_node.sql
-psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f ordinary_data/nodes/od_element.sql
+psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f ordinary_data/nodes/od_network_element.sql
+psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f ordinary_data/nodes/od_part.sql
 psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f ordinary_data/nodes/fn_node_create.sql
 psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f ordinary_data/nodes/fn_node_get_id.sql
 psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f ordinary_data/nodes/fn_node_set_type.sql
