@@ -30,7 +30,7 @@ SELECT qwat_od.fn_label_create_fields('leak');
 ALTER TABLE qwat_od.leak ADD CONSTRAINT leak_fk_cause FOREIGN KEY (fk_cause) REFERENCES qwat_vl.leak_cause(id) MATCH FULL; CREATE INDEX fki_leak_fk_cause ON qwat_od.leak(fk_cause);
 ALTER TABLE qwat_od.leak ADD CONSTRAINT leak_fk_pipe  FOREIGN KEY (fk_pipe)  REFERENCES qwat_od.pipe(id)       MATCH FULL; CREATE INDEX fki_leak_fk_pipe  ON qwat_od.leak(fk_pipe);
 
-/* Trigger */
+/* REPAIRED TRIGGER */
 CREATE OR REPLACE FUNCTION qwat_od.ft_leak_repaired() RETURNS trigger AS
 $BODY$
 	BEGIN
@@ -50,11 +50,13 @@ CREATE TRIGGER tr_leak_repaired
 	EXECUTE PROCEDURE qwat_od.ft_leak_repaired();
 COMMENT ON TRIGGER tr_leak_repaired ON qwat_od.leak IS 'Trigger: updates the repaired status of the leak.';
 
-/* Trigger */
+/* LINKED PIPE TRIGGER */
 CREATE OR REPLACE FUNCTION qwat_od.ft_leak_pipe() RETURNS trigger AS
 $BODY$
 	BEGIN
-		NEW.fk_pipe := qwat_od.fn_pipe_get_id(NEW.geometry);
+		IF NEW.fk_pipe IS NULL THEN
+			NEW.fk_pipe := qwat_od.fn_pipe_get_id(NEW.geometry);
+		END IF;
 		RETURN NEW;
 	END;
 $BODY$LANGUAGE plpgsql;
