@@ -1,8 +1,13 @@
+/*
+	qWat - QGIS Water Module
+
+	SQL file :: node inheritance
+	
+	This file creates the view that allow editing all node inherited tables
+	
+*/
 
 
-
-
-ALTER TABLE qwat_od.node ADD CONSTRAINT node_fk_pipe FOREIGN KEY (fk_pipe) REFERENCES qwat_od.pipe(id) MATCH FULL; CREATE INDEX fki_node_fk_pipe  ON qwat_od.node(fk_pipe);
 
 
 SELECT qwat_sys.fn_inherited_table_view(

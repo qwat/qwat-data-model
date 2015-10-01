@@ -30,7 +30,6 @@ ALTER TABLE qwat_od.node ADD COLUMN fk_pressurezone     integer;
 ALTER TABLE qwat_od.node ADD COLUMN fk_printmap         integer[];
 ALTER TABLE qwat_od.node ADD COLUMN fk_status           integer;
 ALTER TABLE qwat_od.node ADD COLUMN fk_folder           integer ;
-ALTER TABLE qwat_od.node ADD COLUMN fk_pipe             integer ;
 ALTER TABLE qwat_od.node ADD COLUMN fk_object_reference integer;
 ALTER TABLE qwat_od.node ADD COLUMN fk_precision        integer;
 ALTER TABLE qwat_od.node ADD COLUMN fk_precisionalti    integer;
@@ -68,7 +67,6 @@ ALTER TABLE qwat_od.node ADD CONSTRAINT node_fk_pressurezone  FOREIGN KEY (fk_pr
 ALTER TABLE qwat_od.node ADD CONSTRAINT node_fk_status        FOREIGN KEY (fk_status)        REFERENCES qwat_vl.status(id)        MATCH FULL; CREATE INDEX fki_node_fk_status        ON qwat_od.node(fk_status);
 ALTER TABLE qwat_od.node ADD CONSTRAINT node_fk_folder        FOREIGN KEY (fk_folder)        REFERENCES qwat_od.folder(id)        MATCH FULL; CREATE INDEX fki_node_fk_folder        ON qwat_od.node(fk_folder);
 ALTER TABLE qwat_od.node ADD CONSTRAINT node_fk_object_reference FOREIGN KEY (fk_object_reference) REFERENCES qwat_vl.object_reference(id) MATCH FULL; CREATE INDEX fki_node_fk_object_reference ON qwat_od.node(fk_object_reference);
--- ALTER TABLE qwat_od.node ADD CONSTRAINT node_fk_pipe          FOREIGN KEY (fk_pipe)          REFERENCES qwat_od.pipe(id)          MATCH FULL; CREATE INDEX fki_node_fk_pipe          ON qwat_od.node(fk_pipe); do it later when pipe table is created
 ALTER TABLE qwat_od.node ADD CONSTRAINT node_fk_precision     FOREIGN KEY (fk_precision)     REFERENCES qwat_vl.precision(id)     MATCH FULL; CREATE INDEX fki_node_fk_precision     ON qwat_od.node(fk_precision);
 ALTER TABLE qwat_od.node ADD CONSTRAINT node_fk_precisionalti FOREIGN KEY (fk_precisionalti) REFERENCES qwat_vl.precisionalti(id) MATCH FULL; CREATE INDEX fki_node_fk_precisionalti ON qwat_od.node(fk_precisionalti);
 
