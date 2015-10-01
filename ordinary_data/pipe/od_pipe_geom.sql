@@ -134,3 +134,21 @@ CREATE TRIGGER tr_pipe_alternative_geom
 	FOR EACH ROW
 	EXECUTE PROCEDURE qwat_od.ft_pipe_alternative_geom();
 COMMENT ON TRIGGER tr_pipe_alternative_geom ON qwat_od.pipe IS 'Trigger: when updating, check if alternative geometries are different to fill the boolean fields.';
+
+
+/* --------------------------------------------*/
+/* -------- REMOVE NODE LINK TRIGGER ----------*/
+CREATE OR REPLACE FUNCTION qwat_od.ft_pipe_remove_node_link() RETURNS TRIGGER AS
+	$BODY$
+	BEGIN
+		UPDATE qwat_od.node SET fk_pipe = NULL WHERE fk_pipe = NEW.id;
+		RETURN NEW;
+	END;
+	$BODY$
+	LANGUAGE plpgsql;
+
+CREATE TRIGGER tr_pipe_remove_node_link
+	BEFORE DELETE ON qwat_od.pipe
+	FOR EACH ROW
+	EXECUTE PROCEDURE qwat_od.ft_pipe_remove_node_link();
+COMMENT ON TRIGGER tr_pipe_remove_node_link ON qwat_od.pipe IS 'Trigger: before deleting pipe remove links to it in nodes.';
