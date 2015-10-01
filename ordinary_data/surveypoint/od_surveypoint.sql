@@ -15,8 +15,8 @@ ALTER TABLE qwat_od.surveypoint ADD COLUMN fk_worker        integer;
 ALTER TABLE qwat_od.surveypoint ADD COLUMN code             varchar(50);
 ALTER TABLE qwat_od.surveypoint ADD COLUMN description      text;
 ALTER TABLE qwat_od.surveypoint ADD COLUMN date             date;
-ALTER TABLE qwat_od.surveypoint ADD COLUMN fk_folder           integer ;
-ALTER TABLE qwat_od.surveypoint ADD COLUMN altitude         double precision;
+ALTER TABLE qwat_od.surveypoint ADD COLUMN fk_folder        integer ;
+ALTER TABLE qwat_od.surveypoint ADD COLUMN altitude         decimal(10,3) default null;
 ALTER TABLE qwat_od.surveypoint ADD COLUMN geometry         geometry(POINTZ,:SRID);
 
 
@@ -32,19 +32,24 @@ CREATE OR REPLACE FUNCTION qwat_od.ft_surveypoint_altitude() RETURNS TRIGGER AS
 	BEGIN
 		-- altitude is prioritary on Z value of the geometry (if both changed, only altitude is taken into account)
 		IF TG_OP = 'INSERT' THEN
-			IF NEW.altitude IS NULL THEN
+			IF NEW.altitude IN (NULL,-9999) THEN
 				NEW.altitude := ST_Z(NEW.geometry);
 			END IF;
-			IF ST_Z(NEW.geometry) IS NULL THEN
-				NEW.geometry := ST_MakePoint( ST_X(NEW.geometry), ST_Y(NEW.geometry), altitude );
+			IF ST_Z(NEW.geometry) = -9999 THEN
+				NEW.geometry := ST_SetSRID( ST_MakePoint( ST_X(NEW.geometry), ST_Y(NEW.geometry), COALESCE(NEW.altitude,-9999) ), ST_SRID(NEW.geometry) );
 			END IF;
 		ELSIF TG_OP = 'UPDATE' THEN
 			IF NEW.altitue <> OLD.altitude THEN
-				NEW.geometry := ST_MakePoint( ST_X(NEW.geometry), ST_Y(NEW.geometry), altitude );
+				NEW.geometry := ST_SetSRID( ST_MakePoint( ST_X(NEW.geometry), ST_Y(NEW.geometry), COALESCE(NEW.altitude,-9999) ), ST_SRID(NEW.geometry) );
 			ELSIF ST_Z(NEW.geometry) <> ST_Z(OLD.geometry) THEN
 				NEW.altitude := ST_Z(NEW.geometry);
 			END IF;
 		END IF;
+
+		IF NEW.altitude = -9999 THEN
+			NEW.altitude := NULL;
+		END IF;
+
 		RETURN NEW;
 	END;
 	$BODY$

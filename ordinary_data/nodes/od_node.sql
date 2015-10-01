@@ -27,7 +27,7 @@ ALTER TABLE qwat_od.node ADD COLUMN fk_printmap         integer[];
 ALTER TABLE qwat_od.node ADD COLUMN fk_precision        integer;
 ALTER TABLE qwat_od.node ADD COLUMN fk_precisionalti    integer;
 ALTER TABLE qwat_od.node ADD COLUMN fk_object_reference integer;
-ALTER TABLE qwat_od.node ADD COLUMN altitude            decimal(10,3) default -9999;
+ALTER TABLE qwat_od.node ADD COLUMN altitude            decimal(10,3) default null;
 ALTER TABLE qwat_od.node ADD COLUMN _printmaps          text; -- list of printmap where it is included
 ALTER TABLE qwat_od.node ADD COLUMN _geometry_alt1_used boolean;
 ALTER TABLE qwat_od.node ADD COLUMN _geometry_alt2_used boolean;
@@ -35,7 +35,6 @@ ALTER TABLE qwat_od.node ADD COLUMN _geometry_alt2_used boolean;
 ALTER TABLE qwat_od.node ADD COLUMN _pipe_node_type      qwat_od.pipe_connection default null;
 ALTER TABLE qwat_od.node ADD COLUMN _pipe_orientation    float       default 0;
 ALTER TABLE qwat_od.node ADD COLUMN _pipe_schema_visible boolean     default false;
-ALTER TABLE qwat_od.node ADD COLUMN _pipe_status_active  boolean     default false;
 
 /* altitude - fk_object_reference constraint */
 ALTER TABLE qwat_od.node ADD CONSTRAINT chk_node_altitude_obj_ref CHECK (fk_object_reference IS NOT NULL OR altitude = -9999 );
@@ -101,19 +100,24 @@ CREATE OR REPLACE FUNCTION qwat_od.ft_node_altitude() RETURNS TRIGGER AS
 	BEGIN
 		-- altitude is prioritary on Z value of the geometry (if both changed, only altitude is taken into account)
 		IF TG_OP = 'INSERT' THEN
-			IF NEW.altitude IS NULL THEN
+			IF NEW.altitude IN (NULL,-9999) THEN
 				NEW.altitude := ST_Z(NEW.geometry);
 			END IF;
-			IF ST_Z(NEW.geometry) IS NULL THEN
-				NEW.geometry := ST_MakePoint( ST_X(NEW.geometry), ST_Y(NEW.geometry), altitude );
+			IF ST_Z(NEW.geometry) = -9999 THEN
+				NEW.geometry := ST_SetSRID( ST_MakePoint( ST_X(NEW.geometry), ST_Y(NEW.geometry), COALESCE(NEW.altitude,-9999) ), ST_SRID(NEW.geometry) );
 			END IF;
 		ELSIF TG_OP = 'UPDATE' THEN
 			IF NEW.altitue <> OLD.altitude THEN
-				NEW.geometry := ST_MakePoint( ST_X(NEW.geometry), ST_Y(NEW.geometry), altitude );
+				NEW.geometry := ST_SetSRID( ST_MakePoint( ST_X(NEW.geometry), ST_Y(NEW.geometry), COALESCE(NEW.altitude,-9999) ), ST_SRID(NEW.geometry) );
 			ELSIF ST_Z(NEW.geometry) <> ST_Z(OLD.geometry) THEN
 				NEW.altitude := ST_Z(NEW.geometry);
 			END IF;
 		END IF;
+
+		IF NEW.altitude = -9999 THEN
+			NEW.altitude := NULL;
+		END IF;
+
 		RETURN NEW;
 	END;
 	$BODY$
