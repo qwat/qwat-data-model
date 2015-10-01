@@ -24,15 +24,15 @@ Every element of the network (hydrants, valves, element, installations, etc.) in
 
 /* columns */
 ALTER TABLE qwat_od.node ADD COLUMN identification      varchar(20);
-ALTER TABLE qwat_od.node ADD COLUMN fk_distributor      integer not null;
-ALTER TABLE qwat_od.node ADD COLUMN fk_district         integer not null;
-ALTER TABLE qwat_od.node ADD COLUMN fk_pressurezone     integer not null;
+ALTER TABLE qwat_od.node ADD COLUMN fk_distributor      integer;
+ALTER TABLE qwat_od.node ADD COLUMN fk_district         integer;
+ALTER TABLE qwat_od.node ADD COLUMN fk_pressurezone     integer;
 ALTER TABLE qwat_od.node ADD COLUMN fk_printmap         integer[];
-ALTER TABLE qwat_od.node ADD COLUMN fk_status           integer not null;
+ALTER TABLE qwat_od.node ADD COLUMN fk_status           integer;
 ALTER TABLE qwat_od.node ADD COLUMN fk_folder           integer ;
-ALTER TABLE qwat_od.node ADD COLUMN fk_object_reference integer;
 ALTER TABLE qwat_od.node ADD COLUMN fk_pipe             integer ;
-ALTER TABLE qwat_od.node ADD COLUMN fk_precision        integer not null;
+ALTER TABLE qwat_od.node ADD COLUMN fk_object_reference integer;
+ALTER TABLE qwat_od.node ADD COLUMN fk_precision        integer;
 ALTER TABLE qwat_od.node ADD COLUMN fk_precisionalti    integer;
 ALTER TABLE qwat_od.node ADD COLUMN fk_locationtype     integer[];
 ALTER TABLE qwat_od.node ADD COLUMN year                smallint CHECK (year     IS NULL OR year     > 1800 AND year     < 2100);

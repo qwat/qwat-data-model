@@ -107,6 +107,7 @@ FROM qwat_od.installation_chamber_data"
 psql --host $HOST --port 5432 --username "$USER" --dbname "$DESTDB" -c "
 insert into qwat_od.vw_installation_pressurecontrol 
 (id,
+fk_object_reference,
 name,
 identification,
 fk_status,
@@ -125,6 +126,7 @@ geometry,
 fk_pressurecontrol_type)
 SELECT
 id,
+102,
 name,
 identification,
 fk_status,
@@ -147,6 +149,7 @@ FROM qwat_od.installation_pressurecontrol_data"
 psql --host $HOST --port 5432 --username "$USER" --dbname "$DESTDB" -c "
 insert into qwat_od.vw_installation_pump
 (id,
+fk_object_reference,
 name,
 identification,
 fk_status,
@@ -172,6 +175,7 @@ manometric_height
 )
 SELECT
 id,
+102,
 name,
 identification,
 fk_status,
@@ -190,7 +194,7 @@ geometry,
 fk_type  ,   
 fk_pipe_in     ,  
 fk_pipe_out   ,   
-fk_operating    , 
+CASE WHEN fk_operating=2401 THEN 102 ELSE fk_operating END    , 
 no_pumps         ,
 rejected_flow    ,
 manometric_height
@@ -200,6 +204,7 @@ FROM qwat_od.installation_pump_data"
 psql --host $HOST --port 5432 --username "$USER" --dbname "$DESTDB" -c "
 insert into qwat_od.vw_installation_source
 (id,
+fk_object_reference,
 name,
 identification,
 fk_status,
@@ -222,10 +227,10 @@ flow_average    ,
 flow_concession , 
 contract_end     ,
 gathering_chamber
-
 )
 SELECT
 id,
+102,
 name,
 identification,
 fk_status,
@@ -254,6 +259,7 @@ FROM qwat_od.installation_source_data"
 psql --host $HOST --port 5432 --username "$USER" --dbname "$DESTDB" -c "
 insert into qwat_od.vw_installation_tank
 (id,
+fk_object_reference,
 name,
 identification,
 fk_status,
@@ -293,6 +299,7 @@ _cistern2_litrepercm
 )
 SELECT
 id,
+102,
 name,
 identification,
 fk_status,
@@ -335,6 +342,7 @@ psql --host $HOST --port 5432 --username "$USER" --dbname "$DESTDB" -c "
 insert into qwat_od.vw_qwat_installation
 (installation_type,
 id,
+fk_object_reference,
 name,
 identification,
 fk_status,
@@ -364,6 +372,7 @@ treatment_capacity
 SELECT
 'treatment',
 id,
+102,
 name,
 identification,
 fk_status,
