@@ -70,8 +70,8 @@ $BODY$
 		NEW._printmaps          := qwat_od.fn_get_printmaps(NEW.geometry);
 		IF TG_OP = 'UPDATE' THEN
 			-- reassign nodes to pipes if a node moved
-			UPDATE qwat_od.pipe SET pipe.fk_node_a = qwat_od.fn_node_create(pipe.geometry) WHERE pipe.fk_node_a = OLD.id;
-			UPDATE qwat_od.pipe SET pipe.fk_node_b = qwat_od.fn_node_create(pipe.geometry) WHERE pipe.fk_node_a = OLD.id;
+			UPDATE qwat_od.pipe SET fk_node_a = qwat_od.fn_node_create(pipe.geometry) WHERE fk_node_a = OLD.id;
+			UPDATE qwat_od.pipe SET fk_node_b = qwat_od.fn_node_create(pipe.geometry) WHERE fk_node_a = OLD.id;
 		END IF;
 		RETURN NEW;
 	END;
