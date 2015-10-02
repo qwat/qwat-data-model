@@ -25,5 +25,5 @@ ALTER TABLE qwat_od.hydrant ADD COLUMN observation_date   date                  
 ALTER TABLE qwat_od.hydrant ADD COLUMN observation_source varchar(45)           ;
 
 /* CONSTRAINTS */
-ALTER TABLE qwat_od.hydrant ADD CONSTRAINT hydrant_fk_material      FOREIGN KEY (fk_material)      REFERENCES qwat_vl.hydrant_material(id) MATCH FULL; CREATE INDEX fki_hydrant_fk_material      ON qwat_od.hydrant(fk_material);
-ALTER TABLE qwat_od.hydrant ADD CONSTRAINT hydrant_fk_provider      FOREIGN KEY (fk_provider)      REFERENCES qwat_vl.hydrant_provider(id) MATCH FULL; CREATE INDEX fki_hydrant_fk_provider      ON qwat_od.hydrant(fk_provider)     ;
+ALTER TABLE qwat_od.hydrant ADD CONSTRAINT hydrant_fk_material FOREIGN KEY (fk_material) REFERENCES qwat_vl.hydrant_material(id) MATCH FULL; CREATE INDEX fki_hydrant_fk_material ON qwat_od.hydrant(fk_material);
+ALTER TABLE qwat_od.hydrant ADD CONSTRAINT hydrant_fk_provider FOREIGN KEY (fk_provider) REFERENCES qwat_vl.hydrant_provider(id) MATCH FULL; CREATE INDEX fki_hydrant_fk_provider ON qwat_od.hydrant(fk_provider);

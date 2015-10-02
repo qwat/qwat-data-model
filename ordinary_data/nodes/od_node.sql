@@ -62,6 +62,7 @@ CREATE OR REPLACE FUNCTION qwat_od.ft_node_geom()
   RETURNS trigger AS
 $BODY$
 	BEGIN
+		NEW.geometry            := ST_Force3D(NEW.geometry);
 		NEW.fk_district         := qwat_od.fn_get_district(NEW.geometry);
 		NEW.fk_pressurezone     := qwat_od.fn_get_pressurezone(NEW.geometry);
 		NEW.fk_printmap         := qwat_od.fn_get_printmap_id(NEW.geometry);
