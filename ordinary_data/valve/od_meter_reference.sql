@@ -7,7 +7,7 @@
 CREATE TABLE qwat_od.meter_reference (id serial PRIMARY KEY);
 COMMENT ON TABLE qwat_od.meter_reference IS 'Table for meter references. These are used to place references to meters if they rely far away from their pipe (i.e. on another printed map). Hence, the reference is printed on the same map than the pipe.';
 
-ALTER TABLE qwat_od.meter_reference ADD COLUMN fk_meter integer ;
+ALTER TABLE qwat_od.meter_reference ADD COLUMN fk_meter integer not null ;
 
 /* GEOMETRY */
 ALTER TABLE qwat_od.meter_reference ADD COLUMN geometry geometry('POINT',:SRID);
