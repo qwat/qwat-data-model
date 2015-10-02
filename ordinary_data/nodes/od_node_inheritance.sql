@@ -20,6 +20,11 @@ SELECT qwat_sys.fn_inherited_table_view(
 					"table_name":"qwat_od.network_element",
 					"pkey": "id"
 				}
+			},
+			"merge_view": {
+				"view_name":"vw_qwat_node",
+				"allow_type_change": false,
+				"allow_parent_only": true
 			}
 		}
 	}'::json

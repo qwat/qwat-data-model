@@ -28,7 +28,7 @@ ALTER TABLE qwat_od.surveypoint ADD CONSTRAINT surveypoint_fk_folder FOREIGN KEY
 
 /* Altitude triggers */
 CREATE OR REPLACE FUNCTION qwat_od.ft_surveypoint_altitude() RETURNS TRIGGER AS
-	$BODY$
+$BODY$
 	BEGIN
 		-- altitude is prioritary on Z value of the geometry (if both changed, only altitude is taken into account)
 		IF NEW.altitude IS NULL THEN
@@ -40,8 +40,8 @@ CREATE OR REPLACE FUNCTION qwat_od.ft_surveypoint_altitude() RETURNS TRIGGER AS
 		END IF;
 		RETURN NEW;
 	END;
-	$BODY$
-	LANGUAGE plpgsql;
+$BODY$
+LANGUAGE plpgsql;
 
 CREATE TRIGGER surveypoint_altitude_update_trigger
 	BEFORE UPDATE OF altitude, geometry ON qwat_od.surveypoint

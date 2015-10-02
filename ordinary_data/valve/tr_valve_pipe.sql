@@ -84,7 +84,7 @@ $BODY$
 LANGUAGE plpgsql;
 COMMENT ON FUNCTION qwat_od.ft_valve_update() IS 'Trigger: when updating a valve, reevaluate old and new pipes.';
 CREATE TRIGGER valve_update_trigger
-	BEFORE INSERT ON qwat_od.valve
+	AFTER UPDATE ON qwat_od.valve
 	FOR EACH ROW
 	EXECUTE PROCEDURE qwat_od.ft_valve_update();
 COMMENT ON TRIGGER valve_update_trigger ON qwat_od.valve IS 'Trigger: when updating a valve, reevaluate old and new pipes.';

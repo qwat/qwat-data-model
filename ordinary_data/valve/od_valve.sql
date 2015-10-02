@@ -60,23 +60,17 @@ COMMENT ON TRIGGER valve_node_set_type ON qwat_od.valve IS 'Trigger: set-type of
 /* HANDLE ALTITUDE TRIGGER */
 CREATE OR REPLACE FUNCTION qwat_od.ft_valve_handle_altitude() RETURNS TRIGGER AS
 $BODY$
+	DECLARE
 	BEGIN
 		-- altitude is prioritary on Z value of the geometry (if both changed, only altitude is taken into account)
-		IF TG_OP = 'INSERT' THEN
-			IF NEW.handle_altitude IS NULL THEN
-				NEW.handle_altitude := ST_Z(NEW.handle_geometry);
-			END IF;
-			IF ST_Z(NEW.handle_geometry) IS NULL THEN
-				NEW.handle_geometry := ST_MakePoint( ST_X(NEW.handle_geometry), ST_Y(NEW.handle_geometry), handle_altitude );
-			END IF;
-		ELSIF TG_OP = 'UPDATE' THEN
-			IF NEW.handle_altitude <> OLD.handle_altitude THEN
-				NEW.handle_geometry := ST_MakePoint( ST_X(NEW.handle_geometry), ST_Y(NEW.handle_geometry), handle_altitude );
-			ELSIF ST_Z(NEW.handle_geometry) <> ST_Z(OLD.handle_geometry) THEN
-				NEW.handle_altitude := ST_Z(NEW.handle_geometry);
-			END IF;
+		IF NEW.handle_altitude IS NULL THEN
+			NEW.handle_altitude := NULLIF( ST_Z(NEW.handle_geometry), 0.0); -- 0 is the NULL value
 		END IF;
-	RETURN NEW;
+		IF 	NEW.handle_altitude IS NULL     AND ST_Z(NEW.handle_geometry) <> 0.0 					OR
+			NEW.handle_altitude IS NOT NULL AND ST_Z(NEW.handle_geometry) <> NEW.handle_altitude 	THEN
+				NEW.handle_geometry := ST_SetSRID( ST_MakePoint( ST_X(NEW.handle_geometry), ST_Y(NEW.handle_geometry), COALESCE(NEW.handle_altitude,0) ), ST_SRID(NEW.handle_geometry) );
+		END IF;
+		RETURN NEW;
 	END;
 $BODY$
 LANGUAGE plpgsql;

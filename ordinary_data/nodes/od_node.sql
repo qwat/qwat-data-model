@@ -100,7 +100,7 @@ COMMENT ON TRIGGER tr_node_geom_update ON qwat_od.node IS 'Trigger: updates auto
 
 /* ALTITUDE TRIGGER */
 CREATE OR REPLACE FUNCTION qwat_od.ft_node_altitude() RETURNS TRIGGER AS
-	$BODY$
+$BODY$
 	DECLARE
 	BEGIN
 		-- altitude is prioritary on Z value of the geometry (if both changed, only altitude is taken into account)
@@ -113,8 +113,8 @@ CREATE OR REPLACE FUNCTION qwat_od.ft_node_altitude() RETURNS TRIGGER AS
 		END IF;
 		RETURN NEW;
 	END;
-	$BODY$
-	LANGUAGE plpgsql;
+$BODY$
+LANGUAGE plpgsql;
 
 CREATE TRIGGER node_altitude_update_trigger
 	BEFORE UPDATE OF altitude, geometry ON qwat_od.node
