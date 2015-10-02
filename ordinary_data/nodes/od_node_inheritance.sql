@@ -88,8 +88,10 @@ SELECT qwat_sys.fn_inherited_table_view(
 						"installation": "networkseparation"
 					},
 					"fk_pipe": {
-						"valve": "fk_pipe",
-						"part": "fk_pipe"
+						"meter": "fk_pipe",
+						"part": "fk_pipe",
+						"subscriber": "fk_pipe",
+						"valve": "fk_pipe"
 					}
 				}
 			}
