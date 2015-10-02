@@ -23,7 +23,6 @@ $BODY$
 		IF NEW.fk_pipe IS NULL THEN
 			NEW.fk_pipe := qwat_od.fn_pipe_get_id(node.geometry) FROM qwat_od.node WHERE node.id = NEW.id;
 		END IF;
-		PERFORM qwat_od.fn_pipe_update_part(NEW.id);
 		RETURN NEW;
 	END;
 $BODY$
@@ -44,9 +43,8 @@ $BODY$
 	DECLARE
 		_old_pipe integer;
 	BEGIN
-		-- this will be fired for every node, although not every node is part
+		-- this will be fired for every node, although not every node is a part
 		UPDATE qwat_od.vw_element_part SET fk_pipe = qwat_od.fn_pipe_get_id(geometry) WHERE id = NEW.id; -- TODO prompt user to move it or not
-		-- this will be calling the trigger ft_part_update
 		RETURN NEW;
 	END;
 $BODY$
