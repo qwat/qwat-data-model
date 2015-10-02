@@ -91,7 +91,7 @@ CREATE TRIGGER tr_node_geom_update
   BEFORE UPDATE OF geometry
   ON qwat_od.node
   FOR EACH ROW
-  WHEN (ST_AsBinary(ST_Force2d(NEW.geometry)) <> ST_AsBinary(ST_Force2d(OLD.geometry)))
+  WHEN (ST_Equals(ST_Force2d(NEW.geometry), ST_Force2d(OLD.geometry)) IS FALSE )
   EXECUTE PROCEDURE qwat_od.ft_node_geom();
 COMMENT ON TRIGGER tr_node_geom_update ON qwat_od.node IS 'Trigger: updates auto fields after geom update.';
 

@@ -52,8 +52,8 @@ CREATE OR REPLACE FUNCTION qwat_od.ft_pipe_geom() RETURNS TRIGGER AS
 		IF NEW.geometry_alt2 IS NULL THEN
 			NEW.geometry_alt2       := NEW.geometry;
 		END IF;
-		NEW._geometry_alt1_used := ST_AsBinary(ST_Force2d(NEW.geometry_alt1)) <> ST_AsBinary(ST_Force2d(NEW.geometry)) ;
-		NEW._geometry_alt2_used := ST_AsBinary(ST_Force2d(NEW.geometry_alt2)) <> ST_AsBinary(ST_Force2d(NEW.geometry)) ;
+		NEW._geometry_alt1_used := ST_Equals(ST_Force2d(NEW.geometry_alt1), ST_Force2d(NEW.geometry)) IS FALSE;
+		NEW._geometry_alt2_used := ST_Equals(ST_Force2d(NEW.geometry_alt2), ST_Force2d(NEW.geometry)) IS FALSE;
 		NEW._printmaps          := qwat_od.fn_get_printmaps(NEW.geometry);
 		NEW._length2d           := ST_Length(NEW.geometry);
 		NEW._length3d           := ST_3DLength(NEW.geometry);
@@ -73,7 +73,7 @@ COMMENT ON TRIGGER tr_pipe_geom_insert ON qwat_od.pipe IS 'Trigger: updates auto
 CREATE TRIGGER tr_pipe_geom_update
 	BEFORE UPDATE OF geometry ON qwat_od.pipe
 	FOR EACH ROW
-	WHEN (ST_AsBinary(NEW.geometry) <> ST_AsBinary(OLD.geometry))
+	WHEN  ( ST_Equals(ST_Force2d(NEW.geometry), ST_Force2d(OLD.geometry)) IS FALSE )
 	EXECUTE PROCEDURE qwat_od.ft_pipe_geom();
 COMMENT ON TRIGGER tr_pipe_geom_update ON qwat_od.pipe IS 'Trigger: updates auto fields of the pipe after geom update.';
 
@@ -122,8 +122,8 @@ COMMENT ON TRIGGER tr_pipe_node_type_update ON qwat_od.pipe IS 'Trigger: after u
 CREATE OR REPLACE FUNCTION qwat_od.ft_pipe_alternative_geom() RETURNS TRIGGER AS
 	$BODY$
 	BEGIN
-		NEW._geometry_alt1_used := NEW.geometry_alt1 IS NOT NULL AND ST_AsBinary(ST_Force2d(NEW.geometry_alt1)) <> ST_AsBinary(ST_Force2d(NEW.geometry));
-		NEW._geometry_alt2_used := NEW.geometry_alt2 IS NOT NULL AND ST_AsBinary(ST_Force2d(NEW.geometry_alt2)) <> ST_AsBinary(ST_Force2d(NEW.geometry));
+		NEW._geometry_alt1_used := NEW.geometry_alt1 IS NOT NULL AND ST_Equals(ST_Force2d(NEW.geometry_alt1), ST_Force2d(NEW.geometry)) IS FALSE;
+		NEW._geometry_alt2_used := NEW.geometry_alt2 IS NOT NULL AND ST_Equals(ST_Force2d(NEW.geometry_alt2), ST_Force2d(NEW.geometry)) IS FALSE;
 		RETURN NEW;
 	END;
 	$BODY$

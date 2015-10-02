@@ -66,7 +66,7 @@ COMMENT ON FUNCTION qwat_od.ft_valve_node_update() IS 'Trigger: when moving a va
 CREATE TRIGGER valve_pipe_update_trigger
 	AFTER UPDATE OF geometry ON qwat_od.node
 	FOR EACH ROW
-	WHEN ( ST_AsBinary(NEW.geometry) <> ST_AsBinary(OLD.geometry) )
+	WHEN ( ST_Equals(ST_Force2d(NEW.geometry), ST_Force2d(OLD.geometry)) IS FALSE )
 	EXECUTE PROCEDURE qwat_od.ft_valve_node_update();
 COMMENT ON TRIGGER valve_pipe_update_trigger ON qwat_od.node IS 'Trigger: when moving a valve, update the corresponding pipe. Do an AFTER trigger since it will update valve after updating the node.';
 

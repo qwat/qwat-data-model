@@ -110,7 +110,7 @@ $BODY$
 			END IF;
 /* * * * * * * * * * * * * * * * * * * * * * * * */
 			/* UPDATE OR INSERT NEW CROSSING */
-			SELECT id FROM qwat_od.crossing WHERE ST_DWithin(_crossing.cross_geometry,geometry,0.0) IS TRUE LIMIT 1 INTO _crossing_id;
+			SELECT id FROM qwat_od.crossing WHERE ST_Equals(_crossing.cross_geometry,geometry) IS TRUE LIMIT 1 INTO _crossing_id;
 			IF _crossing_id IS NULL THEN
 				INSERT INTO qwat_od.crossing 
 						(         _pipe1_id,          _pipe2_id, _pipe1_angle,     _pipe2_angle,                 geometry) 
