@@ -101,19 +101,16 @@ COMMENT ON TRIGGER tr_node_geom_update ON qwat_od.node IS 'Trigger: updates auto
 /* ALTITUDE TRIGGER */
 CREATE OR REPLACE FUNCTION qwat_od.ft_node_altitude() RETURNS TRIGGER AS
 	$BODY$
+	DECLARE
 	BEGIN
 		-- altitude is prioritary on Z value of the geometry (if both changed, only altitude is taken into account)
-		IF NEW.altitude IN (NULL,-9999) THEN
-			NEW.altitude := NULLIF( ST_Z(NEW.geometry), 0.0); -- if geom is 2d, ST_Z will return 0 (this case happens only on insert since null is -9999)
+		IF NEW.altitude IS NULL THEN
+			NEW.altitude := NULLIF( ST_Z(NEW.geometry), 0.0); -- 0 is the NULL value
 		END IF;
-		IF ST_Z(NEW.geometry) = -9999 THEN
-			NEW.geometry := ST_SetSRID( ST_MakePoint( ST_X(NEW.geometry), ST_Y(NEW.geometry), COALESCE(NEW.altitude,-9999) ), ST_SRID(NEW.geometry) );
+		IF 	NEW.altitude IS NULL     AND ST_Z(NEW.geometry) <> 0.0 			OR
+			NEW.altitude IS NOT NULL AND ST_Z(NEW.geometry) <> NEW.altitude THEN
+				NEW.geometry := ST_SetSRID( ST_MakePoint( ST_X(NEW.geometry), ST_Y(NEW.geometry), COALESCE(NEW.altitude,0) ), ST_SRID(NEW.geometry) );
 		END IF;
-
-		IF NEW.altitude = -9999 THEN
-			NEW.altitude := NULL;
-		END IF;
-
 		RETURN NEW;
 	END;
 	$BODY$
