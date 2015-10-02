@@ -13,7 +13,7 @@ Every network_element of the network (hydrants, valves, network_element, install
 
 /* COLUMNS */
 ALTER TABLE qwat_od.network_element ADD COLUMN id                  integer NOT NULL REFERENCES qwat_od.node(id) PRIMARY KEY;
-ALTER TABLE qwat_od.network_element ADD COLUMN identification      varchar(20)  not null;
+ALTER TABLE qwat_od.network_element ADD COLUMN identification      varchar(50);
 ALTER TABLE qwat_od.network_element ADD COLUMN fk_distributor      integer not null;
 ALTER TABLE qwat_od.network_element ADD COLUMN fk_status           integer not null;
 ALTER TABLE qwat_od.network_element ADD COLUMN fk_folder           integer;

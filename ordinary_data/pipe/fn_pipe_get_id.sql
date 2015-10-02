@@ -11,21 +11,7 @@ $BODY$
 	DECLARE
 		_pipe_id integer := NULL;
 	BEGIN
-		IF ST_IsPoint(_geometry) THEN
-			WITH pipes AS (
-			SELECT id, geometry
-				FROM qwat_od.pipe
-				WHERE ST_DWithin(point,geometry,0.0)
-				ORDER BY ST_Distance(point,geometry)
-			)
-			SELECT pipes.id INTO _pipe_id
-				FROM pipes
-				WHERE ST_AsBinary(_geometry) <> ST_AsBinary(ST_FirstPoint(pipes.geometry))
-				AND   ST_AsBinary(_geometry) <> ST_AsBinary(ST_EndPoint( pipes.geometry))
-				LIMIT 1;
-		ELSE
-			_pipe_id := id FROM qwat_od.pipe WHERE ST_DWithin(point,geometry,0.0) ORDER BY ST_Distance(point,geometry) ASC LIMIT 1;
-		END IF;
+		_pipe_id := id FROM qwat_od.pipe WHERE ST_DWithin(ST_Force2d(geometry),ST_Force2d(geometry),0.0) LIMIT 1;
 		RETURN _pipe_id;
 	END;
 $BODY$
