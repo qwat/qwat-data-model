@@ -54,9 +54,10 @@ CREATE OR REPLACE VIEW qwat_od.vw_search_view AS
 
 	UNION SELECT
 		'Compteur' as layer_name,
-		_identification_full as search_text,
-		geometry
-		FROM qwat_od.meter
+		COALESCE(district.prefix||'_')||meter.identification AS search_text,
+		meter.geometry
+		FROM qwat_od.vw_element_meter meter
+		LEFT OUTER JOIN qwat_od.district ON meter.fk_district = district.id
 
 	UNION SELECT
 		'Vannes' as layer_name,
