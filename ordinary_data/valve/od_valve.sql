@@ -57,38 +57,6 @@ COMMENT ON TRIGGER valve_node_set_type ON qwat_od.valve IS 'Trigger: set-type of
 
 
 
-/* GET PIPE TRIGGER */
-CREATE OR REPLACE FUNCTION qwat_od.ft_valve_pipe() RETURNS TRIGGER AS
-$BODY$
-	BEGIN
-		IF TG_OP = 'INSERT' THEN -- i.e. working on valve table
-			IF NEW.fk_pipe IS NULL THEN
-				NEW.fk_pipe = qwat_od.fn_pipe_get_id(node.geometry) FROM qwat_od.node WHERE node.id = NEW.id;
-			END IF;
-		ELSIF TG_OP = 'UPDATE' THEN -- i.e. working on node table
-			-- this will be fired for every node, although not every node is valve
-			UPDATE qwat_od.valve SET fk_pipe = qwat_od.fn_pipe_get_id(node.geometry) WHERE valve.id = NEW.id;
-		END IF;
-		RETURN NEW;
-	END;
-$BODY$
-LANGUAGE plpgsql;
-COMMENT ON FUNCTION qwat_od.ft_valve_pipe() IS 'Trigger: update the associate pipe of valve after insert/upate. Since valve inherits from node, it needs to join the table. INSERT trigger is perfromed BEFORE on valve, while UPDATE is performed AFTER on node.';
-
-CREATE TRIGGER valve_pipe_insert_trigger
-	BEFORE INSERT ON qwat_od.valve
-	FOR EACH ROW
-	EXECUTE PROCEDURE qwat_od.ft_valve_pipe();
-COMMENT ON TRIGGER valve_pipe_insert_trigger ON qwat_od.valve IS 'Trigger: when inserting a valve, get a pipe if not given. Do a BEFORE trigger, valve will be update.';
-
-CREATE TRIGGER valve_pipe_update_trigger
-	AFTER UPDATE OF geometry ON qwat_od.node
-	FOR EACH ROW
-	WHEN ( ST_AsBinary(NEW.geometry) <> ST_AsBinary(OLD.geometry) )
-	EXECUTE PROCEDURE qwat_od.ft_valve_pipe();
-COMMENT ON TRIGGER valve_pipe_update_trigger ON qwat_od.node IS 'Trigger: when moving a valve, update the corresponding pipe. Do an AFTER trigger since it will update valve after updating the node.';
-
-
 /* HANDLE ALTITUDE TRIGGER */
 CREATE OR REPLACE FUNCTION qwat_od.ft_valve_handle_altitude() RETURNS TRIGGER AS
 $BODY$

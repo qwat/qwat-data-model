@@ -16,7 +16,7 @@ ALTER TABLE qwat_od.network_element ADD COLUMN id                  integer NOT N
 ALTER TABLE qwat_od.network_element ADD COLUMN identification      varchar(20)  not null;
 ALTER TABLE qwat_od.network_element ADD COLUMN fk_distributor      integer not null;
 ALTER TABLE qwat_od.network_element ADD COLUMN fk_status           integer not null;
-ALTER TABLE qwat_od.network_element ADD COLUMN fk_folder           integer not null;
+ALTER TABLE qwat_od.network_element ADD COLUMN fk_folder           integer;
 ALTER TABLE qwat_od.network_element ADD COLUMN fk_locationtype     integer[];
 ALTER TABLE qwat_od.network_element ADD COLUMN year                smallint CHECK (year     IS NULL OR year     > 1800 AND year     < 2100);
 ALTER TABLE qwat_od.network_element ADD COLUMN year_end            smallint CHECK (year_end IS NULL OR year_end > 1800 AND year_end < 2100);
