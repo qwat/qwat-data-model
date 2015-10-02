@@ -186,7 +186,6 @@ psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f ordinary_data/areas/fn_get_printmap.sql
 psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f ordinary_data/areas/fn_pressurezone.sql
 psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f ordinary_data/nodes/od_node.sql
 psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f ordinary_data/nodes/od_network_element.sql
-psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f ordinary_data/nodes/od_part.sql
 psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f ordinary_data/nodes/fn_node_create.sql
 psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f ordinary_data/nodes/fn_node_get_id.sql
 psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f ordinary_data/nodes/fn_node_set_type.sql
@@ -195,6 +194,7 @@ psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f ordinary_data/hydrant/od_hydrant.sql
 #psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f ordinary_data/hydrant/vw_hydrant.sql
 psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f ordinary_data/pipe/od_pipe.sql
 psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f ordinary_data/pipe/od_pipe_geom.sql
+psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f ordinary_data/nodes/od_part.sql
 psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f ordinary_data/pipe/od_crossing.sql
 psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f ordinary_data/pipe/fn_pipe_get_id.sql
 psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f ordinary_data/pipe/fn_update_pipe_crossing.sql
