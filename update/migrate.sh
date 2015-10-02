@@ -70,7 +70,7 @@ echo "migrate crossing, leaks..."
 /usr/bin/pg_dump --host $HOST --port 5432 --username "$USER" --format custom --file "data.backup" --table "qwat_od.crossing" "$SRCDB"; /usr/bin/pg_restore  --host $HOST --port 5432 --username "$USER" --dbname "$DESTDB" --no-password --disable-triggers --data-only --single-transaction --exit-on-error "data.backup"
 /usr/bin/pg_dump --host $HOST --port 5432 --username "$USER" --format custom --file "data.backup" --table "qwat_od.leak" "$SRCDB"; /usr/bin/pg_restore  --host $HOST --port 5432 --username "$USER" --dbname "$DESTDB" --no-password --disable-triggers --data-only --single-transaction --exit-on-error "data.backup"
 
-# TODO: hydrantes, meter, part (=>element), samplingpoint, subscriber, valve, meter_reference, subscriber_reference
+# TODO: meter, part (=>element), samplingpoint, subscriber, valve, meter_reference, subscriber_reference
 
 # hydrantes
 echo "migrate hydrants..."
@@ -98,6 +98,38 @@ echo ") SELECT " >> cmd.sql
 cat src_fields >> cmd.sql
 echo " FROM qwat_migration.hydrant_data;
 	ALTER TABLE qwat_od.hydrant ENABLE TRIGGER ALL;" >> cmd.sql
+/usr/bin/psql  -v ON_ERROR_STOP=on --host $HOST --port 5432 -f cmd.sql $DESTDB $USER
+
+# valves
+echo "migrate valves..."
+/usr/bin/psql --host $HOST --port 5432 -c "DROP TABLE IF EXISTS qwat_migration.valve_data;" $SRCDB $USER
+/usr/bin/psql --host $HOST --port 5432 -c "DROP TABLE IF EXISTS qwat_migration.valve_data;" $DESTDB $USER
+/usr/bin/psql --host $HOST --port 5432 -c "CREATE TABLE qwat_migration.valve_data AS (SELECT * FROM qwat_od.valve)" $SRCDB $USER
+/usr/bin/pg_dump --host $HOST --port 5432 --username "$USER" --format custom --file "$TODAY""_valve_data.backup" --table "qwat_migration.valve_data" "$SRCDB"
+/usr/bin/pg_restore  --host $HOST --port 5432 --username "$USER" --dbname "$DESTDB" --no-password --disable-triggers --single-transaction --exit-on-error "$TODAY""_valve_data.backup"
+# get field list
+/usr/bin/psql --host $HOST --port 5432 --tuples-only -o field_list -c "SELECT array_to_string(ARRAY(SELECT attname FROM pg_attribute WHERE attrelid = 'qwat_migration.valve_data'::regclass AND attnum > 0 ORDER BY attnum ASC), ', ')" $DESTDB $USER
+# remove fields
+sed -i 's/, _district,/,/g' field_list
+sed -i 's/, _pressurezone,/,/g' field_list
+sed -i 's/, fk_node,/,/g' field_list
+# alter columns
+cp field_list src_fields
+cp field_list dest_fields
+sed -i 's/, geometry,/,ST_Force3d(geometry),/g' src_fields
+sed -i 's/, geometry_alt1,/,ST_Force3d(geometry_alt1),/g' src_fields
+sed -i 's/, geometry_alt2/,ST_Force3d(geometry_alt2)/g' src_fields
+sed -i 's/, fk_type/,fk_valve_type/g' dest_fields
+sed -i 's/, fk_function/,fk_valve_function/g' dest_fields
+sed -i 's/, fk_node_precision/,fk_precision/g' dest_fields
+sed -i 's/, geometry_handle/,handle_geometry/g' dest_fields
+echo "--ALTER TABLE qwat_od.valve DISABLE TRIGGER ALL;
+	INSERT INTO qwat_od.vw_element_valve (" > cmd.sql
+cat dest_fields >> cmd.sql
+echo ") SELECT " >> cmd.sql
+cat src_fields >> cmd.sql
+echo " FROM qwat_migration.valve_data;
+	ALTER TABLE qwat_od.valve ENABLE TRIGGER ALL;" >> cmd.sql
 /usr/bin/psql  -v ON_ERROR_STOP=on --host $HOST --port 5432 -f cmd.sql $DESTDB $USER
 
 
