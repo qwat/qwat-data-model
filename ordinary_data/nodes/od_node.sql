@@ -55,6 +55,8 @@ ALTER TABLE qwat_od.node ADD CONSTRAINT element_fk_precision     FOREIGN KEY (fk
 ALTER TABLE qwat_od.node ADD CONSTRAINT element_fk_precisionalti FOREIGN KEY (fk_precisionalti) REFERENCES qwat_vl.precisionalti(id) MATCH FULL; CREATE INDEX fki_node_fk_precisionalti ON qwat_od.node(fk_precisionalti);
 ALTER TABLE qwat_od.node ADD CONSTRAINT node_fk_object_reference FOREIGN KEY (fk_object_reference) REFERENCES qwat_vl.object_reference(id) MATCH FULL; CREATE INDEX fki_node_fk_object_reference ON qwat_od.node(fk_object_reference);
 
+
+
 /* GEOMETRY TRIGGERS */
 CREATE OR REPLACE FUNCTION qwat_od.ft_node_geom()
   RETURNS trigger AS
@@ -70,8 +72,8 @@ $BODY$
 		NEW._printmaps          := qwat_od.fn_get_printmaps(NEW.geometry);
 		IF TG_OP = 'UPDATE' THEN
 			-- reassign nodes to pipes if a node moved
-			UPDATE qwat_od.pipe SET fk_node_a = qwat_od.fn_node_create(pipe.geometry) WHERE fk_node_a = OLD.id;
-			UPDATE qwat_od.pipe SET fk_node_b = qwat_od.fn_node_create(pipe.geometry) WHERE fk_node_a = OLD.id;
+			UPDATE qwat_od.pipe SET fk_node_a = qwat_od.fn_node_create(ST_StartPoint(pipe.geometry)) WHERE fk_node_a = OLD.id;
+			UPDATE qwat_od.pipe SET fk_node_b = qwat_od.fn_node_create(ST_EndPoint(pipe.geometry)) WHERE fk_node_b = OLD.id;
 		END IF;
 		RETURN NEW;
 	END;
@@ -89,9 +91,11 @@ CREATE TRIGGER tr_node_geom_update
   BEFORE UPDATE OF geometry
   ON qwat_od.node
   FOR EACH ROW
-  WHEN ((ST_AsBinary(NEW.geometry) <> ST_AsBinary(OLD.geometry)))
+  WHEN (ST_AsBinary(ST_Force2d(NEW.geometry)) <> ST_AsBinary(ST_Force2d(OLD.geometry)))
   EXECUTE PROCEDURE qwat_od.ft_node_geom();
 COMMENT ON TRIGGER tr_node_geom_update ON qwat_od.node IS 'Trigger: updates auto fields after geom update.';
+
+
 
 
 /* ALTITUDE TRIGGER */
