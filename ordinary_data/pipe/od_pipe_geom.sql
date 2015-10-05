@@ -15,9 +15,9 @@ ALTER TABLE qwat_od.pipe ADD COLUMN _geometry_alt2_used boolean;
 
 /* ---------------------------- */
 /* -------- ADD GEOM ---------- */
-SELECT AddGeometryColumn ('qwat_od','pipe','geometry',:SRID,'LINESTRING',3, false);
-SELECT AddGeometryColumn ('qwat_od','pipe','geometry_alt1',:SRID,'LINESTRING',3, false);
-SELECT AddGeometryColumn ('qwat_od','pipe','geometry_alt2',:SRID,'LINESTRING',3, false);
+ALTER TABLE qwat_od.pipe ADD COLUMN geometry      geometry('LINESTRINGZ',:SRID);
+ALTER TABLE qwat_od.pipe ADD COLUMN geometry_alt1 geometry('LINESTRINGZ',:SRID);
+ALTER TABLE qwat_od.pipe ADD COLUMN geometry_alt2 geometry('LINESTRINGZ',:SRID);
 
 CREATE INDEX pipe_geoidx      ON qwat_od.pipe USING GIST ( geometry );
 CREATE INDEX pipe_geoidx_alt1 ON qwat_od.pipe USING GIST ( geometry_alt1 );
