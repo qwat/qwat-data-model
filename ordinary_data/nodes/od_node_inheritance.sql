@@ -16,7 +16,9 @@ SELECT qwat_sys.fn_inherited_table_view(
 			"pkey_value_create_entry": true,
 			"destination_schema": "qwat_od",
 			"alter": {
-				"geometry": "ST_Force2D(geometry)"
+				"geometry": "ST_Force2D(geometry)",
+				"geometry_alt1": "ST_Force2D(geometry_alt1)",
+				"geometry_alt2": "ST_Force2D(geometry_alt2)"
 				},
 			"inherited_by": {
 				"element": {
