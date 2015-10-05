@@ -15,6 +15,9 @@ SELECT qwat_sys.fn_inherited_table_view(
 			"pkey_value": "qwat_od.fn_node_create(NEW.geometry)",
 			"pkey_value_create_entry": true,
 			"destination_schema": "qwat_od",
+			"alter": {
+				"geometry": "ST_Force2D(geometry)"
+				},
 			"inherited_by": {
 				"element": {
 					"table_name":"qwat_od.network_element",
