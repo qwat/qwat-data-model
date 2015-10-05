@@ -15,9 +15,9 @@ ALTER TABLE qwat_od.pipe ADD COLUMN _geometry_alt2_used boolean;
 
 /* ---------------------------- */
 /* -------- ADD GEOM ---------- */
-SELECT AddGeometryColumn ('qwat_od','pipe','geometry',:SRID,'LINESTRING',3, false);       --TODO switch back to type mod whenever QGIS is ready
-SELECT AddGeometryColumn ('qwat_od','pipe','geometry_alt1',:SRID,'LINESTRING',3, false);  -- see http://postgis.net/docs/AddGeometryColumn.html and https://hub.qgis.org/issues/12010
-SELECT AddGeometryColumn ('qwat_od','pipe','geometry_alt2',:SRID,'LINESTRING',3, false);  -- ALTER TABLE qwat_od.node ADD COLUMN geometry geometry('POINTZ',:SRID);
+SELECT AddGeometryColumn ('qwat_od','pipe','geometry',:SRID,'LINESTRING',3, false);
+SELECT AddGeometryColumn ('qwat_od','pipe','geometry_alt1',:SRID,'LINESTRING',3, false);
+SELECT AddGeometryColumn ('qwat_od','pipe','geometry_alt2',:SRID,'LINESTRING',3, false);
 
 CREATE INDEX pipe_geoidx      ON qwat_od.pipe USING GIST ( geometry );
 CREATE INDEX pipe_geoidx_alt1 ON qwat_od.pipe USING GIST ( geometry_alt1 );

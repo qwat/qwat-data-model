@@ -17,9 +17,7 @@ ALTER TABLE qwat_od.surveypoint ADD COLUMN description      text;
 ALTER TABLE qwat_od.surveypoint ADD COLUMN date             date;
 ALTER TABLE qwat_od.surveypoint ADD COLUMN fk_folder        integer ;
 ALTER TABLE qwat_od.surveypoint ADD COLUMN altitude         decimal(10,3) default null;
-SELECT AddGeometryColumn ('qwat_od','surveypoint','geometry',:SRID,'POINT',3, false); --TODO switch back to type mod whenever QGIS is ready
-                                                                                      -- see http://postgis.net/docs/AddGeometryColumn.html and https://hub.qgis.org/issues/12010
-                                                                                      -- ALTER TABLE qwat_od.node ADD COLUMN geometry geometry('POINTZ',:SRID);
+SELECT AddGeometryColumn ('qwat_od','surveypoint','geometry',:SRID,'POINT',3, false);
 -- TODO add fk_object_reference
 
 /* constraints */

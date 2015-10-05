@@ -40,9 +40,9 @@ ALTER TABLE qwat_od.node ADD COLUMN _pipe_schema_visible boolean default false;
 ALTER TABLE qwat_od.node ADD CONSTRAINT chk_node_altitude_obj_ref CHECK (fk_object_reference IS NOT NULL OR altitude IS NULL );
 
 /* GEOMETRY */
-SELECT AddGeometryColumn ('qwat_od','node','geometry',:SRID,'POINT',3, false);       --TODO switch back to type mod whenever QGIS is ready
-SELECT AddGeometryColumn ('qwat_od','node','geometry_alt1',:SRID,'POINT',3, false);  -- see http://postgis.net/docs/AddGeometryColumn.html and https://hub.qgis.org/issues/12010
-SELECT AddGeometryColumn ('qwat_od','node','geometry_alt2',:SRID,'POINT',3, false);  -- ALTER TABLE qwat_od.node ADD COLUMN geometry geometry('POINTZ',:SRID);
+SELECT AddGeometryColumn ('qwat_od','node','geometry',:SRID,'POINT',3, false);
+SELECT AddGeometryColumn ('qwat_od','node','geometry_alt1',:SRID,'POINT',3, false);
+SELECT AddGeometryColumn ('qwat_od','node','geometry_alt2',:SRID,'POINT',3, false);
 CREATE INDEX node_geoidx ON qwat_od.node USING GIST ( geometry );
 CREATE INDEX node_geoidx_alt1 ON qwat_od.node USING GIST ( geometry_alt1 );
 CREATE INDEX node_geoidx_alt2 ON qwat_od.node USING GIST ( geometry_alt2 );
