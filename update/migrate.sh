@@ -54,10 +54,10 @@ sed -i 's/, _pressurezone,/,/g' field_list
 # alter columns
 cp field_list src_fields
 cp field_list dest_fields
-sed -i 's/, geometry,/,ST_Force3d(geometry),/g' src_fields
-sed -i 's/, geometry_alt1,/,ST_Force3d(geometry_alt1),/g' src_fields
-sed -i 's/, geometry_alt2/,ST_Force3d(geometry_alt2)/g' src_fields
-echo "ALTER TABLE qwat_od.pipe DISABLE TRIGGER ALL;
+#sed -i 's/, geometry,/,ST_Force3d(geometry),/g' src_fields
+#sed -i 's/, geometry_alt1,/,ST_Force3d(geometry_alt1),/g' src_fields
+#sed -i 's/, geometry_alt2/,ST_Force3d(geometry_alt2)/g' src_fields
+echo "--ALTER TABLE qwat_od.pipe DISABLE TRIGGER ALL;
 	INSERT INTO qwat_od.pipe (" > cmd.sql
 cat dest_fields >> cmd.sql
 echo ") SELECT " >> cmd.sql
