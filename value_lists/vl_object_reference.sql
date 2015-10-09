@@ -16,7 +16,7 @@ INSERT INTO qwat_vl.object_reference (id, value_en, value_fr, value_ro) VALUES (
 INSERT INTO qwat_vl.object_reference (id, value_fr, value_en, value_ro) VALUES (9001,'radier','apron','radier');
 INSERT INTO qwat_vl.object_reference (id, value_fr, value_en, value_ro) VALUES (9002,'sol','ground','sol');
 INSERT INTO qwat_vl.object_reference (id, value_fr, value_en, value_ro) VALUES (9003,'conduite','pipe','conductă');
-
+INSERT INTO qwat_vl.object_reference (id, value_fr, value_en, value_ro) VALUES (9004,'dessus','on top','deasupra');
 
 
 
