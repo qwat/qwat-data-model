@@ -20,7 +20,6 @@ ALTER TABLE qwat_od.valve ADD COLUMN fk_maintenance    		 integer[]; --TODO shou
 ALTER TABLE qwat_od.valve ADD COLUMN diameter_nominal 		 varchar(10);
 ALTER TABLE qwat_od.valve ADD COLUMN closed            		 boolean default false;
 ALTER TABLE qwat_od.valve ADD COLUMN networkseparation 		 boolean default false;
-ALTER TABLE qwat_od.valve ADD COLUMN node_altitude           decimal(10,3);
 ALTER TABLE qwat_od.valve ADD COLUMN handle_altitude         decimal(10,3);
 ALTER TABLE qwat_od.valve ADD COLUMN handle_geometry         geometry(PointZ,:SRID);
 
