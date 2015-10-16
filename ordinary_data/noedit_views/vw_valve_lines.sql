@@ -7,7 +7,7 @@
 
 CREATE OR REPLACE VIEW qwat_od.vw_valve_lines AS 
  SELECT valve.id,
-    ST_MakeLine(valve.handle_geometry, valve.geometry)::geometry(LineString, :SRID) AS geometry
+    ST_MakeLine(ST_Force2D(valve.handle_geometry), valve.geometry)::geometry(LineString, :SRID) AS geometry
    FROM qwat_od.vw_element_valve valve
   WHERE valve.handle_geometry IS NOT NULL AND valve.geometry IS NOT NULL;
 
