@@ -20,3 +20,6 @@ INSERT INTO qwat_vl.part_type (id, value_en, value_fr, value_ro, vl_active) VALU
 INSERT INTO qwat_vl.part_type (id, value_en, value_fr, value_ro, vl_active) VALUES (9206, 'reduction fitting', '', 'fiting reductor', true);
 INSERT INTO qwat_vl.part_type (id, value_en, value_fr, value_ro, vl_active) VALUES (9207, 'cross fitting', '', 'fiting tip cruce', true);
 INSERT INTO qwat_vl.part_type (id, value_en, value_fr, value_ro, vl_active) VALUES (9208, 'unknown fitting', '', 'fiting nedeterminat', true);
+INSERT INTO qwat_vl.part_type (id, value_en, value_fr, value_ro, vl_active) VALUES (9209, 'manometer', 'manomètre', 'manometru', true);
+INSERT INTO qwat_vl.part_type (id, value_en, value_fr, value_ro, vl_active) VALUES (9210, 'flow meter', 'débitmètre', 'debitmetru', true);
+
