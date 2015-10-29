@@ -19,6 +19,7 @@ Usage: $0 [options]
                      If not given, use current one defined by PGSERVICE env. variable.
 -s|--srid            PostGIS SRID. Default to 21781 (ch1903)
 -d|--drop-schema     drop schemas (cascaded) if they exist
+--demo               load some demo data (not complete yet)
 -r|--create-roles    create roles in the database
 -v|--verbose         be verbose
 EOF
@@ -39,6 +40,7 @@ SRID=21781
 DROPSCHEMA=0
 CREATEROLES=0
 VERBOSE=0
+DEMO=0
 
 PGSERVICEGIVEN=0
 
@@ -59,17 +61,21 @@ while true; do
         shift;
       fi
       ;;
-    -d|--drop-schema)
+    --demo)
+      DEMO=1
       shift;
+      ;;
+    -d|--drop-schema)
       DROPSCHEMA=1
+      shift;
       ;;
     -r|--create-roles)
-      shift;
       CREATEROLES=1
+      shift;
       ;;
     -v|--verbose)
-      shift;
       VERBOSE=1
+      shift;
       ;;
     --)
       shift;
@@ -245,6 +251,11 @@ psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f ordinary_data/noedit_views/search_view.
 
 # Finalize System
 psql -v ON_ERROR_STOP=1 -f system/audit_tables.sql
+
+# Demo data
+if [[ "$DEMO" -eq 1 ]]; then
+	psql -v ON_ERROR_STOP=1 -f demo/minimal.sql
+fi
 
 # Create roles
 if [[ "$CREATEROLES" -eq 1 ]]; then
