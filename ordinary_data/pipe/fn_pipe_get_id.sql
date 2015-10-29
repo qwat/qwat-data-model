@@ -11,7 +11,7 @@ $BODY$
 	DECLARE
 		_pipe_id integer := NULL;
 	BEGIN
-		_pipe_id := id FROM qwat_od.pipe WHERE ST_Equals(ST_Force2d(geometry),ST_Force2d(geometry)) IS TRUE LIMIT 1;
+		_pipe_id := id FROM qwat_od.pipe WHERE ST_DWithin(ST_Force2d(geometry),ST_Force2d(pipe.geometry),0.0) IS TRUE LIMIT 1;
 		RETURN _pipe_id;
 	END;
 $BODY$
