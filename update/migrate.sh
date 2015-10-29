@@ -28,6 +28,16 @@ export PGOPTIONS='--client-min-messages=warning'
 # /usr/bin/pg_restore  --host $HOST --port 5432 --username "$USER" --dbname "$DESTDB" --no-password  --data-only --disable-triggers --single-transaction --exit-on-error "$TODAY""_sys_loggedactions.backup"
 
 
+# DISABLE TRIGGERS
+echo "
+ALTER TABLE qwat_od.pipe DISABLE TRIGGER ALL;
+ALTER TABLE qwat_od.valve DISABLE TRIGGER ALL;
+ALTER TABLE qwat_od.part DISABLE TRIGGER ALL;
+ALTER TABLE qwat_od.subscriber DISABLE TRIGGER ALL;
+" > cmd.sql
+# /usr/bin/psql  -v ON_ERROR_STOP=on --host $HOST --port 5432 -f cmd.sql $DESTDB $USER
+
+
 
 # ORDINARY DATA - 
 echo "migrate distributor, pressurezones, etc...."
@@ -57,8 +67,7 @@ cp field_list dest_fields
 #sed -i 's/, geometry,/,ST_Force3d(geometry),/g' src_fields
 #sed -i 's/, geometry_alt1,/,ST_Force3d(geometry_alt1),/g' src_fields
 #sed -i 's/, geometry_alt2/,ST_Force3d(geometry_alt2)/g' src_fields
-echo "--ALTER TABLE qwat_od.pipe DISABLE TRIGGER ALL;
-	INSERT INTO qwat_od.pipe (" > cmd.sql
+echo "INSERT INTO qwat_od.pipe (" > cmd.sql
 cat dest_fields >> cmd.sql
 echo ") SELECT " >> cmd.sql
 cat src_fields >> cmd.sql
@@ -70,7 +79,6 @@ echo "migrate crossing, leaks..."
 /usr/bin/pg_dump --host $HOST --port 5432 --username "$USER" --format custom --file "data.backup" --table "qwat_od.crossing" "$SRCDB"; /usr/bin/pg_restore  --host $HOST --port 5432 --username "$USER" --dbname "$DESTDB" --no-password --disable-triggers --data-only --single-transaction --exit-on-error "data.backup"
 /usr/bin/pg_dump --host $HOST --port 5432 --username "$USER" --format custom --file "data.backup" --table "qwat_od.leak" "$SRCDB"; /usr/bin/pg_restore  --host $HOST --port 5432 --username "$USER" --dbname "$DESTDB" --no-password --disable-triggers --data-only --single-transaction --exit-on-error "data.backup"
 
-# TODO:  meter_reference, subscriber_reference
 
 # samplingpoints
 echo "migrate samplingpoints..."
@@ -236,6 +244,7 @@ sed -i 's/, fk_type/,fk_valve_type/g' dest_fields
 sed -i 's/, fk_function/,fk_valve_function/g' dest_fields
 sed -i 's/, fk_node_precision/,fk_precision/g' dest_fields
 sed -i 's/, geometry_handle/,handle_geometry/g' dest_fields
+sed -i 's/, node_altitude/,altitude/g' dest_fields
 echo "INSERT INTO qwat_od.vw_element_valve (" > cmd.sql
 cat dest_fields >> cmd.sql
 echo ") SELECT " >> cmd.sql
@@ -294,6 +303,8 @@ cp field_list dest_fields
 sed -i 's/, geometry,/,ST_Force3d(geometry),/g' src_fields
 sed -i 's/, geometry_alt1,/,ST_Force3d(geometry_alt1),/g' src_fields
 sed -i 's/, geometry_alt2,/,ST_Force3d(geometry_alt2),/g' src_fields
+# rename
+sed -i 's/, meter,/,flow_meter,/g' dest_fields
 echo "INSERT INTO qwat_od.vw_element_installation (" > cmd.sql
 cat dest_fields >> cmd.sql
 echo ") SELECT " >> cmd.sql
