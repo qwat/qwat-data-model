@@ -112,7 +112,7 @@ $BODY$
 					_diameter := _pipeitem.diameter;
 					_pipe_id   := _pipeitem.id;
 					_looppos   := 1;
-					_orientation := pi()/2 + ST_Azimuth(_pipeitem.point_1,_pipeitem.point_2);
+					_orientation := pi()/2 - ST_Azimuth(_pipeitem.point_1,_pipeitem.point_2);
 				ELSE
 					-- second pipe if exists
 					IF _material = _pipeitem.material AND _diameter = _pipeitem.diameter AND _year = _pipeitem.year THEN
@@ -126,11 +126,13 @@ $BODY$
 					ELSE
 						_type := 'couple_other';
 					END IF;
-					_orientation := -_orientation; /* not azimuth but angle + switch direction */
 					_orientation2 := pi()/2 - ST_Azimuth(_pipeitem.point_1,_pipeitem.point_2);
-					_orientation := -pi()/2 + ATAN2( (COS(_orientation)+COS(_orientation))/2 , (SIN(_orientation)+SIN(_orientation2))/2 );
+					--RAISE NOTICE 'pipe % %', _pipe_id, degrees( _orientation );
+					--RAISE NOTICE 'pipe % %', _pipeitem.id, degrees( _orientation2 );
+					_orientation := ATAN2( (COS(_orientation)+COS(_orientation))/2 , (SIN(_orientation)+SIN(_orientation2))/2 );
+					--RAISE NOTICE 'mean:  %', degrees(_orientation  );
 					-- reverse arrow according to diameter reduction
-					IF _pipeitem.diameter > _diameter THEN
+					IF _pipeitem.diameter < _diameter THEN
 						_orientation := _orientation + pi();
 					END IF;
 				END IF;
@@ -146,7 +148,7 @@ $BODY$
 			_pipe_orientation    = degrees(_orientation),
 			_pipe_schema_visible = _grouped.schema_visible
 			WHERE id = _node_id;
-		--RAISE NOTICE '% %' , _node_id , _orientation;
+		RAISE NOTICE '% %' , _node_id , degrees(_orientation);
 	END;
 $BODY$
 LANGUAGE plpgsql;
