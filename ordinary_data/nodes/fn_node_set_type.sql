@@ -148,7 +148,7 @@ $BODY$
 			_pipe_orientation    = degrees(_orientation),
 			_pipe_schema_visible = _grouped.schema_visible
 			WHERE id = _node_id;
-		RAISE NOTICE '% %' , _node_id , degrees(_orientation);
+		--RAISE NOTICE '% %' , _node_id , degrees(_orientation);
 	END;
 $BODY$
 LANGUAGE plpgsql;
