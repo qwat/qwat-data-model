@@ -14,21 +14,20 @@ COMMENT ON TABLE qwat_vl.valve_function IS 'Functions for valves';
 ALTER TABLE qwat_vl.valve_function ADD COLUMN schema_visible BOOLEAN NOT NULL default true;
 
 /* VALUES */
-INSERT INTO qwat_vl.valve_function (id, value_en, value_fr, value_ro )       		VALUES (101, 'other', 'autre', 'alta');
-INSERT INTO qwat_vl.valve_function (id, value_en, value_fr, value_ro )       		VALUES (102, 'unknown', 'inconnu', 'necunoscută');
-INSERT INTO qwat_vl.valve_function (id, value_en, value_fr, value_ro )       		VALUES (103, 'to be determined', 'à déterminer', 'de determinat');
+INSERT INTO qwat_vl.valve_function (id, value_en, value_fr, value_ro ) VALUES (101, 'other',            'autre',        'alta');
+INSERT INTO qwat_vl.valve_function (id, value_en, value_fr, value_ro ) VALUES (102, 'unknown',          'inconnu',      'necunoscută');
+INSERT INTO qwat_vl.valve_function (id, value_en, value_fr, value_ro ) VALUES (103, 'to be determined', 'à déterminer', 'de determinat');
 
-INSERT INTO qwat_vl.valve_function (id, value_en, value_fr, value_ro)        		VALUES (6101, 'control valve',  'vanne de régulation',    'vană reglaj');
-INSERT INTO qwat_vl.valve_function (id, value_en, value_fr, short_fr, value_ro ) 	VALUES (6102, 'empty air',      'ventouse','Ve',          'aerisire');
-INSERT INTO qwat_vl.valve_function (id, value_en, value_fr, value_ro )                  VALUES (6103, 'bypass valve',   'vanne bypass',           'vană bypass');
-INSERT INTO qwat_vl.valve_function (id, value_en, value_fr, value_ro, schema_visible )  VALUES (6104, '',               'vanne d''ouvrage',       'vană deschidere?' ,'false');
-INSERT INTO qwat_vl.valve_function (id, value_en, value_fr, value_ro, schema_visible )  VALUES (6105, 'connecting pipe','vanne branchement',      'robinet concesie','false');
-INSERT INTO qwat_vl.valve_function (id, value_en, value_fr, value_ro )                  VALUES (6106, '',               'prise de secours',       '');
-INSERT INTO qwat_vl.valve_function (id, value_en, value_fr, value_ro )                  VALUES (6107, 'fire valve',     'vanne incendie',         'vană incendiu');
-INSERT INTO qwat_vl.valve_function (id, value_en, value_fr, value_ro )       		VALUES (6108, 'hydrant valve',  'vanne d''hydrant',       'vană hidrant');
-INSERT INTO qwat_vl.valve_function (id, value_en, value_fr, short_fr,value_ro )         VALUES (6110,  'discharge',   'vidange',         'Vi',  'vană golire');
-INSERT INTO qwat_vl.valve_function (id, value_en, value_fr, value_ro)                   VALUES (6111,  '',              'vanne réseau',           'vană cu sertar');
-INSERT INTO qwat_vl.valve_function (id, value_en, value_fr, short_fr, value_ro)         VALUES (6112,  'discharge & vent','vidange-ventouse','ViVe','golire-aerisire');
-INSERT INTO qwat_vl.valve_function (id, value_en, value_fr, value_ro)        		VALUES (6113, 'backflow prevention','antirefoulement',        'antiretur');
-INSERT INTO qwat_vl.valve_function (id, value_en, value_fr, value_ro )       		VALUES (6115, 'vent valve',         'jauge',                  'aerisire');
+INSERT INTO qwat_vl.valve_function (id, value_en, value_fr, value_ro)                  VALUES (6101, 'control valve',      'vanne de régulation',    'vană reglaj');
+INSERT INTO qwat_vl.valve_function (id, value_en, value_fr, short_fr, value_ro )       VALUES (6102, 'empty air',          'ventouse','Ve',          'aerisire');
+INSERT INTO qwat_vl.valve_function (id, value_en, value_fr, value_ro )                 VALUES (6103, 'bypass valve',       'vanne bypass',           'vană bypass');
+INSERT INTO qwat_vl.valve_function (id, value_en, value_fr, value_ro, schema_visible ) VALUES (6105, 'connecting pipe',    'vanne branchement',      'robinet concesie', 'false');
+INSERT INTO qwat_vl.valve_function (id, value_en, value_fr, value_ro )                 VALUES (6107, 'fire valve',         'vanne incendie',         'vană incendiu');
+INSERT INTO qwat_vl.valve_function (id, value_en, value_fr, value_ro )                 VALUES (6108, 'hydrant valve',      'vanne d''hydrant',       'vană hidrant');
+INSERT INTO qwat_vl.valve_function (id, value_en, value_fr, short_fr,value_ro )        VALUES (6110, 'discharge',          'vidange','Vi',           'vană golire');
+INSERT INTO qwat_vl.valve_function (id, value_en, value_fr, value_ro)                  VALUES (6111, '',                   'vanne réseau',           'vană cu sertar');
+INSERT INTO qwat_vl.valve_function (id, value_en, value_fr, short_fr, value_ro)        VALUES (6112, 'discharge & vent',   'vidange-ventouse','ViVe','golire-aerisire');
+INSERT INTO qwat_vl.valve_function (id, value_en, value_fr, value_ro)                  VALUES (6113, 'backflow prevention','antiretour',             'antiretur');
+INSERT INTO qwat_vl.valve_function (id, value_en, value_fr, value_ro)                  VALUES (6114, 'sprinkler',          'vanne sprinkler',        'sprinkler?');
+INSERT INTO qwat_vl.valve_function (id, value_en, value_fr, value_ro )                 VALUES (6115, 'vent valve',         'jauge',                  'aerisire');
 
