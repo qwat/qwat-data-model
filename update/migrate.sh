@@ -313,9 +313,8 @@ echo " FROM qwat_migration.installation_data;" >> cmd.sql
 /usr/bin/psql -v ON_ERROR_STOP=on --host $HOST --port 5432 -f cmd.sql $DESTDB $USER
 
 
-
-
-exit
+# update sequences
+/usr/bin/psql -v ON_ERROR_STOP=on --host $HOST --port 5432 -c "SELECT  qwat_od.fn_update_sequences()" $DESTDB $USER
 
 
 
