@@ -71,13 +71,15 @@ $BODY$
 						_lin_ref := ST_LineLocatePoint(_pipe_geom,_node_geom); -- shouldn't be 0 or 1 as it would mean that the node is a pipe end
 
 						_sub_geom := ST_LineSubstring( _pipe_geom, 0, _lin_ref);
-						_orientation  := pi()/2 + ST_Azimuth( 	ST_EndPoint(_pipe_geom),
+						_orientation  := pi()/2 - ST_Azimuth( 	ST_EndPoint(_pipe_geom),
 																ST_PointN(_pipe_geom, ST_NumPoints(_pipe_geom)-1) );
 						_sub_geom := ST_LineSubstring( _pipe_geom, _lin_ref, 1);
 						_orientation2 := pi()/2 - ST_Azimuth( 	ST_StartPoint(_pipe_geom),
 																ST_PointN(_pipe_geom, 2) );
-
-						_orientation := -pi()/2 + ATAN2( (COS(_orientation)+COS(_orientation))/2 , (-SIN(_orientation)+SIN(_orientation2))/2 );
+						--RAISE NOTICE 'pipe 1 %', degrees( _orientation );
+						--RAISE NOTICE 'pipe 2 %', degrees( _orientation2 );
+						_orientation := ATAN2( (COS(_orientation)+COS(_orientation))/2 , (-SIN(_orientation)+SIN(_orientation2))/2 );
+						--RAISE NOTICE 'mean %', degrees( _orientation );
 					END IF;
 				END IF;
 			ELSE
