@@ -129,7 +129,7 @@ $BODY$
 					_orientation2 := pi()/2 - ST_Azimuth(_pipeitem.point_1,_pipeitem.point_2);
 					--RAISE NOTICE 'pipe % %', _pipe_id, degrees( _orientation );
 					--RAISE NOTICE 'pipe % %', _pipeitem.id, degrees( _orientation2 );
-					_orientation := ATAN2( (COS(_orientation)+COS(_orientation))/2 , (SIN(_orientation)+SIN(_orientation2))/2 );
+					_orientation := ATAN2( (COS(_orientation)+COS(_orientation2))/2 , (SIN(_orientation)+SIN(_orientation2))/2 );
 					--RAISE NOTICE 'mean:  %', degrees(_orientation  );
 					-- reverse arrow according to diameter reduction
 					IF _pipeitem.diameter < _diameter THEN
