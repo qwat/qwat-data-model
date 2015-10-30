@@ -120,7 +120,6 @@ psql -v ON_ERROR_STOP=1 -c "CREATE EXTENSION IF NOT EXISTS postgis;"
 
 # System
 psql -v ON_ERROR_STOP=1 -c "CREATE SCHEMA qwat_sys;"
-psql -v ON_ERROR_STOP=1 -f system/fn_update_sequences.sql
 psql -v ON_ERROR_STOP=1 -f system/settings.sql
 psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f system/settings_insert.sql
 psql -v ON_ERROR_STOP=1 -f system/audit.sql
@@ -251,6 +250,7 @@ psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f ordinary_data/noedit_views/search_view.
 
 # Finalize System
 psql -v ON_ERROR_STOP=1 -f system/audit_tables.sql
+psql -v ON_ERROR_STOP=1 -f system/update_sequences.sql
 
 # Demo data
 if [[ "$DEMO" -eq 1 ]]; then
