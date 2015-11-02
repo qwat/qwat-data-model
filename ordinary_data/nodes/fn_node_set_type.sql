@@ -71,15 +71,16 @@ $BODY$
 						_lin_ref := ST_LineLocatePoint(_pipe_geom,_node_geom); -- shouldn't be 0 or 1 as it would mean that the node is a pipe end
 
 						_sub_geom := ST_LineSubstring( _pipe_geom, 0, _lin_ref);
-						_orientation  := pi()/2 - ST_Azimuth( 	ST_EndPoint(_pipe_geom),
-																ST_PointN(_pipe_geom, ST_NumPoints(_pipe_geom)-1) );
+						_orientation  := pi()/2 - ST_Azimuth( 	ST_PointN(_sub_geom, ST_NumPoints(_sub_geom)-1),
+																ST_EndPoint(_sub_geom) );
 						_sub_geom := ST_LineSubstring( _pipe_geom, _lin_ref, 1);
-						_orientation2 := pi()/2 - ST_Azimuth( 	ST_StartPoint(_pipe_geom),
-																ST_PointN(_pipe_geom, 2) );
-						--RAISE NOTICE 'pipe 1 %', degrees( _orientation );
-						--RAISE NOTICE 'pipe 2 %', degrees( _orientation2 );
-						_orientation := pi()/2 + ATAN2( (COS(_orientation)+COS(_orientation))/2 , (-SIN(_orientation)+SIN(_orientation2))/2 );
-						--RAISE NOTICE 'mean %', degrees( _orientation );
+						_orientation2 := pi()/2 - ST_Azimuth( 	ST_PointN(_sub_geom, 2),
+																ST_StartPoint(_sub_geom) );
+						_orientation2 := pi() + _orientation2; -- reverse angle
+						RAISE NOTICE 'pipe 1 %', degrees( _orientation );
+						RAISE NOTICE 'pipe 2 %', degrees( _orientation2 );
+						_orientation := ATAN2( (SIN(_orientation)+SIN(_orientation2))/2 , (COS(_orientation)+COS(_orientation2))/2 );
+						RAISE NOTICE 'mean %', degrees( _orientation );
 					END IF;
 				END IF;
 			ELSE
@@ -114,7 +115,8 @@ $BODY$
 					_diameter := _pipeitem.diameter;
 					_pipe_id   := _pipeitem.id;
 					_looppos   := 1;
-					_orientation := pi()/2 - ST_Azimuth(_pipeitem.point_1,_pipeitem.point_2);
+					_orientation := pi()/2 - ST_Azimuth(_pipeitem.point_2,_pipeitem.point_1);
+					RAISE NOTICE 'pipe % %', _pipe_id, degrees( _orientation );
 				ELSE
 					-- second pipe if exists
 					IF _material = _pipeitem.material AND _diameter = _pipeitem.diameter AND _year = _pipeitem.year THEN
@@ -128,11 +130,11 @@ $BODY$
 					ELSE
 						_type := 'couple_other';
 					END IF;
-					_orientation2 := pi()/2 - ST_Azimuth(_pipeitem.point_1,_pipeitem.point_2);
-					--RAISE NOTICE 'pipe % %', _pipe_id, degrees( _orientation );
-					--RAISE NOTICE 'pipe % %', _pipeitem.id, degrees( _orientation2 );
-					_orientation := pi()/2 + ATAN2( (COS(_orientation)+COS(_orientation2))/2 , (SIN(_orientation)+SIN(_orientation2))/2 );
-					--RAISE NOTICE 'mean:  %', degrees(_orientation  );
+					_orientation2 := pi()/2 - ST_Azimuth(_pipeitem.point_2,_pipeitem.point_1);
+					_orientation2 := pi() + _orientation2; -- reverse angle
+					RAISE NOTICE 'pipe % %', _pipeitem.id, degrees( _orientation2 );
+					_orientation := ATAN2( (SIN(_orientation)+SIN(_orientation2))/2 , (COS(_orientation)+COS(_orientation2))/2 );
+					RAISE NOTICE 'mean:  %', degrees(_orientation  );
 					-- reverse arrow according to diameter reduction
 					IF _pipeitem.diameter < _diameter THEN
 						_orientation := _orientation + pi();
