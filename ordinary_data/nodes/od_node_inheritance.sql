@@ -23,7 +23,8 @@ SELECT qwat_sys.fn_inherited_table_view(
 			"inherited_by": {
 				"element": {
 					"table_name":"qwat_od.network_element",
-					"pkey": "id"
+					"pkey": "id",
+					"custom_parent_delete": "PERFORM qwat_od.fn_node_set_type(OLD.id);"
 				}
 			},
 			"merge_view": {
