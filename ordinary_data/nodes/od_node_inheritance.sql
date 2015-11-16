@@ -15,6 +15,7 @@ SELECT qwat_sys.fn_inherited_table_view(
 			"pkey_value": "qwat_od.fn_node_create(NEW.geometry)",
 			"pkey_value_create_entry": true,
 			"destination_schema": "qwat_od",
+			"custom_delete": "PERFORM qwat_od.fn_node_set_type(OLD.id);",
 			"alter": {
 				"geometry": {"read":"ST_Force2D", "write": "ST_Force3D"},
 				"geometry_alt1": {"read":"ST_Force2D", "write": "ST_Force3D"},
@@ -23,8 +24,7 @@ SELECT qwat_sys.fn_inherited_table_view(
 			"inherited_by": {
 				"element": {
 					"table_name":"qwat_od.network_element",
-					"pkey": "id",
-					"custom_parent_delete": "PERFORM qwat_od.fn_node_set_type(OLD.id);"
+					"pkey": "id"
 				}
 			},
 			"merge_view": {
