@@ -123,7 +123,6 @@ psql -v ON_ERROR_STOP=1 -c "CREATE SCHEMA qwat_sys;"
 psql -v ON_ERROR_STOP=1 -f system/settings.sql
 psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f system/settings_insert.sql
 psql -v ON_ERROR_STOP=1 -f system/audit.sql
-psql -v ON_ERROR_STOP=1 -v SCHEMA=qwat_sys -f metaproject/postgresql/pg_inherited_table_view/pg_inherited_table_view.sql
 
 # Value lists
 psql -v ON_ERROR_STOP=1 -c "CREATE SCHEMA qwat_vl;"
@@ -227,7 +226,7 @@ psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f ordinary_data/installation/od_installat
 psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f ordinary_data/installation/od_installation_source.sql
 psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f ordinary_data/installation/od_installation_tank.sql
 psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f ordinary_data/installation/od_installation_treatment.sql
-psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f ordinary_data/installation/vw_installation_inheritance.sql
+
 psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f ordinary_data/installation/od_remote.sql
 psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f ordinary_data/installation/vw_remote.sql
 
@@ -235,7 +234,18 @@ psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f ordinary_data/samplingpoint/od_sampling
 psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f ordinary_data/surveypoint/od_surveypoint.sql
 psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f ordinary_data/leak/od_leak.sql
 
-psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f ordinary_data/nodes/od_node_inheritance.sql
+#./ordinary_data/installation/od_installation_inheritance.py $PGSERVICE
+
+psql -v ON_ERROR_STOP=1 -c "$(./ordinary_data/installation/od_installation_inheritance.py $PGSERVICE)"
+psql -v ON_ERROR_STOP=1 -c "$(./ordinary_data/nodes/od_node_inheritance.py $PGSERVICE)"
+
+./ordinary_data/nodes/od_element_inheritance.py $PGSERVICE
+
+
+psql -v ON_ERROR_STOP=1 -c "$(./ordinary_data/nodes/od_element_inheritance.py $PGSERVICE)"
+
+
+
 psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f ordinary_data/valve/tr_valve_pipe.sql
 
 psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f ordinary_data/noedit_views/vw_subscriber_pipe_relation.sql
