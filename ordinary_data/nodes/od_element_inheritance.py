@@ -72,7 +72,7 @@ merge_view:
       valve: fk_pipe
 """
   
-print pgiv.PGInheritanceView('qwat_test', qwat_elements).sql_all()
+print pgiv.PGInheritanceView(pg_service, qwat_elements).sql_all()
 
 
 

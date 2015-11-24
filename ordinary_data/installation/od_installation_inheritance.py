@@ -19,6 +19,8 @@ table: qwat_od.installation
 pkey: id
 pkey_value: NEW.id
 
+allow_type_change: false
+
 schema: qwat_od
 
 children:
@@ -53,7 +55,7 @@ merge_view:
 """
 
 
-print pgiv.PGInheritanceView('qwat_test', qwat_installations).sql_all()
+print pgiv.PGInheritanceView(pg_service, qwat_installations).sql_all()
 
 
 

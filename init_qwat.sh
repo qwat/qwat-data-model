@@ -234,17 +234,9 @@ psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f ordinary_data/samplingpoint/od_sampling
 psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f ordinary_data/surveypoint/od_surveypoint.sql
 psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f ordinary_data/leak/od_leak.sql
 
-#./ordinary_data/installation/od_installation_inheritance.py $PGSERVICE
-
-psql -v ON_ERROR_STOP=1 -c "$(./ordinary_data/installation/od_installation_inheritance.py $PGSERVICE)"
-psql -v ON_ERROR_STOP=1 -c "$(./ordinary_data/nodes/od_node_inheritance.py $PGSERVICE)"
-
-./ordinary_data/nodes/od_element_inheritance.py $PGSERVICE
-
-
-psql -v ON_ERROR_STOP=1 -c "$(./ordinary_data/nodes/od_element_inheritance.py $PGSERVICE)"
-
-
+psql -v ON_ERROR_STOP=1 -c "$(./ordinary_data/installation/od_installation_inheritance.py ${PGSERVICE})"
+psql -v ON_ERROR_STOP=1 -c "$(./ordinary_data/nodes/od_node_inheritance.py ${PGSERVICE})"
+psql -v ON_ERROR_STOP=1 -c "$(./ordinary_data/nodes/od_element_inheritance.py ${PGSERVICE})"
 
 psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f ordinary_data/valve/tr_valve_pipe.sql
 
