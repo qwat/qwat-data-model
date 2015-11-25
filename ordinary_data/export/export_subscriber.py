@@ -12,9 +12,9 @@ else:
 
 definition = yaml.load("""
 
-name: qwat_od.vw_export_valve
+name: qwat_od.vw_export_subscriber
 
-from: qwat_od.vw_element_valve
+from: qwat_od.vw_element_subscriber
 
 joins:
   district:
@@ -41,17 +41,11 @@ joins:
   folder:
     table: qwat_od.folder
     fkey: fk_folder
-    
-  valve_type:
-    table: qwat_vl.valve_type
-    fkey: fk_valve_type
-  valve_function:
-    table: qwat_vl.valve_function
-    fkey: fk_valve_function
-  valve_actuation:
-    table: qwat_vl.valve_actuation
-    fkey: fk_valve_actuation
    
+  subscriber_type:
+    table: qwat_vl.subscriber_type
+    fkey: fk_subscriber_type
+
 
 """)
 

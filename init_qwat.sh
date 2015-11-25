@@ -242,6 +242,11 @@ psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f ordinary_data/valve/tr_valve_pipe.sql
 
 # export
 psql -v ON_ERROR_STOP=1 -c "$(./ordinary_data/export/export_installation.py ${PGSERVICE})"
+psql -v ON_ERROR_STOP=1 -c "$(./ordinary_data/export/export_valve.py ${PGSERVICE})"
+psql -v ON_ERROR_STOP=1 -c "$(./ordinary_data/export/export_hydrant.py ${PGSERVICE})"
+psql -v ON_ERROR_STOP=1 -c "$(./ordinary_data/export/export_meter.py ${PGSERVICE})"
+psql -v ON_ERROR_STOP=1 -c "$(./ordinary_data/export/export_part.py ${PGSERVICE})"
+psql -v ON_ERROR_STOP=1 -c "$(./ordinary_data/export/export_subscriber.py ${PGSERVICE})"
 
 psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f ordinary_data/noedit_views/vw_subscriber_pipe_relation.sql
 psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f ordinary_data/noedit_views/vw_hydrant.sql

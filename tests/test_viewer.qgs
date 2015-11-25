@@ -684,7 +684,7 @@
         <edittype widgetv2type="TextEdit" name="fk_valve_function">
           <widgetv2config IsMultiline="0" fieldEditable="1" UseHtml="0" labelOnTop="0"/>
         </edittype>
-        <edittype widgetv2type="TextEdit" name="fk_actuation">
+        <edittype widgetv2type="TextEdit" name="fk_valve_actuation">
           <widgetv2config IsMultiline="0" fieldEditable="1" UseHtml="0" labelOnTop="0"/>
         </edittype>
         <edittype widgetv2type="TextEdit" name="fk_pipe">
@@ -1064,7 +1064,7 @@ def my_form_open(dialog, layer, feature):
         <edittype widgetv2type="TextEdit" name="fk_valve_function">
           <widgetv2config IsMultiline="0" fieldEditable="1" UseHtml="0" labelOnTop="0"/>
         </edittype>
-        <edittype widgetv2type="TextEdit" name="fk_actuation">
+        <edittype widgetv2type="TextEdit" name="fk_valve_actuation">
           <widgetv2config IsMultiline="0" fieldEditable="1" UseHtml="0" labelOnTop="0"/>
         </edittype>
         <edittype widgetv2type="TextEdit" name="fk_pipe">

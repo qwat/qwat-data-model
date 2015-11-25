@@ -12,7 +12,7 @@ COMMENT ON TABLE qwat_od.valve IS 'Table for valve. Inherits from node.';
 ALTER TABLE qwat_od.valve ADD COLUMN id integer NOT NULL REFERENCES qwat_od.network_element(id) PRIMARY KEY;
 ALTER TABLE qwat_od.valve ADD COLUMN fk_valve_type     		 integer not null;
 ALTER TABLE qwat_od.valve ADD COLUMN fk_valve_function       integer not null;
-ALTER TABLE qwat_od.valve ADD COLUMN fk_actuation      		 integer not null;
+ALTER TABLE qwat_od.valve ADD COLUMN fk_valve_actuation      		 integer not null;
 ALTER TABLE qwat_od.valve ADD COLUMN fk_pipe                 integer ;
 ALTER TABLE qwat_od.valve ADD COLUMN fk_handle_precision     integer;
 ALTER TABLE qwat_od.valve ADD COLUMN fk_handle_precisionalti integer;
@@ -27,7 +27,7 @@ ALTER TABLE qwat_od.valve ADD COLUMN handle_geometry         geometry(PointZ,:SR
 /* constraints */
 ALTER TABLE qwat_od.valve ADD CONSTRAINT valve_fk_type      FOREIGN KEY (fk_valve_type)     REFERENCES qwat_vl.valve_type(id)      MATCH FULL; CREATE INDEX fki_valve_fk_type      ON qwat_od.valve(fk_valve_type);
 ALTER TABLE qwat_od.valve ADD CONSTRAINT valve_fk_function  FOREIGN KEY (fk_valve_function) REFERENCES qwat_vl.valve_function(id)  MATCH FULL; CREATE INDEX fki_valve_fk_function  ON qwat_od.valve(fk_valve_function);
-ALTER TABLE qwat_od.valve ADD CONSTRAINT valve_fk_actuation FOREIGN KEY (fk_actuation)      REFERENCES qwat_vl.valve_actuation(id) MATCH FULL; CREATE INDEX fki_valve_fk_actuation ON qwat_od.valve(fk_actuation);
+ALTER TABLE qwat_od.valve ADD CONSTRAINT valve_fk_valve_actuation FOREIGN KEY (fk_valve_actuation)      REFERENCES qwat_vl.valve_actuation(id) MATCH FULL; CREATE INDEX fki_valve_fk_valve_actuation ON qwat_od.valve(fk_valve_actuation);
 ALTER TABLE qwat_od.valve ADD CONSTRAINT valve_fk_pipe      FOREIGN KEY (fk_pipe)           REFERENCES qwat_od.pipe(id)            MATCH FULL; CREATE INDEX fki_valve_fk_pipe      ON qwat_od.valve(fk_pipe);
 ALTER TABLE qwat_od.valve ADD CONSTRAINT valve_fk_handle_precision     FOREIGN KEY (fk_handle_precision)     REFERENCES qwat_vl.precision(id)     MATCH FULL; CREATE INDEX fki_valve_fk_handle_precision     ON qwat_od.valve(fk_handle_precision);
 ALTER TABLE qwat_od.valve ADD CONSTRAINT valve_fk_handle_precisionalti FOREIGN KEY (fk_handle_precisionalti) REFERENCES qwat_vl.precisionalti(id) MATCH FULL; CREATE INDEX fki_valve_fk_handle_precisionalti ON qwat_od.valve(fk_handle_precisionalti);
