@@ -10,7 +10,7 @@ CREATE TABLE qwat_od.tank ();
 /* specific to tanks */
 ALTER TABLE qwat_od.tank ADD COLUMN id integer NOT NULL REFERENCES qwat_od.installation(id) PRIMARY KEY ;
 ALTER TABLE qwat_od.tank ADD COLUMN fk_overflow          integer             ;
-ALTER TABLE qwat_od.tank ADD COLUMN fk_firestorage       integer             ;
+ALTER TABLE qwat_od.tank ADD COLUMN fk_tank_firestorage       integer             ;
 ALTER TABLE qwat_od.tank ADD COLUMN storage_total        numeric(10,1)       ; COMMENT ON COLUMN qwat_od.tank.storage_total  IS 'litres';
 ALTER TABLE qwat_od.tank ADD COLUMN storage_supply       numeric(10,1)       ; COMMENT ON COLUMN qwat_od.tank.storage_supply IS 'litres';
 ALTER TABLE qwat_od.tank ADD COLUMN storage_fire         numeric(10,1)       ; COMMENT ON COLUMN qwat_od.tank.storage_fire   IS 'litres';
@@ -34,7 +34,7 @@ ALTER TABLE qwat_od.tank ADD COLUMN _cistern2_litrepercm numeric(9,3) ;
 
 /* Constraints */
 ALTER TABLE qwat_od.tank ADD CONSTRAINT tank_fk_overflow     FOREIGN KEY (fk_overflow)      REFERENCES qwat_vl.overflow(id)              MATCH FULL; CREATE INDEX fki_tank_fk_overflow     ON qwat_od.tank(fk_overflow)     ;
-ALTER TABLE qwat_od.tank ADD CONSTRAINT tank_fk_firestorage  FOREIGN KEY (fk_firestorage)   REFERENCES qwat_vl.tank_firestorage(id)      MATCH FULL; CREATE INDEX fki_tank_fk_firestorage  ON qwat_od.tank(fk_firestorage)  ;
+ALTER TABLE qwat_od.tank ADD CONSTRAINT tank_fk_tank_firestorage  FOREIGN KEY (fk_tank_firestorage)   REFERENCES qwat_vl.tank_firestorage(id)      MATCH FULL; CREATE INDEX fki_tank_fk_tank_firestorage  ON qwat_od.tank(fk_tank_firestorage)  ;
 ALTER TABLE qwat_od.tank ADD CONSTRAINT tank_cistern1type    FOREIGN KEY (cistern1_fk_type) REFERENCES qwat_vl.cistern(id)               MATCH FULL; CREATE INDEX fki_tank_cistern1type    ON qwat_od.tank(cistern1_fk_type);
 ALTER TABLE qwat_od.tank ADD CONSTRAINT tank_cistern2type    FOREIGN KEY (cistern2_fk_type) REFERENCES qwat_vl.cistern(id)               MATCH FULL; CREATE INDEX fki_tank_cistern2type    ON qwat_od.tank(cistern2_fk_type);
 

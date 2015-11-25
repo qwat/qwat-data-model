@@ -2,44 +2,19 @@
 
 
 CREATE OR REPLACE VIEW qwat_od.vw_search_view AS
-	/* ouvrages */
-	SELECT
+	/* ouvrages */SELECT
 		'Ouvrages' as layer_name,
-		'Réservoir ' || identification || ' ' || name as search_text,
+		CASE 
+			WHEN installation_type = 'source'::qwat_od.installation_type THEN	'Source ' || identification || ' ' || name
+			WHEN installation_type = 'treatment'::qwat_od.installation_type THEN	'Traitement ' || identification || ' ' || name
+			WHEN installation_type = 'tank'::qwat_od.installation_type THEN	'Réservoir ' || identification || ' ' || name
+			WHEN installation_type = 'pressurecontrol'::qwat_od.installation_type THEN	'Régulation de pression ' || identification || ' ' || name
+			WHEN installation_type = 'pump'::qwat_od.installation_type THEN	'Pompage ' || identification || ' ' || name
+			WHEN installation_type = 'chamber'::qwat_od.installation_type THEN	'Chambre ' || identification || ' ' || name
+		END AS search_text,
 		geometry
-		FROM qwat_od.vw_tank_fr
-		WHERE active IS TRUE
-	UNION SELECT
-		'Ouvrages' as layer_name,
-		'Pompage ' || identification || ' ' || name as search_text,
-		geometry
-		FROM qwat_od.vw_pump_fr
-		WHERE active IS TRUE
-	UNION SELECT
-		'Ouvrages' as layer_name,
-		'Source ' || identification || ' ' || name as search_text,
-		geometry
-		FROM qwat_od.vw_source_fr
-		WHERE active IS TRUE
-	UNION SELECT
-		'Ouvrages' as layer_name,
-		'Traitement ' || identification || ' ' || name as search_text,
-		geometry
-		FROM qwat_od.vw_treatment_fr
-		WHERE active IS TRUE
-	UNION SELECT
-		'Ouvrages' as layer_name,
-		'Régulation de pression ' || identification || ' ' || name as search_text,
-		geometry
-		FROM qwat_od.vw_pressurecontrol_fr
-		WHERE active IS TRUE
-	UNION SELECT
-		'Ouvrages' as layer_name,
-		'Chambre de vannes ' || identification || ' ' || name as search_text,
-		geometry
-		FROM qwat_od.vw_chamber_fr
-		WHERE active IS TRUE
-
+		FROM qwat_od.vw_export_installation
+		WHERE status_active IS TRUE
 	UNION SELECT
 		'Hydrantes' as layer_name,
 		_district || ' '|| identification as search_text,

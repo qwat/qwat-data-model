@@ -240,15 +240,20 @@ psql -v ON_ERROR_STOP=1 -c "$(./ordinary_data/nodes/od_element_inheritance.py ${
 
 psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f ordinary_data/valve/tr_valve_pipe.sql
 
+# export
+psql -v ON_ERROR_STOP=1 -c "$(./ordinary_data/export/export_installation.py ${PGSERVICE})"
+
 psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f ordinary_data/noedit_views/vw_subscriber_pipe_relation.sql
 psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f ordinary_data/noedit_views/vw_hydrant.sql
 psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f ordinary_data/noedit_views/vw_valve.sql
 psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f ordinary_data/noedit_views/vw_valve_lines.sql
-psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f ordinary_data/noedit_views/vw_installation_export_views.sql
+# psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f ordinary_data/noedit_views/vw_installation_export_views.sql
 psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f ordinary_data/noedit_views/vw_subscriber.sql
 psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f ordinary_data/noedit_views/vw_samplingpoint.sql
 psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f ordinary_data/noedit_views/vw_leak.sql
 psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f ordinary_data/noedit_views/search_view.sql
+
+
 
 # Finalize System
 psql -v ON_ERROR_STOP=1 -f system/audit_tables.sql
