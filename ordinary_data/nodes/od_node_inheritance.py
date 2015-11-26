@@ -23,13 +23,13 @@ schema: qwat_od
 custom_delete: "PERFORM qwat_od.fn_node_set_type(OLD.id)"
 
 alter:
-  geometry: 
+  geometry:
     read: ST_Force2D
     write: ST_Force3D
-  geometry_alt1: 
+  geometry_alt1:
     read: ST_Force2D
     write: ST_Force3D
-  geometry_alt2: 
+  geometry_alt2:
     read: ST_Force2D
     write: ST_Force3D
 
@@ -37,7 +37,7 @@ children:
   element:
     table: qwat_od.network_element
     pkey: id
-   
+
 merge_view:
   name: vw_qwat_node
   allow_type_change: false

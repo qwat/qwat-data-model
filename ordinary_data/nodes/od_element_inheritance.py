@@ -20,44 +20,44 @@ pkey: id
 pkey_value: NEW.id
 schema: qwat_od
 
-children: 
+children:
     installation:
       table: qwat_od.vw_qwat_installation
       pkey: id
-  
+
     valve:
       table: qwat_od.valve
       pkey: id
-      
+
     hydrant:
       table: qwat_od.hydrant
       pkey: id
-      
+
     part:
       table: qwat_od.part
       pkey: id
-      
+
     meter:
       table: qwat_od.meter
       pkey: id
-      
+
     subscriber:
       table: qwat_od.subscriber
       pkey: id
-      
+
     cover:
       table: qwat_od.cover
       pkey: id
-      
+
     samplingpoint:
       table: qwat_od.samplingpoint
       pkey: id
 
-merge_view: 
+merge_view:
   name: vw_qwat_network_element
   allow_type_change: false
   allow_parent_only: true
-  merge_columns: 
+  merge_columns:
     parcel:
       meter: parcel
       subscriber: parcel
@@ -71,30 +71,7 @@ merge_view:
       subscriber: fk_pipe
       valve: fk_pipe
 """
-  
+
 print pgiv.PGInheritanceView(pg_service, qwat_elements).sql_all()
-
-
-
-#  merge_columns:
-#    - alias: parcel
-#      columns:
-#        - meter: parcel
-#        - subscriber: parcel
-#        - installation: parcel
-# 
-#    - alias: networkseparation
-#      columns:
-#        - valve: networkseparation
-#        - installation: networkseparation
-# 
-#    - alias: fk_pipe
-#      columns:
-#        - meter: fk_pipe
-#        - part: fk_pipe
-#        - subscriber: fk_pipe
-#        - valve: fk_pipe
-
-
 
 
