@@ -57,6 +57,11 @@ merge_view:
 
 print pgiv.PGInheritanceView(pg_service, qwat_installations).sql_all()
 
-
-
-
+# print pgiv.PGInheritanceView(pg_service, qwat_installations).sql_join_update_trigger("chamber")
+# print pgiv.PGInheritanceView(pg_service, qwat_installations).sql_join_update_trigger("pressurecontrol")
+# print pgiv.PGInheritanceView(pg_service, qwat_installations).sql_join_update_trigger("pump")
+# print pgiv.PGInheritanceView(pg_service, qwat_installations).sql_join_update_trigger("source")
+# print pgiv.PGInheritanceView(pg_service, qwat_installations).sql_join_update_trigger("tank")
+# print pgiv.PGInheritanceView(pg_service, qwat_installations).sql_join_update_trigger("treatment")
+# 
+# print pgiv.PGInheritanceView(pg_service, qwat_installations).sql_merge_update_trigger()

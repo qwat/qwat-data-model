@@ -47,3 +47,7 @@ merge_view:
 print pgiv.PGInheritanceView(pg_service, qwat_node_element).sql_all()
 
 
+# print pgiv.PGInheritanceView(pg_service, qwat_node_element).sql_join_update_trigger("element")
+# print pgiv.PGInheritanceView(pg_service, qwat_node_element).sql_merge_update_trigger()
+
+
