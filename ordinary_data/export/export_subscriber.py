@@ -1,9 +1,8 @@
 #!/usr/bin/env python
 
-
-import sys
-import psycopg2, psycopg2.extras
 import yaml
+import sys
+from sql_export_view import SqlExportView
 
 if len(sys.argv) > 1:
   pg_service = sys.argv[1]
@@ -19,7 +18,7 @@ from: qwat_od.vw_element_subscriber
 joins:
   district:
     table: qwat_od.district
-    fkey: fk_pressurezone
+    fkey: fk_district
   pressurezone:
     table: qwat_od.pressurezone
     fkey: fk_pressurezone
@@ -41,44 +40,11 @@ joins:
   folder:
     table: qwat_od.folder
     fkey: fk_folder
-   
+
   subscriber_type:
     table: qwat_vl.subscriber_type
     fkey: fk_subscriber_type
-
-
 """)
 
-# dot not modify below
+print SqlExportView(pg_service, definition).sql()
 
-conn = psycopg2.connect("service={0}".format(pg_service))
-cur = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
-
-def get_columns(table):
-	cur.execute("SELECT attname FROM pg_attribute WHERE attrelid = '{0}'::regclass AND attnum > 0 ORDER BY attnum ASC".format(table))
-	pg_fields = cur.fetchall()
-	pg_fields = [field[0] for field in pg_fields]
-	return pg_fields
-
-
-sql = """
-CREATE OR REPLACE VIEW {0} AS
-	SELECT \n\t\t{1}""".format(
-		definition['name'],
-		'\n\t\t, '.join(['{0}.{1}'.format(definition['from'], col) for col in get_columns(definition['from'])])
-		)
-	
-for join in definition['joins']:
-	columns = get_columns(definition['joins'][join]['table'])
-	sql += ''.join(['\n\t\t, {0}.{1} AS {0}_{1}'.format(join, col) for col in columns])
-	
-sql += "\n\tFROM {0}".format(definition['from'])
-
-for join in definition['joins']:
-	sql += "\n\t\tLEFT JOIN {0} {1} ON {2}.{3} = {1}.id".format(
-		definition['joins'][join]['table'],
-		join,
-		definition['from'],
-		definition['joins'][join]['fkey']
-		)
-print sql

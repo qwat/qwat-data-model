@@ -1,4 +1,5 @@
 *.backup
 *.qgs~
+*.pyc
 tmp/
 

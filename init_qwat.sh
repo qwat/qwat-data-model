@@ -234,11 +234,11 @@ psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f ordinary_data/samplingpoint/od_sampling
 psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f ordinary_data/surveypoint/od_surveypoint.sql
 psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f ordinary_data/leak/od_leak.sql
 
+psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f ordinary_data/valve/tr_valve_pipe.sql
+
 psql -v ON_ERROR_STOP=1 -c "$(./ordinary_data/installation/od_installation_inheritance.py ${PGSERVICE})"
 psql -v ON_ERROR_STOP=1 -c "$(./ordinary_data/nodes/od_node_inheritance.py ${PGSERVICE})"
 psql -v ON_ERROR_STOP=1 -c "$(./ordinary_data/nodes/od_element_inheritance.py ${PGSERVICE})"
-
-psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f ordinary_data/valve/tr_valve_pipe.sql
 
 # export
 psql -v ON_ERROR_STOP=1 -c "$(./ordinary_data/export/export_installation.py ${PGSERVICE})"
@@ -254,8 +254,6 @@ psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f ordinary_data/noedit_views/vw_valve.sql
 psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f ordinary_data/noedit_views/vw_valve_lines.sql
 psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f ordinary_data/noedit_views/vw_leak.sql
 psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f ordinary_data/noedit_views/search_view.sql
-
-
 
 # Finalize System
 psql -v ON_ERROR_STOP=1 -f system/audit_tables.sql
