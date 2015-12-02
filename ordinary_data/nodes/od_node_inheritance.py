@@ -22,6 +22,16 @@ schema: qwat_od
 
 custom_delete: "PERFORM qwat_od.fn_node_set_type(OLD.id)"
 
+trigger_pre: >
+  \t\t-- altitude is prioritary on Z value of the geometry (if both changed, only altitude is taken into account)
+  \t\tIF NEW.altitude IS NULL THEN
+  \t\t	NEW.altitude := NULLIF( ST_Z(NEW.geometry), 0.0); -- 0 is the NULL value
+  \t\tEND IF;
+  \t\t-- TODO handle going to NULL on update 
+  \t\tIF 	NEW.altitude IS NOT NULL AND ST_Z(NEW.geometry) <> NEW.altitude THEN
+  \t\t	NEW.geometry := ST_SetSRID( ST_MakePoint( ST_X(NEW.geometry), ST_Y(NEW.geometry), COALESCE(NEW.altitude,0) ), ST_SRID(NEW.geometry) );
+  \t\tEND IF;
+
 alter:
   geometry:
     read: ST_Force2D
@@ -47,6 +57,9 @@ merge_view:
 print pgiv.PGInheritanceView(pg_service, qwat_node_element).sql_all()
 
 
+# print pgiv.PGInheritanceView(pg_service, qwat_node_element).sql_join_insert_trigger("element")
+# print pgiv.PGInheritanceView(pg_service, qwat_node_element).sql_merge_insert_trigger()
+# 
 # print pgiv.PGInheritanceView(pg_service, qwat_node_element).sql_join_update_trigger("element")
 # print pgiv.PGInheritanceView(pg_service, qwat_node_element).sql_merge_update_trigger()
 

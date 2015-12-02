@@ -18,16 +18,13 @@ CREATE TYPE qwat_od.pipe_connection AS ENUM (
 CREATE TABLE qwat_od.node (id serial PRIMARY KEY);
 
 COMMENT ON TABLE qwat_od.node IS 'Tables for network nodes.
-Every element of the network (hydrants, valves, element, installations, etc.) inherit from element which itself inherits from node.';
+Every element of the network (hydrants, valves, element, installations, etc.) inherit from element which itself inherits from node.
+Node should only contain geometric fields and automatic attributes (district, pressurezone, printmaps, etc).';
 
 /* COLUMNS */
 ALTER TABLE qwat_od.node ADD COLUMN fk_district         integer;
 ALTER TABLE qwat_od.node ADD COLUMN fk_pressurezone     integer;
 ALTER TABLE qwat_od.node ADD COLUMN fk_printmap         integer[];
-ALTER TABLE qwat_od.node ADD COLUMN fk_precision        integer;
-ALTER TABLE qwat_od.node ADD COLUMN fk_precisionalti    integer;
-ALTER TABLE qwat_od.node ADD COLUMN fk_object_reference integer;
-ALTER TABLE qwat_od.node ADD COLUMN altitude            decimal(10,3) default null;
 ALTER TABLE qwat_od.node ADD COLUMN _printmaps          text; -- list of printmap where it is included
 ALTER TABLE qwat_od.node ADD COLUMN _geometry_alt1_used boolean;
 ALTER TABLE qwat_od.node ADD COLUMN _geometry_alt2_used boolean;
@@ -50,12 +47,8 @@ CREATE INDEX node_geoidx_alt2 ON qwat_od.node USING GIST ( geometry_alt2 );
 
 
 /* CONSTRAINTS */
-ALTER TABLE qwat_od.node ADD CONSTRAINT element_fk_district      FOREIGN KEY (fk_district)      REFERENCES qwat_od.district(id)      MATCH FULL; CREATE INDEX fki_node_fk_district      ON qwat_od.node(fk_district);
-ALTER TABLE qwat_od.node ADD CONSTRAINT element_fk_pressurezone  FOREIGN KEY (fk_pressurezone)  REFERENCES qwat_od.pressurezone(id)  MATCH FULL; CREATE INDEX fki_node_fk_pressurezone  ON qwat_od.node(fk_pressurezone);
-ALTER TABLE qwat_od.node ADD CONSTRAINT element_fk_precision     FOREIGN KEY (fk_precision)     REFERENCES qwat_vl.precision(id)     MATCH FULL; CREATE INDEX fki_node_fk_precision     ON qwat_od.node(fk_precision);
-ALTER TABLE qwat_od.node ADD CONSTRAINT element_fk_precisionalti FOREIGN KEY (fk_precisionalti) REFERENCES qwat_vl.precisionalti(id) MATCH FULL; CREATE INDEX fki_node_fk_precisionalti ON qwat_od.node(fk_precisionalti);
-ALTER TABLE qwat_od.node ADD CONSTRAINT node_fk_object_reference FOREIGN KEY (fk_object_reference) REFERENCES qwat_vl.object_reference(id) MATCH FULL; CREATE INDEX fki_node_fk_object_reference ON qwat_od.node(fk_object_reference);
-
+ALTER TABLE qwat_od.node ADD CONSTRAINT node_fk_district      FOREIGN KEY (fk_district)      REFERENCES qwat_od.district(id)      MATCH FULL; CREATE INDEX fki_node_fk_district      ON qwat_od.node(fk_district);
+ALTER TABLE qwat_od.node ADD CONSTRAINT node_fk_pressurezone  FOREIGN KEY (fk_pressurezone)  REFERENCES qwat_od.pressurezone(id)  MATCH FULL; CREATE INDEX fki_node_fk_pressurezone  ON qwat_od.node(fk_pressurezone);
 
 
 /* GEOMETRY TRIGGERS */
@@ -114,39 +107,6 @@ CREATE TRIGGER tr_pipe_node_moved
 	EXECUTE PROCEDURE qwat_od.ft_pipe_node_moved();
 COMMENT ON TRIGGER tr_pipe_node_moved ON qwat_od.node IS 'Trigger: if a network element (i.e. a node) has moved, then reaasign the nodes for the pipe. Do it after update.';
 
-
-
-/* --------------------------------------------*/
-/* ALTITUDE TRIGGER */
-CREATE OR REPLACE FUNCTION qwat_od.ft_node_altitude() RETURNS TRIGGER AS
-$BODY$
-	DECLARE
-	BEGIN
-		-- altitude is prioritary on Z value of the geometry (if both changed, only altitude is taken into account)
-		IF NEW.altitude IS NULL THEN
-			NEW.altitude := NULLIF( ST_Z(NEW.geometry), 0.0); -- 0 is the NULL value
-		END IF;
-		-- TODO handle going to NULL on update
-		IF 	NEW.altitude IS NOT NULL AND ST_Z(NEW.geometry) <> NEW.altitude THEN
-			NEW.geometry := ST_SetSRID( ST_MakePoint( ST_X(NEW.geometry), ST_Y(NEW.geometry), COALESCE(NEW.altitude,0) ), ST_SRID(NEW.geometry) );
-		END IF;
-		RETURN NEW;
-	END;
-$BODY$
-LANGUAGE plpgsql;
-
-CREATE TRIGGER node_altitude_update_trigger
-	BEFORE UPDATE OF altitude, geometry ON qwat_od.node
-	FOR EACH ROW
-	WHEN (NEW.altitude <> OLD.altitude OR ST_Z(NEW.geometry) <> ST_Z(OLD.geometry))
-	EXECUTE PROCEDURE qwat_od.ft_node_altitude();
-COMMENT ON TRIGGER node_altitude_update_trigger ON qwat_od.node IS 'Trigger: when updating, check if altitude or Z value of geometry changed and synchronize them.';
-
-CREATE TRIGGER node_altitude_insert_trigger
-	BEFORE INSERT ON qwat_od.node
-	FOR EACH ROW
-	EXECUTE PROCEDURE qwat_od.ft_node_altitude();
-COMMENT ON TRIGGER node_altitude_insert_trigger ON qwat_od.node IS 'Trigger: when updating, check if altitude or Z value of geometry changed and synchronize them.';
 
 
 

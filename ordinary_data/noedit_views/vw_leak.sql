@@ -4,7 +4,7 @@
 	SQL file :: leak view
 */
 
-CREATE VIEW qwat_od.vw_leak AS 
+CREATE OR REPLACE VIEW qwat_od.vw_leak AS 
 	SELECT  
 		leak_cause.value_fr  AS cause,
 		widespread_damage,

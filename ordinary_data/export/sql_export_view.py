@@ -12,7 +12,7 @@ class SqlExportView():
 		self.definition = definition
 
 	def get_columns(self, table):
-		self.cur.execute("SELECT attname FROM pg_attribute WHERE attrelid = '{0}'::regclass AND attnum > 0 ORDER BY attnum ASC".format(table))
+		self.cur.execute("SELECT attname FROM pg_attribute WHERE attrelid = '{0}'::regclass AND attisdropped IS NOT TRUE AND attnum > 0 ORDER BY attnum ASC".format(table))
 		pg_fields = self.cur.fetchall()
 		pg_fields = [field[0] for field in pg_fields]
 		return pg_fields

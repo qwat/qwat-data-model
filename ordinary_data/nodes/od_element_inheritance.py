@@ -74,14 +74,14 @@ merge_view:
 
 print pgiv.PGInheritanceView(pg_service, qwat_elements).sql_all()
 
-# print pgiv.PGInheritanceView(pg_service, qwat_elements).sql_join_update_trigger("installation")
-# print pgiv.PGInheritanceView(pg_service, qwat_elements).sql_join_update_trigger("valve")
-# print pgiv.PGInheritanceView(pg_service, qwat_elements).sql_join_update_trigger("hydrant")
-# print pgiv.PGInheritanceView(pg_service, qwat_elements).sql_join_update_trigger("part")
-# print pgiv.PGInheritanceView(pg_service, qwat_elements).sql_join_update_trigger("meter")
-# print pgiv.PGInheritanceView(pg_service, qwat_elements).sql_join_update_trigger("subscriber")
-# print pgiv.PGInheritanceView(pg_service, qwat_elements).sql_join_update_trigger("cover")
-# print pgiv.PGInheritanceView(pg_service, qwat_elements).sql_join_update_trigger("samplingpoint")
+# print pgiv.PGInheritanceView(pg_service, qwat_elements).sql_join_insert_trigger("installation")
+# print pgiv.PGInheritanceView(pg_service, qwat_elements).sql_join_insert_trigger("valve")
+# print pgiv.PGInheritanceView(pg_service, qwat_elements).sql_join_insert_trigger("hydrant")
+# print pgiv.PGInheritanceView(pg_service, qwat_elements).sql_join_insert_trigger("part")
+# print pgiv.PGInheritanceView(pg_service, qwat_elements).sql_join_insert_trigger("meter")
+# print pgiv.PGInheritanceView(pg_service, qwat_elements).sql_join_insert_trigger("subscriber")
+# print pgiv.PGInheritanceView(pg_service, qwat_elements).sql_join_insert_trigger("cover")
+# print pgiv.PGInheritanceView(pg_service, qwat_elements).sql_join_insert_trigger("samplingpoint")
 # 
-# print pgiv.PGInheritanceView(pg_service, qwat_elements).sql_merge_update_trigger()
+# print pgiv.PGInheritanceView(pg_service, qwat_elements).sql_merge_insert_trigger()
 
