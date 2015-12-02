@@ -41,3 +41,6 @@ ALTER TABLE qwat_od.network_element ADD CONSTRAINT element_fk_precision        F
 ALTER TABLE qwat_od.network_element ADD CONSTRAINT element_fk_precisionalti    FOREIGN KEY (fk_precisionalti)    REFERENCES qwat_vl.precisionalti(id)    MATCH FULL; CREATE INDEX fki_element_fk_precisionalti    ON qwat_od.network_element(fk_precisionalti);
 ALTER TABLE qwat_od.network_element ADD CONSTRAINT element_fk_object_reference FOREIGN KEY (fk_object_reference) REFERENCES qwat_vl.object_reference(id) MATCH FULL; CREATE INDEX fki_element_fk_object_reference ON qwat_od.network_element(fk_object_reference);
 
+/* altitude - fk_object_reference, fk_altitude_precision constraints */
+ALTER TABLE qwat_od.network_element ADD CONSTRAINT chk_element_altitude_obj_ref CHECK (fk_object_reference IS NOT NULL OR altitude IS NULL );
+ALTER TABLE qwat_od.network_element ADD CONSTRAINT chk_element_altitude_precisionalti CHECK (fk_precisionalti IS NOT NULL OR altitude IS NULL );

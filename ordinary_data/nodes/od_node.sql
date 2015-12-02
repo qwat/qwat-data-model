@@ -33,10 +33,6 @@ ALTER TABLE qwat_od.node ADD COLUMN _pipe_node_type      qwat_od.pipe_connection
 ALTER TABLE qwat_od.node ADD COLUMN _pipe_orientation    float   default 0;
 ALTER TABLE qwat_od.node ADD COLUMN _pipe_schema_visible boolean default false;
 
-/* altitude - fk_object_reference, fk_altitude_precision constraints */
-ALTER TABLE qwat_od.node ADD CONSTRAINT chk_node_altitude_obj_ref CHECK (fk_object_reference IS NOT NULL OR altitude IS NULL );
-ALTER TABLE qwat_od.node ADD CONSTRAINT chk_altitude_fk_precisionalti CHECK (fk_precisionalti IS NOT NULL OR altitude IS NULL );
-
 /* GEOMETRY */
 ALTER TABLE qwat_od.node ADD COLUMN geometry geometry('POINTZ',:SRID);
 ALTER TABLE qwat_od.node ADD COLUMN geometry_alt1 geometry('POINTZ',:SRID);
