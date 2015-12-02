@@ -116,27 +116,6 @@ CREATE TRIGGER tr_pipe_node_type_update
 	EXECUTE PROCEDURE qwat_od.ft_pipe_node_type();
 COMMENT ON TRIGGER tr_pipe_node_type_update ON qwat_od.pipe IS 'Trigger: after updating of a pipe geometry, set the type of nodes / clean the nodes.';
 
-/* --------------------------------------------*/
-/* -------- MOVED NODE TRIGGER ----------------*/
-CREATE OR REPLACE FUNCTION qwat_od.ft_pipe_node_moved() RETURNS TRIGGER AS
-	$BODY$
-	DECLARE
-		node_ids integer[];
-	BEGIN
-		UPDATE qwat_od.pipe SET	fk_node_a = qwat_od.fn_node_create(ST_StartPoint(geometry)) WHERE fk_node_a = OLD.id;
-		UPDATE qwat_od.pipe SET	fk_node_b = qwat_od.fn_node_create(ST_EndPoint(  geometry)) WHERE fk_node_b = OLD.id;
-		RETURN NEW;
-	END;
-	$BODY$
-	LANGUAGE plpgsql;
-COMMENT ON FUNCTION qwat_od.ft_pipe_node_moved() IS 'Trigger: if a network element (i.e. a node) has moved, then reaasign the nodes for the pipe.';
-
-CREATE TRIGGER tr_pipe_node_moved
-	AFTER UPDATE OF geometry ON qwat_od.node
-	FOR EACH ROW
-	EXECUTE PROCEDURE qwat_od.ft_pipe_node_moved();
-COMMENT ON TRIGGER tr_pipe_node_moved ON qwat_od.node IS 'Trigger: if a network element (i.e. a node) has moved, then reaasign the nodes for the pipe.';
-
 
 /* --------------------------------------------*/
 /* -------- ALTERNATIVE GEOM TRIGGER ----------*/
