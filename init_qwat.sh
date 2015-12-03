@@ -123,6 +123,8 @@ psql -v ON_ERROR_STOP=1 -c "CREATE SCHEMA qwat_sys;"
 psql -v ON_ERROR_STOP=1 -f system/settings.sql
 psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f system/settings_insert.sql
 psql -v ON_ERROR_STOP=1 -f system/audit.sql
+psql -v ON_ERROR_STOP=1 -f system/fn_enable_schemaview.sql
+psql -v ON_ERROR_STOP=1 -f system/fn_label.sql
 
 # Value lists
 psql -v ON_ERROR_STOP=1 -c "CREATE SCHEMA qwat_vl;"
@@ -172,8 +174,6 @@ psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f drawing/dimension_orientation.sql
 
 # Ordinary data
 psql -v ON_ERROR_STOP=1 -c "CREATE SCHEMA qwat_od;"
-psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f ordinary_data/generic_functions/fn_enable_schemaview.sql
-psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f ordinary_data/generic_functions/fn_label.sql
 
 psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f ordinary_data/worker/od_worker.sql
 

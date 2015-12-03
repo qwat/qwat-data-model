@@ -5,7 +5,7 @@
 */
 
 
-CREATE OR REPLACE FUNCTION qwat_od.fn_enable_schemaview(_table_name text)
+CREATE OR REPLACE FUNCTION qwat_sys.fn_enable_schemaview(_table_name text)
 	RETURNS VOID AS 
 $BODY$
 	BEGIN
@@ -22,5 +22,5 @@ $BODY$
 	END;
 $BODY$
 LANGUAGE plpgsql;
-COMMENT ON FUNCTION qwat_od.fn_enable_schemaview(text) IS 'Add a column schema_force_visible used to overwrite the schema_view defined by the auxiliary table (pipe_function for instance).';	
+COMMENT ON FUNCTION qwat_sys.fn_enable_schemaview(text) IS 'Add a column schema_force_visible used to overwrite the schema_view defined by the auxiliary table (pipe_function for instance).';	
 

@@ -27,7 +27,7 @@ ALTER TABLE qwat_od.network_element ADD COLUMN year_end            smallint CHEC
 ALTER TABLE qwat_od.network_element ADD COLUMN remark              text;
 
 /* SCHEMA VIEW */
-SELECT qwat_od.fn_enable_schemaview('network_element');
+SELECT qwat_sys.fn_enable_schemaview('network_element');
 
 /* LABELS */
 SELECT qwat_sys.fn_label_create_fields('network_element');
