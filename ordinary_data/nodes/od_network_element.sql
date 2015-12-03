@@ -30,7 +30,7 @@ ALTER TABLE qwat_od.network_element ADD COLUMN remark              text;
 SELECT qwat_od.fn_enable_schemaview('network_element');
 
 /* LABELS */
-SELECT qwat_od.fn_label_create_fields('network_element');
+SELECT qwat_sys.fn_label_create_fields('network_element');
 
 
 /* CONSTRAINTS */

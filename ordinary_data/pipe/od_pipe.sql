@@ -34,7 +34,7 @@ ALTER TABLE qwat_od.pipe ADD COLUMN _valve_closed    boolean default NULL;
 SELECT qwat_od.fn_enable_schemaview( 'pipe' );
 
 /* LABELS */
-SELECT qwat_od.fn_label_create_fields('pipe', false, false);
+SELECT qwat_sys.fn_label_create_fields('pipe', false, false);
 
 /* Constraints */
 ALTER TABLE qwat_od.pipe ADD CONSTRAINT pipe_fk_parent         FOREIGN KEY (fk_parent)         REFERENCES qwat_od.pipe (id)              MATCH FULL; CREATE INDEX fki_pipe_fk_parent        ON qwat_od.pipe(fk_parent);

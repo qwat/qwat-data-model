@@ -4,7 +4,7 @@
 Creates the fields and constraints for customization of labels.
 */
 
-CREATE OR REPLACE FUNCTION qwat_od.fn_label_create_fields(_tbl text, _position bool = true, _rotation bool = true)
+CREATE OR REPLACE FUNCTION qwat_sys.fn_label_create_fields(_tbl text, _position bool = true, _rotation bool = true)
   RETURNS void AS
 $func$
 BEGIN
@@ -49,5 +49,5 @@ BEGIN
 END
 $func$ LANGUAGE plpgsql;
 
-COMMENT ON FUNCTION qwat_od.fn_label_create_fields(text, boolean, boolean) IS 'Creates the fields and constraints for customization of labels.';
+COMMENT ON FUNCTION qwat_sys.fn_label_create_fields(text, boolean, boolean) IS 'Creates the fields and constraints for customization of labels.';
 

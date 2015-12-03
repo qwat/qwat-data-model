@@ -45,10 +45,6 @@ children:
       table: qwat_od.subscriber
       pkey: id
 
-    cover:
-      table: qwat_od.cover
-      pkey: id
-
     samplingpoint:
       table: qwat_od.samplingpoint
       pkey: id

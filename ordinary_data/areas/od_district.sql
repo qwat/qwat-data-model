@@ -23,7 +23,7 @@ ALTER TABLE qwat_od.district ADD COLUMN geometry geometry('MULTIPOLYGON',:SRID);
 CREATE INDEX district_geoidx ON qwat_od.district USING GIST ( geometry );
 
 /* LABELS */
-SELECT qwat_od.fn_label_create_fields('district');
+SELECT qwat_sys.fn_label_create_fields('district');
 
 /* contraints */
 ALTER TABLE qwat_od.district ADD CONSTRAINT district_name UNIQUE (name);

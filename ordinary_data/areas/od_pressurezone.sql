@@ -21,7 +21,7 @@ ALTER TABLE qwat_od.pressurezone ADD COLUMN geometry geometry('MULTIPOLYGON',:SR
 CREATE INDEX pressurezone_geoidx ON qwat_od.pressurezone USING GIST ( geometry );
 
 /* LABELS */
-SELECT qwat_od.fn_label_create_fields('pressurezone');
+SELECT qwat_sys.fn_label_create_fields('pressurezone');
 
 /* CONSTRAINT */
 ALTER TABLE qwat_od.pressurezone ADD CONSTRAINT pressurezone_name UNIQUE (name);

@@ -25,7 +25,7 @@ ALTER TABLE qwat_od.remote ADD COLUMN geometry geometry('MULTILINESTRING',:SRID)
 CREATE INDEX remote_geoidx_line ON qwat_od.remote USING GIST ( geometry );
 
 /* LABELS */
-SELECT qwat_od.fn_label_create_fields('remote');
+SELECT qwat_sys.fn_label_create_fields('remote');
 
 /* CONSTRAINTS */
 ALTER TABLE qwat_od.remote ADD CONSTRAINT remote_fk_distributor  FOREIGN KEY (fk_distributor)  REFERENCES qwat_od.distributor(id)      MATCH FULL; CREATE INDEX fki_remote_fk_distributor   ON qwat_od.remote(fk_distributor) ;
