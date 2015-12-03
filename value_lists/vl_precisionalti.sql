@@ -22,8 +22,4 @@ INSERT INTO qwat_vl.precisionalti (id,code_sire,value_en,value_fr,value_ro) VALU
 INSERT INTO qwat_vl.precisionalti (id,code_sire,value_en,value_fr,value_ro) VALUES (1123,0, 'Better than 50 cm' ,'Inférieure à 50 cm'   ,'Mai bună de 50 cm');
 INSERT INTO qwat_vl.precisionalti (id,code_sire,value_en,value_fr,value_ro) VALUES (1124,0, 'Better than 10 cm' ,'Inférieure à 10 cm'   ,'Mai bună de 10 cm');
 INSERT INTO qwat_vl.precisionalti (id,code_sire,value_en,value_fr,value_ro) VALUES (1125,0, 'Better than 5 cm'  ,'Inférieure à 5 cm'    ,'Mai bună de 5 cm');
-INSERT INTO qwat_vl.precisionalti (id,code_sire,value_en,value_fr,value_ro) VALUES (1126,1, 'Unknown'           ,'Inconnue'             ,'Necunoscută');
-
-
-
 
