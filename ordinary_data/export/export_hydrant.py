@@ -18,7 +18,7 @@ from: qwat_od.vw_element_hydrant
 joins:
   district:
     table: qwat_od.district
-    fkey: fk_pressurezone
+    fkey: fk_district
   pressurezone:
     table: qwat_od.pressurezone
     fkey: fk_pressurezone

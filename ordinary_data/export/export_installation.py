@@ -16,6 +16,9 @@ name: qwat_od.vw_export_installation
 from: qwat_od.vw_element_installation
 
 joins:
+  district:
+    table: qwat_od.district
+    fkey: fk_district
   remote:
     table: qwat_vl.remote_type
     fkey: fk_remote
