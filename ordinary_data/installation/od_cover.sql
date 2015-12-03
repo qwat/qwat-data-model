@@ -29,3 +29,17 @@ SELECT qwat_sys.fn_label_create_fields('cover');
 ALTER TABLE qwat_od.cover ADD CONSTRAINT cover_fk_type         FOREIGN KEY (fk_cover_type)   REFERENCES qwat_vl.cover_type(id)   MATCH FULL; CREATE INDEX fki_cover_fk_type         ON qwat_od.cover(fk_cover_type)  ;
 ALTER TABLE qwat_od.cover ADD CONSTRAINT cover_fk_installation FOREIGN KEY (fk_installation) REFERENCES qwat_od.installation(id) MATCH FULL; CREATE INDEX fki_cover_fk_installation ON qwat_od.cover(fk_installation);
 
+
+CREATE TRIGGER cover_altitude_update_trigger
+	BEFORE UPDATE OF altitude, geometry ON qwat_od.cover
+	FOR EACH ROW
+	WHEN (NEW.altitude <> OLD.altitude OR ST_Z(NEW.geometry) <> ST_Z(OLD.geometry))
+	EXECUTE PROCEDURE qwat_od.ft_geom3d_altitude();
+COMMENT ON TRIGGER cover_altitude_update_trigger ON qwat_od.cover IS 'Trigger: when updating, check if altitude or Z value of geometry changed and synchronize them.';
+
+CREATE TRIGGER cover_altitude_insert_trigger
+	BEFORE INSERT ON qwat_od.cover
+	FOR EACH ROW
+	EXECUTE PROCEDURE qwat_od.ft_geom3d_altitude();
+COMMENT ON TRIGGER cover_altitude_insert_trigger ON qwat_od.cover IS 'Trigger: when updating, check if altitude or Z value of geometry changed and synchronize them.';
+

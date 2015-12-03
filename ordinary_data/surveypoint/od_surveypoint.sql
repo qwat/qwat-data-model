@@ -27,31 +27,16 @@ ALTER TABLE qwat_od.surveypoint ADD CONSTRAINT surveypoint_fk_folder FOREIGN KEY
 
 
 /* Altitude triggers */
-CREATE OR REPLACE FUNCTION qwat_od.ft_surveypoint_altitude() RETURNS TRIGGER AS
-$BODY$
-	BEGIN
-		-- altitude is prioritary on Z value of the geometry (if both changed, only altitude is taken into account)
-		IF NEW.altitude IS NULL THEN
-			NEW.altitude := NULLIF( ST_Z(NEW.geometry), 0.0); -- 0 is the NULL value
-		END IF;
-		IF 	NEW.altitude IS NULL     AND ST_Z(NEW.geometry) <> 0.0 			OR
-			NEW.altitude IS NOT NULL AND ST_Z(NEW.geometry) <> NEW.altitude THEN
-				NEW.geometry := ST_SetSRID( ST_MakePoint( ST_X(NEW.geometry), ST_Y(NEW.geometry), COALESCE(NEW.altitude,0) ), ST_SRID(NEW.geometry) );
-		END IF;
-		RETURN NEW;
-	END;
-$BODY$
-LANGUAGE plpgsql;
 
 CREATE TRIGGER surveypoint_altitude_update_trigger
 	BEFORE UPDATE OF altitude, geometry ON qwat_od.surveypoint
 	FOR EACH ROW
 	WHEN (NEW.altitude <> OLD.altitude OR ST_Z(NEW.geometry) <> ST_Z(OLD.geometry))
-	EXECUTE PROCEDURE qwat_od.ft_surveypoint_altitude();
+	EXECUTE PROCEDURE qwat_od.ft_geom3d_altitude();
 COMMENT ON TRIGGER surveypoint_altitude_update_trigger ON qwat_od.surveypoint IS 'Trigger: when updating, check if altitude or Z value of geometry changed and synchronize them.';
 
 CREATE TRIGGER surveypoint_altitude_insert_trigger
 	BEFORE INSERT ON qwat_od.surveypoint
 	FOR EACH ROW
-	EXECUTE PROCEDURE qwat_od.ft_surveypoint_altitude();
+	EXECUTE PROCEDURE qwat_od.ft_geom3d_altitude();
 COMMENT ON TRIGGER surveypoint_altitude_insert_trigger ON qwat_od.surveypoint IS 'Trigger: when updating, check if altitude or Z value of geometry changed and synchronize them.';

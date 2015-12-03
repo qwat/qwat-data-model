@@ -174,6 +174,7 @@ psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f drawing/dimension_orientation.sql
 
 # Ordinary data
 psql -v ON_ERROR_STOP=1 -c "CREATE SCHEMA qwat_od;"
+psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f ordinary_data/generic_functions/ft_geom3d_altitude.sql
 
 psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f ordinary_data/worker/od_worker.sql
 
