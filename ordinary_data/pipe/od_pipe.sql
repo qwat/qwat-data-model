@@ -23,6 +23,7 @@ ALTER TABLE qwat_od.pipe ADD COLUMN fk_watertype     integer not null;
 ALTER TABLE qwat_od.pipe ADD COLUMN fk_locationtype  integer[];
 ALTER TABLE qwat_od.pipe ADD COLUMN fk_folder        integer ;
 ALTER TABLE qwat_od.pipe ADD COLUMN year             smallint CHECK (year IS NULL OR year > 1800 AND year < 2100);
+ALTER TABLE qwat_od.pipe ADD COLUMN year_rehabilitation smallint CHECK (year_end IS NULL OR year > 1800 AND year < 2100);
 ALTER TABLE qwat_od.pipe ADD COLUMN year_end         smallint CHECK (year_end IS NULL OR year > 1800 AND year < 2100);
 ALTER TABLE qwat_od.pipe ADD COLUMN tunnel_or_bridge boolean default false;
 ALTER TABLE qwat_od.pipe ADD COLUMN pressure_nominal smallint default 16;
