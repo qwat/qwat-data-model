@@ -16,7 +16,7 @@ CREATE VIEW qwat_od.vw_pipe AS
 		pipe.fk_precision      ,
 		pipe.fk_protection     ,
 		pipe.fk_status         ,
-		pipe.fk_folder            ,
+		pipe.fk_folder         ,
 		pipe.schema_force_visible ,
 		pipe.year              ,
 		pipe.tunnel_or_bridge  ,
@@ -52,7 +52,7 @@ CREATE VIEW qwat_od.vw_pipe AS
 		status.active            AS _status_active,
 		pressurezone.name        AS _pressurezone,
 		pressurezone.colorcode   AS _pressurezone_colorcode,
-		folder.name              AS folder
+		folder.identification    AS folder
 		FROM qwat_od.pipe
 		INNER      JOIN qwat_vl.pipe_function      ON pipe.fk_function      = pipe_function.id
 		INNER      JOIN qwat_vl.pipe_installmethod ON pipe.fk_installmethod = pipe_installmethod.id
