@@ -21,5 +21,5 @@ CREATE INDEX folder_geoidx_polygon ON qwat_od.folder USING GIST ( geometry_polyg
 CREATE INDEX folder_geoidx_line ON qwat_od.folder    USING GIST ( geometry_line );
 
 /* CONSTRAINT */
-ALTER TABLE qwat_od.folder ADD CONSTRAINT folder_name UNIQUE (name);
+ALTER TABLE qwat_od.folder ADD CONSTRAINT folder_identification UNIQUE (identification);
 
