@@ -18,9 +18,11 @@ ALTER TABLE qwat_od.cover ADD COLUMN fk_installation integer;
 ALTER TABLE qwat_od.cover ADD COLUMN year smallint   CHECK (year IS NULL OR year > 1800 AND year < 2100);
 ALTER TABLE qwat_od.cover ADD COLUMN altitude        numeric(8,3);
 ALTER TABLE qwat_od.cover ADD COLUMN circular        boolean default true;
-ALTER TABLE qwat_od.cover ADD COLUMN diameter        decimal(10,3)       ;
+ALTER TABLE qwat_od.cover ADD COLUMN form_dimension  decimal(10,3)       ; COMMENT ON COLUMN qwat_od.cover.form_dimension  IS 'depending on the cover form, it represents either the diameter of circle or the length of a square side';
 ALTER TABLE qwat_od.cover ADD COLUMN remark          text                ;
 ALTER TABLE qwat_od.cover ADD COLUMN geometry        geometry('PointZ', :SRID);
+ALTER TABLE qwat_od.cover ADD COLUMN geometry_polygon geometry('Polygon', :SRID);
+
 
 /* LABELS */
 SELECT qwat_sys.fn_label_create_fields('cover');
