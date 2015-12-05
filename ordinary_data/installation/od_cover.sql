@@ -1,7 +1,7 @@
 /*
 	qWat - QGIS Water Module
 
-	SQL file :: meter table
+	SQL file :: cover table
 */
 
 
@@ -9,7 +9,7 @@ CREATE TABLE qwat_od.cover ();
 COMMENT ON TABLE qwat_od.cover IS 'Table for installation covers.  Inherits from node.';
 
 /* COLUMNS */
-ALTER TABLE qwat_od.cover ADD COLUMN id              integer NOT NULL REFERENCES qwat_od.network_element(id) PRIMARY KEY;
+ALTER TABLE qwat_od.cover ADD COLUMN id SERIAL PRIMARY KEY;
 ALTER TABLE qwat_od.cover ADD COLUMN identification  varchar(50);
 ALTER TABLE qwat_od.cover ADD COLUMN fk_distributor  integer;
 ALTER TABLE qwat_od.cover ADD COLUMN fk_status       integer;
