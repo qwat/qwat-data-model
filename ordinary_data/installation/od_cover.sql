@@ -1,7 +1,7 @@
 /*
 	qWat - QGIS Water Module
 
-	SQL file :: meter table
+	SQL file :: cover table
 */
 
 
@@ -9,7 +9,7 @@ CREATE TABLE qwat_od.cover ();
 COMMENT ON TABLE qwat_od.cover IS 'Table for installation covers.  Inherits from node.';
 
 /* COLUMNS */
-ALTER TABLE qwat_od.cover ADD COLUMN id              integer NOT NULL REFERENCES qwat_od.network_element(id) PRIMARY KEY;
+ALTER TABLE qwat_od.cover ADD COLUMN id SERIAL PRIMARY KEY;
 ALTER TABLE qwat_od.cover ADD COLUMN identification  varchar(50);
 ALTER TABLE qwat_od.cover ADD COLUMN fk_distributor  integer;
 ALTER TABLE qwat_od.cover ADD COLUMN fk_status       integer;
@@ -18,9 +18,11 @@ ALTER TABLE qwat_od.cover ADD COLUMN fk_installation integer;
 ALTER TABLE qwat_od.cover ADD COLUMN year smallint   CHECK (year IS NULL OR year > 1800 AND year < 2100);
 ALTER TABLE qwat_od.cover ADD COLUMN altitude        numeric(8,3);
 ALTER TABLE qwat_od.cover ADD COLUMN circular        boolean default true;
-ALTER TABLE qwat_od.cover ADD COLUMN diameter        decimal(10,3)       ;
+ALTER TABLE qwat_od.cover ADD COLUMN form_dimension  decimal(10,3)       ; COMMENT ON COLUMN qwat_od.cover.form_dimension  IS 'depending on the cover form, it represents either the diameter of circle or the length of a square side';
 ALTER TABLE qwat_od.cover ADD COLUMN remark          text                ;
-ALTER TABLE qwat_od.cover ADD COLUMN geometry        geometry('PointZ', :SRID);
+SELECT AddGeometryColumn ('qwat_od','cover','geometry',:SRID,'POINT',3, false);
+ALTER TABLE qwat_od.cover ADD COLUMN geometry_polygon geometry('Polygon', :SRID);
+
 
 /* LABELS */
 SELECT qwat_sys.fn_label_create_fields('cover');
