@@ -26,7 +26,7 @@ EOF
 
 }
 
-ARGS=$(getopt -o p:s:drv -l "pgservice:,srid:,drop-schema,create-roles,verbose" -- "$@");
+ARGS=$(getopt -o p:s:drv -l "pgservice:,srid:,drop-schema,create-roles,verbose,demo" -- "$@");
 if [ $? -ne 0 ];
 then
   usage
