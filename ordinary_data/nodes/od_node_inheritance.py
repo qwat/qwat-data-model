@@ -28,8 +28,9 @@ trigger_pre: >
   \t\t	NEW.altitude := NULLIF( ST_Z(NEW.geometry), 0.0); -- 0 is the NULL value
   \t\tEND IF;
   \t\t-- TODO handle going to NULL on update 
-  \t\tIF 	NEW.altitude IS NOT NULL AND ST_Z(NEW.geometry) <> NEW.altitude THEN
-  \t\t	NEW.geometry := ST_SetSRID( ST_MakePoint( ST_X(NEW.geometry), ST_Y(NEW.geometry), COALESCE(NEW.altitude,0) ), ST_SRID(NEW.geometry) );
+  \t\tIF	NEW.altitude IS NULL     AND ST_Z(NEW.geometry) <> 0.0 OR
+  \t\t		NEW.altitude IS NOT NULL AND ( ST_Z(NEW.geometry) IS NULL OR ST_Z(NEW.geometry) <> NEW.altitude ) THEN
+  \t\t\t\tNEW.geometry := ST_SetSRID( ST_MakePoint( ST_X(NEW.geometry), ST_Y(NEW.geometry), COALESCE(NEW.altitude,0) ), ST_SRID(NEW.geometry) );
   \t\tEND IF;
 
 alter:

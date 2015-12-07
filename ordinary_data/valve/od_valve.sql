@@ -65,8 +65,8 @@ $BODY$
 		IF NEW.handle_altitude IS NULL THEN
 			NEW.handle_altitude := NULLIF( ST_Z(NEW.handle_geometry), 0.0); -- 0 is the NULL value
 		END IF;
-		IF 	NEW.handle_altitude IS NULL     AND ST_Z(NEW.handle_geometry) <> 0.0 					OR
-			NEW.handle_altitude IS NOT NULL AND ST_Z(NEW.handle_geometry) <> NEW.handle_altitude 	THEN
+		IF 	NEW.handle_altitude IS NULL     AND ST_Z(NEW.handle_geometry) <> 0.0 OR
+			NEW.handle_altitude IS NOT NULL AND ( ST_Z(NEW.handle_geometry) IS NULL OR ST_Z(NEW.handle_geometry) <> NEW.handle_altitude ) THEN
 				NEW.handle_geometry := ST_SetSRID( ST_MakePoint( ST_X(NEW.handle_geometry), ST_Y(NEW.handle_geometry), COALESCE(NEW.handle_altitude,0) ), ST_SRID(NEW.handle_geometry) );
 		END IF;
 		RETURN NEW;
