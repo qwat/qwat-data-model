@@ -11,6 +11,8 @@ ALTER TABLE qwat_od.pipe ADD COLUMN _diff_elevation decimal(8,2);
 ALTER TABLE qwat_od.pipe ADD COLUMN _printmaps      varchar(100);
 ALTER TABLE qwat_od.pipe ADD COLUMN _geometry_alt1_used boolean;
 ALTER TABLE qwat_od.pipe ADD COLUMN _geometry_alt2_used boolean;
+ALTER TABLE qwat_od.pipe ADD COLUMN update_geometry_alt1 boolean default null; -- used to determine if alternative geometries should be updated when main geometry is updated
+ALTER TABLE qwat_od.pipe ADD COLUMN update_geometry_alt2 boolean default null; -- used to determine if alternative geometries should be updated when main geometry is updated
 
 
 /* ---------------------------- */
@@ -46,14 +48,16 @@ CREATE OR REPLACE FUNCTION qwat_od.ft_pipe_geom() RETURNS TRIGGER AS
 		NEW.fk_district         := qwat_od.fn_get_district(NEW.geometry);
 		NEW.fk_pressurezone     := qwat_od.fn_get_pressurezone(NEW.geometry);
 		NEW.fk_printmap         := qwat_od.fn_get_printmap_id(NEW.geometry);
-		IF NEW.geometry_alt1 IS NULL THEN --TODO prompt user if update shall overwrite alternative geom
+		IF NEW.geometry_alt1 IS NULL OR NEW.update_geometry_alt1 IS TRUE THEN
 			NEW.geometry_alt1 := NEW.geometry;
 		END IF;
-		IF NEW.geometry_alt2 IS NULL THEN
-			NEW.geometry_alt2       := NEW.geometry;
+		IF NEW.geometry_alt2 IS NULL OR NEW.update_geometry_alt2 IS TRUE THEN
+			NEW.geometry_alt2 := NEW.geometry;
 		END IF;
 		NEW._geometry_alt1_used := ST_Equals(ST_Force2d(NEW.geometry_alt1), ST_Force2d(NEW.geometry)) IS FALSE;
 		NEW._geometry_alt2_used := ST_Equals(ST_Force2d(NEW.geometry_alt2), ST_Force2d(NEW.geometry)) IS FALSE;
+		NEW.update_geometry_alt1 := NULL;
+		NEW.update_geometry_alt2 := NULL;
 		NEW._printmaps          := qwat_od.fn_get_printmaps(NEW.geometry);
 		NEW._length2d           := ST_Length(NEW.geometry);
 		NEW._length3d           := ST_3DLength(NEW.geometry);
