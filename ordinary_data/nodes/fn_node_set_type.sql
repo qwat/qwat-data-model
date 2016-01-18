@@ -136,7 +136,7 @@ $BODY$
 					_orientation := ATAN2( (SIN(_orientation)+SIN(_orientation2))/2 , (COS(_orientation)+COS(_orientation2))/2 );
 					-- RAISE NOTICE 'mean:  %', degrees(_orientation  );
 					-- reverse arrow according to diameter reduction
-					IF _pipeitem.diameter < _diameter THEN
+					IF _pipeitem.diameter > _diameter THEN
 						_orientation := _orientation + pi();
 					END IF;
 				END IF;
