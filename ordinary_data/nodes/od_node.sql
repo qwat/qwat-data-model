@@ -37,6 +37,10 @@ ALTER TABLE qwat_od.node ADD COLUMN _pipe_schema_visible boolean default false;
 ALTER TABLE qwat_od.node ADD COLUMN geometry geometry('POINTZ',:SRID);
 ALTER TABLE qwat_od.node ADD COLUMN geometry_alt1 geometry('POINTZ',:SRID);
 ALTER TABLE qwat_od.node ADD COLUMN geometry_alt2 geometry('POINTZ',:SRID);
+ALTER TABLE qwat_od.node ADD COLUMN update_geometry_alt1 boolean default null; -- used to determine if alternative geometries should be updated when main geometry is updated
+ALTER TABLE qwat_od.node ADD COLUMN update_geometry_alt2 boolean default null; -- used to determine if alternative geometries should be updated when main geometry is updated
+
+/* GEOM INDEXES */
 CREATE INDEX node_geoidx ON qwat_od.node USING GIST ( geometry );
 CREATE INDEX node_geoidx_alt1 ON qwat_od.node USING GIST ( geometry_alt1 );
 CREATE INDEX node_geoidx_alt2 ON qwat_od.node USING GIST ( geometry_alt2 );
@@ -56,10 +60,16 @@ $BODY$
 		NEW.fk_district         := qwat_od.fn_get_district(NEW.geometry);
 		NEW.fk_pressurezone     := qwat_od.fn_get_pressurezone(NEW.geometry);
 		NEW.fk_printmap         := qwat_od.fn_get_printmap_id(NEW.geometry);
-		NEW.geometry_alt1       := NEW.geometry; --TODO PROMT USER
-		NEW.geometry_alt2       := NEW.geometry;
-		NEW._geometry_alt1_used := false;
-		NEW._geometry_alt2_used := false;
+		IF NEW.geometry_alt1 IS NULL OR NEW.update_geometry_alt1 IS TRUE THEN
+			NEW.geometry_alt1 := NEW.geometry;
+		END IF;
+		IF NEW.geometry_alt2 IS NULL OR NEW.update_geometry_alt2 IS TRUE THEN
+			NEW.geometry_alt2 := NEW.geometry;
+		END IF;
+		NEW._geometry_alt1_used := ST_Equals(ST_Force2d(NEW.geometry_alt1), ST_Force2d(NEW.geometry)) IS FALSE;
+		NEW._geometry_alt2_used := ST_Equals(ST_Force2d(NEW.geometry_alt2), ST_Force2d(NEW.geometry)) IS FALSE;
+		NEW.update_geometry_alt1 := NULL;
+		NEW.update_geometry_alt2 := NULL;
 		NEW._printmaps          := qwat_od.fn_get_printmaps(NEW.geometry);
 		IF TG_OP = 'INSERT' THEN
 			-- add a vertex to the corresponding pipe if it intersects
@@ -109,6 +119,22 @@ COMMENT ON TRIGGER tr_pipe_node_moved ON qwat_od.node IS 'Trigger: if a network 
 
 
 
+/* --------------------------------------------*/
+/* -------- ALTERNATIVE GEOM TRIGGER ----------*/
+CREATE OR REPLACE FUNCTION qwat_od.ft_node_alternative_geom() RETURNS TRIGGER AS
+	$BODY$
+	BEGIN
+		NEW._geometry_alt1_used := NEW.geometry_alt1 IS NOT NULL AND ST_Equals(ST_Force2d(NEW.geometry_alt1), ST_Force2d(NEW.geometry)) IS FALSE;
+		NEW._geometry_alt2_used := NEW.geometry_alt2 IS NOT NULL AND ST_Equals(ST_Force2d(NEW.geometry_alt2), ST_Force2d(NEW.geometry)) IS FALSE;
+		RETURN NEW;
+	END;
+	$BODY$
+	LANGUAGE plpgsql;
 
+CREATE TRIGGER tr_node_alternative_geom
+	BEFORE UPDATE OF geometry_alt1, geometry_alt2 ON qwat_od.node
+	FOR EACH ROW
+	EXECUTE PROCEDURE qwat_od.ft_node_alternative_geom();
+COMMENT ON TRIGGER tr_node_alternative_geom ON qwat_od.node IS 'Trigger: when updating, check if alternative geometries are different to fill the boolean fields.';
 
 
