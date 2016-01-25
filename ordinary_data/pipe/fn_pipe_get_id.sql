@@ -11,7 +11,11 @@ $BODY$
 	DECLARE
 		_pipe_id integer := NULL;
 	BEGIN
-		_pipe_id := id FROM qwat_od.pipe WHERE ST_Intersects(ST_Force2d(_geometry),ST_Force2d(pipe.geometry)) LIMIT 1;
+		_pipe_id := pipe.id FROM qwat_od.pipe 
+			JOIN qwat_vl.status ON fk_status = status.id
+			WHERE ST_Intersects(ST_Force2d(_geometry),ST_Force2d(pipe.geometry)) 
+			ORDER BY status.active::integer DESC
+			LIMIT 1;
 		RETURN _pipe_id;
 	END;
 $BODY$
