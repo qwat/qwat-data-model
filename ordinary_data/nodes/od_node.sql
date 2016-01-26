@@ -61,6 +61,10 @@ $BODY$
 		NEW._geometry_alt1_used := false;
 		NEW._geometry_alt2_used := false;
 		NEW._printmaps          := qwat_od.fn_get_printmaps(NEW.geometry);
+		IF TG_OP = 'INSERT' THEN
+			-- add a vertex to the corresponding pipe if it intersects
+			UPDATE qwat_od.pipe SET geometry = ST_LineMerge(ST_Split(geometry, NEW.geometry)) WHERE ST_Intersects(geometry, NEW.geometry);
+		END IF;
 		RETURN NEW;
 	END;
 $BODY$
