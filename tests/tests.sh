@@ -3,7 +3,7 @@
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 cd ${DIR}/..
-#./init_qwat.sh -p qwat_test -d
+./init_qwat.sh -p qwat_test -d
 cd -
 
 export PGSERVICE=qwat_test
