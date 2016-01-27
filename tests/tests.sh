@@ -1,22 +1,44 @@
 #!/bin/bash
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+INIT_DB=1
 
-cd ${DIR}/..
-./init_qwat.sh -p qwat_test -d
-cd -
+while [[ $# > 0 ]]; do
+key="$1"
+case $key in
+    -h|--help)
+        echo "Arguments:"
+        echo -e "\t-h|--help\tShow this help screen"
+        echo -e "\t-n|--no-init\tDo not init the test database"
+        exit 0
+        ;;
+    -n|--no-init)
+        INIT_DB=0
+        ;;
+esac
+
+shift
+done
+
+if [ "$INIT_DB" = "1" ]; then
+    cd ${DIR}/..
+    ./init_qwat.sh -p qwat_test -d
+    cd -
+fi
 
 export PGSERVICE=qwat_test
+export PGOPTIONS="-c lc_messages=C -c client_min_messages=ERROR"
 
 TESTS="test_add_node.sql test_node_orientation.sql test_altitude.sql"
 
 for f in ${TESTS}; do
     echo -n "Running $f ... "
-    psql -tA -f ${DIR}/$f >/tmp/test.txt 2>/dev/null
-    diff -u /tmp/test.txt ${f/.sql/.expected.sql} >/dev/null
+    fo="/tmp/${f}.txt"
+    psql -tA -f ${DIR}/$f >$fo 2>&1
+    diff -u $fo ${f/.sql/.expected.sql} >/dev/null
     if [ "$?" = "1" ]; then
         echo "Error"
-        diff -u /tmp/test.txt ${f/.sql/.expected.sql}
+        diff -u $fo ${f/.sql/.expected.sql}
     fi
     echo "OK"
 done
