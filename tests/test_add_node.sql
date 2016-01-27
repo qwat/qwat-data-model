@@ -38,7 +38,7 @@ INSERT INTO qwat_od.vw_element_valve (id, fk_district, fk_pressurezone, fk_distr
 -- Now we have 4 vertices on the pipe
 SELECT 'num_points_after_add2', st_numpoints(geometry) FROM qwat_od.pipe WHERE id = 1;
 
--- What if the intersection test fails ?
+-- What if the intersection test fails but the node is close enough to the pipe ?
 INSERT INTO qwat_od.vw_element_valve (id, fk_district, fk_pressurezone, fk_distributor, fk_pipe,
        fk_precision, fk_precisionalti, fk_status, fk_valve_type, fk_valve_function, fk_valve_actuation,
        geometry)
@@ -46,8 +46,8 @@ INSERT INTO qwat_od.vw_element_valve (id, fk_district, fk_pressurezone, fk_distr
        101, 101, 101, 101, 6108, 101,
        st_setsrid('point(530025.2 138265.04)'::geometry,21781));
 
--- We still have 4 vertices on the pipe
-SELECT 'num_points_after_add2', st_numpoints(geometry) FROM qwat_od.pipe WHERE id = 1;
+-- Another point added
+SELECT 'num_points_after_add3', st_numpoints(geometry) FROM qwat_od.pipe WHERE id = 1;
 
 -- restore the initial state
 DELETE FROM qwat_od.vw_element_valve;

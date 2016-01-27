@@ -73,7 +73,9 @@ $BODY$
 		NEW._printmaps          := qwat_od.fn_get_printmaps(NEW.geometry);
 		IF TG_OP = 'INSERT' THEN
 			-- add a vertex to the corresponding pipe if it intersects
-			UPDATE qwat_od.pipe SET geometry = ST_LineMerge(ST_Split(geometry, NEW.geometry)) WHERE ST_Intersects(geometry, NEW.geometry);
+                        -- when the node is close enough to the pipe (< 1 micrometer) the node is considered to intersect the pipe
+                        -- it allows to deal with intersections that cannot be represented by floating point numbers
+                        UPDATE qwat_od.pipe SET geometry = ST_Snap(geometry, NEW.geometry, 1e-6) WHERE ST_Distance(geometry, NEW.geometry) < 1e-6;
 		END IF;
 		RETURN NEW;
 	END;
