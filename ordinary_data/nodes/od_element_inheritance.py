@@ -8,9 +8,9 @@ import sys
 pgiv = imp.load_source('PGInheritanceView', os.path.join(os.path.dirname(__file__), '../../metaproject/postgresql/pg_inheritance_view/pg_inheritance_view.py'))
 
 if len(sys.argv) > 1:
-	pg_service = sys.argv[1]
+    pg_service = sys.argv[1]
 else:
-	pg_service = "qwat_test"
+    pg_service = "qwat_test"
 
 
 qwat_elements = """
@@ -28,6 +28,9 @@ children:
     valve:
       table: qwat_od.valve
       pkey: id
+      alter:
+        fk_pipe:
+          write: qwat_od.fn_pipe_get_id(NEW.geometry)
 
     hydrant:
       table: qwat_od.hydrant
@@ -36,6 +39,9 @@ children:
     part:
       table: qwat_od.part
       pkey: id
+      alter:
+        fk_pipe:
+          write: qwat_od.fn_pipe_get_id(NEW.geometry)
 
     meter:
       table: qwat_od.meter

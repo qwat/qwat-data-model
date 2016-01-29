@@ -35,14 +35,14 @@ trigger_pre: >
 
 alter:
   geometry:
-    read: ST_Force2D
-    write: ST_Force3D
+    read: ST_Force2D(geometry)
+    write: ST_Force3D(NEW.geometry)
   geometry_alt1:
-    read: ST_Force2D
-    write: ST_Force3D
+    read: ST_Force2D(geometry)
+    write: ST_Force3D(NEW.geometry)
   geometry_alt2:
-    read: ST_Force2D
-    write: ST_Force3D
+    read: ST_Force2D(geometry)
+    write: ST_Force3D(NEW.geometry)
 
 children:
   element:
