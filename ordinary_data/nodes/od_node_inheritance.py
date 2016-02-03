@@ -33,17 +33,6 @@ trigger_pre: >
   \t\t\t\tNEW.geometry := ST_SetSRID( ST_MakePoint( ST_X(NEW.geometry), ST_Y(NEW.geometry), COALESCE(NEW.altitude,0) ), ST_SRID(NEW.geometry) );
   \t\tEND IF;
 
-alter:
-  geometry:
-    read: ST_Force2D(geometry)
-    write: ST_Force3D(NEW.geometry)
-  geometry_alt1:
-    read: ST_Force2D(geometry)
-    write: ST_Force3D(NEW.geometry)
-  geometry_alt2:
-    read: ST_Force2D(geometry)
-    write: ST_Force3D(NEW.geometry)
-
 children:
   element:
     table: qwat_od.network_element
