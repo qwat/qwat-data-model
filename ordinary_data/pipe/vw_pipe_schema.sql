@@ -120,9 +120,9 @@ CREATE OR REPLACE VIEW qwat_od.vw_pipe_schema AS
 			pressurezone.name AS _pressurezone ,
 			pressurezone.colorcode AS _pressurezone_colorcode,
 			vw_pipe_schema_merged.geometry::geometry(LineStringZ,:SRID) AS geometry
-	  FROM qwat_od.vw_pipe_schema_merged
-	 INNER JOIN qwat_od.pipe         ON pipe.id = vw_pipe_schema_merged.id
-	 INNER JOIN qwat_od.pressurezone ON pipe.fk_pressurezone = pressurezone.id;
+	FROM qwat_od.vw_pipe_schema_merged
+	INNER JOIN qwat_od.pipe         ON pipe.id = vw_pipe_schema_merged.id
+	LEFT JOIN qwat_od.pressurezone ON pipe.fk_pressurezone = pressurezone.id;
 COMMENT ON VIEW qwat_od.vw_pipe_schema IS 'Final view for schema';
 
 /* label update rule */
