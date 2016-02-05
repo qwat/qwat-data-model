@@ -2,6 +2,8 @@
 
 set -e 
 
-psql -v ON_ERROR_STOP=1 -f drop_views.sql
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-./insert_views.sh
+psql -v ON_ERROR_STOP=1 -f ${DIR}/drop_views.sql
+
+${DIR}/insert_views.sh
