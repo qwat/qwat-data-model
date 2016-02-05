@@ -4,7 +4,7 @@ import imp
 import os
 import sys
 
-pgiv = imp.load_source('PGInheritanceView', os.path.join(os.path.dirname(__file__), '../../metaproject/postgresql/pg_inheritance_view/pg_inheritance_view.py'))
+pgiv = imp.load_source('PGInheritanceView', os.path.join(os.path.dirname(__file__), '../../../metaproject/postgresql/pg_inheritance_view/pg_inheritance_view.py'))
 
 if len(sys.argv) > 1:
   pg_service = sys.argv[1]

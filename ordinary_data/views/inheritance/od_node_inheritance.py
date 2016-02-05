@@ -4,7 +4,7 @@ import imp
 import os
 import sys
 
-pgiv = imp.load_source('PGInheritanceView', os.path.join(os.path.dirname(__file__), '../../metaproject/postgresql/pg_inheritance_view/pg_inheritance_view.py'))
+pgiv = imp.load_source('PGInheritanceView', os.path.join(os.path.dirname(__file__), '../../../metaproject/postgresql/pg_inheritance_view/pg_inheritance_view.py'))
 
 if len(sys.argv) > 1:
 	pg_service = sys.argv[1]
@@ -32,6 +32,18 @@ trigger_pre: >
   \t\t		NEW.altitude IS NOT NULL AND ( ST_Z(NEW.geometry) IS NULL OR ST_Z(NEW.geometry) <> NEW.altitude ) THEN
   \t\t\t\tNEW.geometry := ST_SetSRID( ST_MakePoint( ST_X(NEW.geometry), ST_Y(NEW.geometry), COALESCE(NEW.altitude,0) ), ST_SRID(NEW.geometry) );
   \t\tEND IF;
+
+alter:
+  geometry:
+    read: ST_Force2D(geometry)
+    write: ST_Force3D(NEW.geometry)
+  geometry_alt1:
+    read: ST_Force2D(geometry_alt1)
+    write: ST_Force3D(NEW.geometry_alt1)
+  geometry_alt2:
+    read: ST_Force2D(geometry_alt2)
+    write: ST_Force3D(NEW.geometry_alt2)
+
 
 children:
   element:

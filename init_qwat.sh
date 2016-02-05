@@ -133,7 +133,9 @@ psql -v ON_ERROR_STOP=1 -f value_lists/vl_object_reference.sql
 psql -v ON_ERROR_STOP=1 -f value_lists/vl_bedding.sql
 psql -v ON_ERROR_STOP=1 -f value_lists/vl_cistern.sql
 psql -v ON_ERROR_STOP=1 -f value_lists/vl_cover_type.sql
+psql -v ON_ERROR_STOP=1 -f value_lists/vl_hydrant_model.sql
 psql -v ON_ERROR_STOP=1 -f value_lists/vl_hydrant_material.sql
+psql -v ON_ERROR_STOP=1 -f value_lists/vl_hydrant_output.sql
 psql -v ON_ERROR_STOP=1 -f value_lists/vl_hydrant_provider.sql
 psql -v ON_ERROR_STOP=1 -f value_lists/vl_leak_cause.sql
 psql -v ON_ERROR_STOP=1 -f value_lists/vl_locationtype.sql
@@ -185,9 +187,6 @@ psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f ordinary_data/areas/od_district.sql
 psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f ordinary_data/areas/od_folder.sql
 psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f ordinary_data/areas/od_printmap.sql
 psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f ordinary_data/areas/od_protectionzone.sql
-psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f ordinary_data/areas/vw_consumptionzone.sql
-psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f ordinary_data/areas/vw_printmap.sql
-psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f ordinary_data/areas/vw_protectionzone.sql
 psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f ordinary_data/areas/fn_get_district.sql
 psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f ordinary_data/areas/fn_get_printmap.sql
 psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f ordinary_data/areas/fn_pressurezone.sql
@@ -206,9 +205,7 @@ psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f ordinary_data/pipe/od_pipe_geom.sql
 psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f ordinary_data/pipe/od_crossing.sql
 psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f ordinary_data/pipe/fn_pipe_get_id.sql
 psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f ordinary_data/pipe/fn_update_pipe_crossing.sql
-psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f ordinary_data/pipe/vw_pipe_child_parent.sql
-psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f ordinary_data/pipe/vw_pipe_schema.sql
-psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f ordinary_data/pipe/vw_pipe.sql
+
 
 psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f ordinary_data/nodes/od_part.sql
 
@@ -229,7 +226,7 @@ psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f ordinary_data/installation/od_installat
 psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f ordinary_data/installation/od_installation_treatment.sql
 
 psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f ordinary_data/installation/od_remote.sql
-psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f ordinary_data/installation/vw_remote.sql
+
 
 psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f ordinary_data/samplingpoint/od_samplingpoint.sql
 psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f ordinary_data/surveypoint/od_surveypoint.sql
@@ -237,22 +234,10 @@ psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f ordinary_data/leak/od_leak.sql
 
 psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f ordinary_data/valve/tr_valve_pipe.sql
 
-psql -v ON_ERROR_STOP=1 -c "$(./ordinary_data/installation/od_installation_inheritance.py ${PGSERVICE})"
-psql -v ON_ERROR_STOP=1 -c "$(./ordinary_data/nodes/od_node_inheritance.py ${PGSERVICE})"
-psql -v ON_ERROR_STOP=1 -c "$(./ordinary_data/nodes/od_element_inheritance.py ${PGSERVICE})"
 
-# export
-psql -v ON_ERROR_STOP=1 -c "$(./ordinary_data/export/export_installation.py ${PGSERVICE})"
-psql -v ON_ERROR_STOP=1 -c "$(./ordinary_data/export/export_valve.py ${PGSERVICE})"
-psql -v ON_ERROR_STOP=1 -c "$(./ordinary_data/export/export_hydrant.py ${PGSERVICE})"
-psql -v ON_ERROR_STOP=1 -c "$(./ordinary_data/export/export_meter.py ${PGSERVICE})"
-psql -v ON_ERROR_STOP=1 -c "$(./ordinary_data/export/export_part.py ${PGSERVICE})"
-psql -v ON_ERROR_STOP=1 -c "$(./ordinary_data/export/export_subscriber.py ${PGSERVICE})"
+SRID=$SRID ./ordinary_data/views/insert_views.sh
 
-psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f ordinary_data/noedit_views/vw_subscriber_pipe_relation.sql
-psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f ordinary_data/noedit_views/vw_valve_lines.sql
-psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f ordinary_data/noedit_views/vw_leak.sql
-psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f ordinary_data/noedit_views/search_view.sql
+
 
 # Finalize System
 psql -v ON_ERROR_STOP=1 -f system/audit_tables.sql
