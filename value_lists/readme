@@ -40,6 +40,9 @@ They will have 101, 102 and 103 as code, respectively.
 /* hydrant */
 70 hydrant_material
 71 hydrant_provider
+72 hydrant_model_sup
+73 hydrant_model_inf
+74 hydrant_output
 
 /* various */
 9000-9040 object_reference
