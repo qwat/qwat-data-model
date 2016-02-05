@@ -7,7 +7,7 @@
 
 CREATE TABLE qwat_vl.hydrant_material () INHERITS ( qwat_vl.value_list_base);
 ALTER TABLE qwat_vl.hydrant_material ADD CONSTRAINT vl_hydrant_material_pk PRIMARY KEY (id);
-ALTER TABLE qwat_vl.hydrant_material ADD COLUMN pressure_nominal;
+ALTER TABLE qwat_vl.hydrant_material ADD COLUMN pressure_nominal smallint;
 COMMENT ON COLUMN qwat_vl.hydrant_material.pressure_nominal IS 'nominal pressure in bars';
 
 /* Values */
