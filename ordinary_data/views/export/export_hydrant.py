@@ -47,6 +47,15 @@ joins:
   material:
     table: qwat_vl.hydrant_material
     fkey: fk_material
+  model_sup:
+    table: qwat_vl.hydrant_model_sup
+    fkey: fk_model_sup
+  model_inf:
+    table: qwat_vl.hydrant_model_inf
+    fkey: fk_model_inf
+  output:
+    table: qwat_vl.hydrant_output
+    fkey: fk_output
    
 
 """)
