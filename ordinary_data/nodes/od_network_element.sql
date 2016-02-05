@@ -24,6 +24,7 @@ ALTER TABLE qwat_od.network_element ADD COLUMN fk_object_reference integer;
 ALTER TABLE qwat_od.network_element ADD COLUMN altitude            decimal(10,3) default null;
 ALTER TABLE qwat_od.network_element ADD COLUMN year                smallint CHECK (year     IS NULL OR year     > 1800 AND year     < 2100);
 ALTER TABLE qwat_od.network_element ADD COLUMN year_end            smallint CHECK (year_end IS NULL OR year_end > 1800 AND year_end < 2100);
+ALTER TABLE qwat_od.network_element ADD COLUMN orientation         float default null; COMMENT ON COLUMN qwat_od.network_element.orientation IS 'orientation field aims at overwrtiting qwat_od.node._pipe_orientation which is automatically calculated from the pipes. In the editable views, orientation will be COALESCE(netwrok_element.orientation, node._pipe_orientation). Update will be forwarded to network_element.';
 ALTER TABLE qwat_od.network_element ADD COLUMN remark              text;
 
 /* SCHEMA VIEW */

@@ -38,7 +38,9 @@ children:
   element:
     table: qwat_od.network_element
     pkey: id
-
+    alter:
+      orientation:
+        read: COALESCE(element.orientation, node._pipe_orientation)
 merge_view:
   name: vw_qwat_node
   allow_type_change: false
