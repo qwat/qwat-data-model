@@ -75,7 +75,12 @@ $BODY$
 			-- add a vertex to the corresponding pipe if it intersects
                         -- when the node is close enough to the pipe (< 1 micrometer) the node is considered to intersect the pipe
                         -- it allows to deal with intersections that cannot be represented by floating point numbers
-                        UPDATE qwat_od.pipe SET geometry = ST_Snap(geometry, NEW.geometry, 1e-6) WHERE ST_Distance(geometry, NEW.geometry) < 1e-6;
+                        -- avoid infinity loops (node->pipe->node...) by rejecting pipes with start or end at the new node geometry
+                        UPDATE qwat_od.pipe
+							SET geometry = ST_Snap(geometry, NEW.geometry, 1e-6)
+							WHERE ST_Distance(geometry, NEW.geometry) < 1e-6
+							AND ST_Equals(ST_Force2d(NEW.geometry), ST_Force2d(ST_StartPoint(geometry))) IS NOT TRUE
+							AND ST_Equals(ST_Force2d(NEW.geometry), ST_Force2d(ST_EndPoint(geometry))) IS NOT TRUE;
 		END IF;
 		RETURN NEW;
 	END;
