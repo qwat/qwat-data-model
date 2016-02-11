@@ -49,6 +49,28 @@ INSERT INTO qwat_od.vw_element_valve (id, fk_district, fk_pressurezone, fk_distr
 -- Another point added
 SELECT 'num_points_after_add3', st_numpoints(geometry) FROM qwat_od.pipe WHERE id = 1;
 
+-- insert two pipes with the second one starting very close to the end of the first (1e-8)
+-- this should not result in a recursive trigger call
+SELECT 'new pipe close to the previous';
+INSERT INTO qwat_od.pipe (id,
+       fk_function, fk_installmethod, fk_material, fk_distributor, fk_precision, fk_bedding, fk_status, fk_watertype,
+       geometry) VALUES
+       (14428,
+       101, 101, 101, 1, 101, 101, 101, 101,
+       ST_GeomFromText('LINESTRING(540899.7448098600 152955.6844859300, 540900.2686702100 152955.4115092600)',21781)
+);
+
+INSERT INTO qwat_od.pipe (id,
+       fk_function, fk_installmethod, fk_material, fk_distributor, fk_precision, fk_bedding, fk_status, fk_watertype,
+       geometry) VALUES
+       (14296,
+       101, 101, 101, 1, 101, 101, 101, 101,
+       ST_GeomFromText('LINESTRING(540900.2686702100 152955.4115092800, 540900.4100672200 152952.3142217600)',21781)
+       --                                                          ^
+       --       Here is the small distance to the last end point --+
+);
+SELECT 'new pipe close to the previous - end';
+
 -- restore the initial state
 DELETE FROM qwat_od.vw_element_valve;
 DELETE FROM qwat_od.pipe;
