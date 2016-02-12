@@ -11,7 +11,10 @@ install:
   - pip install pyyaml --quiet
 
 before_script: 
-  - printf "[qwat]\nhost=localhost\ndbname=qwat\nuser=postgres" > ~/.pg_service.conf
-  - psql -c 'CREATE DATABASE qwat;' -U postgres
+  - printf "[qwat_test]\nhost=localhost\ndbname=qwat_test\nuser=postgres" > ~/.pg_service.conf
+  - psql -c 'CREATE DATABASE qwat_test;' -U postgres
   
-script: $TRAVIS_BUILD_DIR/init_qwat.sh -p qwat -s 21781 -r
+script: 
+  - $TRAVIS_BUILD_DIR/init_qwat.sh -p qwat_test -s 21781 -r
+  - PGSERVICE=qwat_test SRID=21781 $TRAVIS_BUILD_DIR/ordinary_data/views/rewrite_views.sh
+  - $TRAVIS_BUILD_DIR/tests/tests.sh --no-init
