@@ -23,7 +23,7 @@ INSERT INTO qwat_od.vw_element_valve (geometry, fk_distributor, fk_status, fk_va
 SELECT ST_SetSRID(ST_GeomFromText('POINT(559979.975263114 149979.915516003 0)'), 21781), 1, 1301, 101, 101, 101, 101;
 
 -- The CALCULATED orientation
-SELECT _pipe_orientation AS qwat_calculated_orientation FROM qwat_od.vw_element_valve;
+SELECT _pipe_orientation AS qwat_calculated_orientation FROM qwat_od.vw_element_valve order by id;
 
 -- expected ?
 -- SELECT degrees(ST_Azimuth(ST_GeomFromText('POINT(559980 149980)'), ST_GeomFromText('POINT(559990 149990)'))) AS real_orientation;

@@ -33,7 +33,7 @@ INSERT INTO qwat_od.vw_element_valve (id, fk_district, fk_pressurezone, fk_distr
        geometry)
        VALUES (4, 1, 1, 1, 1,
        101, 101, 101, 101, 6108, 101,
-       st_setsrid('point(530040 1382608 0)'::geometry,21781));
+       st_setsrid('point(530040 138268 0)'::geometry,21781));
 
 -- Now we have 4 vertices on the pipe
 SELECT 'num_points_after_add2', st_numpoints(geometry) FROM qwat_od.pipe WHERE id = 1;
@@ -57,7 +57,7 @@ INSERT INTO qwat_od.pipe (id,
        geometry) VALUES
        (14428,
        101, 101, 101, 1, 101, 101, 101, 101,
-       ST_GeomFromText('LINESTRING(540899.7448098600 152955.6844859300, 540900.2686702100 152955.4115092600)',21781)
+       ST_GeomFromText('LINESTRINGZ(540899.7448098600 152955.6844859300 0, 540900.2686702100 152955.4115092600 0)',21781)
 );
 
 INSERT INTO qwat_od.pipe (id,
@@ -65,7 +65,7 @@ INSERT INTO qwat_od.pipe (id,
        geometry) VALUES
        (14296,
        101, 101, 101, 1, 101, 101, 101, 101,
-       ST_GeomFromText('LINESTRING(540900.2686702100 152955.4115092800, 540900.4100672200 152952.3142217600)',21781)
+       ST_GeomFromText('LINESTRINGZ(540900.2686702100 152955.4115092800 0, 540900.4100672200 152952.3142217600 0)',21781)
        --                                                          ^
        --       Here is the small distance to the last end point --+
 );
