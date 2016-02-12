@@ -16,14 +16,14 @@ INSERT INTO qwat_od.pipe (id, fk_node_a, fk_node_b,
        fk_status, fk_watertype,
        geometry) VALUES (1, 1, 2,
        101, 101, 101, 1, 101, 101, 101, 101,
-       st_setsrid('linestring(530000 138260,530050 138270)'::geometry, 21781));
+       st_setsrid('linestring(530000 138260 0,530050 138270 0)'::geometry, 21781));
 
 INSERT INTO qwat_od.vw_element_valve (id, fk_district, fk_pressurezone, fk_distributor, fk_pipe,
        fk_precision, fk_precisionalti, fk_status, fk_valve_type, fk_valve_function, fk_valve_actuation,
        geometry)
        VALUES (3, 1, 1, 1, 1,
        101, 101, 101, 101, 6108, 101,
-       st_setsrid('point(530025 138265)'::geometry,21781));
+       st_setsrid('point(530025 138265 0)'::geometry,21781));
 
 -- Now we have 3 vertices on the pipe
 SELECT 'num_points_after_add1', st_numpoints(geometry) FROM qwat_od.pipe WHERE id = 1;
@@ -33,7 +33,7 @@ INSERT INTO qwat_od.vw_element_valve (id, fk_district, fk_pressurezone, fk_distr
        geometry)
        VALUES (4, 1, 1, 1, 1,
        101, 101, 101, 101, 6108, 101,
-       st_setsrid('point(530040 138268)'::geometry,21781));
+       st_setsrid('point(530040 1382608 0)'::geometry,21781));
 
 -- Now we have 4 vertices on the pipe
 SELECT 'num_points_after_add2', st_numpoints(geometry) FROM qwat_od.pipe WHERE id = 1;
@@ -44,7 +44,7 @@ INSERT INTO qwat_od.vw_element_valve (id, fk_district, fk_pressurezone, fk_distr
        geometry)
        VALUES (5, 1, 1, 1, 1,
        101, 101, 101, 101, 6108, 101,
-       st_setsrid('point(530025.2 138265.04)'::geometry,21781));
+       st_setsrid('point(530025.2 138265.04 0)'::geometry,21781));
 
 -- Another point added
 SELECT 'num_points_after_add3', st_numpoints(geometry) FROM qwat_od.pipe WHERE id = 1;
