@@ -52,16 +52,6 @@ CREATE OR REPLACE FUNCTION qwat_od.ft_pipe_geom() RETURNS TRIGGER AS
 		NEW.fk_district         := qwat_od.fn_get_district(NEW.geometry);
 		NEW.fk_pressurezone     := qwat_od.fn_get_pressurezone(NEW.geometry);
 		NEW.fk_printmap         := qwat_od.fn_get_printmap_id(NEW.geometry);
-		IF NEW.geometry_alt1 IS NULL OR NEW.update_geometry_alt1 IS TRUE THEN
-			NEW.geometry_alt1 := NEW.geometry;
-		END IF;
-		IF NEW.geometry_alt2 IS NULL OR NEW.update_geometry_alt2 IS TRUE THEN
-			NEW.geometry_alt2 := NEW.geometry;
-		END IF;
-		NEW._geometry_alt1_used := ST_Equals(ST_Force2d(NEW.geometry_alt1), ST_Force2d(NEW.geometry)) IS FALSE;
-		NEW._geometry_alt2_used := ST_Equals(ST_Force2d(NEW.geometry_alt2), ST_Force2d(NEW.geometry)) IS FALSE;
-		NEW.update_geometry_alt1 := NULL;
-		NEW.update_geometry_alt2 := NULL;
 		NEW._printmaps          := qwat_od.fn_get_printmaps(NEW.geometry);
 		NEW._length2d           := ST_Length(NEW.geometry);
 		NEW._length3d           := ST_3DLength(NEW.geometry);
@@ -127,19 +117,22 @@ COMMENT ON TRIGGER tr_pipe_node_type_update ON qwat_od.pipe IS 'Trigger: after u
 
 /* --------------------------------------------*/
 /* -------- ALTERNATIVE GEOM TRIGGER ----------*/
-CREATE OR REPLACE FUNCTION qwat_od.ft_pipe_alternative_geom() RETURNS TRIGGER AS
-	$BODY$
-	BEGIN
-		NEW._geometry_alt1_used := NEW.geometry_alt1 IS NOT NULL AND ST_Equals(ST_Force2d(NEW.geometry_alt1), ST_Force2d(NEW.geometry)) IS FALSE;
-		NEW._geometry_alt2_used := NEW.geometry_alt2 IS NOT NULL AND ST_Equals(ST_Force2d(NEW.geometry_alt2), ST_Force2d(NEW.geometry)) IS FALSE;
-		RETURN NEW;
-	END;
-	$BODY$
-	LANGUAGE plpgsql;
 
-CREATE TRIGGER tr_pipe_alternative_geom
+CREATE TRIGGER tr_pipe_altgeom_insert
+	BEFORE INSERT ON qwat_od.pipe
+	FOR EACH ROW
+	EXECUTE PROCEDURE qwat_od.ft_geometry_alternative_main();
+COMMENT ON TRIGGER tr_pipe_altgeom_insert ON qwat_od.pipe IS 'Trigger: handle alternative geometries on insert';
+
+CREATE TRIGGER tr_pipe_altgeom_update
+	BEFORE UPDATE OF geometry ON qwat_od.pipe
+	FOR EACH ROW
+	WHEN  ( ST_Equals(ST_Force2d(NEW.geometry), ST_Force2d(OLD.geometry)) IS FALSE )
+	EXECUTE PROCEDURE qwat_od.ft_geometry_alternative_main();
+COMMENT ON TRIGGER tr_pipe_altgeom_update ON qwat_od.pipe IS 'Trigger: handle alternative geometries on update';
+
+CREATE TRIGGER tr_pipe_altgeom_alt
 	BEFORE UPDATE OF geometry_alt1, geometry_alt2 ON qwat_od.pipe
 	FOR EACH ROW
-	EXECUTE PROCEDURE qwat_od.ft_pipe_alternative_geom();
-COMMENT ON TRIGGER tr_pipe_alternative_geom ON qwat_od.pipe IS 'Trigger: when updating, check if alternative geometries are different to fill the boolean fields.';
-
+	EXECUTE PROCEDURE qwat_od.ft_geometry_alternative_aux();
+COMMENT ON TRIGGER tr_pipe_altgeom_alt ON qwat_od.pipe IS 'Trigger: when updating, check if alternative geometries are different to fill the boolean fields.';
