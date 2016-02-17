@@ -3,13 +3,15 @@ INSERT 0 1
 INSERT 0 1
 INSERT 0 1
 INSERT 0 1
-t|t|f|f
+test1|t|t|t|t
 UPDATE 1
-f|f|t|t
+test2|t|t|t|t
 UPDATE 1
-t|t|f|f
+test3|t|t|t|t
 UPDATE 1
-t|f|f|t
+test4|t|t|t|t
+UPDATE 1
+test5|t|t|t|t
 DELETE 0
 DELETE 1
 DELETE 1

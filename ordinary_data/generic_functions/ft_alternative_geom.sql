@@ -10,10 +10,10 @@
 CREATE OR REPLACE FUNCTION qwat_od.ft_geometry_alternative_main() RETURNS TRIGGER AS
 	$BODY$
 	BEGIN
-		IF NEW.geometry_alt1 IS NULL OR NEW.update_geometry_alt1 IS TRUE THEN
+		IF NEW.geometry_alt1 IS NULL OR NEW.update_geometry_alt1 IS TRUE OR ( NEW.update_geometry_alt1 IS NULL AND ST_Equals(OLD.geometry, OLD.geometry_alt1) ) THEN
 			NEW.geometry_alt1 := NEW.geometry;
 		END IF;
-		IF NEW.geometry_alt2 IS NULL OR NEW.update_geometry_alt2 IS TRUE THEN
+		IF NEW.geometry_alt2 IS NULL OR NEW.update_geometry_alt2 IS TRUE OR ( NEW.update_geometry_alt2 IS NULL AND ST_Equals(OLD.geometry, OLD.geometry_alt2) ) THEN
 			NEW.geometry_alt2 := NEW.geometry;
 		END IF;
 		NEW._geometry_alt1_used := ST_Equals(ST_Force2d(NEW.geometry_alt1), ST_Force2d(NEW.geometry)) IS FALSE;
