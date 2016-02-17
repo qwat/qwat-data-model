@@ -1,6 +1,10 @@
 
 /* schematic */
 drop view if exists qwat_od.vw_pipe_schema;
+drop view if exists qwat_od.vw_pipe_schema_visibleitems;
+drop view if exists qwat_od.vw_pipe_schema_merged;
+drop view if exists qwat_od.vw_pipe_schema_error;
+drop view if exists qwat_od.vw_pressurezone_simplified;
 
 /* draw lines */
 drop view if exists qwat_od.vw_subscriber_pipe_relation;
