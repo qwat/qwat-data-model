@@ -71,6 +71,17 @@ INSERT INTO qwat_od.pipe (id,
 );
 SELECT 'new pipe close to the previous - end';
 
+-- test removing one start or end vertex of a pipe
+-- this should not cause a trigger error
+INSERT INTO qwat_od.pipe (id, fk_node_a, fk_node_b,
+       fk_function, fk_installmethod, fk_material, fk_distributor, fk_precision, fk_bedding,
+       fk_status, fk_watertype,
+       geometry) VALUES (11, 1, 2,
+       101, 101, 101, 1, 101, 101, 101, 101,
+       st_setsrid('linestring(530000 148260 0, 530001 148260 0, 530002 148270 0)'::geometry, 21781));
+
+UPDATE qwat_od.pipe SET geometry = st_setsrid('linestring(530000 148260 0, 530001 148260 0)'::geometry, 21781) where id=11;
+
 -- restore the initial state
 DELETE FROM qwat_od.vw_element_valve;
 DELETE FROM qwat_od.pipe;
