@@ -34,7 +34,7 @@ ALTER TABLE qwat_od.node ADD COLUMN _pipe_orientation    float   default 0;
 ALTER TABLE qwat_od.node ADD COLUMN _pipe_schema_visible boolean default false;
 
 /* GEOMETRY */
-ALTER TABLE qwat_od.node ADD COLUMN geometry geometry('POINTZ',:SRID);
+ALTER TABLE qwat_od.node ADD COLUMN geometry geometry('POINTZ',:SRID) NOT NULL;
 ALTER TABLE qwat_od.node ADD COLUMN geometry_alt1 geometry('POINTZ',:SRID);
 ALTER TABLE qwat_od.node ADD COLUMN geometry_alt2 geometry('POINTZ',:SRID);
 ALTER TABLE qwat_od.node ADD COLUMN update_geometry_alt1 boolean default null; -- used to determine if alternative geometries should be updated when main geometry is updated
