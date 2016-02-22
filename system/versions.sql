@@ -10,7 +10,7 @@ CREATE TABLE qwat_sys.versions
    module varchar,
    version varchar,
    constraint versions_pkey primary key(id),
-   constraint module_unique unique(module),
+   constraint module_unique unique(module)
 );
 
 /*
