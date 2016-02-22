@@ -121,6 +121,8 @@ psql -v ON_ERROR_STOP=1 -c "CREATE EXTENSION IF NOT EXISTS postgis;"
 # System
 psql -v ON_ERROR_STOP=1 -c "CREATE SCHEMA qwat_sys;"
 psql -v ON_ERROR_STOP=1 -f system/settings.sql
+psql -v ON_ERROR_STOP=1 -f system/versions.sql
+psql -v ON_ERROR_STOP=1 -f system/versions_insert.sql
 psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f system/settings_insert.sql
 psql -v ON_ERROR_STOP=1 -f system/audit.sql
 psql -v ON_ERROR_STOP=1 -f system/fn_enable_schemaview.sql
