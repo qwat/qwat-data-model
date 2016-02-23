@@ -30,7 +30,6 @@ CREATE VIEW qwat_od.vw_pipe AS
 		pipe.fk_district       ,
 		pipe.fk_pressurezone   ,
 		pipe.fk_printmap       ,
-		pipe._length2d         ,
 		pipe._length3d         ,
 		pipe._diff_elevation   ,
 		pipe._printmaps        ,
