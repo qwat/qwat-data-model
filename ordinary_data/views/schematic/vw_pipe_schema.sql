@@ -42,7 +42,7 @@ CREATE OR REPLACE RULE rl_pipe_update_alternative AS
 CREATE OR REPLACE RULE rl_pipe_delete_alternative AS
 	ON DELETE TO qwat_od.vw_pipe_schema_visibleitems DO INSTEAD
 		UPDATE qwat_od.pipe SET
-			geometry_alt2 = NULL::geometry(LineStringZ,:SRID)
+			schema_force_visible = FALSE
 		WHERE id = OLD.id;	
 		
 		
