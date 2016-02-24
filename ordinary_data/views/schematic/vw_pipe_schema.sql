@@ -20,6 +20,7 @@ CREATE OR REPLACE VIEW qwat_od.vw_pipe_schema_visibleitems AS
 		pipe._length2d,
 		pipe._length3d,
 		pipe.tunnel_or_bridge,
+		pipe.schema_force_visible,
 		pipe.geometry_alt2::geometry(LineStringZ,:SRID) AS geometry,
 		pipe._valve_count,
 		pipe._valve_closed
@@ -34,6 +35,7 @@ CREATE OR REPLACE RULE rl_pipe_update_alternative AS
 	ON UPDATE TO qwat_od.vw_pipe_schema_visibleitems DO INSTEAD
 		UPDATE qwat_od.pipe SET
 			fk_parent = NEW.fk_parent,
+			schema_force_visible = NEW.schema_force_visible,
 			geometry_alt2 = NEW.geometry
 		WHERE id = NEW.id;
 	
