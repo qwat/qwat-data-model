@@ -31,8 +31,7 @@ LANGUAGE plpgsql;
 CREATE OR REPLACE FUNCTION qwat_od.ft_valve_pipe_update() RETURNS TRIGGER AS
 $BODY$
 	BEGIN
-		UPDATE qwat_od.vw_element_valve SET fk_pipe = qwat_od.fn_pipe_get_id(geometry) WHERE fk_pipe = OLD.id; -- TODO prompt user to move it or not
-		-- this will be calling the trigger ft_valve_update
+		UPDATE qwat_od.vw_element_valve valve SET fk_pipe = qwat_od.fn_pipe_get_id(geometry) WHERE fk_pipe = OLD.id OR ST_Distance(geometry, NEW.geometry) < 1e-4;
 		RETURN NEW;
 	END;
 $BODY$
