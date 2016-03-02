@@ -5,7 +5,6 @@ ALTER TABLE qwat_od.pipe ADD COLUMN fk_node_b       integer    not null;
 ALTER TABLE qwat_od.pipe ADD COLUMN fk_district     integer;
 ALTER TABLE qwat_od.pipe ADD COLUMN fk_pressurezone integer;
 ALTER TABLE qwat_od.pipe ADD COLUMN fk_printmap     integer[];
-ALTER TABLE qwat_od.pipe ADD COLUMN _length2d       decimal(8,2);
 ALTER TABLE qwat_od.pipe ADD COLUMN _length3d       decimal(8,2);
 ALTER TABLE qwat_od.pipe ADD COLUMN _diff_elevation decimal(8,2);
 ALTER TABLE qwat_od.pipe ADD COLUMN _printmaps      varchar(100);
@@ -53,7 +52,6 @@ CREATE OR REPLACE FUNCTION qwat_od.ft_pipe_geom() RETURNS TRIGGER AS
 		NEW.fk_pressurezone     := qwat_od.fn_get_pressurezone(NEW.geometry);
 		NEW.fk_printmap         := qwat_od.fn_get_printmap_id(NEW.geometry);
 		NEW._printmaps          := qwat_od.fn_get_printmaps(NEW.geometry);
-		NEW._length2d           := ST_Length(NEW.geometry);
 		NEW._length3d           := ST_3DLength(NEW.geometry);
 		NEW._diff_elevation     := @(ST_Z(ST_StartPoint(NEW.geometry))-ST_Z(ST_EndPoint(NEW.geometry)));
 		RETURN NEW;
