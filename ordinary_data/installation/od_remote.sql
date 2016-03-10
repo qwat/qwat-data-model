@@ -20,14 +20,19 @@ ALTER TABLE qwat_od.remote ADD COLUMN destination     varchar(150) ;
 ALTER TABLE qwat_od.remote ADD COLUMN folder          varchar(50)  ;
 ALTER TABLE qwat_od.remote ADD COLUMN plan            varchar(50) ;
 ALTER TABLE qwat_od.remote ADD COLUMN remark text     ;
+ALTER TABLE qwat_od.remote ADD COLUMN _geometry_alt1_used boolean;
+ALTER TABLE qwat_od.remote ADD COLUMN _geometry_alt2_used boolean;
+ALTER TABLE qwat_od.remote ADD COLUMN update_geometry_alt1 boolean default null; -- used to determine if alternative geometries should be updated when main geometry is updated
+ALTER TABLE qwat_od.remote ADD COLUMN update_geometry_alt2 boolean default null; -- used to determine if alternative geometries should be updated when main geometry is updated
+
 
 ALTER TABLE qwat_od.remote ADD COLUMN geometry      geometry('MULTILINESTRING',:SRID) NOT NULL;
 ALTER TABLE qwat_od.remote ADD COLUMN geometry_alt1 geometry('MULTILINESTRING',:SRID);
 ALTER TABLE qwat_od.remote ADD COLUMN geometry_alt2 geometry('MULTILINESTRING',:SRID);
 
-CREATE INDEX remote_geoidx      ON qwat_od.pipe USING GIST ( geometry );
-CREATE INDEX remote_geoidx_alt1 ON qwat_od.pipe USING GIST ( geometry_alt1 );
-CREATE INDEX remote_geoidx_alt2 ON qwat_od.pipe USING GIST ( geometry_alt2 );
+CREATE INDEX remote_geoidx      ON qwat_od.remote USING GIST ( geometry );
+CREATE INDEX remote_geoidx_alt1 ON qwat_od.remote USING GIST ( geometry_alt1 );
+CREATE INDEX remote_geoidx_alt2 ON qwat_od.remote USING GIST ( geometry_alt2 );
 
 
 /* LABELS */
