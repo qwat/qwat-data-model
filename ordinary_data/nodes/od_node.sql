@@ -85,7 +85,7 @@ COMMENT ON TRIGGER tr_node_geom_update ON qwat_od.node IS 'Trigger: updates auto
 
 /* --------------------------------------------*/
 /* --- ADD VERTEX TO PIPE AT NODE LOCATION ----*/
-CREATE OR REPLACE FUNCTION qwat_od.ft_node_moved_update_pipe()
+CREATE OR REPLACE FUNCTION qwat_od.ft_node_update_pipe()
   RETURNS trigger AS
 $BODY$
 	BEGIN
@@ -104,20 +104,20 @@ $BODY$
 $BODY$
 LANGUAGE plpgsql;
 
-CREATE TRIGGER tr_node_moved_update_pipe_insert
+CREATE TRIGGER tr_node_update_pipe_insert
   AFTER INSERT
   ON qwat_od.node
   FOR EACH ROW
-  EXECUTE PROCEDURE qwat_od.ft_node_moved_update_pipe();
-COMMENT ON TRIGGER tr_node_moved_update_pipe_insert ON qwat_od.node IS 'Trigger: updates auto fields after insert.';
+  EXECUTE PROCEDURE qwat_od.ft_node_update_pipe();
+COMMENT ON TRIGGER tr_node_update_pipe_insert ON qwat_od.node IS 'Trigger: updates auto fields after insert.';
 
-CREATE TRIGGER tr_node_moved_update_pipe_update
+CREATE TRIGGER tr_node_update_pipe_update
   AFTER UPDATE OF geometry
   ON qwat_od.node
   FOR EACH ROW
   WHEN (ST_Equals(ST_Force2d(NEW.geometry), ST_Force2d(OLD.geometry)) IS FALSE )
-  EXECUTE PROCEDURE qwat_od.ft_node_moved_update_pipe();
-COMMENT ON TRIGGER tr_node_moved_update_pipe_update ON qwat_od.node IS 'Trigger: updates auto fields after geom update.';
+  EXECUTE PROCEDURE qwat_od.ft_node_update_pipe();
+COMMENT ON TRIGGER tr_node_update_pipe_update ON qwat_od.node IS 'Trigger: updates auto fields after geom update.';
 
 
 
