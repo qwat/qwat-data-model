@@ -85,7 +85,7 @@ COMMENT ON TRIGGER tr_node_geom_update ON qwat_od.node IS 'Trigger: updates auto
 
 /* --------------------------------------------*/
 /* --- ADD VERTEX TO PIPE AT NODE LOCATION ----*/
-CREATE OR REPLACE FUNCTION qwat_od.ft_node_update_pipe()
+CREATE OR REPLACE FUNCTION qwat_od.ft_node_add_pipe_vertex()
   RETURNS trigger AS
 $BODY$
 	BEGIN
@@ -93,32 +93,49 @@ $BODY$
 			-- when the node is close enough to the pipe (< 1 micrometer) the node is considered to intersect the pipe
 			-- it allows to deal with intersections that cannot be represented by floating point numbers
 			UPDATE qwat_od.pipe SET geometry = ST_Snap(geometry, NEW.geometry, 1e-6) WHERE ST_Distance(geometry, NEW.geometry) < 1e-6;
-			
-			-- recreate nodes at ends of pipes which were connected to node
-			IF TG_OP = 'UPDATE' THEN
-				UPDATE qwat_od.pipe SET	fk_node_a = qwat_od.fn_node_create(ST_StartPoint(geometry)) WHERE fk_node_a = OLD.id;
-				UPDATE qwat_od.pipe SET	fk_node_b = qwat_od.fn_node_create(ST_EndPoint(  geometry)) WHERE fk_node_b = OLD.id;
-			END IF;
 		RETURN NEW;
 	END;
 $BODY$
 LANGUAGE plpgsql;
 
-CREATE TRIGGER tr_node_update_pipe_insert
+CREATE TRIGGER tr_node_add_pipe_vertex_insert
   AFTER INSERT
   ON qwat_od.node
   FOR EACH ROW
-  EXECUTE PROCEDURE qwat_od.ft_node_update_pipe();
-COMMENT ON TRIGGER tr_node_update_pipe_insert ON qwat_od.node IS 'Trigger: updates auto fields after insert.';
+  EXECUTE PROCEDURE qwat_od.ft_node_add_pipe_vertex();
+COMMENT ON TRIGGER tr_node_add_pipe_vertex_insert ON qwat_od.node IS 'Trigger: updates auto fields after insert.';
 
-CREATE TRIGGER tr_node_update_pipe_update
+CREATE TRIGGER tr_node_add_pipe_vertex_update
   AFTER UPDATE OF geometry
   ON qwat_od.node
   FOR EACH ROW
   WHEN (ST_Equals(ST_Force2d(NEW.geometry), ST_Force2d(OLD.geometry)) IS FALSE )
-  EXECUTE PROCEDURE qwat_od.ft_node_update_pipe();
-COMMENT ON TRIGGER tr_node_update_pipe_update ON qwat_od.node IS 'Trigger: updates auto fields after geom update.';
+  EXECUTE PROCEDURE qwat_od.ft_node_add_pipe_vertex();
+COMMENT ON TRIGGER tr_node_add_pipe_vertex_update ON qwat_od.node IS 'Trigger: updates auto fields after geom update.';
 
+
+
+
+/* --------------------------------------------*/
+/* -------- MOVED NODE TRIGGER ----------------*/
+CREATE OR REPLACE FUNCTION qwat_od.ft_pipe_node_moved() RETURNS TRIGGER AS
+	$BODY$
+	DECLARE
+		node_ids integer[];
+	BEGIN
+		UPDATE qwat_od.pipe SET	fk_node_a = qwat_od.fn_node_create(ST_StartPoint(geometry)) WHERE fk_node_a = OLD.id;
+		UPDATE qwat_od.pipe SET	fk_node_b = qwat_od.fn_node_create(ST_EndPoint(  geometry)) WHERE fk_node_b = OLD.id;
+		RETURN NEW;
+	END;
+	$BODY$
+	LANGUAGE plpgsql;
+COMMENT ON FUNCTION qwat_od.ft_pipe_node_moved() IS 'Trigger: if a network element (i.e. a node) has moved, then reaasign the nodes for the pipe.';
+
+CREATE TRIGGER tr_pipe_node_moved
+	AFTER UPDATE OF geometry ON qwat_od.node
+	FOR EACH ROW
+	EXECUTE PROCEDURE qwat_od.ft_pipe_node_moved();
+COMMENT ON TRIGGER tr_pipe_node_moved ON qwat_od.node IS 'Trigger: if a network element (i.e. a node) has moved, then reaasign the nodes for the pipe. Do it after update.';
 
 
 
