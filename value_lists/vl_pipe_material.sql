@@ -53,6 +53,13 @@ ALTER TABLE qwat_vl.pipe_material ADD COLUMN sdr double precision;
 ALTER TABLE qwat_vl.pipe_material ADD COLUMN wall_thickness numeric(4,1);
 ALTER TABLE qwat_vl.pipe_material ADD COLUMN sn integer;
 
+COMMENT ON COLUMN qwat_vl.pipe_material.diameter IS 'Represents the usual name of the pipe diameter (how you call it).
+Commonly, it should be equivalent to:
+- the external diameter for plastic pipe
+- the nominal diameter for iron/steel and GRP';
+COMMENT ON COLUMN qwat_vl.pipe_material.diameter_nominal IS 'The nominal diameter (DN) is a number that represents the approximate interior diameter, in mm.
+It''s commonly used when referring steel/iron pipes but also for GRP.';
+COMMENT ON COLUMN qwat_vl.pipe_material.diameter_external IS 'Commonly used when referring to plastic pipes.';
 COMMENT ON COLUMN qwat_vl.pipe_material.pressure_nominal IS 'nominal pressure in bars';
 COMMENT ON COLUMN qwat_vl.pipe_material.sn IS 'Refers to the SN Nominal Stiffness in N/m² and it''s specific to GRP pipes.
 
