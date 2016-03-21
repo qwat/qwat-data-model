@@ -160,9 +160,8 @@ Note that the user name logged IS the login role FOR the session. The audit TRIG
 cannot obtain the active role because it IS reset BY the SECURITY DEFINER invocation
 of the audit TRIGGER its self.
 $body$;
- 
- 
- 
+
+
 CREATE OR REPLACE FUNCTION qwat_sys.audit_table(target_table regclass, audit_rows BOOLEAN, audit_query_text BOOLEAN, ignored_cols text[]) RETURNS void AS $body$
 DECLARE
   stm_targets text = 'INSERT OR UPDATE OR DELETE OR TRUNCATE';
@@ -196,7 +195,7 @@ BEGIN
 END;
 $body$
 LANGUAGE plpgsql;
- 
+
 COMMENT ON FUNCTION qwat_sys.audit_table(regclass, BOOLEAN, BOOLEAN, text[]) IS $body$
 ADD auditing support TO a TABLE.
  
@@ -218,5 +217,47 @@ $body$ LANGUAGE SQL;
 CREATE OR REPLACE FUNCTION qwat_sys.audit_table(target_table regclass) RETURNS void AS $$
 SELECT qwat_sys.audit_table($1, BOOLEAN 't', BOOLEAN 't');
 $$ LANGUAGE 'sql';
+
+
+CREATE OR REPLACE FUNCTION qwat_sys.audit_view(target_view regclass, audit_query_text BOOLEAN, ignored_cols text[]) RETURNS void AS $body$
+DECLARE
+  stm_targets text = 'INSERT OR UPDATE OR DELETE OR TRUNCATE';
+  _q_txt text;
+BEGIN
+    EXECUTE 'DROP TRIGGER IF EXISTS audit_trigger_row ON ' || target_view::text;
+    EXECUTE 'DROP TRIGGER IF EXISTS audit_trigger_stm ON ' || target_view::text;
+ 
+    _q_txt = 'CREATE TRIGGER audit_trigger_stm AFTER ' || stm_targets || ' ON ' ||
+             target_view::text ||
+             ' FOR EACH STATEMENT EXECUTE PROCEDURE qwat_sys.if_modified_func('||
+             quote_literal(audit_query_text) || ');';
+    RAISE NOTICE '%',_q_txt;
+    EXECUTE _q_txt;
+ 
+END;
+$body$
+LANGUAGE plpgsql;
+
+COMMENT ON FUNCTION qwat_sys.audit_view(regclass, BOOLEAN, text[]) IS $body$
+ADD auditing support TO a VIEW.
+ 
+Arguments:
+   target_view:     TABLE name, schema qualified IF NOT ON search_path
+   audit_query_text: Record the text of the client query that triggered the audit event?
+   ignored_cols:     COLUMNS TO exclude FROM UPDATE diffs, IGNORE updates that CHANGE only ignored cols.
+$body$;
+ 
+-- Pg doesn't allow variadic calls with 0 params, so provide a wrapper
+CREATE OR REPLACE FUNCTION qwat_sys.audit_view(target_view regclass, audit_query_text BOOLEAN) RETURNS void AS $body$
+SELECT qwat_sys.audit_view($1, $2, ARRAY[]::text[]);
+$body$ LANGUAGE SQL;
+ 
+-- And provide a convenience call wrapper for the simplest case
+-- of row-level logging with no excluded cols and query logging enabled.
+--
+CREATE OR REPLACE FUNCTION qwat_sys.audit_view(target_view regclass) RETURNS void AS $$
+SELECT qwat_sys.audit_view($1, BOOLEAN 't');
+$$ LANGUAGE 'sql';
+
 
 
