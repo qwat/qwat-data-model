@@ -10,6 +10,7 @@
 CREATE OR REPLACE FUNCTION qwat_od.ft_geometry_alternative_main() RETURNS TRIGGER AS
 	$BODY$
 	BEGIN
+        RAISE NOTICE 'ft_geometry_alternative_main';
 		IF NEW.geometry_alt1 IS NULL OR NEW.update_geometry_alt1 IS TRUE OR ( TG_OP = 'UPDATE' AND NEW.update_geometry_alt1 IS NULL AND ST_Equals(OLD.geometry, OLD.geometry_alt1) ) THEN
 			NEW.geometry_alt1 := NEW.geometry;
 		END IF;
