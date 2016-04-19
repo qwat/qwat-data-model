@@ -21,6 +21,7 @@ CREATE OR REPLACE FUNCTION qwat_od.ft_geometry_alternative_main() RETURNS TRIGGE
 		NEW._geometry_alt2_used := ST_Equals(ST_Force2d(NEW.geometry_alt2), ST_Force2d(NEW.geometry)) IS FALSE;
 		NEW.update_geometry_alt1 := NULL; -- used to determine if alternative geometry 1 should be updated when main geometry is updated
 		NEW.update_geometry_alt2 := NULL; -- used to determine if alternative geometry 2 should be updated when main geometry is updated
+		RAISE NOTICE 'ft_geometry_alternative_main >> END';
 		RETURN NEW;
 	END;
 	$BODY$

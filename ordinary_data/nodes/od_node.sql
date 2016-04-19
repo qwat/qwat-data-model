@@ -57,11 +57,13 @@ CREATE OR REPLACE FUNCTION qwat_od.ft_node_geom()
   RETURNS trigger AS
 $BODY$
 	BEGIN
+	    RAISE NOTICE 'ft_node_geom';
 		NEW.geometry            := ST_Force3D(NEW.geometry);
 		NEW.fk_district         := qwat_od.fn_get_district(NEW.geometry);
 		NEW.fk_pressurezone     := qwat_od.fn_get_pressurezone(NEW.geometry);
 		NEW.fk_printmap         := qwat_od.fn_get_printmap_id(NEW.geometry);
 		NEW._printmaps          := qwat_od.fn_get_printmaps(NEW.geometry);
+		RAISE NOTICE 'ft_node_geom >> END';
 		RETURN NEW;
 	END;
 $BODY$
@@ -89,10 +91,12 @@ CREATE OR REPLACE FUNCTION qwat_od.ft_node_add_pipe_vertex()
   RETURNS trigger AS
 $BODY$
 	BEGIN
+        RAISE NOTICE 'ft_node_add_pipe_vertex';
 			-- add a vertex to the corresponding pipe if it intersects
 			-- when the node is close enough to the pipe (< 1 micrometer) the node is considered to intersect the pipe
 			-- it allows to deal with intersections that cannot be represented by floating point numbers
 			UPDATE qwat_od.pipe SET geometry = ST_Snap(geometry, NEW.geometry, 1e-6) WHERE ST_Distance(geometry, NEW.geometry) < 1e-6;
+        RAISE NOTICE 'ft_node_add_pipe_vertex >> END';
 		RETURN NEW;
 	END;
 $BODY$
@@ -123,8 +127,10 @@ CREATE OR REPLACE FUNCTION qwat_od.ft_pipe_node_moved() RETURNS TRIGGER AS
 	DECLARE
 		node_ids integer[];
 	BEGIN
+	    RAISE NOTICE 'ft_pipe_node_moved';
 		UPDATE qwat_od.pipe SET	fk_node_a = qwat_od.fn_node_create(ST_StartPoint(geometry)) WHERE fk_node_a = OLD.id;
 		UPDATE qwat_od.pipe SET	fk_node_b = qwat_od.fn_node_create(ST_EndPoint(  geometry)) WHERE fk_node_b = OLD.id;
+		RAISE NOTICE 'ft_pipe_node_moved >> END';
 		RETURN NEW;
 	END;
 	$BODY$
