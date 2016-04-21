@@ -7,18 +7,20 @@ Ensure the model is conform after an upgrade
 USAGE
     test_migration.py --pg_service qwat
 """
-
+import os
 import argparse
 import string
 import psycopg2, psycopg2.extras
+from subprocess import call
 
+TEST_SCRIPT = 'test_migration.sql'
 
-def test_migration(pg_service, test_script):
+def test_migration(pg_service, diff_exe):
     conn = psycopg2.connect("service={0}".format(pg_service))
     cur = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
-    _execute_statements(cur, test_script)
+    _execute_statements(cur, TEST_SCRIPT, diff_exe)
 
-def _execute_statements(cur, fileName):
+def _execute_statements(cur, fileName, diff_exe):
 
     buffer_expected = ''
     with open('test_migration.expected.sql', 'r') as content_file:
@@ -52,19 +54,24 @@ def _execute_statements(cur, fileName):
 
     # Compare result to expected result
     if buffer == buffer_expected:
-        print 'Migration is valid'
+        print 'DataModel is OK'
     else:
-        print 'Migration is NOT valid'
+        print 'DataModel is NOT valid'
+        print 'Diff:'
+        os.system('{diff} test_migration.expected.sql output.sql'.format(diff=diff_exe))
 
 if __name__ == "__main__":
     """
     Main process for testing delta
     """
-    test_script = 'test_migration.sql'
     parser = argparse.ArgumentParser()
     parser.add_argument('--pg_service', help='Name of the Qwat pg service')
+    parser.add_argument('--diff_exe', help='Path of your diff executable, default is "diff"')
     args = parser.parse_args()
     if not args.pg_service:
         parser.print_help()
     else:
-        test_migration(args.pg_service, test_script)
+        diff_exe = 'diff'
+        if args.diff_exe:
+            diff_exe = args.diff_exe
+        test_migration(args.pg_service, diff_exe)
