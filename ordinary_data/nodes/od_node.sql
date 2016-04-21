@@ -57,13 +57,11 @@ CREATE OR REPLACE FUNCTION qwat_od.ft_node_geom()
   RETURNS trigger AS
 $BODY$
 	BEGIN
-	    RAISE NOTICE 'ft_node_geom';
 		NEW.geometry            := ST_Force3D(NEW.geometry);
 		NEW.fk_district         := qwat_od.fn_get_district(NEW.geometry);
 		NEW.fk_pressurezone     := qwat_od.fn_get_pressurezone(NEW.geometry);
 		NEW.fk_printmap         := qwat_od.fn_get_printmap_id(NEW.geometry);
 		NEW._printmaps          := qwat_od.fn_get_printmaps(NEW.geometry);
-		RAISE NOTICE 'ft_node_geom >> END';
 		RETURN NEW;
 	END;
 $BODY$
@@ -91,12 +89,10 @@ CREATE OR REPLACE FUNCTION qwat_od.ft_node_add_pipe_vertex()
   RETURNS trigger AS
 $BODY$
 	BEGIN
-        RAISE NOTICE 'ft_node_add_pipe_vertex';
 			-- add a vertex to the corresponding pipe if it intersects
 			-- when the node is close enough to the pipe (< 1 micrometer) the node is considered to intersect the pipe
 			-- it allows to deal with intersections that cannot be represented by floating point numbers
 			UPDATE qwat_od.pipe SET geometry = ST_Snap(geometry, NEW.geometry, 1e-6) WHERE ST_Distance(geometry, NEW.geometry) < 1e-6;
-        RAISE NOTICE 'ft_node_add_pipe_vertex >> END';
 		RETURN NEW;
 	END;
 $BODY$
@@ -123,18 +119,28 @@ COMMENT ON TRIGGER tr_node_add_pipe_vertex_update ON qwat_od.node IS 'Trigger: u
 /* --------------------------------------------*/
 /* -------- MOVED NODE TRIGGER ----------------*/
 CREATE OR REPLACE FUNCTION qwat_od.ft_pipe_node_moved() RETURNS TRIGGER AS
-	$BODY$
-	DECLARE
-		node_ids integer[];
-	BEGIN
-	    RAISE NOTICE 'ft_pipe_node_moved';
-		UPDATE qwat_od.pipe SET	fk_node_a = qwat_od.fn_node_create(ST_StartPoint(geometry)) WHERE fk_node_a = OLD.id;
-		UPDATE qwat_od.pipe SET	fk_node_b = qwat_od.fn_node_create(ST_EndPoint(  geometry)) WHERE fk_node_b = OLD.id;
-		RAISE NOTICE 'ft_pipe_node_moved >> END';
-		RETURN NEW;
-	END;
-	$BODY$
-	LANGUAGE plpgsql;
+    $BODY$
+    DECLARE
+        node_ids integer[];
+        new_node_a integer;
+        new_node_b integer;
+        start_geom geometry;
+        end_geom geometry;
+    BEGIN
+        SELECT ST_StartPoint(geometry) into start_geom FROM qwat_od.pipe WHERE fk_node_a = OLD.id;
+        SELECT ST_EndPoint(geometry) into end_geom FROM qwat_od.pipe WHERE fk_node_b = OLD.id;
+        IF start_geom IS NOT NULL THEN
+            new_node_a := qwat_od.fn_node_create(start_geom);
+        END IF;
+        IF end_geom IS NOT NULL THEN
+            new_node_b := qwat_od.fn_node_create(end_geom);
+        END IF;
+        UPDATE qwat_od.pipe SET fk_node_a = new_node_a WHERE fk_node_a = OLD.id;
+        UPDATE qwat_od.pipe SET fk_node_b = new_node_b WHERE fk_node_b = OLD.id;
+        RETURN NEW;
+    END;
+    $BODY$
+    LANGUAGE plpgsql;
 COMMENT ON FUNCTION qwat_od.ft_pipe_node_moved() IS 'Trigger: if a network element (i.e. a node) has moved, then reaasign the nodes for the pipe.';
 
 CREATE TRIGGER tr_pipe_node_moved
