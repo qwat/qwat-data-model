@@ -34,7 +34,7 @@ CREATE VIEW qwat_od.vw_pipe AS
 		pipe._length3d         ,
 		pipe._diff_elevation   ,
 		pipe._printmaps        ,
-		pipe.geometry::geometry(LineString,:SRID),
+		ST_Force2d(pipe.geometry)::geometry(LineString,:SRID),
 		COALESCE(pipe.schema_force_visible, pipe_function.schema_visible) AS _schema_visible,
  		pipe_function.value_fr          AS _function, 
  		pipe_function.code_sire         AS _function_code_sire, 
