@@ -43,7 +43,6 @@ CREATE INDEX fki_pipe_fk_pressurezone ON qwat_od.pipe(fk_pressurezone);
 CREATE OR REPLACE FUNCTION qwat_od.ft_pipe_geom() RETURNS TRIGGER AS
 	$BODY$
 	BEGIN
-        RAISE NOTICE 'ft_pipe_geom';
 		IF TG_OP = 'INSERT' OR ST_Equals(ST_StartPoint(NEW.geometry), ST_StartPoint(OLD.geometry)) IS FALSE THEN
 			NEW.fk_node_a       := qwat_od.fn_node_create(ST_StartPoint(NEW.geometry), /* deactivate_node_add_pipe_vertex */ TRUE);
 		END IF;
@@ -57,7 +56,6 @@ CREATE OR REPLACE FUNCTION qwat_od.ft_pipe_geom() RETURNS TRIGGER AS
 		NEW._length2d           := ST_Length(NEW.geometry);
 		NEW._length3d           := ST_3DLength(NEW.geometry);
 		NEW._diff_elevation     := @(ST_Z(ST_StartPoint(NEW.geometry))-ST_Z(ST_EndPoint(NEW.geometry)));
-		RAISE NOTICE 'ft_pipe_geom >> END';
 		RETURN NEW;
 	END;
 	$BODY$
@@ -84,7 +82,6 @@ CREATE OR REPLACE FUNCTION qwat_od.ft_pipe_node_type() RETURNS TRIGGER AS
 	DECLARE
 		node_ids integer[];
 	BEGIN
-        RAISE NOTICE 'ft_pipe_node_type';
 		IF TG_OP = 'INSERT' THEN
 			node_ids := ARRAY[NEW.fk_node_a, NEW.fk_node_b];
 		ELSE
@@ -100,7 +97,6 @@ CREATE OR REPLACE FUNCTION qwat_od.ft_pipe_node_type() RETURNS TRIGGER AS
 			END IF;
 		END IF;
 		PERFORM qwat_od.fn_node_set_type( node_ids );
-		RAISE NOTICE 'ft_pipe_node_type >> END';
 		RETURN NEW;
 	END;
 	$BODY$
