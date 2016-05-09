@@ -18,11 +18,11 @@ drop view if exists qwat_od.vw_export_hydrant;
 drop view if exists qwat_od.vw_export_installation;
 drop view if exists qwat_od.vw_export_meter;
 drop view if exists qwat_od.vw_export_part;
+drop view if exists qwat_od.vw_export_pipe;
 drop view if exists qwat_od.vw_export_subscriber;
 drop view if exists qwat_od.vw_export_valve;
 
 drop view if exists qwat_od.vw_remote;
-drop view if exists qwat_od.vw_pipe;
 drop view if exists qwat_od.vw_leak;
 drop view if exists qwat_od.vw_consumptionzone;
 drop view if exists qwat_od.vw_printmap;

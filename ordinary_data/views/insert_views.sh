@@ -17,7 +17,7 @@ psql -v ON_ERROR_STOP=1 -c "$(./ordinary_data/views/inheritance/od_element_inher
 
 # export
 psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f ordinary_data/views/export/vw_remote.sql
-psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f ordinary_data/views/export/vw_pipe.sql
+psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f ordinary_data/views/export/vw_export_pipe.sql
 psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f ordinary_data/views/export/vw_leak.sql
 psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f ordinary_data/views/export/vw_consumptionzone.sql
 psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f ordinary_data/views/export/vw_printmap.sql

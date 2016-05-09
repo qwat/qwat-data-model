@@ -5,7 +5,7 @@
 */
 
 
-CREATE VIEW qwat_od.vw_pipe AS 
+CREATE VIEW qwat_od.vw_export_pipe AS 
 	SELECT  
 		pipe.id                ,
 		pipe.fk_parent         ,
@@ -34,7 +34,7 @@ CREATE VIEW qwat_od.vw_pipe AS
 		pipe._length3d         ,
 		pipe._diff_elevation   ,
 		pipe._printmaps        ,
-		ST_Force2d(pipe.geometry)::geometry(LineString,:SRID),
+		ST_Force2d(pipe.geometry)::geometry(LineString,:SRID) AS geometry,
 		COALESCE(pipe.schema_force_visible, pipe_function.schema_visible) AS _schema_visible,
  		pipe_function.value_fr          AS _function, 
  		pipe_function.code_sire         AS _function_code_sire, 
@@ -67,6 +67,6 @@ CREATE VIEW qwat_od.vw_pipe AS
 		LEFT OUTER JOIN qwat_od.folder             ON pipe.fk_folder        = folder.id;
 /*----------------!!!---!!!----------------*/
 /* Comment */
-COMMENT ON VIEW qwat_od.vw_pipe IS 'View for pipe. This view is not editable';
+COMMENT ON VIEW qwat_od.vw_export_pipe IS 'View for pipe. This view is not editable';
 
 
