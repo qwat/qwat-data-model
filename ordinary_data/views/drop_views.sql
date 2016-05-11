@@ -24,7 +24,6 @@ drop view if exists qwat_od.vw_export_subscriber;
 drop view if exists qwat_od.vw_export_valve;
 
 drop view if exists qwat_od.vw_remote;
-drop view if exists qwat_od.vw_leak;
 drop view if exists qwat_od.vw_consumptionzone;
 drop view if exists qwat_od.vw_printmap;
 drop view if exists qwat_od.vw_protectionzone;
