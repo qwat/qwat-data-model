@@ -29,6 +29,7 @@ psql -v ON_ERROR_STOP=1 -c "$(./ordinary_data/views/export/export_meter.py ${PGS
 psql -v ON_ERROR_STOP=1 -c "$(./ordinary_data/views/export/export_part.py ${PGSERVICE})"
 psql -v ON_ERROR_STOP=1 -c "$(./ordinary_data/views/export/export_pipe.py ${PGSERVICE})"
 psql -v ON_ERROR_STOP=1 -c "$(./ordinary_data/views/export/export_subscriber.py ${PGSERVICE})"
+psql -v ON_ERROR_STOP=1 -c "$(./ordinary_data/views/export/export_leak.py ${PGSERVICE})"  # depends on export_pipe
 
 psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f ordinary_data/views/export/search_view.sql
 

@@ -16,6 +16,7 @@ drop view if exists qwat_od.vw_search_view;
 
 drop view if exists qwat_od.vw_export_hydrant;
 drop view if exists qwat_od.vw_export_installation;
+drop view if exists qwat_od.vw_export_leak;  -- joins export_pipe so shall be removed prior to it
 drop view if exists qwat_od.vw_export_meter;
 drop view if exists qwat_od.vw_export_part;
 drop view if exists qwat_od.vw_export_pipe;
