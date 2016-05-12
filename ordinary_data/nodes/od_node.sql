@@ -127,16 +127,19 @@ CREATE OR REPLACE FUNCTION qwat_od.ft_pipe_node_moved() RETURNS TRIGGER AS
         start_geom geometry;
         end_geom geometry;
     BEGIN
+        -- We get start and end points of the pipe
         SELECT ST_StartPoint(geometry) into start_geom FROM qwat_od.pipe WHERE fk_node_a = OLD.id;
         SELECT ST_EndPoint(geometry) into end_geom FROM qwat_od.pipe WHERE fk_node_b = OLD.id;
         IF start_geom IS NOT NULL THEN
+            -- In that case, we can create a new node, and affect it to the pipe
             new_node_a := qwat_od.fn_node_create(start_geom);
+            UPDATE qwat_od.pipe SET fk_node_a = new_node_a WHERE fk_node_a = OLD.id;
         END IF;
         IF end_geom IS NOT NULL THEN
+            -- In that case, we can create a new node, and affect it to the pipe
             new_node_b := qwat_od.fn_node_create(end_geom);
+            UPDATE qwat_od.pipe SET fk_node_b = new_node_b WHERE fk_node_b = OLD.id;
         END IF;
-        UPDATE qwat_od.pipe SET fk_node_a = new_node_a WHERE fk_node_a = OLD.id;
-        UPDATE qwat_od.pipe SET fk_node_b = new_node_b WHERE fk_node_b = OLD.id;
         RETURN NEW;
     END;
     $BODY$
