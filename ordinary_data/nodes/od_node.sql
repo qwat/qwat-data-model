@@ -119,16 +119,31 @@ COMMENT ON TRIGGER tr_node_add_pipe_vertex_update ON qwat_od.node IS 'Trigger: u
 /* --------------------------------------------*/
 /* -------- MOVED NODE TRIGGER ----------------*/
 CREATE OR REPLACE FUNCTION qwat_od.ft_pipe_node_moved() RETURNS TRIGGER AS
-	$BODY$
-	DECLARE
-		node_ids integer[];
-	BEGIN
-		UPDATE qwat_od.pipe SET	fk_node_a = qwat_od.fn_node_create(ST_StartPoint(geometry)) WHERE fk_node_a = OLD.id;
-		UPDATE qwat_od.pipe SET	fk_node_b = qwat_od.fn_node_create(ST_EndPoint(  geometry)) WHERE fk_node_b = OLD.id;
-		RETURN NEW;
-	END;
-	$BODY$
-	LANGUAGE plpgsql;
+    $BODY$
+    DECLARE
+        node_ids integer[];
+        new_node_a integer;
+        new_node_b integer;
+        start_geom geometry;
+        end_geom geometry;
+    BEGIN
+        -- We get start and end points of the pipe
+        SELECT ST_StartPoint(geometry) into start_geom FROM qwat_od.pipe WHERE fk_node_a = OLD.id;
+        SELECT ST_EndPoint(geometry) into end_geom FROM qwat_od.pipe WHERE fk_node_b = OLD.id;
+        IF start_geom IS NOT NULL THEN
+            -- In that case, we can create a new node, and affect it to the pipe
+            new_node_a := qwat_od.fn_node_create(start_geom);
+            UPDATE qwat_od.pipe SET fk_node_a = new_node_a WHERE fk_node_a = OLD.id;
+        END IF;
+        IF end_geom IS NOT NULL THEN
+            -- In that case, we can create a new node, and affect it to the pipe
+            new_node_b := qwat_od.fn_node_create(end_geom);
+            UPDATE qwat_od.pipe SET fk_node_b = new_node_b WHERE fk_node_b = OLD.id;
+        END IF;
+        RETURN NEW;
+    END;
+    $BODY$
+    LANGUAGE plpgsql;
 COMMENT ON FUNCTION qwat_od.ft_pipe_node_moved() IS 'Trigger: if a network element (i.e. a node) has moved, then reaasign the nodes for the pipe.';
 
 CREATE TRIGGER tr_pipe_node_moved
