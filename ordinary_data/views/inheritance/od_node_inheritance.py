@@ -27,7 +27,7 @@ trigger_pre: >
   \t\tIF NEW.altitude IS NULL THEN
   \t\t	NEW.altitude := NULLIF( ST_Z(NEW.geometry), 0.0); -- 0 is the NULL value
   \t\tEND IF;
-  \t\t-- TODO handle going to NULL on update 
+  \t\t-- TODO handle going to NULL on update
   \t\tIF	NEW.altitude IS NULL     AND ST_Z(NEW.geometry) <> 0.0 OR
   \t\t		NEW.altitude IS NOT NULL AND ( ST_Z(NEW.geometry) IS NULL OR ST_Z(NEW.geometry) <> NEW.altitude ) THEN
   \t\t\t\tNEW.geometry := ST_SetSRID( ST_MakePoint( ST_X(NEW.geometry), ST_Y(NEW.geometry), COALESCE(NEW.altitude,0) ), ST_SRID(NEW.geometry) );
@@ -40,7 +40,8 @@ children:
     pkey: id
     alter:
       orientation:
-        read: COALESCE(element.orientation, node._pipe_orientation)
+        read: COALESCE(element.orientation, -node._pipe_orientation)
+
 merge_view:
   name: vw_qwat_node
   allow_type_change: false
@@ -52,7 +53,7 @@ print pgiv.PGInheritanceView(pg_service, qwat_node_element).sql_all()
 
 # print pgiv.PGInheritanceView(pg_service, qwat_node_element).sql_join_insert_trigger("element")
 # print pgiv.PGInheritanceView(pg_service, qwat_node_element).sql_merge_insert_trigger()
-# 
+#
 # print pgiv.PGInheritanceView(pg_service, qwat_node_element).sql_join_update_trigger("element")
 # print pgiv.PGInheritanceView(pg_service, qwat_node_element).sql_merge_update_trigger()
 
