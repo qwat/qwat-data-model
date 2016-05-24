@@ -30,14 +30,14 @@ CREATE OR REPLACE VIEW qwat_od.vw_pipe_child_parent AS
 			start_point , end_point ,
 			pi()/2+ST_Azimuth(start_point,end_point) AS azimuth,
 			.5*ST_Distance(start_point,end_point) AS distance,
-			ST_Line_Interpolate_Point(ST_MakeLine( start_point , end_point ),.5)::geometry(Point,:SRID) AS middle_point
+			ST_LineInterpolatePoint(ST_MakeLine( start_point , end_point ),.5)::geometry(Point,:SRID) AS middle_point
 		FROM (
 			SELECT a.id AS child ,b.id AS parent, 
-					ST_Force2d(ST_Line_Interpolate_Point(a.geometry,.5))::geometry(Point,:SRID) AS start_point,
+					ST_Force2d(ST_LineInterpolatePoint(a.geometry,.5))::geometry(Point,:SRID) AS start_point,
 					/* select end_point at 4 meters from the closest side of the pipe */
 					ST_ClosestPoint(ST_MakeLine(  
-						ST_Line_Interpolate_Point(ST_Force2D(b.geometry),   LEAST(1,  4/b._length2d/2))::geometry(Point,:SRID) ,
-						ST_Line_Interpolate_Point(ST_Force2D(b.geometry),GREATEST(0,1-4/b._length2d/2))::geometry(Point,:SRID) 
+						ST_LineInterpolatePoint(ST_Force2D(b.geometry),   LEAST(1,  4/b._length2d/2))::geometry(Point,:SRID) ,
+						ST_LineInterpolatePoint(ST_Force2D(b.geometry),GREATEST(0,1-4/b._length2d/2))::geometry(Point,:SRID) 
 					),a.geometry) AS end_point
 			FROM qwat_od.pipe a 
 			INNER JOIN qwat_od.pipe b ON a.fk_parent = b.id
