@@ -11,7 +11,7 @@ CREATE OR REPLACE VIEW qwat_od.vw_subscriber_pipe_relation AS
 	SELECT
 		a.id as id,
 		a.identification,
-		ST_MakeLine(ST_Force2D(a.geometry),ST_Line_Interpolate_Point(ST_Force2D(b.geometry),.5))::geometry(LineString,:SRID) AS geometry
+		ST_MakeLine(ST_Force2D(a.geometry),ST_LineInterpolatePoint(ST_Force2D(b.geometry),.5))::geometry(LineString,:SRID) AS geometry
 	FROM 
 		qwat_od.vw_element_subscriber a
 	INNER JOIN 
