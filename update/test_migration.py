@@ -56,7 +56,7 @@ def _execute_statements(cur, fileName, diff_exe):
     if buffer == buffer_expected:
         print 'DataModel is OK'
     else:
-        print 'DataModel is NOT valid'
+        print 'DataModel is NOT conform'
         print 'Diff:'
         os.system('{diff} test_migration.expected.sql output.sql'.format(diff=diff_exe))
 
@@ -65,7 +65,7 @@ if __name__ == "__main__":
     Main process for testing delta
     """
     parser = argparse.ArgumentParser()
-    parser.add_argument('--pg_service', help='Name of the Qwat pg service')
+    parser.add_argument('--pg_service', help='Name of the qWat pg service')
     parser.add_argument('--diff_exe', help='Path of your diff executable, default is "diff"')
     args = parser.parse_args()
     if not args.pg_service:

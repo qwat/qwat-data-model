@@ -1,0 +1,18 @@
+****************
+Upgrade database
+****************
+
+See online documentation for more informations.
+
+How to use the upgrade_db.sh script ?
+=====================================
+
+.. notice:: Your *.pg_service.conf* must contain connexions to qwat, qwat_test and qwat_conform DB
+
+Launch *./upgrade_db.sh* and follow the instructions.
+At first, the DB password will be asked.
+The process will create a qwat_test and a qwat_test_conform DB.
+
+If the process is successfull, you will be able to migrate your real database by lauching the command with --upgrade yes  parameter. Otherwise, the process is only launched on test DB.
+
+.. warning:: --upgrade parameter is not yet available
