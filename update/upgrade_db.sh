@@ -132,8 +132,5 @@ rm init_qwat.log
 # TODO : dropping qwat_test
 # TODO : dropping qwat_test_conform
 
-# TODO add param --upgrade YES to the command, to launch the migration on the REAL DB
-
-
 EXITCODE=0
 exit $EXITCODE
