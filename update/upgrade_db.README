@@ -9,6 +9,17 @@ How to use the upgrade_db.sh script ?
 
 .. notice:: Your *.pg_service.conf* must contain connexions to qwat, qwat_test and qwat_conform DB
 
+You need to edit upgrade_db.sh and change the settings :
+
+    * SRCDB=qwat  -- main DB
+    * TESTDB=qwat_test -- name for the test DB
+    * TESTCONFORMDB=qwat_test_conform -- name for the second test DB
+    * USER=test -- DB user
+    * HOST=localhost -- DB host
+    * QWATSERVICE=qwat -- Service for the main DB
+    * QWATSERVICETEST=qwat_test -- Service for the test DB
+    * QWATSERVICETESTCONFORM=qwat_test_conform -- Service for the second test DB
+
 Launch *./upgrade_db.sh* and follow the instructions.
 At first, the DB password will be asked.
 The process will create a qwat_test and a qwat_test_conform DB.
