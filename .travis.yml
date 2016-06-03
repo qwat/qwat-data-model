@@ -5,16 +5,17 @@ sudo: false
 
 addons:
   postgresql: "9.4"
-  
+
 install:
   - pip install psycopg2 --quiet
   - pip install pyyaml --quiet
 
 before_script: 
-  - printf "[qwat_test]\nhost=localhost\ndbname=qwat_test\nuser=postgres" > ~/.pg_service.conf
+  - printf "[qwat_test]\nhost=localhost\ndbname=qwat_test\nuser=postgres\n\n[qwat_test_conform]\nhost=localhost\ndbname=qwat_test_conform\nuser=postgres" > ~/.pg_service.conf
   - psql -c 'CREATE DATABASE qwat_test;' -U postgres
-  
+
 script: 
   - $TRAVIS_BUILD_DIR/init_qwat.sh -p qwat_test -s 21781 -r
   - PGSERVICE=qwat_test SRID=21781 $TRAVIS_BUILD_DIR/ordinary_data/views/rewrite_views.sh
   - $TRAVIS_BUILD_DIR/tests/tests.sh --no-init
+  - $TRAVIS_BUILD_DIR/update/verify_upgrade_db.sh
