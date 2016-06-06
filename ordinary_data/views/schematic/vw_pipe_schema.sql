@@ -28,7 +28,7 @@ CREATE OR REPLACE VIEW qwat_od.vw_pipe_schema_visibleitems AS
 	INNER JOIN qwat_vl.status ON pipe.fk_status = status.id
 	INNER JOIN qwat_vl.pipe_function ON pipe.fk_function = pipe_function.id
 	WHERE COALESCE(schema_force_visible, pipe_function.schema_visible) IS TRUE
-	AND status.active IS TRUE;
+	AND status.functional IS TRUE;
 COMMENT ON VIEW qwat_od.vw_pipe_schema_visibleitems IS 'visible pipe in the schematic view (before merge)';
 
 CREATE OR REPLACE RULE rl_pipe_update_alternative AS
