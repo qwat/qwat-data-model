@@ -1,3 +1,16 @@
+-- get clean state
+-- DELETE FROM qwat_dr.constructionpoint;
+-- DELETE FROM qwat_od.vw_element_part;
+DELETE FROM qwat_od.vw_element_valve;
+DELETE FROM qwat_od.pipe;
+-- DELETE FROM qwat_od.vw_element_hydrant;
+-- DELETE FROM qwat_od.cover;
+-- DELETE FROM qwat_od.vw_element_installation;
+DELETE FROM qwat_od.network_element;
+DELETE FROM qwat_od.pressurezone;
+DELETE FROM qwat_od.distributor;
+-- DELETE FROM qwat_od.leak;
+DELETE FROM qwat_vl.part_type WHERE value_fr = 'Point d''introduction';
 
 -- add a construction point
 INSERT INTO qwat_dr.constructionpoint (id, geometry) 
@@ -23,6 +36,8 @@ INSERT INTO qwat_od.vw_element_part (year, _pipe_orientation, fk_part_type, fk_s
     SELECT 2016, 1.5, (SELECT id FROM qwat_vl.part_type WHERE value_fr = 'bouchon'), 101, 1, 101, st_setsrid('point(530000 140000 0)'::geometry, 21781);
 
 -- create an introduction point
+INSERT INTO qwat_vl.part_type (id, value_fr) VALUES (999, 'Point d''introduction');
+
 INSERT INTO qwat_od.vw_element_part (year, _pipe_orientation, fk_part_type, fk_status, fk_distributor, fk_precision, geometry)
     SELECT 2016, 1.5, (SELECT id FROM qwat_vl.part_type WHERE value_fr = 'Point d''introduction'), 101, 1, 101, st_setsrid('point(630000 140000 0)'::geometry, 21781);
 

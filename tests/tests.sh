@@ -33,7 +33,8 @@ TESTS="test_add_node.sql \
        test_node_orientation.sql \
        test_altitude.sql \
        test_alternative_geometry.sql \
-       test_move_node_end_pipe.sql"
+       test_move_node_end_pipe.sql \
+       test_scenarii.sql"
 
 EXITCODE=0
 
