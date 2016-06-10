@@ -1,11 +1,11 @@
 -- get clean state
--- DELETE FROM qwat_dr.constructionpoint;
--- DELETE FROM qwat_od.vw_element_part;
+DELETE FROM qwat_dr.constructionpoint;
+DELETE FROM qwat_od.vw_element_part;
 DELETE FROM qwat_od.vw_element_valve;
 DELETE FROM qwat_od.pipe;
--- DELETE FROM qwat_od.vw_element_hydrant;
--- DELETE FROM qwat_od.cover;
--- DELETE FROM qwat_od.vw_element_installation;
+DELETE FROM qwat_od.vw_element_hydrant;
+DELETE FROM qwat_od.cover;
+DELETE FROM qwat_od.vw_element_installation;
 DELETE FROM qwat_od.network_element;
 DELETE FROM qwat_od.pressurezone;
 DELETE FROM qwat_od.distributor;
@@ -29,7 +29,22 @@ INSERT INTO qwat_od.pipe (id, fk_node_a, fk_node_b,
        2016, 101, True);
 
 -- cut pipe in half
--- TODO
+    -- insert the initial pipe
+INSERT INTO qwat_od.pipe (fk_node_a, fk_node_b,
+    fk_function, fk_installmethod, fk_material, fk_distributor, fk_precision, fk_bedding,
+    fk_status, fk_watertype, geometry, year, fk_protection,schema_force_visible)
+VALUES (1, 2, 101, 101, 101, 1, 101, 101, 101, 101,
+    st_setsrid('linestring(730000 340000 0,830000 440000 0,930000 540000 0)'::geometry, 21781),
+    2016, 101, True);
+    -- update that pipe
+UPDATE qwat_od.pipe SET geometry = st_setsrid('linestring(730000 340000 0,830000 440000 0)'::geometry, 21781) WHERE geometry = st_setsrid('linestring(730000 340000 0,830000 440000 0,930000 540000 0)'::geometry, 21781);
+    -- create a new one
+INSERT INTO qwat_od.pipe (fk_node_a, fk_node_b,
+    fk_function, fk_installmethod, fk_material, fk_distributor, fk_precision, fk_bedding,
+    fk_status, fk_watertype, geometry, year, fk_protection,schema_force_visible)
+VALUES (1, 2, 101, 101, 101, 1, 101, 101, 101, 101,
+    st_setsrid('linestring(830000 440000 0,930000 540000 0)'::geometry, 21781),
+    2016, 101, True);
 
 -- create an element part
 INSERT INTO qwat_od.vw_element_part (year, _pipe_orientation, fk_part_type, fk_status, fk_distributor, fk_precision, geometry)
