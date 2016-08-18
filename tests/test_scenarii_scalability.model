@@ -5,7 +5,7 @@ INSERT INTO qwat_dr.constructionpoint (id, geometry) VALUES (ID_CP, ST_Setsrid('
 INSERT INTO qwat_od.pipe (fk_node_a, fk_node_b, fk_function, fk_installmethod, fk_material, fk_distributor, fk_precision, fk_bedding,
        fk_status, fk_watertype, geometry, year, fk_protection,schema_force_visible)
     VALUES (ID_NODE_A, ID_NODE_B, 101, 101, 101, 1, 101, 101, 101, 101,
-       st_setsrid('linestring(CP_X1 CP_Y1 CP_Z1,CP_X1B CP_Y1B CP_Z1B,CP_X2 CP_Y2 CP_Z2)'::geometry, 21781), 2016, 101, True);;
+       st_setsrid('linestring(CP_X1 CP_Y1 CP_Z1,CP_PX1B CP_PY1B CP_PZ1B,CP_X2 CP_Y2 CP_Z2)'::geometry, 21781), 2016, 101, True);;
 
 -- cut pipe in half
     -- insert the initial pipe
@@ -25,7 +25,7 @@ VALUES (ID_NODE_A, ID_NODE_B, 101, 101, 101, 1, 101, 101, 101, 101,
 
 -- create an element part
 INSERT INTO qwat_od.vw_element_part (year, _pipe_orientation, fk_part_type, fk_status, fk_distributor, fk_precision, geometry)
-    SELECT 2016, 1.5, (SELECT id FROM qwat_vl.part_type WHERE value_fr = 'bouchon'), 101, 1, 101, st_setsrid('point(CP_X1B CP_Y1B CP_Z1B)'::geometry, 21781);;
+    SELECT 2016, 1.5, (SELECT id FROM qwat_vl.part_type WHERE value_fr = 'bouchon'), 101, 1, 101, st_setsrid('point(CP_PX1B CP_PY1B CP_PZ1B)'::geometry, 21781);;
 
 -- create an introduction point
 INSERT INTO qwat_od.vw_element_part (year, _pipe_orientation, fk_part_type, fk_status, fk_distributor, fk_precision, geometry)
