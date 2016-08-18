@@ -157,14 +157,13 @@ def _execute_statements(cur, conn, fileName, nb_iteration):
                 statement = statement.replace('CO_Y1', str(co_y1));
                 statement = statement.replace('CO_Z1', str(co_z1));
 
-                #print statement
                 res = cur.execute(statement)
                 conn.commit()
 
 
 if __name__ == "__main__":
     """
-    Main process for testing delta
+    Main process
     """
     parser = argparse.ArgumentParser()
     parser.add_argument('--pg_service', help='Name of the qWat pg service')
