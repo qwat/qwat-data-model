@@ -67,3 +67,12 @@ INSERT INTO qwat_od.vw_element_installation (altitude, geometry, fk_distributor,
 -- create a cover
 INSERT INTO qwat_od.cover (identification, form_dimension, fk_cover_type, circular, fk_installation, geometry)
     SELECT 'installation_INSTALLATION_ID', 15, 101, True, (SELECT id FROM qwat_od.vw_element_installation WHERE name = 'installation_INSTALLATION_ID'), ST_SetSRID( ST_MakePoint( CO_X1, CO_Y1, CO_Z1), 21781);;
+
+-- create another pipe (for deletion)
+INSERT INTO qwat_od.pipe (fk_node_a, fk_node_b, fk_function, fk_installmethod, fk_material, fk_distributor, fk_precision, fk_bedding,
+       fk_status, fk_watertype, geometry, year, fk_protection,schema_force_visible, label_1_text)
+    VALUES (ID_NODE_A, ID_NODE_B, 101, 101, 101, 1, 101, 101, 101, 101,
+       st_setsrid('linestring(DEL_X1 DEL_Y1 DEL_Z1,DEL_X2 DEL_Y2 DEL_Z2)'::geometry, 21781),
+       2016, 101, True, 'to_del');;
+ -- Delete that pipe
+ DELETE FROM qwat_od.pipe WHERE label_1_text = 'to_del';;

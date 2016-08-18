@@ -58,6 +58,13 @@ def _execute_statements(cur, conn, fileName, nb_iteration):
     co_y1 = 140000
     co_z1 = 0
 
+    del_x1 = 531100
+    del_y1 = 140000
+    del_z1 = 0
+    del_x2 = 531110
+    del_y2 = 140000
+    del_z2 = 0
+
     installation_id = 1
 
     id_cp = 1
@@ -156,6 +163,12 @@ def _execute_statements(cur, conn, fileName, nb_iteration):
                 statement = statement.replace('CO_X1', str(co_x1));
                 statement = statement.replace('CO_Y1', str(co_y1));
                 statement = statement.replace('CO_Z1', str(co_z1));
+                statement = statement.replace('DEL_X1', str(del_x1));
+                statement = statement.replace('DEL_Y1', str(del_y1));
+                statement = statement.replace('DEL_Z1', str(del_z1));
+                statement = statement.replace('DEL_X2', str(del_x2));
+                statement = statement.replace('DEL_Y2', str(del_y2));
+                statement = statement.replace('DEL_Z2', str(del_z2));
 
                 res = cur.execute(statement)
                 conn.commit()
