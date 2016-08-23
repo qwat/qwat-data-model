@@ -124,6 +124,7 @@ varsToReplace = [
     'DEL_Z2'
 ]
 
+
 class ScalabilityThread (threading.Thread):
     #def __init__(self, threadID, name, nbIterations, cur, conn):
     def __init__(self, threadID, name, nbIterations, pgService):
@@ -203,7 +204,7 @@ def _execute_statements(cur, conn, threadName, threadId, origin, nbIterations):
         p['id_cp'] += count * threadId
         p['id_node_a'] = count * OFFSET_ID * threadId
         p['id_node_b'] = count * OFFSET_ID * threadId
-        p['installation_id'] = "{name}_{num}".format(name = threadName, num = count * OFFSET_ID * threadId)
+        p['installation_id'] = "{name}_{num}".format(name=threadName, num=count * OFFSET_ID * threadId)
 
         for statement in open(TEST_SCRIPT).read().split(";;")[:-1]:
             if statement != '' and statement[:2] != '--':
