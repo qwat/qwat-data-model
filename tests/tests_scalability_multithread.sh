@@ -41,7 +41,7 @@ echo "OK"
 
 
 echo "Launching requests..."
-python test_scalability.py --pg_service qwat_test --nb_iterations ${NB_ITERATIONS}
+python test_scalability_multithread.py --pg_service qwat_test --nb_iterations ${NB_ITERATIONS}
 
 EXITCODE=0
 
