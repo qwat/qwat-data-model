@@ -91,7 +91,7 @@ $BODY$
     DECLARE
         node_exists boolean;
 	BEGIN
-        --SELECT count(*) > 0 into node_exists FROM qwat_od.pipe WHERE fk_node_a = NEW.id OR fk_node_b = NEW.id;
+        -- Count any node that exists on that geometry. If there is one, do not update pipe
         SELECT count(*) > 0 into node_exists FROM qwat_od.node WHERE ST_Equals(ST_Force2d(NEW.geometry), ST_Force2d(geometry));
         
         -- add a vertex to the corresponding pipe if it intersects
