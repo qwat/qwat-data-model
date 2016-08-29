@@ -25,13 +25,6 @@ children:
       table: qwat_od.vw_qwat_installation
       pkey: id
 
-    valve:
-      table: qwat_od.valve
-      pkey: id
-      alter:
-        fk_pipe:
-          write: qwat_od.fn_pipe_get_id(NEW.geometry)
-
     hydrant:
       table: qwat_od.hydrant
       pkey: id
@@ -65,19 +58,16 @@ merge_view:
       subscriber: parcel
       installation: parcel
     networkseparation:
-      valve: networkseparation
       installation: networkseparation
     fk_pipe:
       meter: fk_pipe
       part: fk_pipe
       subscriber: fk_pipe
-      valve: fk_pipe
 """
 
 print pgiv.PGInheritanceView(pg_service, qwat_elements).sql_all()
 
 # print pgiv.PGInheritanceView(pg_service, qwat_elements).sql_join_insert_trigger("installation")
-# print pgiv.PGInheritanceView(pg_service, qwat_elements).sql_join_insert_trigger("valve")
 # print pgiv.PGInheritanceView(pg_service, qwat_elements).sql_join_insert_trigger("hydrant")
 # print pgiv.PGInheritanceView(pg_service, qwat_elements).sql_join_insert_trigger("part")
 # print pgiv.PGInheritanceView(pg_service, qwat_elements).sql_join_insert_trigger("meter")

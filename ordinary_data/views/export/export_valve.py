@@ -13,7 +13,7 @@ definition = yaml.load("""
 
 name: qwat_od.vw_export_valve
 
-from: qwat_od.vw_element_valve
+from: qwat_od.valve
 
 joins:
   district:

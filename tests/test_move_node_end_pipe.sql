@@ -20,7 +20,7 @@ INSERT INTO qwat_od.pipe (id, fk_node_a, fk_node_b,
        
 
 -- insert a valve at the start of the pipe
-INSERT INTO qwat_od.vw_element_valve (fk_district, fk_pressurezone, fk_distributor, fk_pipe,
+INSERT INTO qwat_od.valve (fk_district, fk_pressurezone, fk_distributor, fk_pipe,
        fk_precision, fk_precisionalti, fk_status, fk_valve_type, fk_valve_function, fk_valve_actuation,
        geometry)
        VALUES (1, 1, 1, 1,
@@ -28,4 +28,4 @@ INSERT INTO qwat_od.vw_element_valve (fk_district, fk_pressurezone, fk_distribut
        st_setsrid('point(530000 140000 0)'::geometry,21781));
       
 -- move valve away 
-UPDATE qwat_od.vw_element_valve set geometry = st_setsrid('point(530001 140000 0)'::geometry,21781) where geometry = st_setsrid('point(530000 140000 0)'::geometry,21781);
+UPDATE qwat_od.valve set geometry = st_setsrid('point(530001 140000 0)'::geometry,21781) where geometry = st_setsrid('point(530000 140000 0)'::geometry,21781);
