@@ -18,33 +18,48 @@ INSERT INTO qwat_od.pipe (id, fk_node_a, fk_node_b,
        101, 101, 101, 1, 101, 101, 101, 101,
        st_setsrid('linestring(530000 138260 0,530050 138270 0)'::geometry, 21781));
 
-INSERT INTO qwat_od.vw_element_valve (id, fk_district, fk_pressurezone, fk_distributor, fk_pipe,
-       fk_precision, fk_precisionalti, fk_status, fk_valve_type, fk_valve_function, fk_valve_actuation,
-       geometry)
-       VALUES (3, 1, 1, 1, 1,
-       101, 101, 101, 101, 6108, 101,
-       st_setsrid('point(530025 138265 0)'::geometry,21781));
+INSERT INTO qwat_od.vw_element_hydrant (year, fk_distributor, fk_status, fk_provider,
+            underground, altitude, fk_precisionalti, fk_precision, fk_object_reference, fk_model_sup, fk_model_inf, fk_material, fk_output,
+            pressure_static, pressure_dynamic, flow,
+            observation_date, observation_source,
+            geometry)
+    VALUES (2016, 1, 101, 101, 
+            True, 9.5, 101, 101, 101, 101, 101, 101, 101,
+            12.3, 12.3, 12.3,
+            '2016/01/01', 'Test',
+            st_setsrid('POINT(530025 138265 0)'::geometry,21781)
+            );
 
 -- Now we have 3 vertices on the pipe
 SELECT 'num_points_after_add1', st_numpoints(geometry) FROM qwat_od.pipe WHERE id = 1;
 
-INSERT INTO qwat_od.vw_element_valve (id, fk_district, fk_pressurezone, fk_distributor, fk_pipe,
-       fk_precision, fk_precisionalti, fk_status, fk_valve_type, fk_valve_function, fk_valve_actuation,
-       geometry)
-       VALUES (4, 1, 1, 1, 1,
-       101, 101, 101, 101, 6108, 101,
-       st_setsrid('point(530040 138268 0)'::geometry,21781));
+INSERT INTO qwat_od.vw_element_hydrant (year, fk_distributor, fk_status, fk_provider,
+            underground, altitude, fk_precisionalti, fk_precision, fk_object_reference, fk_model_sup, fk_model_inf, fk_material, fk_output,
+            pressure_static, pressure_dynamic, flow,
+            observation_date, observation_source,
+            geometry)
+    VALUES (2016, 1, 101, 101, 
+            True, 9.5, 101, 101, 101, 101, 101, 101, 101,
+            12.3, 12.3, 12.3,
+            '2016/01/01', 'Test',
+            st_setsrid('POINT(530040 138268 0)'::geometry,21781)
+            );
 
 -- Now we have 4 vertices on the pipe
 SELECT 'num_points_after_add2', st_numpoints(geometry) FROM qwat_od.pipe WHERE id = 1;
 
 -- What if the intersection test fails but the node is close enough to the pipe ?
-INSERT INTO qwat_od.vw_element_valve (id, fk_district, fk_pressurezone, fk_distributor, fk_pipe,
-       fk_precision, fk_precisionalti, fk_status, fk_valve_type, fk_valve_function, fk_valve_actuation,
-       geometry)
-       VALUES (5, 1, 1, 1, 1,
-       101, 101, 101, 101, 6108, 101,
-       st_setsrid('point(530025.2 138265.04 0)'::geometry,21781));
+INSERT INTO qwat_od.vw_element_hydrant (year, fk_distributor, fk_status, fk_provider,
+            underground, altitude, fk_precisionalti, fk_precision, fk_object_reference, fk_model_sup, fk_model_inf, fk_material, fk_output,
+            pressure_static, pressure_dynamic, flow,
+            observation_date, observation_source,
+            geometry)
+    VALUES (2016, 1, 101, 101, 
+            True, 9.5, 101, 101, 101, 101, 101, 101, 101,
+            12.3, 12.3, 12.3,
+            '2016/01/01', 'Test',
+            st_setsrid('POINT(530025.2 138265.04 0)'::geometry,21781)
+            );
 
 -- Another point added
 SELECT 'num_points_after_add3', st_numpoints(geometry) FROM qwat_od.pipe WHERE id = 1;
@@ -83,7 +98,7 @@ INSERT INTO qwat_od.pipe (id, fk_node_a, fk_node_b,
 UPDATE qwat_od.pipe SET geometry = st_setsrid('linestring(530000 148260 0, 530001 148260 0)'::geometry, 21781) where id=11;
 
 -- restore the initial state
-DELETE FROM qwat_od.vw_element_valve;
+DELETE FROM qwat_od.vw_element_hydrant;
 DELETE FROM qwat_od.pipe;
 DELETE FROM qwat_od.pressurezone;
 DELETE FROM qwat_od.consumptionzone;

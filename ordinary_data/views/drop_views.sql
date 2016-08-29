@@ -35,7 +35,6 @@ drop view if exists qwat_od.vw_element_meter;
 drop view if exists qwat_od.vw_element_part;
 drop view if exists qwat_od.vw_element_samplingpoint;
 drop view if exists qwat_od.vw_element_subscriber;
-drop view if exists qwat_od.vw_element_valve;
 
 drop view if exists qwat_od.vw_installation_chamber;
 drop view if exists qwat_od.vw_installation_pressurecontrol;

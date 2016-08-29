@@ -26,7 +26,7 @@ $BODY$
 		_lin_ref      float;
 	BEGIN
 
-		-- get the geoemetry
+		-- get the geometry
 		_node_geom := geometry FROM qwat_od.node WHERE id = _node_id;
 
 		-- count the functional pipes associated to this node
