@@ -1,24 +1,19 @@
--- get clean state
-DELETE FROM qwat_dr.constructionpoint;
-DELETE FROM qwat_od.vw_element_part;
-DELETE FROM qwat_od.valve;
-DELETE FROM qwat_od.pipe;
-DELETE FROM qwat_od.vw_element_hydrant;
-DELETE FROM qwat_od.cover;
-DELETE FROM qwat_od.vw_element_installation;
-DELETE FROM qwat_od.network_element;
-DELETE FROM qwat_od.pressurezone;
-DELETE FROM qwat_od.distributor;
--- DELETE FROM qwat_od.leak;
-DELETE FROM qwat_vl.part_type WHERE value_fr = 'Point d''introduction';
-
 -- add a construction point
 INSERT INTO qwat_dr.constructionpoint (id, geometry) 
     VALUES (1, ST_Setsrid('point(530000 140000 0)'::geometry,21781));
 
+-- add a district
+INSERT INTO qwat_od.district (id, name) VALUES (1, 'My district');
+
 -- create pipe
 -- add a distributor
 INSERT INTO qwat_od.distributor (id, name) VALUES (1, 'Demo Distributor');
+
+-- add a consumption zone
+INSERT INTO qwat_od.consumptionzone(id, name) VALUES (1, 'A consumption zone');
+
+-- add a pressure zone
+INSERT INTO qwat_od.pressurezone (id, name, fk_distributor, fk_consumptionzone) VALUES (1, 'A pressure zone', 1, 1);
 
 -- add the pipe
 INSERT INTO qwat_od.pipe (id, fk_node_a, fk_node_b,

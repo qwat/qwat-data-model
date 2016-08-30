@@ -61,9 +61,16 @@ ALTER TABLE qwat_od.valve ADD CONSTRAINT chk_valve_altitude_precisionalti CHECK 
 
 /* GEOMETRY */
 ALTER TABLE qwat_od.valve ADD COLUMN geometry geometry('POINTZ',:SRID) NOT NULL;
+ALTER TABLE qwat_od.valve ADD COLUMN geometry_alt1 geometry('POINTZ',:SRID);
+ALTER TABLE qwat_od.valve ADD COLUMN geometry_alt2 geometry('POINTZ',:SRID);
+ALTER TABLE qwat_od.valve ADD COLUMN update_geometry_alt1 boolean default null; -- used to determine if alternative geometries should be updated when main geometry is updated
+ALTER TABLE qwat_od.valve ADD COLUMN update_geometry_alt2 boolean default null; -- used to determine if alternative geometries should be updated when main geometry is updated
+
 
 /* GEOM INDEXES */
 CREATE INDEX valve_geoidx ON qwat_od.valve USING GIST ( geometry );
+CREATE INDEX valve_geoidx_alt1 ON qwat_od.valve USING GIST ( geometry_alt1 );
+CREATE INDEX valve_geoidx_alt2 ON qwat_od.valve USING GIST ( geometry_alt2 );
 
 /* NODE TRIGGER */
 CREATE OR REPLACE FUNCTION qwat_od.ft_valve_node_set_type() RETURNS TRIGGER AS

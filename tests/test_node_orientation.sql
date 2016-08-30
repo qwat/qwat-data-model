@@ -12,16 +12,7 @@ SELECT ST_SetSRID(ST_GeomFromText('LINESTRING (560000 150000 0, 559990 150010 0,
 INSERT INTO qwat_od.pipe (geometry, fk_function, fk_material, fk_distributor, fk_status, fk_watertype, fk_installmethod, fk_precision, fk_bedding)
 SELECT ST_SetSRID(ST_GeomFromText('LINESTRING(559980 149980 0, 559979.975263114 149979.915516003 0, 559979.947476254 149979.823744764 0)'), 21781), 4105, 101, 1, 1301, 1502, 101, 101, 101;
 
-/*
-INSERT INTO qwat_od.vw_element_hydrant (geometry, fk_distributor, fk_status, fk_valve_type, fk_valve_function, fk_valve_actuation, fk_precision)
-SELECT ST_SetSRID(ST_GeomFromText('POINT(559990 149990 0)'), 21781), 1, 1301, 101, 101, 101, 101;
 
-INSERT INTO qwat_od.vw_element_hydrant (geometry, fk_distributor, fk_status, fk_valve_type, fk_valve_function, fk_valve_actuation, fk_precision)
-SELECT ST_SetSRID(ST_GeomFromText('POINT(559990 150010 0)'), 21781), 1, 1301, 101, 101, 101, 101;
-
-INSERT INTO qwat_od.vw_element_hydrant (geometry, fk_distributor, fk_status, fk_valve_type, fk_valve_function, fk_valve_actuation, fk_precision)
-SELECT ST_SetSRID(ST_GeomFromText('POINT(559979.975263114 149979.915516003 0)'), 21781), 1, 1301, 101, 101, 101, 101;
-*/
 INSERT INTO qwat_od.vw_element_hydrant (year, fk_distributor, fk_status, fk_provider,
             underground, altitude, fk_precisionalti, fk_precision, fk_object_reference, fk_model_sup, fk_model_inf, fk_material, fk_output,
             pressure_static, pressure_dynamic, flow,
