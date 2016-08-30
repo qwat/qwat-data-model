@@ -74,7 +74,9 @@ sqlParams = {
 
     'id_cp': 1,
     'id_node_a': 1,
-    'id_node_b': 2
+    'id_node_b': 2,
+
+    'valve_id': 1
 }
 
 # Var list to replace in SQL
@@ -121,7 +123,8 @@ varsToReplace = [
     'DEL_Z1',
     'DEL_X2',
     'DEL_Y2',
-    'DEL_Z2'
+    'DEL_Z2',
+    'VALVE_ID'
 ]
 
 
@@ -157,7 +160,7 @@ def test_scalability(pgService, nbIterations):
 def _execute_statements(cur, conn, threadName, threadId, origin, nbIterations):
     count = 1
     p = sqlParams.copy()
-    while nbIterations:
+    while count < nbIterations:
         print "{tname} - Iteration {nb}".format(tname=threadName, nb=count)
 
         # Modify values (coords, IDs)
@@ -201,10 +204,11 @@ def _execute_statements(cur, conn, threadName, threadId, origin, nbIterations):
         p['co_x1'] += origin['x'] + OFFSET
         p['co_y1'] += origin['y'] + OFFSET
 
-        p['id_cp'] += count * threadId
-        p['id_node_a'] = count * OFFSET_ID * threadId
-        p['id_node_b'] = count * OFFSET_ID * threadId
-        p['installation_id'] = "{name}_{num}".format(name=threadName, num=count * OFFSET_ID * threadId)
+        p['id_cp'] = threadId * nbIterations + count
+        p['id_node_a'] = threadId * nbIterations + count
+        p['id_node_b'] = threadId * nbIterations + count
+        p['installation_id'] = "{name}_{num}".format(name=threadName, num=threadId * nbIterations + count)
+        p['valve_id'] = threadId * nbIterations + count
 
         for statement in open(TEST_SCRIPT).read().split(";;")[:-1]:
             if statement != '' and statement[:2] != '--':
@@ -228,7 +232,6 @@ def _execute_statements(cur, conn, threadName, threadId, origin, nbIterations):
         origin['x'] = 0
         origin['y'] = 0
 
-        nbIterations -= 1
         count += 1
 
 
