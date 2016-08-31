@@ -13,11 +13,11 @@ $BODY$
 		IF _node_id IS NULL THEN
                         IF deactivate_node_add_pipe_vertex THEN
                            -- if we are called from a pipe creation, do not try to add a vertex on the pipe
-                           ALTER TABLE qwat_od.node DISABLE TRIGGER tr_node_add_pipe_vertex_insert;
+                           --ALTER TABLE qwat_od.node DISABLE TRIGGER tr_node_add_pipe_vertex_insert;
                         END IF;
 			INSERT INTO qwat_od.node (geometry) VALUES (ST_Force3D(_point)) RETURNING id INTO _node_id;
                         IF deactivate_node_add_pipe_vertex THEN
-                           ALTER TABLE qwat_od.node ENABLE TRIGGER tr_node_add_pipe_vertex_insert;
+                           --ALTER TABLE qwat_od.node ENABLE TRIGGER tr_node_add_pipe_vertex_insert;
                         END IF;
 			IF _node_id IS NULL THEN
 				RAISE EXCEPTION 'Node is null although it should have been created';

@@ -12,16 +12,21 @@ import os
 import argparse
 import string
 import time
+import datetime
 import psycopg2
 import psycopg2.extras
 from subprocess import call
 
 TEST_SCRIPT = 'test_scenarii_scalability.model'
+OUTPUT_STAT = 'scalability_stats.txt'
 OFFSET = 10  # offset in meter to create new objects
 OFFSET_ORIGIN = 2000
 OFFSET_ID = 10  # offset for new ids
 NB_THREADS = 10
 threads = []
+fileStats = None
+startTime = None
+endTime = None
 
 origin = {'x': 530000, 'y': 140000}
 
@@ -143,18 +148,27 @@ class ScalabilityThread (threading.Thread):
         print "Starting " + self.name
         _execute_statements(self.cur, self.conn, self.name, self.threadID, self.origin, self.nbIterations)
         print "Exiting " + self.name
+        endTime = datetime.datetime.now().time()
+        fileStats = open(OUTPUT_STAT, 'a')
+        fileStats.write("Process {p} ended at {t}\n".format(t=endTime.isoformat(), p=self.threadID))
 
 
 def test_scalability(pgService, nbIterations):
+    fileStats = open(OUTPUT_STAT, 'w')
+    fileStats.write("Nb thread: {nbthreads}\n".format(nbthreads=NB_THREADS))
+    fileStats.write("Nb iterations: {nbiterations}\n".format(nbiterations=nbIterations))
+    startTime = datetime.datetime.now().time()
+    fileStats.write("Process started at {t}\n".format(t=startTime.isoformat()))
+
     # Create new threads
     for t in range(0, NB_THREADS):
-        #newThread = ScalabilityThread(t+1, "Thread-"+str(t), nbIterations, cur, conn)
         newThread = ScalabilityThread(t + 1, "Thread-" + str(t + 1), nbIterations, pgService)
         threads.append(newThread)
 
     # Start Threads
     for t in range(0, NB_THREADS):
         threads[t].start()
+
 
 
 def _execute_statements(cur, conn, threadName, threadId, origin, nbIterations):

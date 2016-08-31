@@ -21,6 +21,7 @@ $BODY$
 				) AS valve_group
 			ON pipe_dupp.id = valve_group.fk_pipe
 			WHERE pipe.id = _pipe_id;
+
 	END;
 $BODY$
 LANGUAGE plpgsql;
@@ -74,4 +75,45 @@ CREATE TRIGGER tr_valve_update_trigger
 	FOR EACH ROW
 	EXECUTE PROCEDURE qwat_od.ft_valve_update();
 COMMENT ON TRIGGER tr_valve_update_trigger ON qwat_od.valve IS 'Trigger: when updating a valve, reevaluate old and new pipes.';
+
+
+
+/* ASSIGN PIPE TO VALVE */
+CREATE OR REPLACE FUNCTION qwat_od.ft_valve_infos_insert() RETURNS TRIGGER AS
+$BODY$
+    BEGIN
+        NEW.fk_pipe             := qwat_od.fn_pipe_get_id(NEW.geometry);
+        NEW.fk_district         := qwat_od.fn_get_district(NEW.geometry);
+        NEW.fk_pressurezone     := qwat_od.fn_get_pressurezone(NEW.geometry);
+        RETURN NEW;
+    END;
+$BODY$
+LANGUAGE plpgsql;
+COMMENT ON FUNCTION qwat_od.ft_valve_infos_insert() IS 'Trigger: when inserting a valve, assign pipe.';
+CREATE TRIGGER tr_valve_infos_insert_trigger
+    BEFORE INSERT ON qwat_od.valve
+    FOR EACH ROW
+    EXECUTE PROCEDURE qwat_od.ft_valve_infos_insert();
+COMMENT ON TRIGGER tr_valve_infos_insert_trigger ON qwat_od.valve IS 'Trigger: when inserting a valve, assign pipe.';
+
+
+
+CREATE OR REPLACE FUNCTION qwat_od.ft_valve_infos_update() RETURNS TRIGGER AS
+$BODY$
+    BEGIN
+        if OLD.geometry <> NEW.geometry THEN
+            NEW.fk_pipe             := qwat_od.fn_pipe_get_id(NEW.geometry);
+            NEW.fk_district         := qwat_od.fn_get_district(NEW.geometry);
+            NEW.fk_pressurezone     := qwat_od.fn_get_pressurezone(NEW.geometry);
+        END IF;
+        RETURN NEW;
+    END;
+$BODY$
+LANGUAGE plpgsql;
+COMMENT ON FUNCTION qwat_od.ft_valve_infos_insert() IS 'Trigger: when inserting a valve, assign pipe.';
+CREATE TRIGGER tr_valve_infos_update_trigger
+    BEFORE UPDATE ON qwat_od.valve
+    FOR EACH ROW
+    EXECUTE PROCEDURE qwat_od.ft_valve_infos_insert();
+COMMENT ON TRIGGER tr_valve_infos_update_trigger ON qwat_od.valve IS 'Trigger: when inserting a valve, assign pipe.';
 

@@ -22,7 +22,7 @@ INSERT INTO qwat_od.vw_element_hydrant (year, fk_distributor, fk_status, fk_prov
             True, 9.5, 101, 101, 101, 101, 101, 101, 101,
             12.3, 12.3, 12.3,
             '2016/01/01', 'Test',
-            st_setsrid('POINT(559990 149990 0)'::geometry,21781)
+            st_setsrid('POINT(559980 149980 0)'::geometry,21781)
             );
 
 INSERT INTO qwat_od.vw_element_hydrant (year, fk_distributor, fk_status, fk_provider,
@@ -34,7 +34,7 @@ INSERT INTO qwat_od.vw_element_hydrant (year, fk_distributor, fk_status, fk_prov
             True, 9.5, 101, 101, 101, 101, 101, 101, 101,
             12.3, 12.3, 12.3,
             '2016/01/01', 'Test',
-            st_setsrid('POINT(559990 150010 0)'::geometry,21781)
+            st_setsrid('POINT(560000 150000 0)'::geometry,21781)
             );
 
 INSERT INTO qwat_od.vw_element_hydrant (year, fk_distributor, fk_status, fk_provider,
@@ -46,7 +46,7 @@ INSERT INTO qwat_od.vw_element_hydrant (year, fk_distributor, fk_status, fk_prov
             True, 9.5, 101, 101, 101, 101, 101, 101, 101,
             12.3, 12.3, 12.3,
             '2016/01/01', 'Test',
-            st_setsrid('POINT(559979.975263114 149979.915516003 0)'::geometry,21781)
+            st_setsrid('POINT(559980 150020 0)'::geometry,21781)
             );
 
 -- The CALCULATED orientation

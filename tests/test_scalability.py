@@ -76,7 +76,9 @@ def _execute_statements(cur, conn, fileName, nb_iteration):
 
         'id_cp': 1,
         'id_node_a': 1,
-        'id_node_b': 2
+        'id_node_b': 2,
+
+        'valve_id': 1
         }
 
     # Var list to replace in SQL
@@ -123,7 +125,8 @@ def _execute_statements(cur, conn, fileName, nb_iteration):
         'DEL_Z1',
         'DEL_X2',
         'DEL_Y2',
-        'DEL_Z2'
+        'DEL_Z2',
+        'VALVE_ID'
     ]
 
     for i in range(int(nb_iteration)):
@@ -174,6 +177,7 @@ def _execute_statements(cur, conn, fileName, nb_iteration):
         p['id_node_a'] = i * OFFSET_ID
         p['id_node_b'] = i * OFFSET_ID
         p['installation_id'] = i * OFFSET_ID
+        p['valve_id'] = i * OFFSET_ID
 
         for statement in open(fileName).read().split(";;")[:-1]:
             if statement != '' and statement[:2] != '--':

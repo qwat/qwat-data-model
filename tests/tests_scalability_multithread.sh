@@ -2,7 +2,7 @@
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 INIT_DB=1
-NB_ITERATIONS=10
+NB_ITERATIONS=100
 
 while [[ $# > 0 ]]; do
 key="$1"
