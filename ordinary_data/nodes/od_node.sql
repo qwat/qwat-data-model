@@ -96,7 +96,9 @@ $BODY$
 			-- add a vertex to the corresponding pipe if it intersects
 			-- when the node is close enough to the pipe (< 1 micrometer) the node is considered to intersect the pipe
 			-- it allows to deal with intersections that cannot be represented by floating point numbers
-			IF pipe_id = 0 THEN
+			RAISE NOTICE '############# node id = %', NEW.id;
+			IF pipe_id is null THEN
+                RAISE NOTICE '------------------------------------ pipe id = %', pipe_id;
                 UPDATE qwat_od.pipe SET geometry = ST_Snap(geometry, NEW.geometry, 1e-6) WHERE ST_Distance(geometry, NEW.geometry) < 1e-6;
             END IF;
         RETURN NEW;
