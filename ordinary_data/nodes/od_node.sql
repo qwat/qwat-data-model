@@ -85,6 +85,7 @@ COMMENT ON TRIGGER tr_node_geom_update ON qwat_od.node IS 'Trigger: updates auto
 
 /* --------------------------------------------*/
 /* --- ADD VERTEX TO PIPE AT NODE LOCATION ----*/
+/*
 CREATE OR REPLACE FUNCTION qwat_od.ft_node_add_pipe_vertex()
   RETURNS trigger AS
 $BODY$
@@ -120,7 +121,7 @@ CREATE TRIGGER tr_node_add_pipe_vertex_update
   WHEN (ST_Equals(ST_Force2d(NEW.geometry), ST_Force2d(OLD.geometry)) IS FALSE )
   EXECUTE PROCEDURE qwat_od.ft_node_add_pipe_vertex();
 COMMENT ON TRIGGER tr_node_add_pipe_vertex_update ON qwat_od.node IS 'Trigger: updates auto fields after geom update.';
-
+*/
 
 
 
