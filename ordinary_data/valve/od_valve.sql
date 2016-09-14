@@ -31,6 +31,7 @@ ALTER TABLE qwat_od.valve ADD COLUMN handle_altitude         decimal(10,3);
 ALTER TABLE qwat_od.valve ADD COLUMN handle_geometry         geometry(PointZ,:SRID);
 ALTER TABLE qwat_od.valve ADD COLUMN year                    smallint CHECK (year     IS NULL OR year     > 1800 AND year     < 2100);
 ALTER TABLE qwat_od.valve ADD COLUMN altitude                decimal(10,3) default null;
+ALTER TABLE qwat_od.valve ADD COLUMN orientation             float default null;
 
 /* Schema view */
 SELECT qwat_sys.fn_enable_schemaview( 'valve' );
@@ -90,6 +91,23 @@ CREATE TRIGGER valve_node_set_type
 	EXECUTE PROCEDURE qwat_od.ft_valve_node_set_type();
 COMMENT ON TRIGGER valve_node_set_type ON qwat_od.valve IS 'Trigger: set-type of node after inserting a valve (to get orientation).';
 */
+CREATE OR REPLACE FUNCTION qwat_od.ft_valve_set_orientation() RETURNS TRIGGER AS
+$BODY$
+    BEGIN
+        PERFORM qwat_od.fn_valve_set_orientation(NEW.id);
+    RETURN NEW;
+    END;
+$BODY$
+LANGUAGE plpgsql;
+COMMENT ON FUNCTION qwat_od.ft_valve_set_orientation() IS 'Trigger: set orientation after inserting a valve.';
+
+CREATE TRIGGER valve_set_orientation
+    AFTER INSERT ON qwat_od.valve
+    FOR EACH ROW
+    EXECUTE PROCEDURE qwat_od.ft_valve_set_orientation();
+COMMENT ON TRIGGER valve_set_orientation ON qwat_od.valve IS 'Trigger: set orientation after inserting a valve.';
+
+
 
 
 /* HANDLE ALTITUDE TRIGGER */

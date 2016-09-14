@@ -110,7 +110,7 @@ INSERT INTO qwat_od.cover (identification, form_dimension, fk_cover_type, circul
 -- TODO
 
 -- deletes
-/*
+
 DELETE FROM qwat_dr.constructionpoint;
 DELETE FROM qwat_od.vw_element_part;
 DELETE FROM qwat_od.valve;
@@ -119,6 +119,7 @@ DELETE FROM qwat_od.vw_element_hydrant;
 DELETE FROM qwat_od.cover;
 DELETE FROM qwat_od.vw_element_installation;
 DELETE FROM qwat_od.network_element;
+DELETE FROM qwat_od.pressurezone;
+DELETE FROM qwat_od.consumptionzone;
 DELETE FROM qwat_od.distributor;
 DELETE FROM qwat_od.leak;
-*/
