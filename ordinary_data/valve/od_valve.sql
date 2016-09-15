@@ -107,6 +107,12 @@ CREATE TRIGGER valve_set_orientation
     EXECUTE PROCEDURE qwat_od.ft_valve_set_orientation();
 COMMENT ON TRIGGER valve_set_orientation ON qwat_od.valve IS 'Trigger: set orientation after inserting a valve.';
 
+CREATE TRIGGER valve_update_orientation
+    AFTER UPDATE OF geometry ON qwat_od.valve
+    FOR EACH ROW
+    EXECUTE PROCEDURE qwat_od.ft_valve_set_orientation();
+COMMENT ON TRIGGER valve_update_orientation ON qwat_od.valve IS 'Trigger: set orientation after inserting a valve.';
+
 
 
 
