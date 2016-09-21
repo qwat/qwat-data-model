@@ -86,9 +86,7 @@ $BODY$
         NEW.fk_district         := qwat_od.fn_get_district(NEW.geometry);
         NEW.fk_pressurezone     := qwat_od.fn_get_pressurezone(NEW.geometry);
         
-        
         -- la gestion du champ altitude en combinaison avec la géométrie 3D (qui existe pour les noeuds)
-        -- l'appel de qwat_od.ft_valve_set_orientation() pour un update de la géométrie de la vanne (seulement fait à l'insert pour l'instant)
 
         
         RETURN NEW;
