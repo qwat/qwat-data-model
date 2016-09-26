@@ -32,6 +32,18 @@ ALTER TABLE qwat_od.valve ADD COLUMN handle_geometry         geometry(PointZ,:SR
 ALTER TABLE qwat_od.valve ADD COLUMN year                    smallint CHECK (year     IS NULL OR year     > 1800 AND year     < 2100);
 ALTER TABLE qwat_od.valve ADD COLUMN altitude                decimal(10,3) default null;
 ALTER TABLE qwat_od.valve ADD COLUMN orientation             float default null;
+ALTER TABLE qwat_od.valve ADD COLUMN fk_locationtype     integer[];
+ALTER TABLE qwat_od.valve ADD COLUMN identification      varchar(50);
+ALTER TABLE qwat_od.valve ADD COLUMN remark              text;
+ALTER TABLE qwat_od.valve ADD COLUMN year_end            smallint CHECK (year_end IS NULL OR year_end > 1800 AND year_end < 2100);
+ALTER TABLE qwat_od.valve ADD COLUMN fk_printmap         integer[];
+ALTER TABLE qwat_od.valve ADD COLUMN _geometry_alt1_used boolean;
+ALTER TABLE qwat_od.valve ADD COLUMN _geometry_alt2_used boolean;
+ALTER TABLE qwat_od.valve ADD COLUMN _pipe_node_type      qwat_od.pipe_connection default null;
+ALTER TABLE qwat_od.valve ADD COLUMN _pipe_orientation    float   default 0;
+ALTER TABLE qwat_od.valve ADD COLUMN _pipe_schema_visible boolean default false;
+ALTER TABLE qwat_od.valve ADD COLUMN _printmaps          text; -- list of printmap where it is included
+
 
 /* Schema view */
 SELECT qwat_sys.fn_enable_schemaview( 'valve' );
