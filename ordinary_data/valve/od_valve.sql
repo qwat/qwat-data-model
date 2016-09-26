@@ -9,8 +9,6 @@ CREATE TABLE qwat_od.valve (id serial PRIMARY KEY);
 COMMENT ON TABLE qwat_od.valve IS 'Table for valve.';
 
 /* columns */
-ALTER TABLE qwat_od.valve ADD COLUMN fk_district             integer;
-ALTER TABLE qwat_od.valve ADD COLUMN fk_pressurezone         integer;
 ALTER TABLE qwat_od.valve ADD COLUMN fk_valve_type     		 integer not null;
 ALTER TABLE qwat_od.valve ADD COLUMN fk_valve_function       integer not null;
 ALTER TABLE qwat_od.valve ADD COLUMN fk_valve_actuation      		 integer not null;
@@ -18,23 +16,34 @@ ALTER TABLE qwat_od.valve ADD COLUMN fk_pipe                 integer ;
 ALTER TABLE qwat_od.valve ADD COLUMN fk_handle_precision     integer;
 ALTER TABLE qwat_od.valve ADD COLUMN fk_handle_precisionalti integer;
 ALTER TABLE qwat_od.valve ADD COLUMN fk_maintenance    		 integer[]; --TODO should use n:m relations!
+ALTER TABLE qwat_od.valve ADD COLUMN diameter_nominal        varchar(10);
+ALTER TABLE qwat_od.valve ADD COLUMN closed                  boolean default false;
+ALTER TABLE qwat_od.valve ADD COLUMN networkseparation       boolean default false;
+ALTER TABLE qwat_od.valve ADD COLUMN handle_altitude         decimal(10,3);
+ALTER TABLE qwat_od.valve ADD COLUMN handle_geometry         geometry(PointZ,:SRID);
+ALTER TABLE qwat_od.valve ADD COLUMN fk_district             integer;
+ALTER TABLE qwat_od.valve ADD COLUMN fk_pressurezone         integer;
 ALTER TABLE qwat_od.valve ADD COLUMN fk_distributor          integer not null;
 ALTER TABLE qwat_od.valve ADD COLUMN fk_precision            integer not null;
 ALTER TABLE qwat_od.valve ADD COLUMN fk_precisionalti        integer;
 ALTER TABLE qwat_od.valve ADD COLUMN fk_status               integer not null;
 ALTER TABLE qwat_od.valve ADD COLUMN fk_object_reference     integer;
 ALTER TABLE qwat_od.valve ADD COLUMN fk_folder               integer;
-ALTER TABLE qwat_od.valve ADD COLUMN diameter_nominal 		 varchar(10);
-ALTER TABLE qwat_od.valve ADD COLUMN closed            		 boolean default false;
-ALTER TABLE qwat_od.valve ADD COLUMN networkseparation 		 boolean default false;
-ALTER TABLE qwat_od.valve ADD COLUMN handle_altitude         decimal(10,3);
-ALTER TABLE qwat_od.valve ADD COLUMN handle_geometry         geometry(PointZ,:SRID);
 ALTER TABLE qwat_od.valve ADD COLUMN year                    smallint CHECK (year     IS NULL OR year     > 1800 AND year     < 2100);
+ALTER TABLE qwat_od.valve ADD COLUMN year_end            smallint CHECK (year_end IS NULL OR year_end > 1800 AND year_end < 2100);
 ALTER TABLE qwat_od.valve ADD COLUMN altitude                decimal(10,3) default null;
 ALTER TABLE qwat_od.valve ADD COLUMN orientation             float default null;
+ALTER TABLE qwat_od.valve ADD COLUMN fk_locationtype     integer[];
+ALTER TABLE qwat_od.valve ADD COLUMN identification      varchar(50);
+ALTER TABLE qwat_od.valve ADD COLUMN remark              text;
+ALTER TABLE qwat_od.valve ADD COLUMN fk_printmap         integer[];
+ALTER TABLE qwat_od.valve ADD COLUMN _geometry_alt1_used boolean;
+ALTER TABLE qwat_od.valve ADD COLUMN _geometry_alt2_used boolean;
+ALTER TABLE qwat_od.valve ADD COLUMN _pipe_node_type      qwat_od.pipe_connection default null;
+ALTER TABLE qwat_od.valve ADD COLUMN _pipe_orientation    float   default 0;
+ALTER TABLE qwat_od.valve ADD COLUMN _pipe_schema_visible boolean default false;
+ALTER TABLE qwat_od.valve ADD COLUMN _printmaps          text; -- list of printmap where it is included
 
-/* Schema view */
-SELECT qwat_sys.fn_enable_schemaview( 'valve' );
 
 /* constraints */
 ALTER TABLE qwat_od.valve ADD CONSTRAINT valve_fk_type      FOREIGN KEY (fk_valve_type)     REFERENCES qwat_vl.valve_type(id)      MATCH FULL; CREATE INDEX fki_valve_fk_type      ON qwat_od.valve(fk_valve_type);
@@ -66,6 +75,10 @@ ALTER TABLE qwat_od.valve ADD COLUMN geometry_alt1 geometry('POINTZ',:SRID);
 ALTER TABLE qwat_od.valve ADD COLUMN geometry_alt2 geometry('POINTZ',:SRID);
 ALTER TABLE qwat_od.valve ADD COLUMN update_geometry_alt1 boolean default null; -- used to determine if alternative geometries should be updated when main geometry is updated
 ALTER TABLE qwat_od.valve ADD COLUMN update_geometry_alt2 boolean default null; -- used to determine if alternative geometries should be updated when main geometry is updated
+
+
+/* Schema view */
+SELECT qwat_sys.fn_enable_schemaview( 'valve' );
 
 
 /* GEOM INDEXES */

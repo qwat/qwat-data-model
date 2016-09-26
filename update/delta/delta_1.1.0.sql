@@ -14,6 +14,10 @@ ALTER TABLE qwat_od.valve ADD COLUMN fk_precision            integer;
 ALTER TABLE qwat_od.valve ADD CONSTRAINT valve_fk_precision      FOREIGN KEY (fk_precision)      REFERENCES qwat_vl.precision(id)          MATCH FULL;
 CREATE INDEX fki_valve_fk_precision     ON qwat_od.valve(fk_precision);
 
+ALTER TABLE qwat_od.valve ADD COLUMN fk_precisionalti        integer;
+ALTER TABLE qwat_od.valve ADD CONSTRAINT valve_fk_precisionalti    FOREIGN KEY (fk_precisionalti)    REFERENCES qwat_vl.precisionalti(id)    MATCH FULL;
+CREATE INDEX fki_valve_fk_precisionalti    ON qwat_od.valve(fk_precisionalti);
+
 ALTER TABLE qwat_od.valve ADD COLUMN fk_status               integer;
 ALTER TABLE qwat_od.valve ADD CONSTRAINT valve_fk_status         FOREIGN KEY (fk_status)         REFERENCES qwat_vl.status(id)             MATCH FULL;
 CREATE INDEX fki_valve_fk_status        ON qwat_od.valve(fk_status);
@@ -26,9 +30,20 @@ ALTER TABLE qwat_od.valve ADD COLUMN fk_folder               integer;
 ALTER TABLE qwat_od.valve ADD CONSTRAINT valve_fk_folder           FOREIGN KEY (fk_folder)           REFERENCES qwat_od.folder(id)           MATCH FULL;
 CREATE INDEX fki_valve_fk_folder           ON qwat_od.valve(fk_folder);
 
-ALTER TABLE qwat_od.valve ADD COLUMN fk_precisionalti        integer;
-ALTER TABLE qwat_od.valve ADD CONSTRAINT valve_fk_precisionalti    FOREIGN KEY (fk_precisionalti)    REFERENCES qwat_vl.precisionalti(id)    MATCH FULL;
-CREATE INDEX fki_valve_fk_precisionalti    ON qwat_od.valve(fk_precisionalti);
+ALTER TABLE qwat_od.valve ADD COLUMN year          smallint CHECK (year     IS NULL OR year     > 1800 AND year     < 2100);
+ALTER TABLE qwat_od.valve ADD COLUMN year_end            smallint CHECK (year_end IS NULL OR year_end > 1800 AND year_end < 2100);
+ALTER TABLE qwat_od.valve ADD COLUMN altitude                decimal(10,3) default null;
+ALTER TABLE qwat_od.valve ADD COLUMN orientation             float default null;
+ALTER TABLE qwat_od.valve ADD COLUMN fk_locationtype     integer[];
+ALTER TABLE qwat_od.valve ADD COLUMN identification      varchar(50);
+ALTER TABLE qwat_od.valve ADD COLUMN remark              text;
+ALTER TABLE qwat_od.valve ADD COLUMN fk_printmap         integer[];
+ALTER TABLE qwat_od.valve ADD COLUMN _geometry_alt1_used boolean;
+ALTER TABLE qwat_od.valve ADD COLUMN _geometry_alt2_used boolean;
+ALTER TABLE qwat_od.valve ADD COLUMN _pipe_node_type      qwat_od.pipe_connection default null;
+ALTER TABLE qwat_od.valve ADD COLUMN _pipe_orientation    float   default 0;
+ALTER TABLE qwat_od.valve ADD COLUMN _pipe_schema_visible boolean default false;
+ALTER TABLE qwat_od.valve ADD COLUMN _printmaps          text; -- list of printmap where it is included
 
 ALTER TABLE qwat_od.valve ADD COLUMN geometry geometry('POINTZ',21781);
 ALTER TABLE qwat_od.valve ADD COLUMN geometry_alt1 geometry('POINTZ',21781);
@@ -36,42 +51,79 @@ ALTER TABLE qwat_od.valve ADD COLUMN geometry_alt2 geometry('POINTZ',21781);
 ALTER TABLE qwat_od.valve ADD COLUMN update_geometry_alt1 boolean default null; -- used to determine if alternative geometries should be updated when main geometry is updated
 ALTER TABLE qwat_od.valve ADD COLUMN update_geometry_alt2 boolean default null; -- used to determine if alternative geometries should be updated when main geometry is updated
 
+
+
 CREATE INDEX valve_geoidx ON qwat_od.valve USING GIST ( geometry );
 CREATE INDEX valve_geoidx_alt1 ON qwat_od.valve USING GIST ( geometry_alt1 );
 CREATE INDEX valve_geoidx_alt2 ON qwat_od.valve USING GIST ( geometry_alt2 );
 
 -- ALTER TABLE qwat_od.valve ALTER COLUMN id serial;
 -- integer NOT NULL REFERENCES qwat_od.network_element(id) PRIMARY KEY;
+CREATE SEQUENCE qwat_od.valve_id_seq START 1;
+SELECT setval('qwat_od.valve_id_seq', (select COALESCE(max(id), '0')+1 from qwat_od.valve));
+ALTER TABLE qwat_od.valve ALTER COLUMN id SET default nextval('qwat_od.valve_id_seq');
 
-ALTER TABLE qwat_od.valve ADD COLUMN year          smallint CHECK (year     IS NULL OR year     > 1800 AND year     < 2100);
-ALTER TABLE qwat_od.valve ADD COLUMN altitude                decimal(10,3) default null;
-ALTER TABLE qwat_od.valve ADD COLUMN orientation             float default null;
 
 SELECT qwat_sys.fn_enable_schemaview( 'valve' );
 
 -- TODO We need to tranfert all the column data from node to valve
-UPDATE  qwat_od.valve SET fk_district = (SELECT fk_district FROM qwat_od.node WHERE qwat_od.node.id = qwat_od.valve.id);
-UPDATE  qwat_od.valve SET fk_pressurezone = (SELECT fk_pressurezone FROM qwat_od.node WHERE qwat_od.node.id = qwat_od.valve.id);
+UPDATE qwat_od.valve SET fk_district = (SELECT fk_district FROM qwat_od.node WHERE qwat_od.node.id = qwat_od.valve.id);
+UPDATE qwat_od.valve SET fk_pressurezone = (SELECT fk_pressurezone FROM qwat_od.node WHERE qwat_od.node.id = qwat_od.valve.id);
 UPDATE qwat_od.valve SET fk_distributor = (SELECT fk_distributor FROM qwat_od.network_element WHERE qwat_od.network_element.id = qwat_od.valve.id);
-UPDATE  qwat_od.valve SET fk_precision = (SELECT fk_precision FROM qwat_od.network_element WHERE qwat_od.network_element.id = qwat_od.valve.id);
-UPDATE  qwat_od.valve SET fk_status = (SELECT fk_status FROM qwat_od.network_element WHERE qwat_od.network_element.id = qwat_od.valve.id);
-UPDATE  qwat_od.valve SET fk_object_reference = (SELECT fk_object_reference FROM qwat_od.network_element WHERE qwat_od.network_element.id = qwat_od.valve.id);
-UPDATE  qwat_od.valve SET fk_folder = (SELECT fk_folder FROM qwat_od.network_element WHERE qwat_od.network_element.id = qwat_od.valve.id);
-UPDATE  qwat_od.valve SET fk_precisionalti = (SELECT fk_precisionalti FROM qwat_od.network_element WHERE qwat_od.network_element.id = qwat_od.valve.id);
-UPDATE  qwat_od.valve SET geometry = (SELECT geometry FROM qwat_od.node WHERE qwat_od.node.id = qwat_od.valve.id);
-UPDATE  qwat_od.valve SET geometry_alt1 = (SELECT geometry_alt1 FROM qwat_od.node WHERE qwat_od.node.id = qwat_od.valve.id);
-UPDATE  qwat_od.valve SET geometry_alt2 = (SELECT geometry_alt2 FROM qwat_od.node WHERE qwat_od.node.id = qwat_od.valve.id);
-UPDATE  qwat_od.valve SET update_geometry_alt1 = (SELECT update_geometry_alt1 FROM qwat_od.node WHERE qwat_od.node.id = qwat_od.valve.id);
-UPDATE  qwat_od.valve SET update_geometry_alt2 = (SELECT update_geometry_alt2 FROM qwat_od.node WHERE qwat_od.node.id = qwat_od.valve.id);
-UPDATE  qwat_od.valve SET year = (SELECT year FROM qwat_od.network_element WHERE qwat_od.network_element.id = qwat_od.valve.id);
-UPDATE  qwat_od.valve SET altitude = (SELECT altitude FROM qwat_od.network_element WHERE qwat_od.network_element.id = qwat_od.valve.id);
-UPDATE  qwat_od.valve SET orientation = (SELECT orientation FROM qwat_od.network_element WHERE qwat_od.network_element.id = qwat_od.valve.id);
+UPDATE qwat_od.valve SET fk_precision = (SELECT fk_precision FROM qwat_od.network_element WHERE qwat_od.network_element.id = qwat_od.valve.id);
+UPDATE qwat_od.valve SET fk_status = (SELECT fk_status FROM qwat_od.network_element WHERE qwat_od.network_element.id = qwat_od.valve.id);
+UPDATE qwat_od.valve SET fk_object_reference = (SELECT fk_object_reference FROM qwat_od.network_element WHERE qwat_od.network_element.id = qwat_od.valve.id);
+UPDATE qwat_od.valve SET fk_folder = (SELECT fk_folder FROM qwat_od.network_element WHERE qwat_od.network_element.id = qwat_od.valve.id);
+UPDATE qwat_od.valve SET fk_precisionalti = (SELECT fk_precisionalti FROM qwat_od.network_element WHERE qwat_od.network_element.id = qwat_od.valve.id);
+UPDATE qwat_od.valve SET geometry = (SELECT geometry FROM qwat_od.node WHERE qwat_od.node.id = qwat_od.valve.id);
+UPDATE qwat_od.valve SET geometry_alt1 = (SELECT geometry_alt1 FROM qwat_od.node WHERE qwat_od.node.id = qwat_od.valve.id);
+UPDATE qwat_od.valve SET geometry_alt2 = (SELECT geometry_alt2 FROM qwat_od.node WHERE qwat_od.node.id = qwat_od.valve.id);
+UPDATE qwat_od.valve SET update_geometry_alt1 = (SELECT update_geometry_alt1 FROM qwat_od.node WHERE qwat_od.node.id = qwat_od.valve.id);
+UPDATE qwat_od.valve SET update_geometry_alt2 = (SELECT update_geometry_alt2 FROM qwat_od.node WHERE qwat_od.node.id = qwat_od.valve.id);
+UPDATE qwat_od.valve SET year = (SELECT year FROM qwat_od.network_element WHERE qwat_od.network_element.id = qwat_od.valve.id);
+UPDATE qwat_od.valve SET altitude = (SELECT altitude FROM qwat_od.network_element WHERE qwat_od.network_element.id = qwat_od.valve.id);
+UPDATE qwat_od.valve SET orientation = (SELECT orientation FROM qwat_od.network_element WHERE qwat_od.network_element.id = qwat_od.valve.id);
+UPDATE qwat_od.valve SET fk_locationtype = (SELECT fk_locationtype FROM qwat_od.network_element WHERE qwat_od.network_element.id = qwat_od.valve.id);
+UPDATE qwat_od.valve SET identification = (SELECT identification FROM qwat_od.network_element WHERE qwat_od.network_element.id = qwat_od.valve.id);
+UPDATE qwat_od.valve SET remark = (SELECT remark FROM qwat_od.network_element WHERE qwat_od.network_element.id = qwat_od.valve.id);
+UPDATE qwat_od.valve SET year_end = (SELECT year_end FROM qwat_od.network_element WHERE qwat_od.network_element.id = qwat_od.valve.id);
+UPDATE qwat_od.valve SET fk_printmap = (SELECT fk_printmap FROM qwat_od.node WHERE qwat_od.node.id = qwat_od.valve.id);
+UPDATE qwat_od.valve SET _geometry_alt1_used = (SELECT _geometry_alt1_used FROM qwat_od.node WHERE qwat_od.node.id = qwat_od.valve.id);
+UPDATE qwat_od.valve SET _geometry_alt2_used = (SELECT _geometry_alt2_used FROM qwat_od.node WHERE qwat_od.node.id = qwat_od.valve.id);
+UPDATE qwat_od.valve SET _pipe_node_type = (SELECT _pipe_node_type FROM qwat_od.node WHERE qwat_od.node.id = qwat_od.valve.id);
+UPDATE qwat_od.valve SET _pipe_orientation = (SELECT _pipe_orientation FROM qwat_od.node WHERE qwat_od.node.id = qwat_od.valve.id);
+UPDATE qwat_od.valve SET _pipe_schema_visible = (SELECT _pipe_schema_visible FROM qwat_od.node WHERE qwat_od.node.id = qwat_od.valve.id);
+UPDATE qwat_od.valve SET _printmaps = (SELECT _printmaps FROM qwat_od.node WHERE qwat_od.node.id = qwat_od.valve.id);
 
 
 ALTER TABLE qwat_od.valve ALTER COLUMN fk_distributor SET NOT NULL;
 ALTER TABLE qwat_od.valve ALTER COLUMN fk_precision SET NOT NULL;
 ALTER TABLE qwat_od.valve ALTER COLUMN fk_status SET NOT NULL;
 ALTER TABLE qwat_od.valve ALTER COLUMN geometry SET NOT NULL;
+
+ALTER TABLE qwat_od.valve DROP CONSTRAINT valve_id_fkey;
+
+
+
+CREATE OR REPLACE FUNCTION qwat_od.fn_node_create( _point geometry, deactivate_node_add_pipe_vertex boolean = FALSE ) RETURNS integer AS
+$BODY$
+    DECLARE
+        _node_id integer;
+    BEGIN
+        SELECT id FROM qwat_od.node WHERE ST_Equals(ST_Force2d(_point), ST_Force2d(node.geometry)) IS TRUE LIMIT 1 INTO _node_id;
+        IF _node_id IS NULL THEN
+
+            INSERT INTO qwat_od.node (geometry) VALUES (ST_Force3D(_point)) RETURNING id INTO _node_id;
+
+            IF _node_id IS NULL THEN
+                RAISE EXCEPTION 'Node is null although it should have been created';
+            END IF;
+        END IF;
+        RETURN _node_id;
+    END;
+$BODY$
+LANGUAGE plpgsql;
+COMMENT ON FUNCTION qwat_od.fn_node_create(geometry, boolean) IS 'Returns the node for a given geometry (point). If node does not exist, create it.';
 
 
 -- Valve orientation
@@ -150,7 +202,7 @@ $BODY$
 LANGUAGE plpgsql;
 COMMENT ON FUNCTION qwat_od.fn_node_set_type(integer) IS 'Set the orientation for a valve.';
 
-
+/*
 CREATE OR REPLACE FUNCTION qwat_od.ft_valve_set_orientation() RETURNS TRIGGER AS
 $BODY$
     BEGIN
@@ -166,7 +218,7 @@ CREATE TRIGGER valve_set_orientation
     FOR EACH ROW
     EXECUTE PROCEDURE qwat_od.ft_valve_set_orientation();
 COMMENT ON TRIGGER valve_set_orientation ON qwat_od.valve IS 'Trigger: set orientation after inserting a valve.';
-
+*/
 
 CREATE OR REPLACE FUNCTION qwat_od.ft_valve_add_pipe_vertex()
   RETURNS trigger AS
@@ -226,6 +278,16 @@ CREATE TRIGGER tr_valve_infos_update_trigger
     EXECUTE PROCEDURE qwat_od.ft_valve_geom();
 COMMENT ON TRIGGER tr_valve_infos_update_trigger ON qwat_od.valve IS 'Trigger: when updating a valve, assign pipe.';
 
+
+CREATE OR REPLACE FUNCTION qwat_od.ft_valve_pipe_update() RETURNS TRIGGER AS
+$BODY$
+    BEGIN
+        UPDATE qwat_od.valve SET fk_pipe = qwat_od.fn_pipe_get_id(geometry) WHERE fk_pipe = OLD.id OR ST_Distance(geometry, OLD.geometry) < 1e-4;
+        RETURN NULL;
+    END;
+$BODY$
+LANGUAGE plpgsql;
+COMMENT ON FUNCTION qwat_od.ft_valve_pipe_update() IS 'Trigger: when moving or deleting a pipe, reassign the pipe to all valves connected to the old pipe. Do an AFTER trigger since it will update valve after updating the node.';
 
 -- ===================================================
 CREATE OR REPLACE VIEW qwat_od.vw_search_view AS
@@ -392,7 +454,9 @@ $BODY$
 LANGUAGE plpgsql;
 COMMENT ON FUNCTION qwat_od.fn_node_set_type(integer) IS 'Set the orientation and type for a node. If three pipe arrives at the node: intersection. If one pipe: end. If two: depends on characteristics of pipe: year (is different), material (and year), diameter(and material/year)';
 
+DROP TRIGGER tr_node_add_pipe_vertex_insert ON qwat_od.node;
+DROP TRIGGER tr_node_add_pipe_vertex_update ON qwat_od.node;
+DROP FUNCTION qwat_od.ft_node_add_pipe_vertex();
 
---DROP VIEW qwat_od.vw_element_valve;
-
-
+DROP TRIGGER valve_node_set_type ON qwat_od.valve;
+DROP FUNCTION qwat_od.ft_valve_node_set_type();
