@@ -70,6 +70,7 @@ $BODY$
 $BODY$
 LANGUAGE plpgsql;
 COMMENT ON FUNCTION qwat_od.ft_valve_update() IS 'Trigger: when updating a valve, reevaluate old and new pipes.';
+
 CREATE TRIGGER tr_valve_update_trigger
 	AFTER UPDATE ON qwat_od.valve
 	FOR EACH ROW
@@ -85,15 +86,12 @@ $BODY$
         NEW.fk_pipe             := qwat_od.fn_pipe_get_id(NEW.geometry);
         NEW.fk_district         := qwat_od.fn_get_district(NEW.geometry);
         NEW.fk_pressurezone     := qwat_od.fn_get_pressurezone(NEW.geometry);
-        
-        -- la gestion du champ altitude en combinaison avec la géométrie 3D (qui existe pour les noeuds)
-
-        
         RETURN NEW;
     END;
 $BODY$
 LANGUAGE plpgsql;
 COMMENT ON FUNCTION qwat_od.ft_valve_geom() IS 'Trigger: when inserting or updating a valve, assign pipe and geom infos.';
+
 CREATE TRIGGER tr_valve_infos_insert_trigger
     BEFORE INSERT ON qwat_od.valve
     FOR EACH ROW
@@ -104,7 +102,6 @@ COMMENT ON TRIGGER tr_valve_infos_insert_trigger ON qwat_od.valve IS 'Trigger: w
 CREATE TRIGGER tr_valve_infos_update_trigger
     BEFORE UPDATE ON qwat_od.valve
     FOR EACH ROW
-     --WHEN (OLD.geometry <> NEW.geometry)
      WHEN (NOT ST_Equals(OLD.geometry, NEW.geometry))
     EXECUTE PROCEDURE qwat_od.ft_valve_geom();
 COMMENT ON TRIGGER tr_valve_infos_update_trigger ON qwat_od.valve IS 'Trigger: when updating a valve, assign pipe.';
