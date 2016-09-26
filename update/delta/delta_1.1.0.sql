@@ -170,7 +170,6 @@ COMMENT ON VIEW qwat_od.vw_valve_lines IS
 'Valves represented as lines. Each line is made from two points, the handle as starting point and the location on the pipe as ending point.';
 
 
-DROP VIEW qwat_od.vw_export_valve;
-DROP VIEW qwat_od.vw_element_valve;
+--DROP VIEW qwat_od.vw_element_valve;
 
 
