@@ -18,7 +18,7 @@ alias: installation
 table: qwat_od.installation
 pkey: id
 pkey_value: NEW.id
-generate_child_views: False
+generate_child_views: True
 allow_type_change: false
 
 schema: qwat_od
