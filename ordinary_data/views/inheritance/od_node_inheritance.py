@@ -19,6 +19,7 @@ pkey: id
 pkey_value: qwat_od.fn_node_create(NEW.geometry)
 pkey_value_create_entry: true
 schema: qwat_od
+generate_child_views: True
 
 custom_delete: "PERFORM qwat_od.fn_node_set_type(OLD.id)"
 
