@@ -50,38 +50,6 @@ $BODY$
 					RAISE NOTICE 'Delete node %' , _node_id;
 					DELETE FROM qwat_od.node WHERE id = _node_id; -- delete on table level for safety (do not delete on the merge view)
 					RETURN;
-				-- otherwise this means the node is node at the end of a pipe, it must be on a vertex
-				ELSE
-					-- calculate the orientation on that vertex
-					_pipe_geom := geometry 
-									FROM qwat_od.pipe 
-									WHERE ST_Intersects(pipe.geometry, _node_geom) 
-									ORDER BY (
-										_node_geom IN (
-											ST_StartPoint(pipe.geometry),
-											ST_EndPoint(pipe.geometry))
-										)::integer ASC -- prefer a pipe which doesn't end on the valve
-									LIMIT 1;
-					
-					IF _pipe_geom IS NULL THEN
-						RAISE NOTICE 'Network element of type % with ID % is not located on a pipe!'
-							, element_type FROM qwat_od.vw_qwat_network_element WHERE id = _node_id
-							, _node_id ;
-					ELSE
-						_lin_ref := ST_LineLocatePoint(_pipe_geom,_node_geom); -- shouldn't be 0 or 1 as it would mean that the node is a pipe end
-
-						_sub_geom := ST_LineSubstring( _pipe_geom, 0, _lin_ref);
-						_orientation  := pi()/2 - ST_Azimuth( 	ST_PointN(_sub_geom, ST_NumPoints(_sub_geom)-1),
-																ST_EndPoint(_sub_geom) );
-						_sub_geom := ST_LineSubstring( _pipe_geom, _lin_ref, 1);
-						_orientation2 := pi()/2 - ST_Azimuth( 	ST_PointN(_sub_geom, 2),
-																ST_StartPoint(_sub_geom) );
-						_orientation2 := pi() + _orientation2; -- reverse angle
-						-- RAISE NOTICE 'pipe 1 %', degrees( _orientation );
-						-- RAISE NOTICE 'pipe 2 %', degrees( _orientation2 );
-						_orientation := ATAN2( (SIN(_orientation)+SIN(_orientation2))/2 , (COS(_orientation)+COS(_orientation2))/2 );
-						-- RAISE NOTICE 'mean %', degrees( _orientation );
-					END IF;
 				END IF;
 			ELSE
 				_type := NULL::qwat_od.pipe_connection;

@@ -19,6 +19,7 @@ table: qwat_od.vw_node_element
 pkey: id
 pkey_value: NEW.id
 schema: qwat_od
+generate_child_views: True
 
 children:
     installation:

@@ -12,11 +12,8 @@ $BODY$
 		_pipeitem     record;
 		_pipe_id      integer;
 		_grouped      record;
-		_year         integer;
-		_material     varchar(50);
 		_diameter     smallint;
 		_looppos      integer          := 0;
-		_type         qwat_od.pipe_connection;
 		_orientation  double precision := 0;
 		_orientation2 double precision := 0;
 		_node_geom    geometry;
@@ -54,9 +51,6 @@ $BODY$
 			) LOOP
 				IF _looppos=0 THEN
 					-- first pipe
-					_type := 'pipe_end'::qwat_od.pipe_connection;
-					_year     := _pipeitem.year;
-					_material := _pipeitem.material;
 					_diameter := _pipeitem.diameter;
 					_pipe_id   := _pipeitem.id;
 					_looppos   := 1;
@@ -64,17 +58,6 @@ $BODY$
 					-- RAISE NOTICE 'pipe % %', _pipe_id, degrees( _orientation );
 				ELSE
 					-- second pipe if exists
-					IF _material = _pipeitem.material AND _diameter = _pipeitem.diameter AND _year = _pipeitem.year THEN
-						_type := 'couple_same'::qwat_od.pipe_connection;
-					ELSIF _material = _pipeitem.material AND _diameter = _pipeitem.diameter THEN
-						_type := 'couple_year'::qwat_od.pipe_connection;
-					ELSIF _material = _pipeitem.material THEN
-						_type := 'couple_diameter'::qwat_od.pipe_connection;
-					ELSIF _diameter = _pipeitem.diameter THEN
-						_type := 'couple_material'::qwat_od.pipe_connection;
-					ELSE
-						_type := 'couple_other';
-					END IF;
 					_orientation2 := pi()/2 - ST_Azimuth(_pipeitem.point_2,_pipeitem.point_1);
 					_orientation2 := pi() + _orientation2; -- reverse angle
 					-- RAISE NOTICE 'pipe % %', _pipeitem.id, degrees( _orientation2 );

@@ -91,6 +91,7 @@ CREATE TRIGGER valve_node_set_type
 	EXECUTE PROCEDURE qwat_od.ft_valve_node_set_type();
 COMMENT ON TRIGGER valve_node_set_type ON qwat_od.valve IS 'Trigger: set-type of node after inserting a valve (to get orientation).';
 */
+/*
 CREATE OR REPLACE FUNCTION qwat_od.ft_valve_set_orientation() RETURNS TRIGGER AS
 $BODY$
     BEGIN
@@ -100,20 +101,22 @@ $BODY$
 $BODY$
 LANGUAGE plpgsql;
 COMMENT ON FUNCTION qwat_od.ft_valve_set_orientation() IS 'Trigger: set orientation after inserting a valve.';
-
+*/
+/*
 CREATE TRIGGER valve_set_orientation
     AFTER INSERT ON qwat_od.valve
     FOR EACH ROW
     EXECUTE PROCEDURE qwat_od.ft_valve_set_orientation();
 COMMENT ON TRIGGER valve_set_orientation ON qwat_od.valve IS 'Trigger: set orientation after inserting a valve.';
-
+*/
+/*
 CREATE TRIGGER valve_update_orientation
     AFTER UPDATE OF geometry ON qwat_od.valve
     FOR EACH ROW
+    WHEN ST_NotEquals(OLD.geometry, NEW.geometry)
     EXECUTE PROCEDURE qwat_od.ft_valve_set_orientation();
 COMMENT ON TRIGGER valve_update_orientation ON qwat_od.valve IS 'Trigger: set orientation after inserting a valve.';
-
-
+*/
 
 
 /* HANDLE ALTITUDE TRIGGER */
@@ -162,6 +165,7 @@ $BODY$
             -- when the valve is close enough to the pipe (< 1 micrometer) the valve is considered to intersect the pipe
             -- it allows to deal with intersections that cannot be represented by floating point numbers
             UPDATE qwat_od.pipe SET geometry = ST_Snap(geometry, NEW.geometry, 1e-6) WHERE ST_Distance(geometry, NEW.geometry) < 1e-6;
+            PERFORM qwat_od.fn_valve_set_orientation(NEW.id);
         RETURN NEW;
     END;
 $BODY$
