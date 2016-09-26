@@ -30,9 +30,9 @@ ALTER TABLE qwat_od.valve ADD COLUMN fk_precisionalti        integer;
 ALTER TABLE qwat_od.valve ADD CONSTRAINT valve_fk_precisionalti    FOREIGN KEY (fk_precisionalti)    REFERENCES qwat_vl.precisionalti(id)    MATCH FULL;
 CREATE INDEX fki_valve_fk_precisionalti    ON qwat_od.valve(fk_precisionalti);
 
-ALTER TABLE qwat_od.valve ADD COLUMN geometry geometry('POINTZ',:SRID) NOT NULL;
-ALTER TABLE qwat_od.valve ADD COLUMN geometry_alt1 geometry('POINTZ',:SRID);
-ALTER TABLE qwat_od.valve ADD COLUMN geometry_alt2 geometry('POINTZ',:SRID);
+ALTER TABLE qwat_od.valve ADD COLUMN geometry geometry('POINTZ',21781) NOT NULL;
+ALTER TABLE qwat_od.valve ADD COLUMN geometry_alt1 geometry('POINTZ',21781);
+ALTER TABLE qwat_od.valve ADD COLUMN geometry_alt2 geometry('POINTZ',21781);
 ALTER TABLE qwat_od.valve ADD COLUMN update_geometry_alt1 boolean default null; -- used to determine if alternative geometries should be updated when main geometry is updated
 ALTER TABLE qwat_od.valve ADD COLUMN update_geometry_alt2 boolean default null; -- used to determine if alternative geometries should be updated when main geometry is updated
 
