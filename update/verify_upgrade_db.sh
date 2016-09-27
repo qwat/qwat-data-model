@@ -83,6 +83,9 @@ do
     fi
 done
 
+echo "Reloading views from last commit"
+SRID=$SRID ./ordinary_data/views/insert_views.sh
+
 echo "Producing referential file for test_qwat DB (from $QWATSERVICETEST)"
 cd $DIR
 /usr/bin/psql --host $HOST --port 5432 --username "$USER" --no-password -d "$QWATSERVICETEST" -f test_migration.sql > test_migration.expected.sql
