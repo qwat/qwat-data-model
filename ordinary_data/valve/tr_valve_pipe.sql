@@ -31,10 +31,10 @@ LANGUAGE plpgsql;
 /* REASSIGN THE PIPE OF A VALVE WHEN THE PIPE MOVES OR IS DELETED */
 CREATE OR REPLACE FUNCTION qwat_od.ft_valve_pipe_update() RETURNS TRIGGER AS
 $BODY$
-	BEGIN
-		UPDATE qwat_od.valve SET fk_pipe = qwat_od.fn_pipe_get_id(geometry) WHERE fk_pipe = OLD.id OR ST_Distance(geometry, OLD.geometry) < 1e-4;
-		RETURN NULL;
-	END;
+    BEGIN
+        UPDATE qwat_od.valve SET fk_pipe = qwat_od.fn_pipe_get_id(geometry) WHERE fk_pipe = OLD.id OR ST_Distance(geometry, OLD.geometry) < 1e-4;
+        RETURN NULL;
+    END;
 $BODY$
 LANGUAGE plpgsql;
 COMMENT ON FUNCTION qwat_od.ft_valve_pipe_update() IS 'Trigger: when moving or deleting a pipe, reassign the pipe to all valves connected to the old pipe. Do an AFTER trigger since it will update valve after updating the node.';

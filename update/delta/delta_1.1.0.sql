@@ -101,6 +101,27 @@ ALTER TABLE qwat_od.valve ALTER COLUMN fk_status SET NOT NULL;
 ALTER TABLE qwat_od.valve ALTER COLUMN geometry SET NOT NULL;
 
 
+CREATE OR REPLACE FUNCTION qwat_od.fn_node_create( _point geometry, deactivate_node_add_pipe_vertex boolean = FALSE ) RETURNS integer AS
+$BODY$
+    DECLARE
+        _node_id integer;
+    BEGIN
+        SELECT id FROM qwat_od.node WHERE ST_Equals(ST_Force2d(_point), ST_Force2d(node.geometry)) IS TRUE LIMIT 1 INTO _node_id;
+        IF _node_id IS NULL THEN
+
+            INSERT INTO qwat_od.node (geometry) VALUES (ST_Force3D(_point)) RETURNING id INTO _node_id;
+
+            IF _node_id IS NULL THEN
+                RAISE EXCEPTION 'Node is null although it should have been created';
+            END IF;
+        END IF;
+        RETURN _node_id;
+    END;
+$BODY$
+LANGUAGE plpgsql;
+COMMENT ON FUNCTION qwat_od.fn_node_create(geometry, boolean) IS 'Returns the node for a given geometry (point). If node does not exist, create it.';
+
+
 -- Valve orientation
 CREATE OR REPLACE FUNCTION qwat_od.fn_valve_set_orientation(_valve_id integer) RETURNS void AS
 $BODY$
@@ -253,6 +274,16 @@ CREATE TRIGGER tr_valve_infos_update_trigger
     EXECUTE PROCEDURE qwat_od.ft_valve_geom();
 COMMENT ON TRIGGER tr_valve_infos_update_trigger ON qwat_od.valve IS 'Trigger: when updating a valve, assign pipe.';
 
+
+CREATE OR REPLACE FUNCTION qwat_od.ft_valve_pipe_update() RETURNS TRIGGER AS
+$BODY$
+    BEGIN
+        UPDATE qwat_od.valve SET fk_pipe = qwat_od.fn_pipe_get_id(geometry) WHERE fk_pipe = OLD.id OR ST_Distance(geometry, OLD.geometry) < 1e-4;
+        RETURN NULL;
+    END;
+$BODY$
+LANGUAGE plpgsql;
+COMMENT ON FUNCTION qwat_od.ft_valve_pipe_update() IS 'Trigger: when moving or deleting a pipe, reassign the pipe to all valves connected to the old pipe. Do an AFTER trigger since it will update valve after updating the node.';
 
 -- ===================================================
 CREATE OR REPLACE VIEW qwat_od.vw_search_view AS
