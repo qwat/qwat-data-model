@@ -85,6 +85,7 @@ do
 done
 
 echo "Reloading views from last commit"
+export PGSERVICE=$QWATSERVICETESTCONFORM
 SRID=$SRID ./ordinary_data/views/insert_views.sh
 
 echo "Producing referential file for test_qwat DB (from $QWATSERVICETEST)"
