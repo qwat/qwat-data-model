@@ -45,9 +45,6 @@ ALTER TABLE qwat_od.valve ADD COLUMN _pipe_schema_visible boolean default false;
 ALTER TABLE qwat_od.valve ADD COLUMN _printmaps          text; -- list of printmap where it is included
 
 
-/* Schema view */
-SELECT qwat_sys.fn_enable_schemaview( 'valve' );
-
 /* constraints */
 ALTER TABLE qwat_od.valve ADD CONSTRAINT valve_fk_type      FOREIGN KEY (fk_valve_type)     REFERENCES qwat_vl.valve_type(id)      MATCH FULL; CREATE INDEX fki_valve_fk_type      ON qwat_od.valve(fk_valve_type);
 ALTER TABLE qwat_od.valve ADD CONSTRAINT valve_fk_function  FOREIGN KEY (fk_valve_function) REFERENCES qwat_vl.valve_function(id)  MATCH FULL; CREATE INDEX fki_valve_fk_function  ON qwat_od.valve(fk_valve_function);
@@ -78,6 +75,10 @@ ALTER TABLE qwat_od.valve ADD COLUMN geometry_alt1 geometry('POINTZ',:SRID);
 ALTER TABLE qwat_od.valve ADD COLUMN geometry_alt2 geometry('POINTZ',:SRID);
 ALTER TABLE qwat_od.valve ADD COLUMN update_geometry_alt1 boolean default null; -- used to determine if alternative geometries should be updated when main geometry is updated
 ALTER TABLE qwat_od.valve ADD COLUMN update_geometry_alt2 boolean default null; -- used to determine if alternative geometries should be updated when main geometry is updated
+
+
+/* Schema view */
+SELECT qwat_sys.fn_enable_schemaview( 'valve' );
 
 
 /* GEOM INDEXES */
