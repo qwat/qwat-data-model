@@ -7,6 +7,7 @@ USER=postgres
 HOST=localhost
 QWATSERVICETEST=qwat_test
 QWATSERVICETESTCONFORM=qwat_test_conform
+SRID=21781
 
 RED='\033[0;31m'
 GREEN='\033[0;32m'
