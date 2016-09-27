@@ -14,6 +14,10 @@ ALTER TABLE qwat_od.valve ADD COLUMN fk_precision            integer;
 ALTER TABLE qwat_od.valve ADD CONSTRAINT valve_fk_precision      FOREIGN KEY (fk_precision)      REFERENCES qwat_vl.precision(id)          MATCH FULL;
 CREATE INDEX fki_valve_fk_precision     ON qwat_od.valve(fk_precision);
 
+ALTER TABLE qwat_od.valve ADD COLUMN fk_precisionalti        integer;
+ALTER TABLE qwat_od.valve ADD CONSTRAINT valve_fk_precisionalti    FOREIGN KEY (fk_precisionalti)    REFERENCES qwat_vl.precisionalti(id)    MATCH FULL;
+CREATE INDEX fki_valve_fk_precisionalti    ON qwat_od.valve(fk_precisionalti);
+
 ALTER TABLE qwat_od.valve ADD COLUMN fk_status               integer;
 ALTER TABLE qwat_od.valve ADD CONSTRAINT valve_fk_status         FOREIGN KEY (fk_status)         REFERENCES qwat_vl.status(id)             MATCH FULL;
 CREATE INDEX fki_valve_fk_status        ON qwat_od.valve(fk_status);
@@ -26,20 +30,13 @@ ALTER TABLE qwat_od.valve ADD COLUMN fk_folder               integer;
 ALTER TABLE qwat_od.valve ADD CONSTRAINT valve_fk_folder           FOREIGN KEY (fk_folder)           REFERENCES qwat_od.folder(id)           MATCH FULL;
 CREATE INDEX fki_valve_fk_folder           ON qwat_od.valve(fk_folder);
 
-ALTER TABLE qwat_od.valve ADD COLUMN fk_precisionalti        integer;
-ALTER TABLE qwat_od.valve ADD CONSTRAINT valve_fk_precisionalti    FOREIGN KEY (fk_precisionalti)    REFERENCES qwat_vl.precisionalti(id)    MATCH FULL;
-CREATE INDEX fki_valve_fk_precisionalti    ON qwat_od.valve(fk_precisionalti);
-
-ALTER TABLE qwat_od.valve ADD COLUMN geometry geometry('POINTZ',21781);
-ALTER TABLE qwat_od.valve ADD COLUMN geometry_alt1 geometry('POINTZ',21781);
-ALTER TABLE qwat_od.valve ADD COLUMN geometry_alt2 geometry('POINTZ',21781);
-ALTER TABLE qwat_od.valve ADD COLUMN update_geometry_alt1 boolean default null; -- used to determine if alternative geometries should be updated when main geometry is updated
-ALTER TABLE qwat_od.valve ADD COLUMN update_geometry_alt2 boolean default null; -- used to determine if alternative geometries should be updated when main geometry is updated
-
+ALTER TABLE qwat_od.valve ADD COLUMN year          smallint CHECK (year     IS NULL OR year     > 1800 AND year     < 2100);
+ALTER TABLE qwat_od.valve ADD COLUMN year_end            smallint CHECK (year_end IS NULL OR year_end > 1800 AND year_end < 2100);
+ALTER TABLE qwat_od.valve ADD COLUMN altitude                decimal(10,3) default null;
+ALTER TABLE qwat_od.valve ADD COLUMN orientation             float default null;
 ALTER TABLE qwat_od.valve ADD COLUMN fk_locationtype     integer[];
 ALTER TABLE qwat_od.valve ADD COLUMN identification      varchar(50);
 ALTER TABLE qwat_od.valve ADD COLUMN remark              text;
-ALTER TABLE qwat_od.valve ADD COLUMN year_end            smallint CHECK (year_end IS NULL OR year_end > 1800 AND year_end < 2100);
 ALTER TABLE qwat_od.valve ADD COLUMN fk_printmap         integer[];
 ALTER TABLE qwat_od.valve ADD COLUMN _geometry_alt1_used boolean;
 ALTER TABLE qwat_od.valve ADD COLUMN _geometry_alt2_used boolean;
@@ -47,6 +44,13 @@ ALTER TABLE qwat_od.valve ADD COLUMN _pipe_node_type      qwat_od.pipe_connectio
 ALTER TABLE qwat_od.valve ADD COLUMN _pipe_orientation    float   default 0;
 ALTER TABLE qwat_od.valve ADD COLUMN _pipe_schema_visible boolean default false;
 ALTER TABLE qwat_od.valve ADD COLUMN _printmaps          text; -- list of printmap where it is included
+
+ALTER TABLE qwat_od.valve ADD COLUMN geometry geometry('POINTZ',21781);
+ALTER TABLE qwat_od.valve ADD COLUMN geometry_alt1 geometry('POINTZ',21781);
+ALTER TABLE qwat_od.valve ADD COLUMN geometry_alt2 geometry('POINTZ',21781);
+ALTER TABLE qwat_od.valve ADD COLUMN update_geometry_alt1 boolean default null; -- used to determine if alternative geometries should be updated when main geometry is updated
+ALTER TABLE qwat_od.valve ADD COLUMN update_geometry_alt2 boolean default null; -- used to determine if alternative geometries should be updated when main geometry is updated
+
 
 
 CREATE INDEX valve_geoidx ON qwat_od.valve USING GIST ( geometry );
@@ -59,9 +63,6 @@ CREATE SEQUENCE qwat_od.valve_id_seq START 1;
 SELECT setval('qwat_od.valve_id_seq', (select COALESCE(max(id), '0')+1 from qwat_od.valve));
 ALTER TABLE qwat_od.valve ALTER COLUMN id SET default nextval('qwat_od.valve_id_seq');
 
-ALTER TABLE qwat_od.valve ADD COLUMN year          smallint CHECK (year     IS NULL OR year     > 1800 AND year     < 2100);
-ALTER TABLE qwat_od.valve ADD COLUMN altitude                decimal(10,3) default null;
-ALTER TABLE qwat_od.valve ADD COLUMN orientation             float default null;
 
 SELECT qwat_sys.fn_enable_schemaview( 'valve' );
 
@@ -99,6 +100,9 @@ ALTER TABLE qwat_od.valve ALTER COLUMN fk_distributor SET NOT NULL;
 ALTER TABLE qwat_od.valve ALTER COLUMN fk_precision SET NOT NULL;
 ALTER TABLE qwat_od.valve ALTER COLUMN fk_status SET NOT NULL;
 ALTER TABLE qwat_od.valve ALTER COLUMN geometry SET NOT NULL;
+
+ALTER TABLE qwat_od.valve DROP CONSTRAINT valve_id_fkey;
+
 
 
 CREATE OR REPLACE FUNCTION qwat_od.fn_node_create( _point geometry, deactivate_node_add_pipe_vertex boolean = FALSE ) RETURNS integer AS
