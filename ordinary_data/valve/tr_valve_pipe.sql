@@ -27,16 +27,25 @@ LANGUAGE plpgsql;
 
 
 
-/* REASSIGN THE PIPE OF A VALVE WHEN THE PIPE MOVES OR IS DELETED */
+/* REASSIGN THE PIPE OF A VALVE WHEN THE PIPE MOVES OR IS DELETED, AND RECALCULATE VALVE ORIENTATION */
 CREATE OR REPLACE FUNCTION qwat_od.ft_valve_pipe_update() RETURNS TRIGGER AS
 $BODY$
+    DECLARE
+        r record;
     BEGIN
         UPDATE qwat_od.valve SET fk_pipe = qwat_od.fn_pipe_get_id(geometry) WHERE fk_pipe = OLD.id OR ST_Distance(geometry, OLD.geometry) < 1e-4;
+
+        -- Il faudrait un trigger sur un changement de géom sur les conduites qui appellent valve_set_orientation pour toutes les vannes avec fk_pipe = id.
+        FOR r IN SELECT id FROM qwat_od.valve WHERE fk_pipe = OLD.id
+        LOOP
+            PERFORM qwat_od.fn_valve_set_orientation(r.id);
+        END LOOP;
+
         RETURN NULL;
     END;
 $BODY$
 LANGUAGE plpgsql;
-COMMENT ON FUNCTION qwat_od.ft_valve_pipe_update() IS 'Trigger: when moving or deleting a pipe, reassign the pipe to all valves connected to the old pipe. Do an AFTER trigger since it will update valve after updating the node.';
+COMMENT ON FUNCTION qwat_od.ft_valve_pipe_update() IS 'Trigger: when moving or deleting a pipe, reassign the pipe to all valves connected to the old pipe and recalculate valve orientation. Do an AFTER trigger since it will update valve after updating the node.';
 /* WHEN THE PIPE MOVES */
 CREATE TRIGGER tr_valve_pipe_update
     -- this will be fired for every node, although not every node is valve
@@ -44,15 +53,14 @@ CREATE TRIGGER tr_valve_pipe_update
 	FOR EACH ROW
 	WHEN ( ST_Equals(ST_Force2d(NEW.geometry), ST_Force2d(OLD.geometry)) IS FALSE )
 	EXECUTE PROCEDURE qwat_od.ft_valve_pipe_update();
-COMMENT ON TRIGGER tr_valve_pipe_update ON qwat_od.pipe IS 'Trigger: when moving a pipe, reassign the pipe to all valves connected to the old pipe. Do an AFTER trigger since it will update valve after updating the node.';
+COMMENT ON TRIGGER tr_valve_pipe_update ON qwat_od.pipe IS 'Trigger: when moving a pipe, reassign the pipe to all valves connected to the old pipe and recalculate valve orientation. Do an AFTER trigger since it will update valve after updating the node.';
 /* WHEN THE PIPE IS DELETED */
 CREATE TRIGGER tr_valve_pipe_delete
     -- this will be fired for every node, although not every node is valve
 	AFTER DELETE ON qwat_od.pipe
 	FOR EACH ROW
 	EXECUTE PROCEDURE qwat_od.ft_valve_pipe_update();
-COMMENT ON TRIGGER tr_valve_pipe_delete ON qwat_od.pipe IS 'Trigger: when deleting a pipe, reassign the pipe to all valves connected to the old pipe. Do an AFTER trigger since it will update valve after updating the node.';
-
+COMMENT ON TRIGGER tr_valve_pipe_delete ON qwat_od.pipe IS 'Trigger: when deleting a pipe, reassign the pipe to all valves connected to the old pipe and recalculate valve orientation. Do an AFTER trigger since it will update valve after updating the node.';
 
 
 
