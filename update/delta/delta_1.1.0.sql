@@ -458,5 +458,5 @@ DROP TRIGGER tr_node_add_pipe_vertex_insert ON qwat_od.node;
 DROP TRIGGER tr_node_add_pipe_vertex_update ON qwat_od.node;
 DROP FUNCTION qwat_od.ft_node_add_pipe_vertex();
 
-
-
+DROP TRIGGER valve_node_set_type ON qwat_od.valve;
+DROP FUNCTION qwat_od.ft_valve_node_set_type();
