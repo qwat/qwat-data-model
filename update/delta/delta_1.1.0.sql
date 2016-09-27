@@ -198,7 +198,7 @@ $BODY$
 LANGUAGE plpgsql;
 COMMENT ON FUNCTION qwat_od.fn_node_set_type(integer) IS 'Set the orientation for a valve.';
 
-
+/*
 CREATE OR REPLACE FUNCTION qwat_od.ft_valve_set_orientation() RETURNS TRIGGER AS
 $BODY$
     BEGIN
@@ -214,7 +214,7 @@ CREATE TRIGGER valve_set_orientation
     FOR EACH ROW
     EXECUTE PROCEDURE qwat_od.ft_valve_set_orientation();
 COMMENT ON TRIGGER valve_set_orientation ON qwat_od.valve IS 'Trigger: set orientation after inserting a valve.';
-
+*/
 
 CREATE OR REPLACE FUNCTION qwat_od.ft_valve_add_pipe_vertex()
   RETURNS trigger AS
