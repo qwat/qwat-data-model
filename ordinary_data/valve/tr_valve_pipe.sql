@@ -21,7 +21,6 @@ $BODY$
 				) AS valve_group
 			ON pipe_dupp.id = valve_group.fk_pipe
 			WHERE pipe.id = _pipe_id;
-
 	END;
 $BODY$
 LANGUAGE plpgsql;
