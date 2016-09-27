@@ -31,4 +31,10 @@ CREATE OR REPLACE VIEW qwat_od.vw_search_view AS
 		'Compteur' as layer_name,
 		COALESCE(district_prefix||'_')||meter.identification AS search_text,
 		ST_Force2d(meter.geometry) AS geometry
-		FROM qwat_od.vw_export_meter meter;
+		FROM qwat_od.vw_export_meter meter
+
+	UNION SELECT
+        'Vannes' as layer_name,
+        valve_function_value_fr || ' ' || identification || ' ' || district_name as search_text,
+        ST_Force2d(geometry) AS geometry
+        FROM qwat_od.vw_export_valve WHERE identification IS NOT NULL;
