@@ -299,6 +299,7 @@ $BODY$
 LANGUAGE plpgsql;
 COMMENT ON FUNCTION qwat_od.ft_valve_pipe_update() IS 'Trigger: when moving or deleting a pipe, reassign the pipe to all valves connected to the old pipe and recalculate valve orientation. Do an AFTER trigger since it will update valve after updating the node.';
 /* WHEN THE PIPE MOVES */
+DROP TRIGGER tr_valve_pipe_update ON qwat_od.pipe;
 CREATE TRIGGER tr_valve_pipe_update
     -- this will be fired for every node, although not every node is valve
     AFTER UPDATE OF geometry ON qwat_od.pipe
@@ -307,6 +308,7 @@ CREATE TRIGGER tr_valve_pipe_update
     EXECUTE PROCEDURE qwat_od.ft_valve_pipe_update();
 COMMENT ON TRIGGER tr_valve_pipe_update ON qwat_od.pipe IS 'Trigger: when moving a pipe, reassign the pipe to all valves connected to the old pipe and recalculate valve orientation. Do an AFTER trigger since it will update valve after updating the node.';
 /* WHEN THE PIPE IS DELETED */
+DROP TRIGGER tr_valve_pipe_delete ON qwat_od.pipe;
 CREATE TRIGGER tr_valve_pipe_delete
     -- this will be fired for every node, although not every node is valve
     AFTER DELETE ON qwat_od.pipe
