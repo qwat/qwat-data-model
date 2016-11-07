@@ -28,7 +28,7 @@ shift
 done
 
 echo "Droping existing qwat_test"
-/usr/bin/dropdb "$TESTDB" --host $HOST --port 5432 --username "$USER" --no-password
+/usr/bin/dropdb --if-exists "$TESTDB" --host $HOST --port 5432 --username "$USER" --no-password
 
 echo "Creating DB (qwat_test)"
 /usr/bin/createdb "$TESTDB" --host $HOST --port 5432 --username "$USER" --no-password
@@ -37,7 +37,7 @@ echo "Initializing qwat DB in qwat_test"
 ./init_qwat.sh -p $QWATSERVICETEST -d > init_qwat.log
 
 echo "Droping DB (qwat_test_conform)"
-/usr/bin/dropdb "$TESTCONFORMDB" --host $HOST --port 5432 --username "$USER" --no-password
+/usr/bin/dropdb --if-exists "$TESTCONFORMDB" --host $HOST --port 5432 --username "$USER" --no-password
 
 echo "Creating DB (qwat_test_conform)"
 /usr/bin/createdb "$TESTCONFORMDB" --host $HOST --port 5432 --username "$USER" --no-password
