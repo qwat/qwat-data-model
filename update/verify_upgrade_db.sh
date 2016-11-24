@@ -7,6 +7,7 @@ USER=postgres
 HOST=localhost
 QWATSERVICETEST=qwat_test
 QWATSERVICETESTCONFORM=qwat_test_conform
+SRID=21781
 
 RED='\033[0;31m'
 GREEN='\033[0;32m'
@@ -82,6 +83,10 @@ do
         printf "    Bypassing  ${RED}$CURRENT_DELTA${NC}, num version = $CURRENT_DELTA_NUM_VERSION\n"
     fi
 done
+
+echo "Reloading views from last commit"
+export PGSERVICE=$QWATSERVICETESTCONFORM
+SRID=$SRID ./ordinary_data/views/rewrite_views.sh
 
 echo "Producing referential file for test_qwat DB (from $QWATSERVICETEST)"
 cd $DIR
