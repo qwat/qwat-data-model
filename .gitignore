@@ -2,4 +2,5 @@
 *.qgs~
 *.pyc
 tmp/
+update/test_migration.expected.sql
 
