@@ -36,7 +36,7 @@ CREATE INDEX remote_geoidx_alt2 ON qwat_od.remote USING GIST ( geometry_alt2 );
 
 
 /* LABELS */
-SELECT qwat_sys.fn_label_create_fields('remote');
+DO $$ BEGIN PERFORM qwat_sys.fn_label_create_fields('remote'); END $$;
 
 /* CONSTRAINTS */
 ALTER TABLE qwat_od.remote ADD CONSTRAINT remote_fk_distributor  FOREIGN KEY (fk_distributor)  REFERENCES qwat_od.distributor(id)      MATCH FULL; CREATE INDEX fki_remote_fk_distributor   ON qwat_od.remote(fk_distributor) ;

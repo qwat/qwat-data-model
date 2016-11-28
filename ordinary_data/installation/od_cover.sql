@@ -25,7 +25,7 @@ ALTER TABLE qwat_od.cover ADD COLUMN geometry_polygon geometry('Polygon', :SRID)
 
 
 /* LABELS */
-SELECT qwat_sys.fn_label_create_fields('cover');
+DO $$ BEGIN PERFORM qwat_sys.fn_label_create_fields('cover'); END $$;
 
 /* CONSTRAINTS */
 ALTER TABLE qwat_od.cover ADD CONSTRAINT cover_fk_type         FOREIGN KEY (fk_cover_type)   REFERENCES qwat_vl.cover_type(id)   MATCH FULL; CREATE INDEX fki_cover_fk_type         ON qwat_od.cover(fk_cover_type)  ;

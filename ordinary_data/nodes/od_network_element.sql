@@ -28,10 +28,10 @@ ALTER TABLE qwat_od.network_element ADD COLUMN orientation         float default
 ALTER TABLE qwat_od.network_element ADD COLUMN remark              text;
 
 /* SCHEMA VIEW */
-SELECT qwat_sys.fn_enable_schemaview('network_element');
+DO $$ BEGIN PERFORM qwat_sys.fn_enable_schemaview('network_element'); END $$;
 
 /* LABELS */
-SELECT qwat_sys.fn_label_create_fields('network_element');
+DO $$ BEGIN PERFORM qwat_sys.fn_label_create_fields('network_element'); END $$;
 
 
 /* CONSTRAINTS */
