@@ -32,10 +32,10 @@ ALTER TABLE qwat_od.pipe ADD COLUMN _valve_count     smallint default NULL;
 ALTER TABLE qwat_od.pipe ADD COLUMN _valve_closed    boolean default NULL;
 
 /* schema view */
-SELECT qwat_sys.fn_enable_schemaview( 'pipe' );
+DO $$ BEGIN PERFORM qwat_sys.fn_enable_schemaview( 'pipe' ); END $$;
 
 /* LABELS */
-SELECT qwat_sys.fn_label_create_fields('pipe', false, false);
+DO $$ BEGIN PERFORM qwat_sys.fn_label_create_fields('pipe', false, false); END $$;
 
 /* Constraints */
 ALTER TABLE qwat_od.pipe ADD CONSTRAINT pipe_fk_parent         FOREIGN KEY (fk_parent)         REFERENCES qwat_od.pipe (id)              MATCH FULL; CREATE INDEX fki_pipe_fk_parent        ON qwat_od.pipe(fk_parent);

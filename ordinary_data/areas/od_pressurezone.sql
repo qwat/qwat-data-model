@@ -30,7 +30,7 @@ ALTER TABLE qwat_od.pressurezone ADD COLUMN update_geometry_alt1 boolean default
 ALTER TABLE qwat_od.pressurezone ADD COLUMN update_geometry_alt2 boolean default null; -- used to determine if alternative geometry 2 should be updated when main geometry is updated
 
 /* LABELS */
-SELECT qwat_sys.fn_label_create_fields('pressurezone');
+DO $$ BEGIN PERFORM qwat_sys.fn_label_create_fields('pressurezone'); END $$;
 
 /* CONSTRAINT */
 ALTER TABLE qwat_od.pressurezone ADD CONSTRAINT pressurezone_name UNIQUE (name);

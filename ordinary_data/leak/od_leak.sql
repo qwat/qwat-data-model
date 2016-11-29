@@ -24,7 +24,7 @@ ALTER TABLE qwat_od.leak ADD COLUMN geometry          geometry(Point,:SRID);
 
 
 /* LABELS */
-SELECT qwat_sys.fn_label_create_fields('leak');
+DO $$ BEGIN PERFORM qwat_sys.fn_label_create_fields('leak'); END $$;
 
 /* constraints */
 ALTER TABLE qwat_od.leak ADD CONSTRAINT leak_fk_cause FOREIGN KEY (fk_cause) REFERENCES qwat_vl.leak_cause(id) MATCH FULL; CREATE INDEX fki_leak_fk_cause ON qwat_od.leak(fk_cause);
