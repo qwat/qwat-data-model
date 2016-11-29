@@ -1,12 +1,14 @@
-/*
-	qWat - QGIS Water Module
 
-	SQL file :: node functions
-*/
+-- add functional status 
+
+ALTER TABLE qwat_vl.status ADD COLUMN functional boolean default true; /* determines if the actual status is functional or not */
+UPDATE qwat_vl.status SET functional = active;
+UPDATE qwat_vl.status SET functional = true WHERE id = 1302; /* set functional = true for out of service */
 
 
-/* define node type */
-/* node type: end, intersection, year, material, diameter */
+
+-- update node type function
+
 CREATE OR REPLACE FUNCTION qwat_od.fn_node_set_type(_node_id integer) RETURNS void AS
 $BODY$
 	DECLARE
@@ -158,27 +160,3 @@ $BODY$
 LANGUAGE plpgsql;
 COMMENT ON FUNCTION qwat_od.fn_node_set_type(integer) IS 'Set the orientation and type for a node. If three pipe arrives at the node: intersection. If one pipe: end. If two: depends on characteristics of pipe: year (is different), material (and year), diameter(and material/year)';
 
-
-
-
-
-/* reset all node type */
-CREATE OR REPLACE FUNCTION qwat_od.fn_node_set_type( _node_ids integer[] DEFAULT NULL ) RETURNS void AS
-$BODY$
-	DECLARE
-		node record;
-		_node_id integer;
-	BEGIN
-		IF _node_ids IS NULL THEN
-			FOR node IN (SELECT id FROM qwat_od.node ORDER BY id) LOOP
-				PERFORM qwat_od.fn_node_set_type(node.id);
-			END LOOP;
-		ELSE
-			FOREACH _node_id IN ARRAY _node_ids LOOP
-				PERFORM qwat_od.fn_node_set_type(_node_id);
-			END LOOP;
-		END IF;
-	END;
-$BODY$
-LANGUAGE plpgsql;
-COMMENT ON FUNCTION qwat_od.fn_node_set_type( _node_ids integer[] ) IS 'Set the type and orientation for node. If three pipe arrives at the node: intersection. If one pipe: end. If two: depends on characteristics of pipe: year (is different), material (and year), diameter(and material/year)';
