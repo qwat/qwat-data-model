@@ -88,11 +88,18 @@ COMMENT ON TRIGGER tr_node_geom_update ON qwat_od.node IS 'Trigger: updates auto
 CREATE OR REPLACE FUNCTION qwat_od.ft_node_add_pipe_vertex()
   RETURNS trigger AS
 $BODY$
+    DECLARE
+        node_exists boolean;
 	BEGIN
-			-- add a vertex to the corresponding pipe if it intersects
-			-- when the node is close enough to the pipe (< 1 micrometer) the node is considered to intersect the pipe
-			-- it allows to deal with intersections that cannot be represented by floating point numbers
-			UPDATE qwat_od.pipe SET geometry = ST_Snap(geometry, NEW.geometry, 1e-6) WHERE ST_Distance(geometry, NEW.geometry) < 1e-6;
+        -- Count any node that exists on that geometry. If there is one, do not update pipe
+        SELECT count(*) > 0 into node_exists FROM qwat_od.node WHERE ST_Equals(ST_Force2d(NEW.geometry), ST_Force2d(geometry));
+        
+        -- add a vertex to the corresponding pipe if it intersects
+        -- when the node is close enough to the pipe (< 1 micrometer) the node is considered to intersect the pipe
+        -- it allows to deal with intersections that cannot be represented by floating point numbers
+        IF NOT node_exists THEN
+            UPDATE qwat_od.pipe SET geometry = ST_Snap(geometry, NEW.geometry, 1e-6) WHERE ST_Distance(geometry, NEW.geometry) < 1e-6;
+        END IF;
 		RETURN NEW;
 	END;
 $BODY$
