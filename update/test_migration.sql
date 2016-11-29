@@ -43,6 +43,7 @@ COPY (
 select table_name, replace(view_definition,'"','') 
 from INFORMATION_SCHEMA.views
 WHERE table_schema in ('qwat_dr', 'qwat_od', 'qwat_sys', 'qwat_vl')
+AND table_name not like 'vw_export_%'
 ORDER BY table_schema, table_name
 ) TO STDOUT WITH CSV FORCE QUOTE *;;
 
