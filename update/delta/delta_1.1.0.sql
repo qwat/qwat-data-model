@@ -60,11 +60,12 @@ CREATE INDEX valve_geoidx_alt2 ON qwat_od.valve USING GIST ( geometry_alt2 );
 -- ALTER TABLE qwat_od.valve ALTER COLUMN id serial;
 -- integer NOT NULL REFERENCES qwat_od.network_element(id) PRIMARY KEY;
 CREATE SEQUENCE qwat_od.valve_id_seq START 1;
-SELECT setval('qwat_od.valve_id_seq', (select COALESCE(max(id), '0')+1 from qwat_od.valve));
+-- SELECT setval('qwat_od.valve_id_seq', (select COALESCE(max(id), '0')+1 from qwat_od.valve));
+DO $$ BEGIN PERFORM setval('qwat_od.valve_id_seq', (select COALESCE(max(id), '0')+1 from qwat_od.valve)); END $$;
 ALTER TABLE qwat_od.valve ALTER COLUMN id SET default nextval('qwat_od.valve_id_seq');
 
 
-SELECT qwat_sys.fn_enable_schemaview( 'valve' );
+DO $$ BEGIN PERFORM qwat_sys.fn_enable_schemaview('valve'); END $$;
 
 -- TODO We need to tranfert all the column data from node to valve
 UPDATE qwat_od.valve SET fk_district = (SELECT fk_district FROM qwat_od.node WHERE qwat_od.node.id = qwat_od.valve.id);
