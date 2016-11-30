@@ -107,7 +107,7 @@ $BODY$
                     IF _pipeitem.diameter > _diameter THEN
                         _orientation := _orientation + pi();
                     END IF;
-                END IF;+
+                END IF;
             END LOOP;
         -- more than 2 pipes connected, nothing to calculate
         ELSEIF _grouped.count > 2 THEN

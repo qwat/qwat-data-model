@@ -80,6 +80,9 @@ ALTER TABLE qwat_od.valve ADD COLUMN update_geometry_alt2 boolean default null; 
 /* Schema view */
 DO $$ BEGIN PERFORM qwat_sys.fn_enable_schemaview('valve'); END $$;
 
+/* LABELS */
+DO $$ BEGIN PERFORM qwat_sys.fn_label_create_fields('valve'); END $$;
+
 /* GEOM INDEXES */
 CREATE INDEX valve_geoidx ON qwat_od.valve USING GIST ( geometry );
 CREATE INDEX valve_geoidx_alt1 ON qwat_od.valve USING GIST ( geometry_alt1 );
@@ -130,8 +133,30 @@ CREATE TRIGGER valve_update_orientation
 COMMENT ON TRIGGER valve_update_orientation ON qwat_od.valve IS 'Trigger: set orientation after inserting a valve.';
 */
 
+/* --------------------------------------------*/
+/* -------- ALTERNATIVE GEOM TRIGGER ----------*/
+CREATE TRIGGER tr_valve_altgeom_insert
+	BEFORE INSERT ON qwat_od.valve
+	FOR EACH ROW
+	EXECUTE PROCEDURE qwat_od.ft_geometry_alternative_main();
+COMMENT ON TRIGGER tr_valve_altgeom_insert ON qwat_od.valve IS 'Trigger: handle alternative geometries on insert';
 
-/* HANDLE ALTITUDE TRIGGER */
+CREATE TRIGGER tr_valve_altgeom_update
+	BEFORE UPDATE OF geometry ON qwat_od.valve
+	FOR EACH ROW
+	WHEN  ( ST_Equals(ST_Force2d(NEW.geometry), ST_Force2d(OLD.geometry)) IS FALSE )
+	EXECUTE PROCEDURE qwat_od.ft_geometry_alternative_main();
+COMMENT ON TRIGGER tr_valve_altgeom_update ON qwat_od.valve IS 'Trigger: handle alternative geometries on update';
+
+CREATE TRIGGER tr_valve_altgeom_alt
+	BEFORE UPDATE OF geometry_alt1, geometry_alt2 ON qwat_od.valve
+	FOR EACH ROW
+	EXECUTE PROCEDURE qwat_od.ft_geometry_alternative_aux();
+COMMENT ON TRIGGER tr_valve_altgeom_alt ON qwat_od.valve IS 'Trigger: when updating, check if alternative geometries are different to fill the boolean fields.';
+
+
+/* --------------------------------------------*/
+/* ------- HANDLE ALTITUDE TRIGGER ------------*/
 CREATE OR REPLACE FUNCTION qwat_od.ft_valve_handle_altitude() RETURNS TRIGGER AS
 $BODY$
 	DECLARE
