@@ -116,6 +116,27 @@ ALTER TABLE qwat_od.valve ALTER COLUMN geometry SET NOT NULL;
 
 ALTER TABLE qwat_od.valve DROP CONSTRAINT valve_id_fkey;
 
+/* --------------------------------------------*/
+/* -------- ALTERNATIVE GEOM TRIGGER ----------*/
+CREATE TRIGGER tr_valve_altgeom_insert
+	BEFORE INSERT ON qwat_od.valve
+	FOR EACH ROW
+	EXECUTE PROCEDURE qwat_od.ft_geometry_alternative_main();
+COMMENT ON TRIGGER tr_valve_altgeom_insert ON qwat_od.valve IS 'Trigger: handle alternative geometries on insert';
+
+CREATE TRIGGER tr_valve_altgeom_update
+	BEFORE UPDATE OF geometry ON qwat_od.valve
+	FOR EACH ROW
+	WHEN  ( ST_Equals(ST_Force2d(NEW.geometry), ST_Force2d(OLD.geometry)) IS FALSE )
+	EXECUTE PROCEDURE qwat_od.ft_geometry_alternative_main();
+COMMENT ON TRIGGER tr_valve_altgeom_update ON qwat_od.valve IS 'Trigger: handle alternative geometries on update';
+
+CREATE TRIGGER tr_valve_altgeom_alt
+	BEFORE UPDATE OF geometry_alt1, geometry_alt2 ON qwat_od.valve
+	FOR EACH ROW
+	EXECUTE PROCEDURE qwat_od.ft_geometry_alternative_aux();
+COMMENT ON TRIGGER tr_valve_altgeom_alt ON qwat_od.valve IS 'Trigger: when updating, check if alternative geometries are different to fill the boolean fields.';
+
 
 
 CREATE OR REPLACE FUNCTION qwat_od.fn_node_create( _point geometry, deactivate_node_add_pipe_vertex boolean = FALSE ) RETURNS integer AS
