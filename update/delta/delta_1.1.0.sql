@@ -100,7 +100,7 @@ UPDATE qwat_od.valve SET schema_force_visible = (SELECT schema_force_visible FRO
 UPDATE qwat_od.valve SET label_1_visible      = (SELECT label_1_visible      FROM qwat_od.network_element WHERE qwat_od.network_element.id = qwat_od.valve.id);
 UPDATE qwat_od.valve SET label_1_x            = (SELECT label_1_x            FROM qwat_od.network_element WHERE qwat_od.network_element.id = qwat_od.valve.id);
 UPDATE qwat_od.valve SET label_1_y            = (SELECT label_1_y            FROM qwat_od.network_element WHERE qwat_od.network_element.id = qwat_od.valve.id);
-UPDATE qwat_od.valve SET label_1_rotatio      = (SELECT label_1_rotation     FROM qwat_od.network_element WHERE qwat_od.network_element.id = qwat_od.valve.id);
+UPDATE qwat_od.valve SET label_1_rotation     = (SELECT label_1_rotation     FROM qwat_od.network_element WHERE qwat_od.network_element.id = qwat_od.valve.id);
 UPDATE qwat_od.valve SET label_1_text         = (SELECT label_1_text         FROM qwat_od.network_element WHERE qwat_od.network_element.id = qwat_od.valve.id);
 UPDATE qwat_od.valve SET label_2_visible      = (SELECT label_2_visible      FROM qwat_od.network_element WHERE qwat_od.network_element.id = qwat_od.valve.id);
 UPDATE qwat_od.valve SET label_2_x            = (SELECT label_2_x            FROM qwat_od.network_element WHERE qwat_od.network_element.id = qwat_od.valve.id);
