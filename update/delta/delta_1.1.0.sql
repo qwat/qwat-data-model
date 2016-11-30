@@ -66,6 +66,7 @@ ALTER TABLE qwat_od.valve ALTER COLUMN id SET default nextval('qwat_od.valve_id_
 
 
 DO $$ BEGIN PERFORM qwat_sys.fn_enable_schemaview('valve'); END $$;
+DO $$ BEGIN PERFORM qwat_sys.fn_label_create_fields('valve'); END $$;
 
 -- TODO We need to tranfert all the column data from node to valve
 UPDATE qwat_od.valve SET fk_district = (SELECT fk_district FROM qwat_od.node WHERE qwat_od.node.id = qwat_od.valve.id);

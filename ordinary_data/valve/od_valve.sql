@@ -80,6 +80,9 @@ ALTER TABLE qwat_od.valve ADD COLUMN update_geometry_alt2 boolean default null; 
 /* Schema view */
 DO $$ BEGIN PERFORM qwat_sys.fn_enable_schemaview('valve'); END $$;
 
+/* LABELS */
+DO $$ BEGIN PERFORM qwat_sys.fn_label_create_fields('valve'); END $$;
+
 /* GEOM INDEXES */
 CREATE INDEX valve_geoidx ON qwat_od.valve USING GIST ( geometry );
 CREATE INDEX valve_geoidx_alt1 ON qwat_od.valve USING GIST ( geometry_alt1 );
