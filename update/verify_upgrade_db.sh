@@ -84,9 +84,10 @@ do
     fi
 done
 
-echo "Reloading views from last commit"
+echo "Reloading views and functions from last commit"
 export PGSERVICE=$QWATSERVICETESTCONFORM
 SRID=$SRID ./ordinary_data/views/rewrite_views.sh
+SRID=$SRID ./ordinary_data/functions/rewrite_functions.sh
 
 echo "Producing referential file for test_qwat DB (from $QWATSERVICETEST)"
 cd $DIR
