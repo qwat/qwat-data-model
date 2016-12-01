@@ -31,3 +31,5 @@ Replay a logged event.
 Arguments:
    pevent_id:  The event_id of the event in qwat_sys.logged_actions to replay
 $body$;
+
+UPDATE qwat_sys.versions SET version = '1.0.0';
