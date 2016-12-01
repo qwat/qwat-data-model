@@ -19,6 +19,5 @@ before_script:
 
 script: 
   - $TRAVIS_BUILD_DIR/init_qwat.sh -p qwat_test -s 21781 -r
-  - PGSERVICE=qwat_test SRID=21781 $TRAVIS_BUILD_DIR/ordinary_data/views/rewrite_views.sh
   - $TRAVIS_BUILD_DIR/tests/tests.sh --no-init
   - $TRAVIS_BUILD_DIR/update/verify_upgrade_db.sh
