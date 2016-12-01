@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# exit on error
+set -e
+
 # PARAMS
 TESTDB=qwat_test
 TESTCONFORMDB=qwat_test_conform
