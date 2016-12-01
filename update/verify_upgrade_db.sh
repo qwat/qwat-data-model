@@ -57,7 +57,6 @@ printf "    Latest tag = ${GREEN}$SHORT_LATEST_TAG${NC}\n"
 # We need to execute init_qwat.sh from the lastest TAG version in $QWATSERVICETESTCONFORM
 # Saving current branch
 echo "Saving current branch"
-#CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
 CURRENT_BRANCH=$TRAVIS_BRANCH
 printf "    Current branch = ${GREEN}$CURRENT_BRANCH${NC}\n"
 
