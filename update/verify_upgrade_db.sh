@@ -55,9 +55,17 @@ printf "    Latest tag = ${GREEN}$SHORT_LATEST_TAG${NC}\n"
 
 
 # We need to execute init_qwat.sh from the lastest TAG version in $QWATSERVICETESTCONFORM
-printf "    Travis branch = ${GREEN}$CURRENT_BRANCH${NC}\n"
-printf "    Travis PR branch = ${GREEN}$TRAVIS_PULL_REQUEST_BRANCH${NC}\n"
+printf "    Travis branch = ${GREEN}$TRAVIS_BRANCH${NC}\n"
 printf "    Travis commit = ${GREEN}$TRAVIS_COMMIT${NC}\n"
+printf "    Travis PR branch = ${GREEN}$TRAVIS_PULL_REQUEST_BRANCH${NC}\n"
+printf "    Travis PR commit = ${GREEN}$TRAVIS_PULL_REQUEST_SHA${NC}\n"
+
+if [[ !  -z  $TRAVIS_PULL_REQUEST_SHA  ]]; then
+  CURRENT_COMMIT=$TRAVIS_PULL_REQUEST_SHA
+else
+  CURRENT_COMMIT=$TRAVIS_COMMIT
+fi
+
 
 PROPER_LATEST_TAG=$SHORT_LATEST_TAG".0.0"
 echo "Switching on lastest tag major version ${GREEN}$PROPER_LATEST_TAG)${NC}"
