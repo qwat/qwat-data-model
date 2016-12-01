@@ -55,25 +55,20 @@ printf "    Latest tag = ${GREEN}$SHORT_LATEST_TAG${NC}\n"
 
 
 # We need to execute init_qwat.sh from the lastest TAG version in $QWATSERVICETESTCONFORM
-# Saving current branch
-echo "Saving current branch"
-if [[ !  -z  $TRAVIS_PULL_REQUEST_BRANCH  ]]; then
-  CURRENT_BRANCH=$TRAVIS_PULL_REQUEST_BRANCH
-else
-  CURRENT_BRANCH=$TRAVIS_BRANCH
-fi
-printf "    Current branch = ${GREEN}$CURRENT_BRANCH${NC}\n"
+printf "    Travis branch = ${GREEN}$CURRENT_BRANCH${NC}\n"
+printf "    Travis PR branch = ${GREEN}$TRAVIS_PULL_REQUEST_BRANCH${NC}\n"
+printf "    Travis commit = ${GREEN}$TRAVIS_COMMIT${NC}\n"
 
 PROPER_LATEST_TAG=$SHORT_LATEST_TAG".0.0"
-echo "Switching on lastest tag major version ($PROPER_LATEST_TAG)"
+echo "Switching on lastest tag major version ${GREEN}$PROPER_LATEST_TAG)${NC}"
 git checkout tags/$PROPER_LATEST_TAG
 
 cd ..
 echo "Initializing qwat DB in qwat_test_conform"
 ./init_qwat.sh -p $QWATSERVICETESTCONFORM -d > init_qwat.log
 
-echo "Switching back to current branch ($CURRENT_BRANCH)"
-git checkout $CURRENT_BRANCH
+echo "Switching back to current commit ($TRAVIS_COMMIT)"
+git checkout $TRAVIS_COMMIT
 
 
 echo "Applying deltas on $TESTCONFORMDB:"
