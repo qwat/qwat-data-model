@@ -75,8 +75,8 @@ cd ..
 echo "Initializing qwat DB in qwat_test_conform"
 ./init_qwat.sh -p $QWATSERVICETESTCONFORM -d > init_qwat.log
 
-echo "Switching back to current commit ($TRAVIS_COMMIT)"
-git checkout $TRAVIS_COMMIT
+echo "Switching back to current commit ($CURRENT_COMMIT)"
+git checkout $CURRENT_COMMIT
 
 
 echo "Applying deltas on $TESTCONFORMDB:"
