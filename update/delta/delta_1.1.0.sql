@@ -308,4 +308,14 @@ DROP FUNCTION qwat_od.ft_node_add_pipe_vertex();
 DROP TRIGGER valve_node_set_type ON qwat_od.valve;
 DROP FUNCTION qwat_od.ft_valve_node_set_type();
 
+-- We need to manually remove those 3 triggers functions, as they cannot be removed automatically by the rewrite views process
+DROP VIEW qwat_od.vw_search_view;
+DROP VIEW qwat_od.vw_export_valve;
+DROp VIEW qwat_od.vw_valve_lines;
+DROP VIEW qwat_od.vw_element_valve;
+DROP FUNCTION qwat_od.ft_element_valve_delete();
+DROP FUNCTION qwat_od.ft_element_valve_insert();
+DROP FUNCTION qwat_od.ft_element_valve_update();
+
+
 UPDATE qwat_sys.versions SET version = '1.1.0';
