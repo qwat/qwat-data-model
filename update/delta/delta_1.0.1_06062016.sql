@@ -160,3 +160,4 @@ $BODY$
 LANGUAGE plpgsql;
 COMMENT ON FUNCTION qwat_od.fn_node_set_type(integer) IS 'Set the orientation and type for a node. If three pipe arrives at the node: intersection. If one pipe: end. If two: depends on characteristics of pipe: year (is different), material (and year), diameter(and material/year)';
 
+UPDATE qwat_sys.versions SET version = '1.0.1';

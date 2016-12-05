@@ -17,15 +17,27 @@ INSERT INTO qwat_od.pipe (id, fk_node_a, fk_node_b,
        geometry) VALUES (1, 1, 2,
        101, 101, 101, 1, 101, 101, 101, 101,
        st_setsrid('linestring(530000 140000 0,530000 140010 0)'::geometry, 21781));
-       
 
--- insert a valve at the start of the pipe
-INSERT INTO qwat_od.vw_element_valve (fk_district, fk_pressurezone, fk_distributor, fk_pipe,
-       fk_precision, fk_precisionalti, fk_status, fk_valve_type, fk_valve_function, fk_valve_actuation,
-       geometry)
-       VALUES (1, 1, 1, 1,
-       101, 101, 101, 101, 6108, 101,
-       st_setsrid('point(530000 140000 0)'::geometry,21781));
-      
--- move valve away 
-UPDATE qwat_od.vw_element_valve set geometry = st_setsrid('point(530001 140000 0)'::geometry,21781) where geometry = st_setsrid('point(530000 140000 0)'::geometry,21781);
+-- insert an hydrant at the start of the pipe
+INSERT INTO qwat_od.vw_element_hydrant (year, fk_distributor, fk_status, fk_provider,
+            underground, altitude, fk_precisionalti, fk_precision, fk_object_reference, fk_model_sup, fk_model_inf, fk_material, fk_output,
+            pressure_static, pressure_dynamic, flow,
+            observation_date, observation_source,
+            geometry)
+    VALUES (2016, 1, 101, 101, 
+            True, 9.5, 101, 101, 101, 101, 101, 101, 101,
+            12.3, 12.3, 12.3,
+            '2016/01/01', 'Test',
+            st_setsrid('POINT(530000 140000 0)'::geometry,21781)
+            );
+
+-- move hydrant away
+UPDATE qwat_od.vw_element_hydrant set geometry = st_setsrid('point(530001 140000 0)'::geometry,21781) where geometry = st_setsrid('point(530000 140000 0)'::geometry,21781);
+
+-- restore the initial state
+DELETE FROM qwat_od.vw_element_hydrant;
+DELETE FROM qwat_od.pipe;
+DELETE FROM qwat_od.pressurezone;
+DELETE FROM qwat_od.consumptionzone;
+DELETE FROM qwat_od.district;
+DELETE FROM qwat_od.distributor;

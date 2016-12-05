@@ -12,16 +12,21 @@ import os
 import argparse
 import string
 import time
+import datetime
 import psycopg2
 import psycopg2.extras
 from subprocess import call
 
 TEST_SCRIPT = 'test_scenarii_scalability.model'
+OUTPUT_STAT = 'scalability_stats.txt'
 OFFSET = 10  # offset in meter to create new objects
 OFFSET_ORIGIN = 2000
 OFFSET_ID = 10  # offset for new ids
 NB_THREADS = 10
 threads = []
+fileStats = None
+startTime = None
+endTime = None
 
 origin = {'x': 530000, 'y': 140000}
 
@@ -74,7 +79,9 @@ sqlParams = {
 
     'id_cp': 1,
     'id_node_a': 1,
-    'id_node_b': 2
+    'id_node_b': 2,
+
+    'valve_id': 1
 }
 
 # Var list to replace in SQL
@@ -121,7 +128,8 @@ varsToReplace = [
     'DEL_Z1',
     'DEL_X2',
     'DEL_Y2',
-    'DEL_Z2'
+    'DEL_Z2',
+    'VALVE_ID'
 ]
 
 
@@ -140,12 +148,20 @@ class ScalabilityThread (threading.Thread):
         print "Starting " + self.name
         _execute_statements(self.cur, self.conn, self.name, self.threadID, self.origin, self.nbIterations)
         print "Exiting " + self.name
+        endTime = datetime.datetime.now().time()
+        fileStats = open(OUTPUT_STAT, 'a')
+        fileStats.write("Process {p} ended at {t}\n".format(t=endTime.isoformat(), p=self.threadID))
 
 
 def test_scalability(pgService, nbIterations):
+    fileStats = open(OUTPUT_STAT, 'w')
+    fileStats.write("Nb thread: {nbthreads}\n".format(nbthreads=NB_THREADS))
+    fileStats.write("Nb iterations: {nbiterations}\n".format(nbiterations=nbIterations))
+    startTime = datetime.datetime.now().time()
+    fileStats.write("Process started at {t}\n".format(t=startTime.isoformat()))
+
     # Create new threads
     for t in range(0, NB_THREADS):
-        #newThread = ScalabilityThread(t+1, "Thread-"+str(t), nbIterations, cur, conn)
         newThread = ScalabilityThread(t + 1, "Thread-" + str(t + 1), nbIterations, pgService)
         threads.append(newThread)
 
@@ -154,10 +170,11 @@ def test_scalability(pgService, nbIterations):
         threads[t].start()
 
 
+
 def _execute_statements(cur, conn, threadName, threadId, origin, nbIterations):
     count = 1
     p = sqlParams.copy()
-    while nbIterations:
+    while count < nbIterations:
         print "{tname} - Iteration {nb}".format(tname=threadName, nb=count)
 
         # Modify values (coords, IDs)
@@ -201,10 +218,11 @@ def _execute_statements(cur, conn, threadName, threadId, origin, nbIterations):
         p['co_x1'] += origin['x'] + OFFSET
         p['co_y1'] += origin['y'] + OFFSET
 
-        p['id_cp'] += count * threadId
-        p['id_node_a'] = count * OFFSET_ID * threadId
-        p['id_node_b'] = count * OFFSET_ID * threadId
-        p['installation_id'] = "{name}_{num}".format(name=threadName, num=count * OFFSET_ID * threadId)
+        p['id_cp'] = threadId * nbIterations + count
+        p['id_node_a'] = threadId * nbIterations + count
+        p['id_node_b'] = threadId * nbIterations + count
+        p['installation_id'] = "{name}_{num}".format(name=threadName, num=threadId * nbIterations + count)
+        p['valve_id'] = threadId * nbIterations + count
 
         for statement in open(TEST_SCRIPT).read().split(";;")[:-1]:
             if statement != '' and statement[:2] != '--':
@@ -228,7 +246,6 @@ def _execute_statements(cur, conn, threadName, threadId, origin, nbIterations):
         origin['x'] = 0
         origin['y'] = 0
 
-        nbIterations -= 1
         count += 1
 
 

@@ -31,6 +31,7 @@ export PGOPTIONS="-c lc_messages=C -c client_min_messages=ERROR"
 
 TESTS="test_add_node.sql \
        test_node_orientation.sql \
+       test_valve_orientation.sql \
        test_altitude.sql \
        test_alternative_geometry.sql \
        test_move_node_end_pipe.sql \

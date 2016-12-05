@@ -38,7 +38,7 @@ UPDATE qwat_od.pipe SET geometry_alt1 = st_setsrid('linestring(530004 138260 0,5
 SELECT 'test5', st_equals(geometry,geometry_alt1) IS FALSE, _geometry_alt1_used IS TRUE, st_equals(geometry,geometry_alt2) IS TRUE, _geometry_alt2_used IS FALSE from qwat_od.pipe;
 
 -- restore the initial state
-DELETE FROM qwat_od.vw_element_valve;
+DELETE FROM qwat_od.valve;
 DELETE FROM qwat_od.pipe;
 DELETE FROM qwat_od.pressurezone;
 DELETE FROM qwat_od.consumptionzone;
