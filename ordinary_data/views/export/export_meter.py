@@ -15,6 +15,11 @@ name: qwat_od.vw_export_meter
 
 from: qwat_od.vw_element_meter
 
+exclude_join_fields:
+  - geometry%
+  - label_1%
+  - label_2%
+
 joins:
   district:
     table: qwat_od.district
