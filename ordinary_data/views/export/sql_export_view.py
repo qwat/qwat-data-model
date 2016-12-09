@@ -11,14 +11,21 @@ class SqlExportView():
 		self.cur = self.conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
 		self.definition = definition
 
-	def get_columns(self, table):
-		self.cur.execute("SELECT attname FROM pg_attribute WHERE attrelid = '{0}'::regclass AND attisdropped IS NOT TRUE AND attnum > 0 ORDER BY attnum ASC".format(table))
+	def get_columns(self, table, exclude_fields = []):
+		exclude_fields_sql = ''.join([" AND attname NOT LIKE '{0}'".format(col) for col in exclude_fields])
+		sql = "SELECT attname FROM pg_attribute WHERE attrelid = '{0}'::regclass AND attisdropped IS NOT TRUE AND attnum > 0 {1} ORDER BY attnum ASC".format(table, exclude_fields_sql)
+		self.cur.execute(sql)
 		pg_fields = self.cur.fetchall()
 		pg_fields = [field[0] for field in pg_fields]
 		return pg_fields
 
 
 	def sql(self):
+		exclude_join_fields = []
+		if 'exclude_join_fields' in self.definition:
+			exclude_join_fields = self.definition['exclude_join_fields']
+		exclude_join_fields.append('id')
+		
 		sql = """
 		CREATE OR REPLACE VIEW {0} AS
 			SELECT \n\t\t\t\t{1}""".format(
@@ -27,8 +34,7 @@ class SqlExportView():
 				)
 
 		for join in self.definition['joins']:
-			columns = self.get_columns(self.definition['joins'][join]['table'])
-			columns.remove('id')
+			columns = self.get_columns(self.definition['joins'][join]['table'], exclude_join_fields)
 			sql += ''.join(['\n\t\t\t\t, {0}.{1} AS {0}_{1}'.format(join, col) for col in columns])
 
 		sql += "\n\t\t\tFROM {0}".format(self.definition['from'])
