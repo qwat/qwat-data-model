@@ -20,7 +20,6 @@ DECLARE
     h_new hstore;
     excluded_cols text[] = ARRAY[]::text[];
 BEGIN
-    --RAISE WARNING '[qwat_sys.if_modified_func] start with TG_ARGV[0]: % ; TG_ARGV[1] : %, TG_OP: %, TG_LEVEL : %, TG_WHEN: % ', TG_ARGV[0], TG_ARGV[1], TG_OP, TG_LEVEL, TG_WHEN;
 
     IF NOT (TG_WHEN IN ('AFTER' , 'INSTEAD OF')) THEN
         RAISE EXCEPTION 'qwat_sys.if_modified_func() may only run as an AFTER trigger';
@@ -47,13 +46,11 @@ BEGIN
 
     IF NOT TG_ARGV[0]::boolean IS DISTINCT FROM 'f'::boolean THEN
         audit_row.client_query = NULL;
-        RAISE WARNING '[qwat_sys.if_modified_func] - Trigger func triggered with no client_query tracking';
 
     END IF;
 
     IF TG_ARGV[1] IS NOT NULL THEN
         excluded_cols = TG_ARGV[1]::text[];
-        RAISE WARNING '[qwat_sys.if_modified_func] - Trigger func triggered with excluded_cols: %',TG_ARGV[1];
     END IF;
     
     IF (TG_OP = 'UPDATE' AND TG_LEVEL = 'ROW') THEN
