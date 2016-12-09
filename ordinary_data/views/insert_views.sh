@@ -10,9 +10,10 @@ psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f ordinary_data/views/schematic/vw_pipe_s
 
 
 # inheritance
-psql -v ON_ERROR_STOP=1 -c "$(./ordinary_data/views/inheritance/od_installation_inheritance.py ${PGSERVICE})"
-psql -v ON_ERROR_STOP=1 -c "$(./ordinary_data/views/inheritance/od_node_inheritance.py ${PGSERVICE})"
-psql -v ON_ERROR_STOP=1 -c "$(./ordinary_data/views/inheritance/od_element_inheritance.py ${PGSERVICE})"
+psql -v ON_ERROR_STOP=1 -c "$(./ordinary_data/views/inheritance/od_all_inheritance.py ${PGSERVICE})"
+# psql -v ON_ERROR_STOP=1 -c "$(./ordinary_data/views/inheritance/od_installation_inheritance.py ${PGSERVICE})"
+# psql -v ON_ERROR_STOP=1 -c "$(./ordinary_data/views/inheritance/od_node_inheritance.py ${PGSERVICE})"
+# psql -v ON_ERROR_STOP=1 -c "$(./ordinary_data/views/inheritance/od_element_inheritance.py ${PGSERVICE})"
 
 
 # export
