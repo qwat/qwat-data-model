@@ -255,7 +255,7 @@ $body$ LANGUAGE SQL;
 -- And provide a convenience call wrapper for the simplest case
 -- of row-level logging with no excluded cols and query logging enabled.
 --
-CREATE OR REPLACE FUNCTION qwat_sys.audit_table(target_table regclass) RETURNS void AS $$
+CREATE OR REPLACE FUNCTION qwat_sys.audit_table(target_table regclass) RETURNS void AS $body$
 SELECT qwat_sys.audit_table($1, BOOLEAN 't', BOOLEAN 't');
 $body$ LANGUAGE 'sql';
 
