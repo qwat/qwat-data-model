@@ -345,17 +345,9 @@ Arguments:
    target_view:      TABLE name, schema qualified IF NOT ON search_path
    audit_query_text: Record the text of the client query that triggered the audit event?
    ignored_cols:     COLUMNS TO exclude FROM UPDATE diffs, IGNORE updates that CHANGE only ignored cols.
-   uid_cols:         COLUMNS to use to uniquely identify a row from the view (in order to replay UPDATE and DELETE)
+   uid_cols:         MANDATORY COLUMNS to use to uniquely identify a row from the view (in order to replay UPDATE and DELETE)
+
+Example:
+  SELECT qwat_sys.audit_view('qwat_od.vw_element_installation', 'true'::BOOLEAN, '{field_to_ignore}'::text[], '{key_field1, keyfield2}'::text[]) 
 $body$;
  
--- Pg doesn't allow variadic calls with 0 params, so provide a wrapper
-CREATE OR REPLACE FUNCTION qwat_sys.audit_view(target_view regclass, audit_query_text BOOLEAN, uid_cols text[]) RETURNS void AS $body$
-SELECT qwat_sys.audit_view($1, $2, ARRAY[]::text[], uid_cols);
-$body$ LANGUAGE SQL;
- 
--- And provide a convenience call wrapper for the simplest case
--- of row-level logging with no excluded cols and query logging enabled.
---
-CREATE OR REPLACE FUNCTION qwat_sys.audit_view(target_view regclass, uid_cols text[]) RETURNS void AS $$
-SELECT qwat_sys.audit_view($1, BOOLEAN 't', uid_cols);
-$$ LANGUAGE 'sql';
