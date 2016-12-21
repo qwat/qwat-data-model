@@ -1,5 +1,117 @@
-﻿ 
+
+-- cleanups
+ -- row triggers
+DROP TRIGGER audit_trigger_row ON qwat_dr.annotationline;
+DROP TRIGGER audit_trigger_row ON qwat_dr.annotationpoint;
+DROP TRIGGER audit_trigger_row ON qwat_dr.constructionpoint;
+DROP TRIGGER audit_trigger_row ON qwat_dr.dimension_distance;
+DROP TRIGGER audit_trigger_row ON qwat_od.distributor;
+DROP TRIGGER audit_trigger_row ON qwat_od.district;
+DROP TRIGGER audit_trigger_row ON qwat_od.hydrant;
+DROP TRIGGER audit_trigger_row ON qwat_od.installation;
+DROP TRIGGER audit_trigger_row ON qwat_od.pressurecontrol;
+DROP TRIGGER audit_trigger_row ON qwat_od.pump;
+DROP TRIGGER audit_trigger_row ON qwat_od.source;
+DROP TRIGGER audit_trigger_row ON qwat_od.treatment;
+DROP TRIGGER audit_trigger_row ON qwat_od.tank;
+DROP TRIGGER audit_trigger_row ON qwat_od.chamber;
+DROP TRIGGER audit_trigger_row ON qwat_od.leak;
+DROP TRIGGER audit_trigger_row ON qwat_od.meter;
+DROP TRIGGER audit_trigger_row ON qwat_od.pipe;
+DROP TRIGGER audit_trigger_row ON qwat_od.pressurezone;
+DROP TRIGGER audit_trigger_row ON qwat_dr.dimension_orientation;
+DROP TRIGGER audit_trigger_row ON qwat_od.printmap;
+DROP TRIGGER audit_trigger_row ON qwat_od.protectionzone;
+DROP TRIGGER audit_trigger_row ON qwat_od.samplingpoint;
+DROP TRIGGER audit_trigger_row ON qwat_od.subscriber;
+DROP TRIGGER audit_trigger_row ON qwat_od.subscriber_reference;
+DROP TRIGGER audit_trigger_row ON qwat_od.surveypoint;
+DROP TRIGGER audit_trigger_row ON qwat_od.valve;
+DROP TRIGGER audit_trigger_row ON qwat_vl.cistern;
+DROP TRIGGER audit_trigger_row ON qwat_vl.hydrant_provider;
+DROP TRIGGER audit_trigger_row ON qwat_vl.hydrant_material;
+DROP TRIGGER audit_trigger_row ON qwat_vl.leak_cause;
+DROP TRIGGER audit_trigger_row ON qwat_vl.overflow;
+DROP TRIGGER audit_trigger_row ON qwat_vl.pipe_function;
+DROP TRIGGER audit_trigger_row ON qwat_vl.pipe_installmethod;
+DROP TRIGGER audit_trigger_row ON qwat_vl.pipe_material;
+DROP TRIGGER audit_trigger_row ON qwat_vl.pipe_protection;
+DROP TRIGGER audit_trigger_row ON qwat_vl.precision;
+DROP TRIGGER audit_trigger_row ON qwat_vl.pressurecontrol_type;
+DROP TRIGGER audit_trigger_row ON qwat_vl.protectionzone_type;
+DROP TRIGGER audit_trigger_row ON qwat_vl.pump_type;
+DROP TRIGGER audit_trigger_row ON qwat_vl.remote_type;
+DROP TRIGGER audit_trigger_row ON qwat_vl.source_quality;
+DROP TRIGGER audit_trigger_row ON qwat_vl.source_type;
+DROP TRIGGER audit_trigger_row ON qwat_vl.status;
+DROP TRIGGER audit_trigger_row ON qwat_vl.subscriber_type;
+DROP TRIGGER audit_trigger_row ON qwat_vl.survey_type;
+DROP TRIGGER audit_trigger_row ON qwat_vl.tank_firestorage;
+DROP TRIGGER audit_trigger_row ON qwat_vl.valve_function;
+DROP TRIGGER audit_trigger_row ON qwat_vl.valve_maintenance;
+DROP TRIGGER audit_trigger_row ON qwat_vl.valve_actuation;
+DROP TRIGGER audit_trigger_row ON qwat_vl.valve_type;
+DROP TRIGGER audit_trigger_row ON qwat_vl.visible;
+-- stm triggers
+DROP TRIGGER audit_trigger_stm ON qwat_dr.annotationline;
+DROP TRIGGER audit_trigger_stm ON qwat_dr.annotationpoint;
+DROP TRIGGER audit_trigger_stm ON qwat_dr.constructionpoint;
+DROP TRIGGER audit_trigger_stm ON qwat_dr.dimension_distance;
+DROP TRIGGER audit_trigger_stm ON qwat_od.distributor;
+DROP TRIGGER audit_trigger_stm ON qwat_od.district;
+DROP TRIGGER audit_trigger_stm ON qwat_od.hydrant;
+DROP TRIGGER audit_trigger_stm ON qwat_od.installation;
+DROP TRIGGER audit_trigger_stm ON qwat_od.pressurecontrol;
+DROP TRIGGER audit_trigger_stm ON qwat_od.pump;
+DROP TRIGGER audit_trigger_stm ON qwat_od.source;
+DROP TRIGGER audit_trigger_stm ON qwat_od.treatment;
+DROP TRIGGER audit_trigger_stm ON qwat_od.tank;
+DROP TRIGGER audit_trigger_stm ON qwat_od.chamber;
+DROP TRIGGER audit_trigger_stm ON qwat_od.leak;
+DROP TRIGGER audit_trigger_stm ON qwat_od.meter;
+DROP TRIGGER audit_trigger_stm ON qwat_od.pipe;
+DROP TRIGGER audit_trigger_stm ON qwat_od.pressurezone;
+DROP TRIGGER audit_trigger_stm ON qwat_dr.dimension_orientation;
+DROP TRIGGER audit_trigger_stm ON qwat_od.printmap;
+DROP TRIGGER audit_trigger_stm ON qwat_od.protectionzone;
+DROP TRIGGER audit_trigger_stm ON qwat_od.samplingpoint;
+DROP TRIGGER audit_trigger_stm ON qwat_od.subscriber;
+DROP TRIGGER audit_trigger_stm ON qwat_od.subscriber_reference;
+DROP TRIGGER audit_trigger_stm ON qwat_od.surveypoint;
+DROP TRIGGER audit_trigger_stm ON qwat_od.valve;
+DROP TRIGGER audit_trigger_stm ON qwat_vl.cistern;
+DROP TRIGGER audit_trigger_stm ON qwat_vl.hydrant_provider;
+DROP TRIGGER audit_trigger_stm ON qwat_vl.hydrant_material;
+DROP TRIGGER audit_trigger_stm ON qwat_vl.leak_cause;
+DROP TRIGGER audit_trigger_stm ON qwat_vl.overflow;
+DROP TRIGGER audit_trigger_stm ON qwat_vl.pipe_function;
+DROP TRIGGER audit_trigger_stm ON qwat_vl.pipe_installmethod;
+DROP TRIGGER audit_trigger_stm ON qwat_vl.pipe_material;
+DROP TRIGGER audit_trigger_stm ON qwat_vl.pipe_protection;
+DROP TRIGGER audit_trigger_stm ON qwat_vl.precision;
+DROP TRIGGER audit_trigger_stm ON qwat_vl.pressurecontrol_type;
+DROP TRIGGER audit_trigger_stm ON qwat_vl.protectionzone_type;
+DROP TRIGGER audit_trigger_stm ON qwat_vl.pump_type;
+DROP TRIGGER audit_trigger_stm ON qwat_vl.remote_type;
+DROP TRIGGER audit_trigger_stm ON qwat_vl.source_quality;
+DROP TRIGGER audit_trigger_stm ON qwat_vl.source_type;
+DROP TRIGGER audit_trigger_stm ON qwat_vl.status;
+DROP TRIGGER audit_trigger_stm ON qwat_vl.subscriber_type;
+DROP TRIGGER audit_trigger_stm ON qwat_vl.survey_type;
+DROP TRIGGER audit_trigger_stm ON qwat_vl.tank_firestorage;
+DROP TRIGGER audit_trigger_stm ON qwat_vl.valve_function;
+DROP TRIGGER audit_trigger_stm ON qwat_vl.valve_maintenance;
+DROP TRIGGER audit_trigger_stm ON qwat_vl.valve_actuation;
+DROP TRIGGER audit_trigger_stm ON qwat_vl.valve_type;
+DROP TRIGGER audit_trigger_stm ON qwat_vl.visible;
+
+DROP FUNCTION IF EXISTS qwat_sys.if_modified_func();
+DROP FUNCTION qwat_sys.audit_table(regclass);
+DROP FUNCTION qwat_sys.audit_table(regclass, boolean, boolean);
+DROP FUNCTION qwat_sys.audit_table(regclass, boolean, boolean, text[]);
+
 -- adds new auditing functions
+
 
 CREATE TABLE qwat_sys.logged_relations (
     relation_name text not null,
@@ -10,6 +122,75 @@ CREATE TABLE qwat_sys.logged_relations (
 COMMENT ON TABLE qwat_sys.logged_relations IS 'Table used to store unique identifier columns for table or views, so that events can be replayed';
 COMMENT ON COLUMN qwat_sys.logged_relations.relation_name IS 'Relation (table or view) name (with schema if needed)';
 COMMENT ON COLUMN qwat_sys.logged_relations.uid_column IS 'Name of a column that is used to uniquely identify a row in the relation';
+
+CREATE OR REPLACE FUNCTION qwat_sys.audit_table(target_table regclass, audit_rows BOOLEAN, audit_query_text BOOLEAN, ignored_cols text[]) RETURNS void AS $body$
+DECLARE
+  stm_targets text = 'INSERT OR UPDATE OR DELETE OR TRUNCATE';
+  _q_txt text;
+  _ignored_cols_snip text = '';
+BEGIN
+    EXECUTE 'DROP TRIGGER IF EXISTS audit_trigger_row ON ' || target_table::text;
+    EXECUTE 'DROP TRIGGER IF EXISTS audit_trigger_stm ON ' || target_table::text;
+
+    IF audit_rows THEN
+        IF array_length(ignored_cols,1) > 0 THEN
+            _ignored_cols_snip = ', ' || quote_literal(ignored_cols);
+        END IF;
+        _q_txt = 'CREATE TRIGGER audit_trigger_row AFTER INSERT OR UPDATE OR DELETE ON ' ||
+                 target_table::text ||
+                 ' FOR EACH ROW EXECUTE PROCEDURE qwat_sys.if_modified_func(' ||
+                 quote_literal(audit_query_text) || _ignored_cols_snip || ');';
+        RAISE NOTICE '%',_q_txt;
+        EXECUTE _q_txt;
+        stm_targets = 'TRUNCATE';
+    ELSE
+    END IF;
+
+    _q_txt = 'CREATE TRIGGER audit_trigger_stm AFTER ' || stm_targets || ' ON ' ||
+             target_table ||
+             ' FOR EACH STATEMENT EXECUTE PROCEDURE qwat_sys.if_modified_func('||
+             quote_literal(audit_query_text) || ');';
+    RAISE NOTICE '%',_q_txt;
+    EXECUTE _q_txt;
+
+    -- store primary key names
+    insert into qwat_sys.logged_relations (relation_name, uid_column)
+         select target_table, a.attname
+           from pg_index i
+           join pg_attribute a on a.attrelid = i.indrelid
+                              and a.attnum = any(i.indkey)
+          where i.indrelid = target_table::regclass
+            and i.indisprimary
+            ;
+END;
+$body$
+LANGUAGE plpgsql;
+
+COMMENT ON FUNCTION qwat_sys.audit_table(regclass, BOOLEAN, BOOLEAN, text[]) IS $body$
+ADD auditing support TO a TABLE.
+
+Arguments:
+   target_table:     TABLE name, schema qualified IF NOT ON search_path
+   audit_rows:       Record each row CHANGE, OR only audit at a statement level
+   audit_query_text: Record the text of the client query that triggered the audit event?
+   ignored_cols:     COLUMNS TO exclude FROM UPDATE diffs, IGNORE updates that CHANGE only ignored cols.
+$body$;
+
+-- Pg doesn't allow variadic calls with 0 params, so provide a wrapper
+CREATE OR REPLACE FUNCTION qwat_sys.audit_table(target_table regclass, audit_rows BOOLEAN, audit_query_text BOOLEAN) RETURNS void AS $body$
+SELECT qwat_sys.audit_table($1, $2, $3, ARRAY[]::text[]);
+$body$ LANGUAGE SQL;
+
+-- And provide a convenience call wrapper for the simplest case
+-- of row-level logging with no excluded cols and query logging enabled.
+--
+CREATE OR REPLACE FUNCTION qwat_sys.audit_table(target_table regclass) RETURNS void AS $body$
+SELECT qwat_sys.audit_table($1, BOOLEAN 't', BOOLEAN 't');
+$body$ LANGUAGE 'sql';
+
+COMMENT ON FUNCTION qwat_sys.audit_table(regclass) IS $body$
+Add auditing support to the given table. Row-level changes will be logged with full client query text. No cols are ignored.
+$body$;
 
 CREATE OR REPLACE FUNCTION qwat_sys.if_modified_func() RETURNS TRIGGER AS $body$
 DECLARE
@@ -52,7 +233,7 @@ BEGIN
     IF TG_ARGV[1] IS NOT NULL THEN
         excluded_cols = TG_ARGV[1]::text[];
     END IF;
-    
+
     IF (TG_OP = 'UPDATE' AND TG_LEVEL = 'ROW') THEN
         h_old = hstore(OLD.*) - excluded_cols;
         audit_row.row_data = h_old;
@@ -66,12 +247,12 @@ BEGIN
         END IF;
   INSERT INTO qwat_sys.logged_actions VALUES (audit_row.*);
   RETURN NEW;
-        
+
     ELSIF (TG_OP = 'DELETE' AND TG_LEVEL = 'ROW') THEN
         audit_row.row_data = hstore(OLD.*) - excluded_cols;
   INSERT INTO qwat_sys.logged_actions VALUES (audit_row.*);
         RETURN OLD;
-        
+
     ELSIF (TG_OP = 'INSERT' AND TG_LEVEL = 'ROW') THEN
         audit_row.row_data = hstore(NEW.*) - excluded_cols;
   INSERT INTO qwat_sys.logged_actions VALUES (audit_row.*);
@@ -157,7 +338,7 @@ BEGIN
     from
         event, where_pks
     ;
-    
+
     execute query;
 END;
 $body$
@@ -165,12 +346,12 @@ LANGUAGE plpgsql;
 
 COMMENT ON FUNCTION qwat_sys.replay_event(int) IS $body$
 Replay a logged event.
- 
+
 Arguments:
    pevent_id:  The event_id of the event in qwat_sys.logged_actions to replay
 $body$;
 
-CREATE FUNCTION qwat_sys.audit_view(target_view regclass, audit_query_text BOOLEAN, ignored_cols text[], uid_cols text[]) RETURNS void AS $body$
+CREATE OR REPLACE FUNCTION qwat_sys.audit_view(target_view regclass, audit_query_text BOOLEAN, ignored_cols text[], uid_cols text[]) RETURNS void AS $body$
 DECLARE
   stm_targets text = 'INSERT OR UPDATE OR DELETE';
   _q_txt text;
@@ -179,12 +360,12 @@ DECLARE
 BEGIN
     EXECUTE 'DROP TRIGGER IF EXISTS audit_trigger_row ON ' || target_view::text;
     EXECUTE 'DROP TRIGGER IF EXISTS audit_trigger_stm ON ' || target_view::text;
- 
+
 	IF array_length(ignored_cols,1) > 0 THEN
 	    _ignored_cols_snip = ', ' || quote_literal(ignored_cols);
 	END IF;
-	_q_txt = 'CREATE TRIGGER audit_trigger_row INSTEAD OF INSERT OR UPDATE OR DELETE ON ' || 
-		 target_view::TEXT || 
+	_q_txt = 'CREATE TRIGGER audit_trigger_row INSTEAD OF INSERT OR UPDATE OR DELETE ON ' ||
+		 target_view::TEXT ||
 		 ' FOR EACH ROW EXECUTE PROCEDURE qwat_sys.if_modified_func(' ||
 		 quote_literal(audit_query_text) || _ignored_cols_snip || ');';
 	RAISE NOTICE '%',_q_txt;
@@ -194,7 +375,7 @@ BEGIN
   IF (select count(*) from qwat_sys.logged_relations where relation_name = (select target_view)::text AND  uid_column= (select unnest(uid_cols))::text) = 0 THEN
       insert into qwat_sys.logged_relations (relation_name, uid_column)
        select target_view, unnest(uid_cols);
-  END IF;    
+  END IF;
 
 END;
 $body$
@@ -202,26 +383,16 @@ LANGUAGE plpgsql;
 
 COMMENT ON FUNCTION qwat_sys.audit_view(regclass, BOOLEAN, text[], text[]) IS $body$
 ADD auditing support TO a VIEW.
- 
+
 Arguments:
    target_view:      TABLE name, schema qualified IF NOT ON search_path
    audit_query_text: Record the text of the client query that triggered the audit event?
    ignored_cols:     COLUMNS TO exclude FROM UPDATE diffs, IGNORE updates that CHANGE only ignored cols.
-   uid_cols:         COLUMNS to use to uniquely identify a row from the view (in order to replay UPDATE and DELETE)
-$body$;
- 
--- Pg doesn't allow variadic calls with 0 params, so provide a wrapper
-CREATE OR REPLACE FUNCTION qwat_sys.audit_view(target_view regclass, audit_query_text BOOLEAN, uid_cols text[]) RETURNS void AS $body$
-SELECT qwat_sys.audit_view($1, $2, ARRAY[]::text[], uid_cols);
-$body$ LANGUAGE SQL;
- 
--- And provide a convenience call wrapper for the simplest case
--- of row-level logging with no excluded cols and query logging enabled.
---
-CREATE OR REPLACE FUNCTION qwat_sys.audit_view(target_view regclass, uid_cols text[]) RETURNS void AS $$
-SELECT qwat_sys.audit_view($1, BOOLEAN 't', uid_cols);
-$$ LANGUAGE 'sql';
+   uid_cols:         MANDATORY COLUMNS to use to uniquely identify a row from the view (in order to replay UPDATE and DELETE)
 
+Example:
+  SELECT qwat_sys.audit_view('qwat_od.vw_element_installation', 'true'::BOOLEAN, '{field_to_ignore}'::text[], '{key_field1, keyfield2}'::text[])
+$body$;
 
 
 
@@ -229,9 +400,37 @@ $$ LANGUAGE 'sql';
 -- adds table and view triggers for auditing, only if triggers handle editable views -------------------------------------
 DO $$
 BEGIN
+PERFORM qwat_sys.audit_table('qwat_dr.annotationline');
+PERFORM qwat_sys.audit_table('qwat_dr.annotationpoint');
+PERFORM qwat_sys.audit_table('qwat_dr.constructionpoint');
+PERFORM qwat_sys.audit_table('qwat_dr.dimension_distance');
+PERFORM qwat_sys.audit_table('qwat_dr.dimension_orientation');
+PERFORM qwat_sys.audit_table('qwat_vl.cistern');
+PERFORM qwat_sys.audit_table('qwat_vl.hydrant_provider');
+PERFORM qwat_sys.audit_table('qwat_vl.hydrant_material');
+PERFORM qwat_sys.audit_table('qwat_vl.leak_cause');
+PERFORM qwat_sys.audit_table('qwat_vl.overflow');
+PERFORM qwat_sys.audit_table('qwat_vl.pipe_function');
+PERFORM qwat_sys.audit_table('qwat_vl.pipe_installmethod');
+PERFORM qwat_sys.audit_table('qwat_vl.pipe_material');
+PERFORM qwat_sys.audit_table('qwat_vl.pipe_protection');
+PERFORM qwat_sys.audit_table('qwat_vl.precision');
+PERFORM qwat_sys.audit_table('qwat_vl.pressurecontrol_type');
+PERFORM qwat_sys.audit_table('qwat_vl.protectionzone_type');
+PERFORM qwat_sys.audit_table('qwat_vl.pump_type');
+PERFORM qwat_sys.audit_table('qwat_vl.remote_type');
+PERFORM qwat_sys.audit_table('qwat_vl.source_quality');
+PERFORM qwat_sys.audit_table('qwat_vl.source_type');
+PERFORM qwat_sys.audit_table('qwat_vl.status');
+PERFORM qwat_sys.audit_table('qwat_vl.subscriber_type');
+PERFORM qwat_sys.audit_table('qwat_vl.survey_type');
+PERFORM qwat_sys.audit_table('qwat_vl.tank_firestorage');
 PERFORM qwat_sys.audit_table('qwat_od.valve');
-
--- PERFORM qwat_sys.audit_view('qwat_od.vw_consumptionzone', 'true'::boolean, '{}'::text[], '{id}'::text[]);
+PERFORM qwat_sys.audit_table('qwat_vl.valve_function');
+PERFORM qwat_sys.audit_table('qwat_vl.valve_maintenance');
+PERFORM qwat_sys.audit_table('qwat_vl.valve_actuation');
+PERFORM qwat_sys.audit_table('qwat_vl.valve_type');
+PERFORM qwat_sys.audit_table('qwat_vl.visible');
 
 PERFORM qwat_sys.audit_view('qwat_od.vw_element_hydrant', 'true'::boolean, '{}'::text[], '{id}'::text[]);
 PERFORM qwat_sys.audit_view('qwat_od.vw_element_installation', 'true'::boolean, '{}'::text[], '{id}'::text[]);
@@ -239,40 +438,15 @@ PERFORM qwat_sys.audit_view('qwat_od.vw_element_meter', 'true'::boolean, '{}'::t
 PERFORM qwat_sys.audit_view('qwat_od.vw_element_part', 'true'::boolean, '{}'::text[], '{id}'::text[]);
 PERFORM qwat_sys.audit_view('qwat_od.vw_element_samplingpoint', 'true'::boolean, '{}'::text[], '{id}'::text[]);
 PERFORM qwat_sys.audit_view('qwat_od.vw_element_subscriber', 'true'::boolean, '{}'::text[], '{id}'::text[]);
-
--- PERFORM qwat_sys.audit_view('qwat_od.vw_export_hydrant', 'true'::boolean, '{}'::text[], '{id}'::text[]);
--- PERFORM qwat_sys.audit_view('qwat_od.vw_export_installation', 'true'::boolean, '{}'::text[], '{id}'::text[]);
--- PERFORM qwat_sys.audit_view('qwat_od.vw_export_meter', 'true'::boolean, '{}'::text[], '{id}'::text[]);
--- PERFORM qwat_sys.audit_view('qwat_od.vw_export_part', 'true'::boolean, '{}'::text[], '{id}'::text[]);
--- PERFORM qwat_sys.audit_view('qwat_od.vw_export_subscriber', 'true'::boolean, '{}'::text[], '{id}'::text[]);
--- PERFORM qwat_sys.audit_view('qwat_od.vw_export_valve', 'true'::boolean, '{}'::text[], '{id}'::text[]);
-
 PERFORM qwat_sys.audit_view('qwat_od.vw_installation_chamber', 'true'::boolean, '{}'::text[], '{id}'::text[]);
 PERFORM qwat_sys.audit_view('qwat_od.vw_installation_pressurecontrol', 'true'::boolean, '{}'::text[], '{id}'::text[]);
 PERFORM qwat_sys.audit_view('qwat_od.vw_installation_pump', 'true'::boolean, '{}'::text[], '{id}'::text[]);
 PERFORM qwat_sys.audit_view('qwat_od.vw_installation_source', 'true'::boolean, '{}'::text[], '{id}'::text[]);
 PERFORM qwat_sys.audit_view('qwat_od.vw_installation_tank', 'true'::boolean, '{}'::text[], '{id}'::text[]);
 PERFORM qwat_sys.audit_view('qwat_od.vw_installation_treatment', 'true'::boolean, '{}'::text[], '{id}'::text[]);
-
--- PERFORM qwat_sys.audit_view('qwat_od.vw_leak', 'true'::boolean, '{}'::text[], '{id}'::text[]);
--- PERFORM qwat_sys.audit_view('qwat_od.vw_node_element', 'true'::boolean, '{}'::text[], '{id}'::text[]);
--- PERFORM qwat_sys.audit_view('qwat_od.vw_pipe', 'true'::boolean, '{}'::text[], '{id}'::text[]);
--- PERFORM qwat_sys.audit_view('qwat_od.vw_pipe_child_parent', 'true'::boolean, '{}'::text[], '{id}'::text[]);
--- PERFORM qwat_sys.audit_view('qwat_od.vw_pipe_schema_merged', 'true'::boolean, '{}'::text[], '{id}'::text[]);
--- PERFORM qwat_sys.audit_view('qwat_od.vw_pipe_schema', 'true'::boolean, '{}'::text[], '{id}'::text[]);
--- PERFORM qwat_sys.audit_view('qwat_od.vw_pipe_schema_error', 'true'::boolean, '{}'::text[], '{id}'::text[]);
--- PERFORM qwat_sys.audit_view('qwat_od.vw_pipe_schema_visibleitems', 'true'::boolean, '{}'::text[], '{id}'::text[]);
--- PERFORM qwat_sys.audit_view('qwat_od.vw_printmap', 'true'::boolean, '{}'::text[], '{id}'::text[]);
--- PERFORM qwat_sys.audit_view('qwat_od.vw_protectionzone', 'true'::boolean, '{}'::text[], '{id}'::text[]);
-
 PERFORM qwat_sys.audit_view('qwat_od.vw_qwat_installation', 'true'::boolean, '{}'::text[], '{id}'::text[]);
 PERFORM qwat_sys.audit_view('qwat_od.vw_qwat_network_element', 'true'::boolean, '{}'::text[], '{id}'::text[]);
 PERFORM qwat_sys.audit_view('qwat_od.vw_qwat_node', 'true'::boolean, '{}'::text[], '{id}'::text[]);
-
--- PERFORM qwat_sys.audit_view('qwat_od.vw_remote', 'true'::boolean, '{}'::text[], '{id}'::text[]);
--- PERFORM qwat_sys.audit_view('qwat_od.vw_search_view', 'true'::boolean, '{}'::text[], '{id}'::text[]);
--- PERFORM qwat_sys.audit_view('qwat_od.vw_subscriber_pipe_relation', 'true'::boolean, '{}'::text[], '{id}'::text[]);
--- PERFORM qwat_sys.audit_view('qwat_od.vw_valve_lines', 'true'::boolean, '{}'::text[], '{id}'::text[]);
 
 END
 $$;
@@ -282,4 +456,3 @@ $$;
 -- finishes with upgrading qwat version
 
 UPDATE qwat_sys.versions SET version = '1.1.1';
-
