@@ -123,6 +123,7 @@ echo "Performing conformity test"
 STATUS=$(python test_migration.py --pg_service $QWATSERVICETESTCONFORM)
 
 if [[ $STATUS == "DataModel is OK" ]]; then
+    STATUS=echo $STATUS | sed 's/%/\\045/'
     printf "${GREEN}Migration TEST is successfull${NC}. You may now migrate your real DB\n"
     EXITCODE=0
 else
