@@ -15,7 +15,7 @@ CREATE OR REPLACE FUNCTION qwat_sys.if_modified_func() RETURNS TRIGGER AS $body$
 DECLARE
     audit_row qwat_sys.logged_actions;
     include_values BOOLEAN;
-    log_diffs boolean;
+    log_diffs BOOLEAN;
     h_old hstore;
     h_new hstore;
     excluded_cols text[] = ARRAY[]::text[];
