@@ -83,7 +83,7 @@ BEGIN
   RETURN NULL;
 
     ELSE
-        RAISE EXCEPTION USING MESSAGE = '[qwat_sys.if_modified_func] - Trigger func added as trigger for unhandled case: '||TG_OP||', '||TG_LEVEL;;
+        RAISE EXCEPTION USING MESSAGE = '[qwat_sys.if_modified_func] - Trigger func added as trigger for unhandled case: '||TG_OP||', '||TG_LEVEL;
         RETURN NEW;
     END IF;
 
