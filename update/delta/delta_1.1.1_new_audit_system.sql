@@ -303,6 +303,50 @@ $$ LANGUAGE 'sql';
 
 --- ###################################################################
 -- adds table and view triggers for auditing, only if triggers handle editable views -------------------------------------
+
+DROP TRIGGER IF EXISTS audit_trigger_row ON qwat_od.distributor;
+DROP TRIGGER IF EXISTS audit_trigger_row ON qwat_od.district;
+DROP TRIGGER IF EXISTS audit_trigger_row ON qwat_od.hydrant;
+DROP TRIGGER IF EXISTS audit_trigger_row ON qwat_od.installation;
+DROP TRIGGER IF EXISTS audit_trigger_row ON qwat_od.pressurecontrol;
+DROP TRIGGER IF EXISTS audit_trigger_row ON qwat_od.pump;
+DROP TRIGGER IF EXISTS audit_trigger_row ON qwat_od.source;
+DROP TRIGGER IF EXISTS audit_trigger_row ON qwat_od.treatment;
+DROP TRIGGER IF EXISTS audit_trigger_row ON qwat_od.tank;
+DROP TRIGGER IF EXISTS audit_trigger_row ON qwat_od.chamber;
+DROP TRIGGER IF EXISTS audit_trigger_row ON qwat_od.leak;
+DROP TRIGGER IF EXISTS audit_trigger_row ON qwat_od.meter;
+DROP TRIGGER IF EXISTS audit_trigger_row ON qwat_od.pipe;
+DROP TRIGGER IF EXISTS audit_trigger_row ON qwat_od.pressurezone;
+DROP TRIGGER IF EXISTS audit_trigger_row ON qwat_od.printmap;
+DROP TRIGGER IF EXISTS audit_trigger_row ON qwat_od.protectionzone;
+DROP TRIGGER IF EXISTS audit_trigger_row ON qwat_od.samplingpoint;
+DROP TRIGGER IF EXISTS audit_trigger_row ON qwat_od.subscriber;
+DROP TRIGGER IF EXISTS audit_trigger_row ON qwat_od.subscriber_reference;
+DROP TRIGGER IF EXISTS audit_trigger_row ON qwat_od.surveypoint;
+
+DROP TRIGGER IF EXISTS audit_trigger_stm ON qwat_od.distributor;
+DROP TRIGGER IF EXISTS audit_trigger_stm ON qwat_od.district;
+DROP TRIGGER IF EXISTS audit_trigger_stm ON qwat_od.hydrant;
+DROP TRIGGER IF EXISTS audit_trigger_stm ON qwat_od.installation;
+DROP TRIGGER IF EXISTS audit_trigger_stm ON qwat_od.pressurecontrol;
+DROP TRIGGER IF EXISTS audit_trigger_stm ON qwat_od.pump;
+DROP TRIGGER IF EXISTS audit_trigger_stm ON qwat_od.source;
+DROP TRIGGER IF EXISTS audit_trigger_stm ON qwat_od.treatment;
+DROP TRIGGER IF EXISTS audit_trigger_stm ON qwat_od.tank;
+DROP TRIGGER IF EXISTS audit_trigger_stm ON qwat_od.chamber;
+DROP TRIGGER IF EXISTS audit_trigger_stm ON qwat_od.leak;
+DROP TRIGGER IF EXISTS audit_trigger_stm ON qwat_od.meter;
+DROP TRIGGER IF EXISTS audit_trigger_stm ON qwat_od.pipe;
+DROP TRIGGER IF EXISTS audit_trigger_stm ON qwat_od.pressurezone;
+DROP TRIGGER IF EXISTS audit_trigger_stm ON qwat_od.printmap;
+DROP TRIGGER IF EXISTS audit_trigger_stm ON qwat_od.protectionzone;
+DROP TRIGGER IF EXISTS audit_trigger_stm ON qwat_od.samplingpoint;
+DROP TRIGGER IF EXISTS audit_trigger_stm ON qwat_od.subscriber;
+DROP TRIGGER IF EXISTS audit_trigger_stm ON qwat_od.subscriber_reference;
+DROP TRIGGER IF EXISTS audit_trigger_stm ON qwat_od.surveypoint;
+
+
 DO $$
 BEGIN
 PERFORM qwat_sys.audit_table('qwat_od.valve');
@@ -353,46 +397,6 @@ PERFORM qwat_sys.audit_view('qwat_od.vw_qwat_node', 'true'::boolean, '{}'::text[
 END
 $$;
 
-DROP TRIGGER IF EXISTS audit_trigger_row ON qwat_od.distributor;
-DROP TRIGGER IF EXISTS audit_trigger_row ON qwat_od.district;
-DROP TRIGGER IF EXISTS audit_trigger_row ON qwat_od.hydrant;
-DROP TRIGGER IF EXISTS audit_trigger_row ON qwat_od.installation;
-DROP TRIGGER IF EXISTS audit_trigger_row ON qwat_od.pressurecontrol;
-DROP TRIGGER IF EXISTS audit_trigger_row ON qwat_od.pump;
-DROP TRIGGER IF EXISTS audit_trigger_row ON qwat_od.source;
-DROP TRIGGER IF EXISTS audit_trigger_row ON qwat_od.treatment;
-DROP TRIGGER IF EXISTS audit_trigger_row ON qwat_od.tank;
-DROP TRIGGER IF EXISTS audit_trigger_row ON qwat_od.chamber;
-DROP TRIGGER IF EXISTS audit_trigger_row ON qwat_od.leak;
-DROP TRIGGER IF EXISTS audit_trigger_row ON qwat_od.meter;
-DROP TRIGGER IF EXISTS audit_trigger_row ON qwat_od.pipe;
-DROP TRIGGER IF EXISTS audit_trigger_row ON qwat_od.pressurezone;
-DROP TRIGGER IF EXISTS audit_trigger_row ON qwat_od.printmap;
-DROP TRIGGER IF EXISTS audit_trigger_row ON qwat_od.protectionzone;
-DROP TRIGGER IF EXISTS audit_trigger_row ON qwat_od.samplingpoint;
-DROP TRIGGER IF EXISTS audit_trigger_row ON qwat_od.subscriber;
-DROP TRIGGER IF EXISTS audit_trigger_row ON qwat_od.subscriber_reference;
-DROP TRIGGER IF EXISTS audit_trigger_row ON qwat_od.surveypoint;
-DROP TRIGGER IF EXISTS audit_trigger_stm ON qwat_od.distributor;
-DROP TRIGGER IF EXISTS audit_trigger_stm ON qwat_od.district;
-DROP TRIGGER IF EXISTS audit_trigger_stm ON qwat_od.hydrant;
-DROP TRIGGER IF EXISTS audit_trigger_stm ON qwat_od.installation;
-DROP TRIGGER IF EXISTS audit_trigger_stm ON qwat_od.pressurecontrol;
-DROP TRIGGER IF EXISTS audit_trigger_stm ON qwat_od.pump;
-DROP TRIGGER IF EXISTS audit_trigger_stm ON qwat_od.source;
-DROP TRIGGER IF EXISTS audit_trigger_stm ON qwat_od.treatment;
-DROP TRIGGER IF EXISTS audit_trigger_stm ON qwat_od.tank;
-DROP TRIGGER IF EXISTS audit_trigger_stm ON qwat_od.chamber;
-DROP TRIGGER IF EXISTS audit_trigger_stm ON qwat_od.leak;
-DROP TRIGGER IF EXISTS audit_trigger_stm ON qwat_od.meter;
-DROP TRIGGER IF EXISTS audit_trigger_stm ON qwat_od.pipe;
-DROP TRIGGER IF EXISTS audit_trigger_stm ON qwat_od.pressurezone;
-DROP TRIGGER IF EXISTS audit_trigger_stm ON qwat_od.printmap;
-DROP TRIGGER IF EXISTS audit_trigger_stm ON qwat_od.protectionzone;
-DROP TRIGGER IF EXISTS audit_trigger_stm ON qwat_od.samplingpoint;
-DROP TRIGGER IF EXISTS audit_trigger_stm ON qwat_od.subscriber;
-DROP TRIGGER IF EXISTS audit_trigger_stm ON qwat_od.subscriber_reference;
-DROP TRIGGER IF EXISTS audit_trigger_stm ON qwat_od.surveypoint;
 
 -- finishes with upgrading qwat version
 
