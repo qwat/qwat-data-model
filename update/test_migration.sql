@@ -101,7 +101,7 @@ where pg_proc.oid=t.tgfoid
   and t.tgname = trigger_list.tgname
   AND t.tgrelid = p.oid
   and  SUBSTR(p.relname, 1, 3) != 'vw_' -- We cannot check for vw_ views, because  they are created after that script
-ORDER BY t.tgname
+ORDER BY t.tgname, p.relname
 ) TO STDOUT WITH CSV FORCE QUOTE *;;
 
 /* List functions */
