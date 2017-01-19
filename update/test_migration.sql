@@ -92,7 +92,10 @@ order by tgname, relname
 /* Definition triggers */
 COPY (
 WITH trigger_list AS (
-  select tgname from pg_trigger GROUP BY tgname
+  select tgname from pg_trigger 
+  JOIN pg_class p ON tgrelid=p.oid
+  WHERE SUBSTR(p.relname, 1, 3) != 'vw_'  -- We cannot check for vw_ views, because  they are created after that script
+  GROUP BY tgname
 )
 select prosrc 
 from pg_trigger, pg_proc, trigger_list
