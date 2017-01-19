@@ -44,7 +44,7 @@ BEGIN
         'f'                                           -- statement_only
         );
 
-    IF NOT TG_ARGV[0]::boolean IS DISTINCT FROM 'f'::boolean THEN
+    IF NOT TG_ARGV[0]::BOOLEAN IS DISTINCT FROM 'f'::BOOLEAN THEN
         audit_row.client_query = NULL;
 
     END IF;
