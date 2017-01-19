@@ -80,10 +80,11 @@ order by
 
 /* List triggers */
 COPY (
-select tgname 
+select tgname, p.relname
 from pg_trigger
+JOIN pg_class p ON tgrelid=p.oid
 WHERE tgname not ilike 'RI_ConstraintTrigger_%'
-order by tgname
+order by tgname, relname
 ) TO STDOUT WITH CSV FORCE QUOTE *;;
 
 
