@@ -85,7 +85,7 @@ from pg_trigger
 JOIN pg_class p ON tgrelid=p.oid
 WHERE tgname not ilike 'RI_ConstraintTrigger_%'
 AND SUBSTR(p.relname, 1, 3) != 'vw_'  -- We cannot check for vw_ views, because  they are created after that script
-order by tgname, relname
+order by relname, tgname
 ) TO STDOUT WITH CSV FORCE QUOTE *;;
 
 
