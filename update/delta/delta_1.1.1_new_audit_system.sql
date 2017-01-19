@@ -26,7 +26,7 @@ BEGIN
     END IF;
 
     audit_row = ROW(
-        nextval('qwat_sys.logged_actions_event_id_seq'), -- event_id
+        NEXTVAL('qwat_sys.logged_actions_event_id_seq'), -- event_id
         TG_TABLE_SCHEMA::text,                        -- schema_name
         TG_TABLE_NAME::text,                          -- table_name
         TG_RELID,                                     -- relation OID for much quicker searches
