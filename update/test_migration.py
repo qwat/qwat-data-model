@@ -59,8 +59,9 @@ def _execute_statements(cur, fileName, diff_exe):
         print 'DataModel is NOT conform'
         print 'Diff:'
         os.system('{diff} -U 0 --ignore-all-space --ignore-blank-lines test_migration.expected.sql output.sql'.format(diff=diff_exe))
-        #print buffer_expected.replace('%','') # TODO Debug purpose
-        #print buffer.replace('%','') # TODO Debug purpose
+        print buffer_expected.replace('%','') # TODO Debug purpose
+        print '==================================================='
+        print buffer.replace('%','') # TODO Debug purpose
         # os.system('{diff} --ignore-all-space --ignore-blank-lines --side-by-side test_migration.expected.sql output.sql'.format(diff=diff_exe))
 
 if __name__ == "__main__":
