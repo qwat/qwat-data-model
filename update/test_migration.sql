@@ -93,15 +93,15 @@ order by tgname, relname
 COPY (
 WITH trigger_list AS (
   select tgname from pg_trigger 
-  JOIN pg_class p ON tgrelid=p.oid
-  WHERE SUBSTR(p.relname, 1, 3) != 'vw_'  -- We cannot check for vw_ views, because  they are created after that script
   GROUP BY tgname
 )
-select prosrc 
-from pg_trigger, pg_proc, trigger_list
-where pg_proc.oid=pg_trigger.tgfoid
-  and pg_trigger.tgname = trigger_list.tgname
-ORDER BY pg_trigger.tgname
+select prosrc, p.relname
+from pg_trigger t, pg_proc, trigger_list, pg_class p
+where pg_proc.oid=t.tgfoid
+  and t.tgname = trigger_list.tgname
+  AND t.tgrelid = p.oid
+  and  SUBSTR(p.relname, 1, 3) != 'vw_' -- We cannot check for vw_ views, because  they are created after that script
+ORDER BY t.tgname
 ) TO STDOUT WITH CSV FORCE QUOTE *;;
 
 /* List functions */
