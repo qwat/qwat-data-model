@@ -95,13 +95,13 @@ WITH trigger_list AS (
   select tgname from pg_trigger 
   GROUP BY tgname
 )
-select prosrc, p.relname
-from pg_trigger t, pg_proc, trigger_list, pg_class p
-where pg_proc.oid=t.tgfoid
-  and t.tgname = trigger_list.tgname
+select pp.prosrc, p.relname
+from pg_trigger t, pg_proc pp, trigger_list tl, pg_class p
+where pp.oid = t.tgfoid
+  and t.tgname = tl.tgname
   AND t.tgrelid = p.oid
   and  SUBSTR(p.relname, 1, 3) != 'vw_' -- We cannot check for vw_ views, because  they are created after that script
-ORDER BY t.tgname, p.relname
+ORDER BY p.relname, t.tgname 
 ) TO STDOUT WITH CSV FORCE QUOTE *;;
 
 /* List functions */
