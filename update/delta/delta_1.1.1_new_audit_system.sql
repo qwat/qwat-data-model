@@ -278,6 +278,7 @@ END
 $$;
 
 
+
 -- finishes with upgrading qwat version
 
 UPDATE qwat_sys.versions SET version = '1.1.1';
