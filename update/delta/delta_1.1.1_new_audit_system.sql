@@ -14,7 +14,7 @@ COMMENT ON COLUMN qwat_sys.logged_relations.uid_column IS 'Name of a column that
 CREATE OR REPLACE FUNCTION qwat_sys.if_modified_func() RETURNS TRIGGER AS $body$
 DECLARE
     audit_row qwat_sys.logged_actions;
-    include_values boolean;
+    include_values BOOLEAN;
     log_diffs boolean;
     h_old hstore;
     h_new hstore;
