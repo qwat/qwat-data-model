@@ -126,6 +126,78 @@ cannot obtain the active role because it is reset by the SECURITY DEFINER invoca
 of the audit trigger its self.
 $body$;
 
+
+
+CREATE OR REPLACE FUNCTION qwat_sys.audit_table(target_table regclass, audit_rows BOOLEAN, audit_query_text BOOLEAN, ignored_cols text[]) RETURNS void AS $body$
+DECLARE
+  stm_targets text = 'INSERT OR UPDATE OR DELETE OR TRUNCATE';
+  _q_txt text;
+  _ignored_cols_snip text = '';
+BEGIN
+    EXECUTE 'DROP TRIGGER IF EXISTS audit_trigger_row ON ' || target_table::text;
+    EXECUTE 'DROP TRIGGER IF EXISTS audit_trigger_stm ON ' || target_table::text;
+ 
+    IF audit_rows THEN
+        IF array_length(ignored_cols,1) > 0 THEN
+            _ignored_cols_snip = ', ' || quote_literal(ignored_cols);
+        END IF;
+        _q_txt = 'CREATE TRIGGER audit_trigger_row AFTER INSERT OR UPDATE OR DELETE ON ' || 
+                 target_table::text || 
+                 ' FOR EACH ROW EXECUTE PROCEDURE qwat_sys.if_modified_func(' ||
+                 quote_literal(audit_query_text) || _ignored_cols_snip || ');';
+        RAISE NOTICE '%',_q_txt;
+        EXECUTE _q_txt;
+        stm_targets = 'TRUNCATE';
+    ELSE
+    END IF;
+ 
+    _q_txt = 'CREATE TRIGGER audit_trigger_stm AFTER ' || stm_targets || ' ON ' ||
+             target_table ||
+             ' FOR EACH STATEMENT EXECUTE PROCEDURE qwat_sys.if_modified_func('||
+             quote_literal(audit_query_text) || ');';
+    RAISE NOTICE '%',_q_txt;
+    EXECUTE _q_txt;
+
+    -- store primary key names
+    insert into qwat_sys.logged_relations (relation_name, uid_column)
+         select target_table, a.attname
+           from pg_index i
+           join pg_attribute a on a.attrelid = i.indrelid
+                              and a.attnum = any(i.indkey)
+          where i.indrelid = target_table::regclass
+            and i.indisprimary
+            ;
+END;
+$body$
+LANGUAGE plpgsql;
+ 
+COMMENT ON FUNCTION qwat_sys.audit_table(regclass, BOOLEAN, BOOLEAN, text[]) IS $body$
+ADD auditing support TO a TABLE.
+ 
+Arguments:
+   target_table:     TABLE name, schema qualified IF NOT ON search_path
+   audit_rows:       Record each row CHANGE, OR only audit at a statement level
+   audit_query_text: Record the text of the client query that triggered the audit event?
+   ignored_cols:     COLUMNS TO exclude FROM UPDATE diffs, IGNORE updates that CHANGE only ignored cols.
+$body$;
+ 
+-- Pg doesn't allow variadic calls with 0 params, so provide a wrapper
+CREATE OR REPLACE FUNCTION qwat_sys.audit_table(target_table regclass, audit_rows BOOLEAN, audit_query_text BOOLEAN) RETURNS void AS $body$
+SELECT qwat_sys.audit_table($1, $2, $3, ARRAY[]::text[]);
+$body$ LANGUAGE SQL;
+ 
+-- And provide a convenience call wrapper for the simplest case
+-- of row-level logging with no excluded cols and query logging enabled.
+--
+CREATE OR REPLACE FUNCTION qwat_sys.audit_table(target_table regclass) RETURNS void AS $body$
+SELECT qwat_sys.audit_table($1, BOOLEAN 't', BOOLEAN 't');
+$body$ LANGUAGE 'sql';
+
+COMMENT ON FUNCTION qwat_sys.audit_table(regclass) IS $body$
+Add auditing support to the given table. Row-level changes will be logged with full client query text. No cols are ignored.
+$body$;
+
+
 CREATE OR REPLACE FUNCTION qwat_sys.replay_event(pevent_id int) RETURNS void AS $body$
 DECLARE
   query text;
@@ -170,7 +242,7 @@ Arguments:
    pevent_id:  The event_id of the event in qwat_sys.logged_actions to replay
 $body$;
 
-CREATE FUNCTION qwat_sys.audit_view(target_view regclass, audit_query_text BOOLEAN, ignored_cols text[], uid_cols text[]) RETURNS void AS $body$
+CREATE OR REPLACE FUNCTION qwat_sys.audit_view(target_view regclass, audit_query_text BOOLEAN, ignored_cols text[], uid_cols text[]) RETURNS void AS $body$
 DECLARE
   stm_targets text = 'INSERT OR UPDATE OR DELETE';
   _q_txt text;
@@ -207,9 +279,13 @@ Arguments:
    target_view:      TABLE name, schema qualified IF NOT ON search_path
    audit_query_text: Record the text of the client query that triggered the audit event?
    ignored_cols:     COLUMNS TO exclude FROM UPDATE diffs, IGNORE updates that CHANGE only ignored cols.
-   uid_cols:         COLUMNS to use to uniquely identify a row from the view (in order to replay UPDATE and DELETE)
+   uid_cols:         MANDATORY COLUMNS to use to uniquely identify a row from the view (in order to replay UPDATE and DELETE)
+
+Example:
+  SELECT qwat_sys.audit_view('qwat_od.vw_element_installation', 'true'::BOOLEAN, '{field_to_ignore}'::text[], '{key_field1, keyfield2}'::text[]) 
 $body$;
- 
+
+/*
 -- Pg doesn't allow variadic calls with 0 params, so provide a wrapper
 CREATE OR REPLACE FUNCTION qwat_sys.audit_view(target_view regclass, audit_query_text BOOLEAN, uid_cols text[]) RETURNS void AS $body$
 SELECT qwat_sys.audit_view($1, $2, ARRAY[]::text[], uid_cols);
@@ -221,7 +297,7 @@ $body$ LANGUAGE SQL;
 CREATE OR REPLACE FUNCTION qwat_sys.audit_view(target_view regclass, uid_cols text[]) RETURNS void AS $$
 SELECT qwat_sys.audit_view($1, BOOLEAN 't', uid_cols);
 $$ LANGUAGE 'sql';
-
+*/
 
 
 
