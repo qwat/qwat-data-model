@@ -86,7 +86,7 @@ BEGIN
     IF NOT (TG_WHEN IN ('AFTER' , 'INSTEAD OF')) THEN
         RAISE EXCEPTION 'qwat_sys.if_modified_func() may only run as an AFTER trigger';
     END IF;
- 
+
     audit_row = ROW(
         NEXTVAL('qwat_sys.logged_actions_event_id_seq'), -- event_id
         TG_TABLE_SCHEMA::text,                        -- schema_name
@@ -105,16 +105,16 @@ BEGIN
         NULL, NULL,                                   -- row_data, changed_fields
         'f'                                           -- statement_only
         );
- 
+
     IF NOT TG_ARGV[0]::BOOLEAN IS DISTINCT FROM 'f'::BOOLEAN THEN
         audit_row.client_query = NULL;
 
     END IF;
- 
+
     IF TG_ARGV[1] IS NOT NULL THEN
         excluded_cols = TG_ARGV[1]::text[];
     END IF;
- 
+
     IF (TG_OP = 'UPDATE' AND TG_LEVEL = 'ROW') THEN
         h_old = hstore(OLD.*) - excluded_cols;
         audit_row.row_data = h_old;
@@ -123,6 +123,7 @@ BEGIN
 
         IF audit_row.changed_fields = hstore('') THEN
             -- All changed fields are ignored. Skip this update.
+            RAISE WARNING '[qwat_sys.if_modified_func] - Trigger detected NULL hstore. ending';
             RETURN NULL;
         END IF;
   INSERT INTO qwat_sys.logged_actions VALUES (audit_row.*);
@@ -153,43 +154,42 @@ END;
 $body$
 LANGUAGE plpgsql
 SECURITY DEFINER
-SET search_path = pg_catalog, public
-;
- 
- 
+SET search_path = pg_catalog, public;
+
+
 COMMENT ON FUNCTION qwat_sys.if_modified_func() IS $body$
 Track changes TO a TABLE at the statement AND/OR row level.
- 
+
 Optional parameters TO TRIGGER IN CREATE TRIGGER call:
- 
+
 param 0: BOOLEAN, whether TO log the query text. default 't'.
- 
+
 param 1: text[], COLUMNS TO IGNORE IN updates. default [].
- 
+
          Updates TO ignored cols are omitted FROM changed_fields.
- 
+
          Updates WITH only ignored cols changed are NOT inserted
          INTO the audit log.
- 
-         Almost ALL the processing work IS still done FOR updates
-         that ignored. IF you need TO save the LOAD, you need TO USE
-         WHEN clause ON the TRIGGER instead.
- 
-         No warning OR error IS issued IF ignored_cols contains COLUMNS
-         that do NOT exist IN the target TABLE. This lets you specify
-         a standard SET of ignored COLUMNS.
- 
-There IS no parameter TO disable logging of VALUES. ADD this TRIGGER AS
-a 'FOR EACH STATEMENT' rather than 'FOR EACH ROW' TRIGGER IF you do NOT
-want TO log row VALUES.
- 
-Note that the user name logged IS the login role FOR the session. The audit TRIGGER
-cannot obtain the active role because it IS reset BY the SECURITY DEFINER invocation
-of the audit TRIGGER its self.
+
+         Almost ALL the processing work IS still done for updates
+         that ignored. If you need to save the load, you need to use
+         WHEN clause on the trigger instead.
+
+         No warning or error is issued if ignored_cols contains columns
+         that do not exist in the target table. This lets you specify
+         a standard set of ignored columns.
+
+There is no parameter to disable logging of values. Add this trigger as
+a 'FOR EACH STATEMENT' rather than 'FOR EACH ROW' trigger if you do not
+want to log row values.
+
+Note that the user name logged is the login role for the session. The audit trigger
+cannot obtain the active role because it is reset by the SECURITY DEFINER invocation
+of the audit trigger its self.
 $body$;
- 
- 
- 
+
+
+
 CREATE OR REPLACE FUNCTION qwat_sys.audit_table(target_table regclass, audit_rows BOOLEAN, audit_query_text BOOLEAN, ignored_cols text[]) RETURNS void AS $body$
 DECLARE
   stm_targets text = 'INSERT OR UPDATE OR DELETE OR TRUNCATE';

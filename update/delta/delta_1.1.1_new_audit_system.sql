@@ -52,7 +52,7 @@ BEGIN
     IF TG_ARGV[1] IS NOT NULL THEN
         excluded_cols = TG_ARGV[1]::text[];
     END IF;
-    
+
     IF (TG_OP = 'UPDATE' AND TG_LEVEL = 'ROW') THEN
         h_old = hstore(OLD.*) - excluded_cols;
         audit_row.row_data = h_old;
@@ -96,20 +96,20 @@ SET search_path = pg_catalog, public;
 
 
 COMMENT ON FUNCTION qwat_sys.if_modified_func() IS $body$
-Track changes to a table at the statement and/or row level.
+Track changes TO a TABLE at the statement AND/OR row level.
 
-Optional parameters to trigger in CREATE TRIGGER call:
+Optional parameters TO TRIGGER IN CREATE TRIGGER call:
 
-param 0: boolean, whether to log the query text. Default 't'.
+param 0: BOOLEAN, whether TO log the query text. default 't'.
 
-param 1: text[], columns to ignore in updates. Default [].
+param 1: text[], COLUMNS TO IGNORE IN updates. default [].
 
-         Updates to ignored cols are omitted from changed_fields.
+         Updates TO ignored cols are omitted FROM changed_fields.
 
-         Updates with only ignored cols changed are not inserted
-         into the audit log.
+         Updates WITH only ignored cols changed are NOT inserted
+         INTO the audit log.
 
-         Almost all the processing work is still done for updates
+         Almost ALL the processing work IS still done for updates
          that ignored. If you need to save the load, you need to use
          WHEN clause on the trigger instead.
 
