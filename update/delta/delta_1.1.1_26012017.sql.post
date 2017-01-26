@@ -1,0 +1,6 @@
+
+-- For test
+
+CREATE TABLE post_pre (id serial);
+DROP TABLE post_pre;
+
