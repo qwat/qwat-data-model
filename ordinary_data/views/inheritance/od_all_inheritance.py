@@ -63,7 +63,6 @@ children:
             alias: installation
             pkey: id
             pkey_value: NEW.id
-            allow_type_change: false
             schema: qwat_od
             generate_child_views: False
             exec_order: 1
@@ -108,7 +107,7 @@ children:
 
             merge_view:
                 name: vw_qwat_installation
-                allow_type_change: false
+                allow_type_change: true
 
         hydrant:
             c_table: qwat_od.hydrant
@@ -184,7 +183,7 @@ view: qwat_od.vw_element_hydrant
         qwat_od.node
         qwat_od.network_element
         hydrant
-        
+
 view: qwat_od.vw_element_samplingpoint
 view: qwat_od.vw_element_meter
 view: qwat_od.vw_element_subscriber
