@@ -16,6 +16,8 @@ RED='\033[0;31m'
 GREEN='\033[0;32m'
 NC='\033[0m' # No Color
 
+TAB_FILES_POST=()
+
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 while [[ $# > 0 ]]; do
@@ -91,6 +93,14 @@ do
         printf "    Processing ${GREEN}$CURRENT_DELTA${NC}, num version = $CURRENT_DELTA_NUM_VERSION ($CURRENT_DELTA_NUM_VERSION_FULL)\n"
         /usr/bin/psql -v ON_ERROR_STOP=1 --host $HOST --port 5432 --username "$USER" --no-password -q -d "$TESTCONFORMDB" -f $f
 
+        # Check if there is a POST file associated to the delta, if so, store it in the array for later execution
+        EXISTS_POST_FILE=$f'.post'
+        echo $EXISTS_POST_FILE
+        if [ -e "$EXISTS_POST_FILE" ]
+        then
+            TAB_FILES_POST+=($EXISTS_POST_FILE)
+        fi
+
         printf "        Verifying num version conformity - "
         # For each delta run on the DB, we have to check that the version number contained in the file name is the same that has been hardcoded in the DB
         # note: delta files MUST include at their end: UPDATE qwat_sys.versions SET version = 'x.x.x';
@@ -130,5 +140,13 @@ else
     printf "${RED}Migration TEST has failed${NC}. Please contact qWat team and give them the following output :\n $STATUS \n\n"
     EXITCODE=1
 fi
+
+# In the end, check if there are some POST files to execute (postfiles must be named exactly like the delta files that have been executed previously)
+printf "\n"
+for i in "${TAB_FILES_POST[@]}"
+do
+   printf "\n    Processing POST file: ${GREEN}$i${NC}\n"
+   /usr/bin/psql --host $HOST --port 5432 --username "$USER" --no-password -d "$QWATSERVICETEST" -f $i
+done
 
 exit $EXITCODE
