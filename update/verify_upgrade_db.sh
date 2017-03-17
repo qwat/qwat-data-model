@@ -170,12 +170,12 @@ if [[ $EXITCODE == 0 ]]; then
     git clone https://github.com/qwat/qwat-data-sample.git data-sample
     printf "\n${YELLOW}Restoring data-sample in qwat_demo${NC}\n"
     /usr/bin/pg_restore --host $HOST --port 5432 --username "$USER"  --no-password --dbname "$DEMODB" --verbose "data-sample/qwat_v1.2.1_data_and_structure_sample.backup" >output.txt 2>&1 # TODO read the title dynamically
+    echo "Done"
+
     # 2 - Execute deltas on that base that are > to the DB version
     printf "\n${YELLOW}Getting num version from qwat_demo${NC}\n"
     SAMPLE_VERSION=`/usr/bin/psql -v ON_ERROR_STOP=1 --host $HOST --port 5432 --username "$USER" --no-password -q -d "$DEMODB" -t -c "SELECT version FROM qwat_sys.versions;"`
-    echo "Done"
-    printf "\n${YELLOW}${SAMPLE_VERSION}${NC}\n"  # TODO remove
-    SAMPLE_VERSION="$(echo -e "${SAMPLE_VERSION}" | tr -d '[:space:]')"
+    printf "\n${GREEN}${SAMPLE_VERSION}${NC}\n"  # TODO remove
 
     printf "\n${YELLOW}Applying deltas on qwat_demo${NC}\n"
     for f in $DIR/delta/*.sql
