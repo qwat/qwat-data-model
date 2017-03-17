@@ -152,7 +152,7 @@ do
 done
 
 
-
+cd ..
 printf "\n\n\n${GREEN}Updating DATA-SAMPLE${NC}\n\n\n"
 
 # TODO split that part in another .sh file
