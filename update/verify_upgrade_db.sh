@@ -149,22 +149,65 @@ do
    /usr/bin/psql --host $HOST --port 5432 --username "$USER" --no-password -d "$QWATSERVICETEST" -f $i
 done
 
+# TODO split that part in another .sh file
+# script2.sh "$ARG1" "$ARG2" "$ARG3"
 if [[ $EXITCODE == 0 ]]; then
 #if [[ $TRAVIS_BRANCH == 'master' ]]  # TODO reactivate in the end
+    TAB_FILES_POST=()
     # If all is OK, update the DUMP demo ONLY IF WE ARE in the master
     # 1 - Load the DEMO dump in a new demo DB
     echo "Creating DB (qwat_demo)"
     /usr/bin/createdb "$DEMODB" --host $HOST --port 5432 --username "$USER" --no-password
     /usr/bin/psql --host $HOST --port 5432 --username "$USER" --no-password -d "$DEMODB" -c "CREATE EXTENSION postgis"
-    
-    git clone git@github.com:qwat/qwat-data-sample.git data-sample
-    cd $DIR/data-sample
-    /usr/bin/pg_restore --host $HOST --port 5432 --username "$USER"  --no-password --dbname "$DEMODB" --verbose "qwat_v1.2.0_data_and_structure_sample.backup"  # TODO read the title dynamically
+
+    echo "Cloning Data-sample repository"
+    git clone https://github.com/qwat/qwat-data-sample.git data-sample
+    echo "Restoring data-sample in DemoDB"
+    /usr/bin/pg_restore --host $HOST --port 5432 --username "$USER"  --no-password --dbname "$DEMODB" --verbose "data-sample/qwat_v1.2.0_data_and_structure_sample.backup"  # TODO read the title dynamically
     # 2 - Execute deltas on that base that are > to the DB version
+    echo "Getting num version from DemoDB"
+    SAMPLE_VERSION=`/usr/bin/psql -v ON_ERROR_STOP=1 --host $HOST --port 5432 --username "$USER" --no-password -q -d "$DEMODB" -t -c "SELECT version FROM qwat_sys.versions;"`
+    SAMPLE_VERSION="$(echo -e "${SAMPLE_VERSION}" | tr -d '[:space:]')"
+
+    echo "Applying deltas on DemoDB"
+    for f in $DIR/delta/*.sql
+    do
+        CURRENT_DELTA=$(basename "$f")
+        CURRENT_DELTA_WITHOUT_EXT="${CURRENT_DELTA%.*}"
+        CURRENT_DELTA_NUM_VERSION=$(echo $CURRENT_DELTA_WITHOUT_EXT| cut -c 7)
+        CURRENT_DELTA_NUM_VERSION_FULL=$(echo $CURRENT_DELTA_WITHOUT_EXT| cut -d'_' -f 2)
+        if [[ $CURRENT_DELTA_NUM_VERSION > $SAMPLE_VERSION || $CURRENT_DELTA_NUM_VERSION == $SAMPLE_VERSION || $SAMPLE_VERSION == '' ]]; then
+            printf "    Processing ${GREEN}$CURRENT_DELTA${NC}, num version = $CURRENT_DELTA_NUM_VERSION ($CURRENT_DELTA_NUM_VERSION_FULL)\n"
+            /usr/bin/psql -v ON_ERROR_STOP=1 --host $HOST --port 5432 --username "$USER" --no-password -q -d "$DEMODB" -f $f
+
+            # Check if there is a POST file associated to the delta, if so, store it in the array for later execution
+            EXISTS_POST_FILE=$f'.post'
+            echo $EXISTS_POST_FILE
+            if [ -e "$EXISTS_POST_FILE" ]
+            then
+                TAB_FILES_POST+=($EXISTS_POST_FILE)
+            fi
+        else
+            printf "    Bypassing  ${RED}$CURRENT_DELTA${NC}, num version = $CURRENT_DELTA_NUM_VERSION\n"
+        fi
+    done
     # 3 - re-create views & triggers
+    
+    echo "Reloading views and functions"
+    export PGSERVICE=$DEMODB
+    SRID=$SRID ./ordinary_data/views/rewrite_views.sh
+    SRID=$SRID ./ordinary_data/functions/rewrite_functions.sh
     # 4 - Execute post delta files if there are
+    printf "\n"
+    for i in "${TAB_FILES_POST[@]}"
+    do
+    printf "\n    Processing POST file: ${GREEN}$i${NC}\n"
+    /usr/bin/psql --host $HOST --port 5432 --username "$USER" --no-password -d "$DEMODB" -f $i
+    done
     # 5 - Launch unit test on $DEMODB
+    # TODO
     # 6 - Dump the new DB and update the GIT
+    # TODO
 #fi
 fi
 

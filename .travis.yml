@@ -14,7 +14,7 @@ install:
   - pip install pyyaml --quiet
 
 before_script: 
-  - printf "[qwat_test]\nhost=localhost\ndbname=qwat_test\nuser=postgres\n\n[qwat_test_conform]\nhost=localhost\ndbname=qwat_test_conform\nuser=postgres" > ~/.pg_service.conf
+  - printf "[qwat_test]\nhost=localhost\ndbname=qwat_test\nuser=postgres\n\n[qwat_test_conform]\nhost=localhost\ndbname=qwat_test_conform\nuser=postgres[demodb]\nhost=localhost\ndbname=demodb\nuser=postgres\n\n" > ~/.pg_service.conf
   - psql -c 'CREATE DATABASE qwat_test;' -U postgres
 
 script: 
