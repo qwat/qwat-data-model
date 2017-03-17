@@ -163,7 +163,7 @@ if [[ $EXITCODE == 0 ]]; then
     # 1 - Load the DEMO dump in a new demo DB
     printf "${YELLOW}Creating DB (qwat_demo)${NC}\n"
     /usr/bin/createdb "$DEMODB" --host $HOST --port 5432 --username "$USER" --no-password
-    /usr/bin/psql --host $HOST --port 5432 --username "$USER" --no-password -d "$DEMODB" -c "CREATE EXTENSION postgis"
+    /usr/bin/psql --host $HOST --port 5432 --username "$USER" --no-password -d "$DEMODB" -c "CREATE EXTENSION postgis; CREATE EXTENSION hstore;"
 
     printf "\n${YELLOW}Cloning Data-sample repository${NC}\n"
     git clone https://github.com/qwat/qwat-data-sample.git data-sample
