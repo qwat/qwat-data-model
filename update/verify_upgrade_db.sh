@@ -15,6 +15,7 @@ SRID=21781
 
 RED='\033[0;31m'
 GREEN='\033[0;32m'
+YELLOW='\033[0;33m'
 NC='\033[0m' # No Color
 
 TAB_FILES_POST=()
@@ -150,6 +151,10 @@ do
    /usr/bin/psql --host $HOST --port 5432 --username "$USER" --no-password -d "$QWATSERVICETEST" -f $i
 done
 
+
+
+printf "\n\n\n${GREEN}Updating DATA-SAMPLE${NC}\n\n\n"
+
 # TODO split that part in another .sh file
 # script2.sh "$ARG1" "$ARG2" "$ARG3"
 if [[ $EXITCODE == 0 ]]; then
@@ -157,20 +162,20 @@ if [[ $EXITCODE == 0 ]]; then
     TAB_FILES_POST=()
     # If all is OK, update the DUMP demo ONLY IF WE ARE in the master
     # 1 - Load the DEMO dump in a new demo DB
-    echo "Creating DB (qwat_demo)"
+    printf "${YELLOW}Creating DB (qwat_demo)${NC}\n"
     /usr/bin/createdb "$DEMODB" --host $HOST --port 5432 --username "$USER" --no-password
     /usr/bin/psql --host $HOST --port 5432 --username "$USER" --no-password -d "$DEMODB" -c "CREATE EXTENSION postgis"
 
-    echo "Cloning Data-sample repository"
+    printf "\n${YELLOW}Cloning Data-sample repository${NC}\n"
     git clone https://github.com/qwat/qwat-data-sample.git data-sample
-    echo "Restoring data-sample in DemoDB"
-    /usr/bin/pg_restore --host $HOST --port 5432 --username "$USER"  --no-password --dbname "$DEMODB" --verbose "data-sample/qwat_v1.2.0_data_and_structure_sample.backup"  # TODO read the title dynamically
+    printf "\n${YELLOW}Restoring data-sample in qwat_demo${NC}\n"
+    /usr/bin/pg_restore --host $HOST --port 5432 --username "$USER"  --no-password --dbname "$DEMODB" --verbose "data-sample/qwat_v1.2.1_data_and_structure_sample.backup"  # TODO read the title dynamically
     # 2 - Execute deltas on that base that are > to the DB version
-    echo "Getting num version from DemoDB"
+    printf "\n${YELLOW}Getting num version from qwat_demo${NC}\n"
     SAMPLE_VERSION=`/usr/bin/psql -v ON_ERROR_STOP=1 --host $HOST --port 5432 --username "$USER" --no-password -q -d "$DEMODB" -t -c "SELECT version FROM qwat_sys.versions;"`
     SAMPLE_VERSION="$(echo -e "${SAMPLE_VERSION}" | tr -d '[:space:]')"
 
-    echo "Applying deltas on DemoDB"
+    printf "\n${YELLOW}Applying deltas on qwat_demo${NC}\n"
     for f in $DIR/delta/*.sql
     do
         CURRENT_DELTA=$(basename "$f")
@@ -193,8 +198,9 @@ if [[ $EXITCODE == 0 ]]; then
         fi
     done
     # 3 - re-create views & triggers
-    
-    echo "Reloading views and functions"
+
+    printf "\n${YELLOW}Reloading views and functions${NC}\n"
+
     export PGSERVICE=$DEMODB
     SRID=$SRID ./ordinary_data/views/rewrite_views.sh
     SRID=$SRID ./ordinary_data/functions/rewrite_functions.sh
