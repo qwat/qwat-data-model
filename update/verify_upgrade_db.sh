@@ -150,7 +150,7 @@ do
    /usr/bin/psql --host $HOST --port 5432 --username "$USER" --no-password -d "$QWATSERVICETEST" -f $i
 done
 
-if [[ $EXITCODE == 0 ]] then
+if [[ $EXITCODE == 0 ]]; then
 #if [[ $TRAVIS_BRANCH == 'master' ]]  # TODO reactivate in the end
     # If all is OK, update the DUMP demo ONLY IF WE ARE in the master
     # 1 - Load the DEMO dump in a new demo DB
@@ -164,7 +164,8 @@ if [[ $EXITCODE == 0 ]] then
     # 2 - Execute deltas on that base that are > to the DB version
     # 3 - re-create views & triggers
     # 4 - Execute post delta files if there are
-    # 5 - Dump the new DB and update the GIT
+    # 5 - Launch unit test on $DEMODB
+    # 6 - Dump the new DB and update the GIT
 #fi
 fi
 
