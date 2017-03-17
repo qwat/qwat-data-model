@@ -173,7 +173,8 @@ if [[ $EXITCODE == 0 ]]; then
     # 2 - Execute deltas on that base that are > to the DB version
     printf "\n${YELLOW}Getting num version from qwat_demo${NC}\n"
     SAMPLE_VERSION=`/usr/bin/psql -v ON_ERROR_STOP=1 --host $HOST --port 5432 --username "$USER" --no-password -q -d "$DEMODB" -t -c "SELECT version FROM qwat_sys.versions;"`
-    printf "\n${YELLOW}SAMPLE_VERSION${NC}\n"  # TODO remove
+    echo "Done"
+    printf "\n${YELLOW}${SAMPLE_VERSION}${NC}\n"  # TODO remove
     SAMPLE_VERSION="$(echo -e "${SAMPLE_VERSION}" | tr -d '[:space:]')"
 
     printf "\n${YELLOW}Applying deltas on qwat_demo${NC}\n"
