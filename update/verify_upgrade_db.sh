@@ -6,6 +6,7 @@ set -e
 # PARAMS
 TESTDB=qwat_test
 TESTCONFORMDB=qwat_test_conform
+DEMODB=qwat_demo
 USER=postgres
 HOST=localhost
 QWATSERVICETEST=qwat_test
@@ -147,6 +148,24 @@ do
    printf "\n    Processing POST file: ${GREEN}$i${NC}\n"
    /usr/bin/psql --host $HOST --port 5432 --username "$USER" --no-password -d "$QWATSERVICETEST" -f $i
 done
+
+if [[ $EXITCODE == 0 ]] then
+#if [[ $TRAVIS_BRANCH == 'master' ]]  # TODO reactivate in the end
+    # If all is OK, update the DUMP demo ONLY IF WE ARE in the master
+    # 1 - Load the DEMO dump in a new demo DB
+    echo "Creating DB (qwat_demo)"
+    /usr/bin/createdb "$DEMODB" --host $HOST --port 5432 --username "$USER" --no-password
+    /usr/bin/psql --host $HOST --port 5432 --username "$USER" --no-password -d "$DEMODB" -c "CREATE EXTENSION postgis"
+    
+    git clone git@github.com:qwat/qwat-data-sample.git data-sample
+    cd $DIR/data-sample
+    /usr/bin/pg_restore --host $HOST --port 5432 --username "$USER"  --no-password --dbname "$DEMODB" --verbose "qwat_v1.2.0_data_and_structure_sample.backup"  # TODO read the title dynamically
+    # 2 - Execute deltas on that base that are > to the DB version
+    # 3 - re-create views & triggers
+    # 4 - Execute post delta files if there are
+    # 5 - Dump the new DB and update the GIT
+#fi
+fi
 
 exit $EXITCODE
 
