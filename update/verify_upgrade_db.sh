@@ -221,9 +221,9 @@ if [[ $EXITCODE == 0 ]]; then
     # 5 - Launch unit test on $DEMODB ?
 
     # 6 - Dump the new DB
-    
-    printf "\n${YELLOW}Dumping qwat_demo to qwat_v$LAST_VERSION_data_and_structure_sample.backup ${NC}\n"
-    /usr/bin/pg_dump --host $HOST --port 5432 --username "$USER" --no-password  --format custom --blobs --section data --verbose --file "/tmp/qwat_v$LAST_VERSION_data_and_structure_sample.backup" --schema "qwat_dr" --schema "qwat_od" "$DEMODB"
+    printf -v FILE_NAME "/tmp/qwat_v%s_data_and_structure_sample.backup" $LAST_VERSION
+    printf "\n${YELLOW}Dumping qwat_demo to $FILE_NAME ${NC}\n"
+    /usr/bin/pg_dump --host $HOST --port 5432 --username "$USER" --no-password  --format custom --blobs --section data --verbose --file "$FILE_NAME" --schema "qwat_dr" --schema "qwat_od" "$DEMODB"
     # 7 - Update git
     # TODO call python script
 #fi
