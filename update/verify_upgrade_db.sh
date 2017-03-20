@@ -218,7 +218,7 @@ if [[ $EXITCODE == 0 ]]; then
     # 6 - Dump the new DB
     
     printf "\n${YELLOW}Dumping qwat_demo to qwat_v$LAST_VERSION\_data_only_sample.backup ${NC}\n"
-    /usr/bin/pg_dump --host $HOST --port 5432 --username "$USER" --no-password  --format custom --blobs --section data --verbose --file "/tmp/qwat_v$LAST_VERSION\_data_only_sample.backup" --schema "qwat_dr" --schema "qwat_od" "$DEMODB"
+    /usr/bin/pg_dump --host $HOST --port 5432 --username "$USER" --no-password  --format custom --blobs --section data --verbose --file "/tmp/qwat_v$LAST_VERSION_data_only_sample.backup" --schema "qwat_dr" --schema "qwat_od" "$DEMODB"
     # 7 - Update git
     # TODO call python script
 #fi
