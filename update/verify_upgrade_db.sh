@@ -155,7 +155,7 @@ done
 cd ..
 printf "\n\n\n${GREEN}Updating DATA-SAMPLE${NC}\n\n\n"
 
-# TODO split that part in another .sh file
+# TODO split that part in another .sh file ?
 # script2.sh "$ARG1" "$ARG2" "$ARG3"
 if [[ $EXITCODE == 0 ]]; then
 #if [[ $TRAVIS_BRANCH == 'master' ]]  # TODO reactivate in the end
@@ -175,7 +175,7 @@ if [[ $EXITCODE == 0 ]]; then
     # 2 - Execute deltas on that base that are > to the DB version
     printf "\n${YELLOW}Getting num version from qwat_demo${NC}\n"
     SAMPLE_VERSION=`/usr/bin/psql -v ON_ERROR_STOP=1 --host $HOST --port 5432 --username "$USER" --no-password -q -d "$DEMODB" -t -c "SELECT version FROM qwat_sys.versions;"`
-    printf "\n${GREEN}${SAMPLE_VERSION}${NC}\n"  # TODO remove
+    printf "\n${GREEN}${SAMPLE_VERSION}${NC}\n"
 
     printf "\n${YELLOW}Applying deltas on qwat_demo${NC}\n"
     for f in $DIR/delta/*.sql
@@ -199,8 +199,9 @@ if [[ $EXITCODE == 0 ]]; then
             printf "    Bypassing  ${RED}$CURRENT_DELTA${NC}, num version = $CURRENT_DELTA_NUM_VERSION_FULL\n"
         fi
     done
-    # 3 - re-create views & triggers
+    LAST_VERSION=$CURRENT_DELTA_NUM_VERSION_FULL
 
+    # 3 - re-create views & triggers
     printf "\n${YELLOW}Reloading views and functions${NC}\n"
 
     export PGSERVICE=$DEMODB
@@ -214,9 +215,11 @@ if [[ $EXITCODE == 0 ]]; then
     /usr/bin/psql --host $HOST --port 5432 --username "$USER" --no-password -d "$DEMODB" -f $i
     done
     # 5 - Launch unit test on $DEMODB ?
-    # TODO
+
     # 6 - Dump the new DB
-    /usr/bin/pg_dump --host $HOST --port 5432 --username "$USER" --no-password  --format custom --blobs --section data --verbose --file "/tmp/qwat_v1.2.1_data_only_sample.backup" --schema "qwat_dr" --schema "qwat_od" "$DEMODB"
+    
+    printf "\n${YELLOW}Dumping qwat_demo to qwat_v$LAST_VERSION\_data_only_sample.backup ${NC}\n"
+    /usr/bin/pg_dump --host $HOST --port 5432 --username "$USER" --no-password  --format custom --blobs --section data --verbose --file "/tmp/qwat_v$LAST_VERSION\_data_only_sample.backup" --schema "qwat_dr" --schema "qwat_od" "$DEMODB"
     # 7 - Update git
     # TODO call python script
 #fi
