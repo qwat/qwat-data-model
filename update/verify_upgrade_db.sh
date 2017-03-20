@@ -189,7 +189,6 @@ if [[ $EXITCODE == 0 ]]; then
 
             # Check if there is a POST file associated to the delta, if so, store it in the array for later execution
             EXISTS_POST_FILE=$f'.post'
-            echo $EXISTS_POST_FILE
             if [ -e "$EXISTS_POST_FILE" ]
             then
                 TAB_FILES_POST+=($EXISTS_POST_FILE)
