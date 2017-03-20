@@ -200,6 +200,11 @@ if [[ $EXITCODE == 0 ]]; then
     done
     LAST_VERSION=$CURRENT_DELTA_NUM_VERSION_FULL
 
+    # Checking version
+    if [[ $LAST_VERSION < $SAMPLE_VERSION ]]; then
+        LAST_VERSION=$SAMPLE_VERSION
+    fi
+
     # 3 - re-create views & triggers
     printf "\n${YELLOW}Reloading views and functions${NC}\n"
 
@@ -217,8 +222,8 @@ if [[ $EXITCODE == 0 ]]; then
 
     # 6 - Dump the new DB
     
-    printf "\n${YELLOW}Dumping qwat_demo to qwat_v$LAST_VERSION\_data_only_sample.backup ${NC}\n"
-    /usr/bin/pg_dump --host $HOST --port 5432 --username "$USER" --no-password  --format custom --blobs --section data --verbose --file "/tmp/qwat_v$LAST_VERSION_data_only_sample.backup" --schema "qwat_dr" --schema "qwat_od" "$DEMODB"
+    printf "\n${YELLOW}Dumping qwat_demo to qwat_v$LAST_VERSION_data_and_structure_sample.backup ${NC}\n"
+    /usr/bin/pg_dump --host $HOST --port 5432 --username "$USER" --no-password  --format custom --blobs --section data --verbose --file "/tmp/qwat_v$LAST_VERSION_data_and_structure_sample.backup" --schema "qwat_dr" --schema "qwat_od" "$DEMODB"
     # 7 - Update git
     # TODO call python script
 #fi
