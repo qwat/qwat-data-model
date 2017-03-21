@@ -245,8 +245,9 @@ SRID=$SRID ${DIR}/ordinary_data/views/insert_views.sh
 
 
 # Finalize System
-psql -v ON_ERROR_STOP=1 -f ${DIR}/system/audit_tables.sql
-psql -v ON_ERROR_STOP=1 -f ${DIR}/system/update_sequences.sql
+psql -v ON_ERROR_STOP=1 -f system/audit_tables.sql
+psql -v ON_ERROR_STOP=1 -f system/audit_views.sql
+psql -v ON_ERROR_STOP=1 -f system/update_sequences.sql
 
 # Demo data
 if [[ "$DEMO" -eq 1 ]]; then

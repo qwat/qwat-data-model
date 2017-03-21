@@ -35,7 +35,7 @@ from information_schema.table_constraints as tc
 join information_schema.key_column_usage as kcu on (tc.constraint_name = kcu.constraint_name and tc.table_name = kcu.table_name)
 join information_schema.constraint_column_usage as ccu on ccu.constraint_name = tc.constraint_name
 where tc.constraint_schema in ('qwat_dr', 'qwat_od', 'qwat_sys', 'qwat_vl')
-ORDER BY tc.constraint_schema, tc.constraint_name
+ORDER BY tc.constraint_schema, physical_full_name, tc.constraint_name, foreign_table_name, foreign_column_name
 ) TO STDOUT WITH CSV FORCE QUOTE *;;
 
 /* List views & definition */
@@ -80,23 +80,28 @@ order by
 
 /* List triggers */
 COPY (
-select tgname 
+select tgname, p.relname
 from pg_trigger
+JOIN pg_class p ON tgrelid=p.oid
 WHERE tgname not ilike 'RI_ConstraintTrigger_%'
-order by tgname
+AND SUBSTR(p.relname, 1, 3) != 'vw_'  -- We cannot check for vw_ views, because  they are created after that script
+order by relname, tgname
 ) TO STDOUT WITH CSV FORCE QUOTE *;;
 
 
 /* Definition triggers */
 COPY (
 WITH trigger_list AS (
-  select tgname from pg_trigger GROUP BY tgname
+  select tgname from pg_trigger 
+  GROUP BY tgname
 )
-select prosrc 
-from pg_trigger, pg_proc, trigger_list
-where pg_proc.oid=pg_trigger.tgfoid
-  and pg_trigger.tgname = trigger_list.tgname
-ORDER BY pg_trigger.tgname
+select pp.prosrc, p.relname
+from pg_trigger t, pg_proc pp, trigger_list tl, pg_class p
+where pp.oid = t.tgfoid
+  and t.tgname = tl.tgname
+  AND t.tgrelid = p.oid
+  and  SUBSTR(p.relname, 1, 3) != 'vw_' -- We cannot check for vw_ views, because  they are created after that script
+ORDER BY p.relname, t.tgname 
 ) TO STDOUT WITH CSV FORCE QUOTE *;;
 
 /* List functions */

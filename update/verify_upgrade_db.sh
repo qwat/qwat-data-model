@@ -104,7 +104,7 @@ do
         printf "        Verifying num version conformity - "
         # For each delta run on the DB, we have to check that the version number contained in the file name is the same that has been hardcoded in the DB
         # note: delta files MUST include at their end: UPDATE qwat_sys.versions SET version = 'x.x.x';
-        OUTPUT_NUM=`/usr/bin/psql -v ON_ERROR_STOP=1 --host $HOST --port 5432 --username "$USER" --no-password -q -d "$TESTCONFORMDB" -t -c "SELECT version FROM qwat_sys.versions;"`
+        OUTPUT_NUM="$(/usr/bin/psql -v ON_ERROR_STOP=1 --host $HOST --port 5432 --username "$USER" --no-password -q -d "$TESTCONFORMDB" -t -c "SELECT version FROM qwat_sys.versions;")"
         OUTPUT_NUM="$(echo -e "${OUTPUT_NUM}" | tr -d '[:space:]')"
         if [ "$OUTPUT_NUM" != "$CURRENT_DELTA_NUM_VERSION_FULL" ]; then
             printf " Num in DB: ${GREEN}$OUTPUT_NUM${NC} - Num in file: ${RED}$CURRENT_DELTA_NUM_VERSION_FULL${NC} => ${RED}Numbers do NOT match !${NC}\n"
@@ -133,6 +133,7 @@ echo "Performing conformity test"
 STATUS=$(python test_migration.py --pg_service $QWATSERVICETESTCONFORM)
 
 if [[ $STATUS == "DataModel is OK" ]]; then
+    STATUS=echo $STATUS | sed 's/%/\\045/'
     printf "${GREEN}Migration TEST is successfull${NC}. You may now migrate your real DB\n"
     EXITCODE=0
 else
@@ -149,4 +150,3 @@ do
 done
 
 exit $EXITCODE
-
