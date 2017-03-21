@@ -1,0 +1,792 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<database name="qwat" schema="qwat_vl" type="PostgreSQL - 9.5.6">
+   <tables>
+      <table name="bedding" numRows="9" remarks="Bedding" schema="qwat_vl" type="TABLE">
+         <column autoUpdated="false" digits="0" id="0" name="id" nullable="false" remarks="" size="10" type="int4">
+            <child column="fk_bedding" foreignKey="pipe_fk_bedding" implied="false" onDeleteCascade="false" table="pipe"/>
+         </column>
+         <column autoUpdated="false" defaultValue="true" digits="0" id="1" name="vl_active" nullable="true" remarks="" size="1" type="bool"/>
+         <column autoUpdated="false" digits="0" id="2" name="short_fr" nullable="true" remarks="" size="10" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="3" name="short_en" nullable="true" remarks="" size="10" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="4" name="short_ro" nullable="true" remarks="" size="10" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="5" name="value_fr" nullable="true" remarks="" size="50" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="6" name="value_en" nullable="true" remarks="" size="50" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="7" name="value_ro" nullable="true" remarks="" size="50" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="8" name="description_fr" nullable="true" remarks="" size="2147483647" type="text"/>
+         <column autoUpdated="false" digits="0" id="9" name="description_en" nullable="true" remarks="" size="2147483647" type="text"/>
+         <column autoUpdated="false" digits="0" id="10" name="description_ro" nullable="true" remarks="" size="2147483647" type="text"/>
+         <primaryKey column="id" sequenceNumberInPK="1"/>
+         <index name="vl_bedding_pk" unique="true">
+            <column ascending="true" name="id"/>
+         </index>
+      </table>
+      <table name="cistern" numRows="5" remarks="" schema="qwat_vl" type="TABLE">
+         <column autoUpdated="false" digits="0" id="0" name="id" nullable="false" remarks="" size="10" type="int4">
+            <child column="cistern1_fk_type" foreignKey="tank_cistern1type" implied="false" onDeleteCascade="false" table="tank"/>
+            <child column="cistern2_fk_type" foreignKey="tank_cistern2type" implied="false" onDeleteCascade="false" table="tank"/>
+         </column>
+         <column autoUpdated="false" defaultValue="true" digits="0" id="1" name="vl_active" nullable="true" remarks="" size="1" type="bool"/>
+         <column autoUpdated="false" digits="0" id="2" name="short_fr" nullable="true" remarks="" size="10" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="3" name="short_en" nullable="true" remarks="" size="10" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="4" name="short_ro" nullable="true" remarks="" size="10" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="5" name="value_fr" nullable="true" remarks="" size="50" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="6" name="value_en" nullable="true" remarks="" size="50" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="7" name="value_ro" nullable="true" remarks="" size="50" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="8" name="description_fr" nullable="true" remarks="" size="2147483647" type="text"/>
+         <column autoUpdated="false" digits="0" id="9" name="description_en" nullable="true" remarks="" size="2147483647" type="text"/>
+         <column autoUpdated="false" digits="0" id="10" name="description_ro" nullable="true" remarks="" size="2147483647" type="text"/>
+         <primaryKey column="id" sequenceNumberInPK="1"/>
+         <index name="vl_cistern_pk" unique="true">
+            <column ascending="true" name="id"/>
+         </index>
+      </table>
+      <table name="cover_type" numRows="7" remarks="Type of covers" schema="qwat_vl" type="TABLE">
+         <column autoUpdated="false" digits="0" id="0" name="id" nullable="false" remarks="" size="10" type="int4">
+            <child column="fk_cover_type" foreignKey="cover_fk_type" implied="false" onDeleteCascade="false" table="cover"/>
+         </column>
+         <column autoUpdated="false" defaultValue="true" digits="0" id="1" name="vl_active" nullable="true" remarks="" size="1" type="bool"/>
+         <column autoUpdated="false" digits="0" id="2" name="short_fr" nullable="true" remarks="" size="10" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="3" name="short_en" nullable="true" remarks="" size="10" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="4" name="short_ro" nullable="true" remarks="" size="10" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="5" name="value_fr" nullable="true" remarks="" size="50" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="6" name="value_en" nullable="true" remarks="" size="50" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="7" name="value_ro" nullable="true" remarks="" size="50" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="8" name="description_fr" nullable="true" remarks="" size="2147483647" type="text"/>
+         <column autoUpdated="false" digits="0" id="9" name="description_en" nullable="true" remarks="" size="2147483647" type="text"/>
+         <column autoUpdated="false" digits="0" id="10" name="description_ro" nullable="true" remarks="" size="2147483647" type="text"/>
+         <primaryKey column="id" sequenceNumberInPK="1"/>
+         <index name="vl_cover_type_pk" unique="true">
+            <column ascending="true" name="id"/>
+         </index>
+      </table>
+      <table name="hydrant_material" numRows="6" remarks="" schema="qwat_vl" type="TABLE">
+         <column autoUpdated="false" digits="0" id="0" name="id" nullable="false" remarks="" size="10" type="int4">
+            <child column="fk_material" foreignKey="hydrant_fk_material" implied="false" onDeleteCascade="false" table="hydrant"/>
+         </column>
+         <column autoUpdated="false" defaultValue="true" digits="0" id="1" name="vl_active" nullable="true" remarks="" size="1" type="bool"/>
+         <column autoUpdated="false" digits="0" id="2" name="short_fr" nullable="true" remarks="" size="10" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="3" name="short_en" nullable="true" remarks="" size="10" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="4" name="short_ro" nullable="true" remarks="" size="10" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="5" name="value_fr" nullable="true" remarks="" size="50" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="6" name="value_en" nullable="true" remarks="" size="50" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="7" name="value_ro" nullable="true" remarks="" size="50" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="8" name="description_fr" nullable="true" remarks="" size="2147483647" type="text"/>
+         <column autoUpdated="false" digits="0" id="9" name="description_en" nullable="true" remarks="" size="2147483647" type="text"/>
+         <column autoUpdated="false" digits="0" id="10" name="description_ro" nullable="true" remarks="" size="2147483647" type="text"/>
+         <column autoUpdated="false" digits="0" id="11" name="pressure_nominal" nullable="true" remarks="nominal pressure in bars" size="5" type="int2"/>
+         <primaryKey column="id" sequenceNumberInPK="1"/>
+         <index name="vl_hydrant_material_pk" unique="true">
+            <column ascending="true" name="id"/>
+         </index>
+      </table>
+      <table name="hydrant_model_inf" numRows="21" remarks="" schema="qwat_vl" type="TABLE">
+         <column autoUpdated="false" digits="0" id="0" name="id" nullable="false" remarks="" size="10" type="int4">
+            <child column="fk_model_inf" foreignKey="hydrant_fk_model_inf" implied="false" onDeleteCascade="false" table="hydrant"/>
+         </column>
+         <column autoUpdated="false" defaultValue="true" digits="0" id="1" name="vl_active" nullable="true" remarks="" size="1" type="bool"/>
+         <column autoUpdated="false" digits="0" id="2" name="short_fr" nullable="true" remarks="" size="10" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="3" name="short_en" nullable="true" remarks="" size="10" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="4" name="short_ro" nullable="true" remarks="" size="10" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="5" name="value_fr" nullable="true" remarks="" size="50" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="6" name="value_en" nullable="true" remarks="" size="50" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="7" name="value_ro" nullable="true" remarks="" size="50" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="8" name="description_fr" nullable="true" remarks="" size="2147483647" type="text"/>
+         <column autoUpdated="false" digits="0" id="9" name="description_en" nullable="true" remarks="" size="2147483647" type="text"/>
+         <column autoUpdated="false" digits="0" id="10" name="description_ro" nullable="true" remarks="" size="2147483647" type="text"/>
+         <primaryKey column="id" sequenceNumberInPK="1"/>
+         <index name="vl_hydrant_model_inf_pk" unique="true">
+            <column ascending="true" name="id"/>
+         </index>
+      </table>
+      <table name="hydrant_model_sup" numRows="22" remarks="" schema="qwat_vl" type="TABLE">
+         <column autoUpdated="false" digits="0" id="0" name="id" nullable="false" remarks="" size="10" type="int4">
+            <child column="fk_model_sup" foreignKey="hydrant_fk_model_sup" implied="false" onDeleteCascade="false" table="hydrant"/>
+         </column>
+         <column autoUpdated="false" defaultValue="true" digits="0" id="1" name="vl_active" nullable="true" remarks="" size="1" type="bool"/>
+         <column autoUpdated="false" digits="0" id="2" name="short_fr" nullable="true" remarks="" size="10" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="3" name="short_en" nullable="true" remarks="" size="10" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="4" name="short_ro" nullable="true" remarks="" size="10" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="5" name="value_fr" nullable="true" remarks="" size="50" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="6" name="value_en" nullable="true" remarks="" size="50" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="7" name="value_ro" nullable="true" remarks="" size="50" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="8" name="description_fr" nullable="true" remarks="" size="2147483647" type="text"/>
+         <column autoUpdated="false" digits="0" id="9" name="description_en" nullable="true" remarks="" size="2147483647" type="text"/>
+         <column autoUpdated="false" digits="0" id="10" name="description_ro" nullable="true" remarks="" size="2147483647" type="text"/>
+         <primaryKey column="id" sequenceNumberInPK="1"/>
+         <index name="vl_hydrant_model_sup_pk" unique="true">
+            <column ascending="true" name="id"/>
+         </index>
+      </table>
+      <table name="hydrant_output" numRows="10" remarks="" schema="qwat_vl" type="TABLE">
+         <column autoUpdated="false" digits="0" id="0" name="id" nullable="false" remarks="" size="10" type="int4">
+            <child column="fk_output" foreignKey="hydrant_fk_output" implied="false" onDeleteCascade="false" table="hydrant"/>
+         </column>
+         <column autoUpdated="false" defaultValue="true" digits="0" id="1" name="vl_active" nullable="true" remarks="" size="1" type="bool"/>
+         <column autoUpdated="false" digits="0" id="2" name="short_fr" nullable="true" remarks="" size="10" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="3" name="short_en" nullable="true" remarks="" size="10" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="4" name="short_ro" nullable="true" remarks="" size="10" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="5" name="value_fr" nullable="true" remarks="" size="50" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="6" name="value_en" nullable="true" remarks="" size="50" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="7" name="value_ro" nullable="true" remarks="" size="50" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="8" name="description_fr" nullable="true" remarks="" size="2147483647" type="text"/>
+         <column autoUpdated="false" digits="0" id="9" name="description_en" nullable="true" remarks="" size="2147483647" type="text"/>
+         <column autoUpdated="false" digits="0" id="10" name="description_ro" nullable="true" remarks="" size="2147483647" type="text"/>
+         <primaryKey column="id" sequenceNumberInPK="1"/>
+         <index name="vl_hydrant_output_pk" unique="true">
+            <column ascending="true" name="id"/>
+         </index>
+      </table>
+      <table name="hydrant_provider" numRows="12" remarks="hydrant providers list." schema="qwat_vl" type="TABLE">
+         <column autoUpdated="false" digits="0" id="0" name="id" nullable="false" remarks="" size="10" type="int4">
+            <child column="fk_provider" foreignKey="hydrant_fk_provider" implied="false" onDeleteCascade="false" table="hydrant"/>
+         </column>
+         <column autoUpdated="false" defaultValue="true" digits="0" id="1" name="vl_active" nullable="true" remarks="" size="1" type="bool"/>
+         <column autoUpdated="false" digits="0" id="2" name="short_fr" nullable="true" remarks="" size="10" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="3" name="short_en" nullable="true" remarks="" size="10" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="4" name="short_ro" nullable="true" remarks="" size="10" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="5" name="value_fr" nullable="true" remarks="" size="50" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="6" name="value_en" nullable="true" remarks="" size="50" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="7" name="value_ro" nullable="true" remarks="" size="50" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="8" name="description_fr" nullable="true" remarks="" size="2147483647" type="text"/>
+         <column autoUpdated="false" digits="0" id="9" name="description_en" nullable="true" remarks="" size="2147483647" type="text"/>
+         <column autoUpdated="false" digits="0" id="10" name="description_ro" nullable="true" remarks="" size="2147483647" type="text"/>
+         <primaryKey column="id" sequenceNumberInPK="1"/>
+         <index name="vl_hydrant_provider_pk" unique="true">
+            <column ascending="true" name="id"/>
+         </index>
+      </table>
+      <table name="leak_cause" numRows="9" remarks="Causes of leak" schema="qwat_vl" type="TABLE">
+         <column autoUpdated="false" digits="0" id="0" name="id" nullable="false" remarks="" size="10" type="int4">
+            <child column="fk_cause" foreignKey="leak_fk_cause" implied="false" onDeleteCascade="false" table="leak"/>
+         </column>
+         <column autoUpdated="false" defaultValue="true" digits="0" id="1" name="vl_active" nullable="true" remarks="" size="1" type="bool"/>
+         <column autoUpdated="false" digits="0" id="2" name="short_fr" nullable="true" remarks="" size="10" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="3" name="short_en" nullable="true" remarks="" size="10" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="4" name="short_ro" nullable="true" remarks="" size="10" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="5" name="value_fr" nullable="true" remarks="" size="50" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="6" name="value_en" nullable="true" remarks="" size="50" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="7" name="value_ro" nullable="true" remarks="" size="50" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="8" name="description_fr" nullable="true" remarks="" size="2147483647" type="text"/>
+         <column autoUpdated="false" digits="0" id="9" name="description_en" nullable="true" remarks="" size="2147483647" type="text"/>
+         <column autoUpdated="false" digits="0" id="10" name="description_ro" nullable="true" remarks="" size="2147483647" type="text"/>
+         <primaryKey column="id" sequenceNumberInPK="1"/>
+         <index name="vl_leak_cause_pk" unique="true">
+            <column ascending="true" name="id"/>
+         </index>
+      </table>
+      <table name="locationtype" numRows="13" remarks="Location type for water specific elements" schema="qwat_vl" type="TABLE">
+         <column autoUpdated="false" digits="0" id="0" name="id" nullable="false" remarks="" size="10" type="int4"/>
+         <column autoUpdated="false" defaultValue="true" digits="0" id="1" name="vl_active" nullable="true" remarks="" size="1" type="bool"/>
+         <column autoUpdated="false" digits="0" id="2" name="short_fr" nullable="true" remarks="" size="10" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="3" name="short_en" nullable="true" remarks="" size="10" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="4" name="short_ro" nullable="true" remarks="" size="10" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="5" name="value_fr" nullable="true" remarks="" size="50" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="6" name="value_en" nullable="true" remarks="" size="50" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="7" name="value_ro" nullable="true" remarks="" size="50" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="8" name="description_fr" nullable="true" remarks="" size="2147483647" type="text"/>
+         <column autoUpdated="false" digits="0" id="9" name="description_en" nullable="true" remarks="" size="2147483647" type="text"/>
+         <column autoUpdated="false" digits="0" id="10" name="description_ro" nullable="true" remarks="" size="2147483647" type="text"/>
+         <primaryKey column="id" sequenceNumberInPK="1"/>
+         <index name="vl_location_pk" unique="true">
+            <column ascending="true" name="id"/>
+         </index>
+      </table>
+      <table name="object_reference" numRows="7" remarks="Reference for object measurements depicting where the measurement took place on the object, with respect to the sea-level" schema="qwat_vl" type="TABLE">
+         <column autoUpdated="false" digits="0" id="0" name="id" nullable="false" remarks="" size="10" type="int4">
+            <child column="fk_object_reference" foreignKey="constructionpoint_fk_object_reference" implied="false" onDeleteCascade="false" table="constructionpoint"/>
+            <child column="fk_object_reference" foreignKey="element_fk_object_reference" implied="false" onDeleteCascade="false" table="network_element"/>
+            <child column="fk_object_reference" foreignKey="valve_fk_object_reference" implied="false" onDeleteCascade="false" table="valve"/>
+         </column>
+         <column autoUpdated="false" defaultValue="true" digits="0" id="1" name="vl_active" nullable="true" remarks="" size="1" type="bool"/>
+         <column autoUpdated="false" digits="0" id="2" name="short_fr" nullable="true" remarks="" size="10" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="3" name="short_en" nullable="true" remarks="" size="10" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="4" name="short_ro" nullable="true" remarks="" size="10" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="5" name="value_fr" nullable="true" remarks="" size="50" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="6" name="value_en" nullable="true" remarks="" size="50" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="7" name="value_ro" nullable="true" remarks="" size="50" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="8" name="description_fr" nullable="true" remarks="" size="2147483647" type="text"/>
+         <column autoUpdated="false" digits="0" id="9" name="description_en" nullable="true" remarks="" size="2147483647" type="text"/>
+         <column autoUpdated="false" digits="0" id="10" name="description_ro" nullable="true" remarks="" size="2147483647" type="text"/>
+         <primaryKey column="id" sequenceNumberInPK="1"/>
+         <index name="vl_object_reference_pk" unique="true">
+            <column ascending="true" name="id"/>
+         </index>
+      </table>
+      <table name="overflow" numRows="5" remarks="" schema="qwat_vl" type="TABLE">
+         <column autoUpdated="false" digits="0" id="0" name="id" nullable="false" remarks="" size="10" type="int4">
+            <child column="fk_overflow" foreignKey="tank_fk_overflow" implied="false" onDeleteCascade="false" table="tank"/>
+         </column>
+         <column autoUpdated="false" defaultValue="true" digits="0" id="1" name="vl_active" nullable="true" remarks="" size="1" type="bool"/>
+         <column autoUpdated="false" digits="0" id="2" name="short_fr" nullable="true" remarks="" size="10" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="3" name="short_en" nullable="true" remarks="" size="10" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="4" name="short_ro" nullable="true" remarks="" size="10" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="5" name="value_fr" nullable="true" remarks="" size="50" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="6" name="value_en" nullable="true" remarks="" size="50" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="7" name="value_ro" nullable="true" remarks="" size="50" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="8" name="description_fr" nullable="true" remarks="" size="2147483647" type="text"/>
+         <column autoUpdated="false" digits="0" id="9" name="description_en" nullable="true" remarks="" size="2147483647" type="text"/>
+         <column autoUpdated="false" digits="0" id="10" name="description_ro" nullable="true" remarks="" size="2147483647" type="text"/>
+         <primaryKey column="id" sequenceNumberInPK="1"/>
+         <index name="vl_overflow_pk" unique="true">
+            <column ascending="true" name="id"/>
+         </index>
+      </table>
+      <table name="part_type" numRows="11" remarks="table for installation parts. They are supposed to be on top of nodes and might be used to display a specific symbol." schema="qwat_vl" type="TABLE">
+         <column autoUpdated="false" digits="0" id="0" name="id" nullable="false" remarks="" size="10" type="int4">
+            <child column="fk_part_type" foreignKey="part_fk_type" implied="false" onDeleteCascade="false" table="part"/>
+         </column>
+         <column autoUpdated="false" defaultValue="true" digits="0" id="1" name="vl_active" nullable="true" remarks="" size="1" type="bool"/>
+         <column autoUpdated="false" digits="0" id="2" name="short_fr" nullable="true" remarks="" size="10" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="3" name="short_en" nullable="true" remarks="" size="10" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="4" name="short_ro" nullable="true" remarks="" size="10" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="5" name="value_fr" nullable="true" remarks="" size="50" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="6" name="value_en" nullable="true" remarks="" size="50" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="7" name="value_ro" nullable="true" remarks="" size="50" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="8" name="description_fr" nullable="true" remarks="" size="2147483647" type="text"/>
+         <column autoUpdated="false" digits="0" id="9" name="description_en" nullable="true" remarks="" size="2147483647" type="text"/>
+         <column autoUpdated="false" digits="0" id="10" name="description_ro" nullable="true" remarks="" size="2147483647" type="text"/>
+         <primaryKey column="id" sequenceNumberInPK="1"/>
+         <index name="vl_part_type_pk" unique="true">
+            <column ascending="true" name="id"/>
+         </index>
+      </table>
+      <table name="pipe_function" numRows="14" remarks="Function for pipe. Here is determined if pipe should be visible or not in the schematic view, but this can be overidden by the pipe attribute schema_force_visible." schema="qwat_vl" type="TABLE">
+         <column autoUpdated="false" digits="0" id="0" name="id" nullable="false" remarks="" size="10" type="int4">
+            <child column="fk_function" foreignKey="pipe_fk_function" implied="false" onDeleteCascade="false" table="pipe"/>
+         </column>
+         <column autoUpdated="false" defaultValue="true" digits="0" id="1" name="vl_active" nullable="true" remarks="" size="1" type="bool"/>
+         <column autoUpdated="false" digits="0" id="2" name="short_fr" nullable="true" remarks="" size="10" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="3" name="short_en" nullable="true" remarks="" size="10" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="4" name="short_ro" nullable="true" remarks="" size="10" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="5" name="value_fr" nullable="true" remarks="" size="50" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="6" name="value_en" nullable="true" remarks="" size="50" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="7" name="value_ro" nullable="true" remarks="" size="50" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="8" name="description_fr" nullable="true" remarks="" size="2147483647" type="text"/>
+         <column autoUpdated="false" digits="0" id="9" name="description_en" nullable="true" remarks="" size="2147483647" type="text"/>
+         <column autoUpdated="false" digits="0" id="10" name="description_ro" nullable="true" remarks="" size="2147483647" type="text"/>
+         <column autoUpdated="false" defaultValue="true" digits="0" id="11" name="schema_visible" nullable="false" remarks="" size="1" type="bool"/>
+         <column autoUpdated="false" defaultValue="true" digits="0" id="12" name="major" nullable="false" remarks="" size="1" type="bool"/>
+         <column autoUpdated="false" digits="0" id="13" name="code_sire" nullable="true" remarks="" size="5" type="int2"/>
+         <primaryKey column="id" sequenceNumberInPK="1"/>
+         <index name="vl_pipe_function_pk" unique="true">
+            <column ascending="true" name="id"/>
+         </index>
+      </table>
+      <table name="pipe_installmethod" numRows="10" remarks="Installation methods." schema="qwat_vl" type="TABLE">
+         <column autoUpdated="false" digits="0" id="0" name="id" nullable="false" remarks="" size="10" type="int4">
+            <child column="fk_installmethod" foreignKey="pipe_fk_installmethod" implied="false" onDeleteCascade="false" table="pipe"/>
+         </column>
+         <column autoUpdated="false" defaultValue="true" digits="0" id="1" name="vl_active" nullable="true" remarks="" size="1" type="bool"/>
+         <column autoUpdated="false" digits="0" id="2" name="short_fr" nullable="true" remarks="" size="10" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="3" name="short_en" nullable="true" remarks="" size="10" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="4" name="short_ro" nullable="true" remarks="" size="10" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="5" name="value_fr" nullable="true" remarks="" size="50" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="6" name="value_en" nullable="true" remarks="" size="50" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="7" name="value_ro" nullable="true" remarks="" size="50" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="8" name="description_fr" nullable="true" remarks="" size="2147483647" type="text"/>
+         <column autoUpdated="false" digits="0" id="9" name="description_en" nullable="true" remarks="" size="2147483647" type="text"/>
+         <column autoUpdated="false" digits="0" id="10" name="description_ro" nullable="true" remarks="" size="2147483647" type="text"/>
+         <primaryKey column="id" sequenceNumberInPK="1"/>
+         <index name="vl_pipe_installmethod_pk" unique="true">
+            <column ascending="true" name="id"/>
+         </index>
+      </table>
+      <table name="pipe_material" numRows="567" remarks="List of materials for pipe. All the possible combinations material/diameter are listed in this table. _displayname_fr, _displayname_ro and _displayname_en are automatically generated by rules on insert and update. They are meant to be used in QGIS for the combo box of pipe.fk_material.&#10;&#10;Remark: The pipe industry maintains two different ways to refer to the dimension of a pipe:&#10;- Nominal Diameter (DN) which is commonly used for steel/iron pipes but also for GRP.&#10;- Exterior Diameter or Outer Diameter(OD) is taken into consideration when referring to the plastic pipes (PE, PVC).&#10;&#10;The DN is a number that represents the approximate interior diameter, in mm. The value represents only an approximation of the pipe diameter so that engineers use a nice round number; the actual value is usually off by a few mm.&#10;So, when referring simply to the diameter, it is assumed that for plastic pipes you're referring to the outer one, and for iron/steel and GRP ones to the approximate interior one - Nominal Diameter (DN).&#10;&#10;PE80 and PE100 are both types of polyethylene that are used for water pipes (PE32, PE40 and PE63 also exist).&#10;&#10;Pipes made from PE100 are mechanically stronger (and gives a greater pressure rating than PE80 for the same SDR).  Materials that are used in the production of polyethylene pipes are classified by MRS. Minimum Required Strenght (MRS) is the value of durability that the material has against internal pressure under 20 degrees C for 50 years in MPa.&#10;&#10;Material  | MRS (MPa)&#10;--------------------------&#10;PE 100    |   10&#10;--------------------------&#10;PE 80      |   8&#10;--------------------------&#10;&#10;Standard dimension ratio (SDR) is a method of rating a pipe's durability against pressure.&#10;The standard dimension ratio describes the correlation between the pipe dimension and the thickness of the pipe wall.&#10;SDR = external diameter (mm) / wall thickness (mm).&#10;Pipes with a lower SDR can withstand higher pressure.&#10;Common nominations are SDR11 and SDR17.&#10;&#10;The GRP pipes materials values were taken from producer HOBAS standards.&#10;&#10;Added only GRP values for SN 10000. TODO rest if relevant" schema="qwat_vl" type="TABLE">
+         <column autoUpdated="false" digits="0" id="0" name="id" nullable="false" remarks="" size="10" type="int4">
+            <child column="fk_material" foreignKey="pipe_fk_material" implied="false" onDeleteCascade="false" table="pipe"/>
+            <child column="fk_material" foreignKey="remote_fk_material" implied="false" onDeleteCascade="false" table="remote"/>
+         </column>
+         <column autoUpdated="false" defaultValue="true" digits="0" id="1" name="vl_active" nullable="true" remarks="" size="1" type="bool"/>
+         <column autoUpdated="false" digits="0" id="2" name="short_fr" nullable="true" remarks="" size="10" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="3" name="short_en" nullable="true" remarks="" size="10" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="4" name="short_ro" nullable="true" remarks="" size="10" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="5" name="value_fr" nullable="true" remarks="" size="50" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="6" name="value_en" nullable="true" remarks="" size="50" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="7" name="value_ro" nullable="true" remarks="" size="50" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="8" name="description_fr" nullable="true" remarks="" size="2147483647" type="text"/>
+         <column autoUpdated="false" digits="0" id="9" name="description_en" nullable="true" remarks="" size="2147483647" type="text"/>
+         <column autoUpdated="false" digits="0" id="10" name="description_ro" nullable="true" remarks="" size="2147483647" type="text"/>
+         <column autoUpdated="false" digits="0" id="11" name="_displayname_fr" nullable="true" remarks="" size="30" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="12" name="_displayname_en" nullable="true" remarks="" size="30" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="13" name="_displayname_ro" nullable="true" remarks="" size="30" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="14" name="diameter" nullable="true" remarks="Represents the usual name of the pipe diameter (how you call it).&#10;Commonly, it should be equivalent to:&#10;- the external diameter for plastic pipe&#10;- the nominal diameter for iron/steel and GRP" size="10" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="15" name="diameter_nominal" nullable="true" remarks="The nominal diameter (DN) is a number that represents the approximate interior diameter, in mm.&#10;It's commonly used when referring steel/iron pipes but also for GRP." size="5" type="int2"/>
+         <column autoUpdated="false" digits="3" id="16" name="diameter_internal" nullable="true" remarks="" size="7" type="numeric"/>
+         <column autoUpdated="false" digits="3" id="17" name="diameter_external" nullable="true" remarks="Commonly used when referring to plastic pipes." size="7" type="numeric"/>
+         <column autoUpdated="false" digits="0" id="18" name="code_sire" nullable="true" remarks="" size="5" type="int2"/>
+         <column autoUpdated="false" digits="17" id="19" name="pressure_nominal" nullable="true" remarks="nominal pressure in bars" size="17" type="float8"/>
+         <column autoUpdated="false" digits="17" id="20" name="sdr" nullable="true" remarks="" size="17" type="float8"/>
+         <column autoUpdated="false" digits="1" id="21" name="wall_thickness" nullable="true" remarks="" size="4" type="numeric"/>
+         <column autoUpdated="false" digits="0" id="22" name="sn" nullable="true" remarks="Refers to the SN Nominal Stiffness in N/m² and it's specific to GRP pipes.&#10;&#10;The greater a pipe’s wall thickness, the greater is its stiffness and therefore its ability to resist external bending loads or low internal pressure.&#10;From a mechanical point of view, it has proved useful to classify GRP pipes according to their stiffness – as opposed to wall thickness.&#10;&#10;SN 2500 - These pipes are suitable for buried installation, but are mainly used for relining.&#10;&#10;SN 5000 - Pipes of this stiffness are selected for minor loads, for example when installed in mixed soil at a depth of 3 m and a live load corresponding to a 60 t truck.&#10;&#10;SN 10000 - These pipes are designed for high loads, for example for installation in mixed soil at a depth of 4 m or a live load corresponding to a 60 t truck with little soil cover." size="10" type="int4"/>
+         <primaryKey column="id" sequenceNumberInPK="1"/>
+         <index name="vl_pipe_material_pk" unique="true">
+            <column ascending="true" name="id"/>
+         </index>
+      </table>
+      <table name="pipe_protection" numRows="14" remarks="Pipe protection details." schema="qwat_vl" type="TABLE">
+         <column autoUpdated="false" digits="0" id="0" name="id" nullable="false" remarks="" size="10" type="int4">
+            <child column="fk_protection" foreignKey="pipe_fk_protection" implied="false" onDeleteCascade="false" table="pipe"/>
+         </column>
+         <column autoUpdated="false" defaultValue="true" digits="0" id="1" name="vl_active" nullable="true" remarks="" size="1" type="bool"/>
+         <column autoUpdated="false" digits="0" id="2" name="short_fr" nullable="true" remarks="" size="10" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="3" name="short_en" nullable="true" remarks="" size="10" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="4" name="short_ro" nullable="true" remarks="" size="10" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="5" name="value_fr" nullable="true" remarks="" size="50" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="6" name="value_en" nullable="true" remarks="" size="50" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="7" name="value_ro" nullable="true" remarks="" size="50" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="8" name="description_fr" nullable="true" remarks="" size="2147483647" type="text"/>
+         <column autoUpdated="false" digits="0" id="9" name="description_en" nullable="true" remarks="" size="2147483647" type="text"/>
+         <column autoUpdated="false" digits="0" id="10" name="description_ro" nullable="true" remarks="" size="2147483647" type="text"/>
+         <primaryKey column="id" sequenceNumberInPK="1"/>
+         <index name="vl_pipe_protection_pk" unique="true">
+            <column ascending="true" name="id"/>
+         </index>
+      </table>
+      <table name="precision" numRows="7" remarks="pressure precision." schema="qwat_vl" type="TABLE">
+         <column autoUpdated="false" digits="0" id="0" name="id" nullable="false" remarks="" size="10" type="int4">
+            <child column="fk_precision" foreignKey="element_fk_precision" implied="false" onDeleteCascade="false" table="network_element"/>
+            <child column="fk_precision" foreignKey="pipe_fk_precision" implied="false" onDeleteCascade="false" table="pipe"/>
+            <child column="fk_precision" foreignKey="remote_fk_precision" implied="false" onDeleteCascade="false" table="remote"/>
+            <child column="fk_handle_precision" foreignKey="valve_fk_handle_precision" implied="false" onDeleteCascade="false" table="valve"/>
+            <child column="fk_precision" foreignKey="valve_fk_precision" implied="false" onDeleteCascade="false" table="valve"/>
+         </column>
+         <column autoUpdated="false" defaultValue="true" digits="0" id="1" name="vl_active" nullable="true" remarks="" size="1" type="bool"/>
+         <column autoUpdated="false" digits="0" id="2" name="short_fr" nullable="true" remarks="" size="10" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="3" name="short_en" nullable="true" remarks="" size="10" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="4" name="short_ro" nullable="true" remarks="" size="10" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="5" name="value_fr" nullable="true" remarks="" size="50" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="6" name="value_en" nullable="true" remarks="" size="50" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="7" name="value_ro" nullable="true" remarks="" size="50" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="8" name="description_fr" nullable="true" remarks="" size="2147483647" type="text"/>
+         <column autoUpdated="false" digits="0" id="9" name="description_en" nullable="true" remarks="" size="2147483647" type="text"/>
+         <column autoUpdated="false" digits="0" id="10" name="description_ro" nullable="true" remarks="" size="2147483647" type="text"/>
+         <column autoUpdated="false" digits="0" id="11" name="code_sire" nullable="true" remarks="" size="5" type="int2"/>
+         <primaryKey column="id" sequenceNumberInPK="1"/>
+         <index name="vl_precision_pk" unique="true">
+            <column ascending="true" name="id"/>
+         </index>
+      </table>
+      <table name="precisionalti" numRows="8" remarks="precision of altitude" schema="qwat_vl" type="TABLE">
+         <column autoUpdated="false" digits="0" id="0" name="id" nullable="false" remarks="" size="10" type="int4">
+            <child column="fk_precisionalti" foreignKey="element_fk_precisionalti" implied="false" onDeleteCascade="false" table="network_element"/>
+            <child column="fk_handle_precisionalti" foreignKey="valve_fk_handle_precisionalti" implied="false" onDeleteCascade="false" table="valve"/>
+            <child column="fk_precisionalti" foreignKey="valve_fk_precisionalti" implied="false" onDeleteCascade="false" table="valve"/>
+         </column>
+         <column autoUpdated="false" defaultValue="true" digits="0" id="1" name="vl_active" nullable="true" remarks="" size="1" type="bool"/>
+         <column autoUpdated="false" digits="0" id="2" name="short_fr" nullable="true" remarks="" size="10" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="3" name="short_en" nullable="true" remarks="" size="10" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="4" name="short_ro" nullable="true" remarks="" size="10" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="5" name="value_fr" nullable="true" remarks="" size="50" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="6" name="value_en" nullable="true" remarks="" size="50" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="7" name="value_ro" nullable="true" remarks="" size="50" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="8" name="description_fr" nullable="true" remarks="" size="2147483647" type="text"/>
+         <column autoUpdated="false" digits="0" id="9" name="description_en" nullable="true" remarks="" size="2147483647" type="text"/>
+         <column autoUpdated="false" digits="0" id="10" name="description_ro" nullable="true" remarks="" size="2147483647" type="text"/>
+         <column autoUpdated="false" digits="0" id="11" name="code_sire" nullable="true" remarks="" size="5" type="int2"/>
+         <primaryKey column="id" sequenceNumberInPK="1"/>
+         <index name="vl_precisionalti_pk" unique="true">
+            <column ascending="true" name="id"/>
+         </index>
+      </table>
+      <table name="pressurecontrol_type" numRows="6" remarks="" schema="qwat_vl" type="TABLE">
+         <column autoUpdated="false" digits="0" id="0" name="id" nullable="false" remarks="" size="10" type="int4">
+            <child column="fk_pressurecontrol_type" foreignKey="pressurecontrol_fk_type" implied="false" onDeleteCascade="false" table="pressurecontrol"/>
+         </column>
+         <column autoUpdated="false" defaultValue="true" digits="0" id="1" name="vl_active" nullable="true" remarks="" size="1" type="bool"/>
+         <column autoUpdated="false" digits="0" id="2" name="short_fr" nullable="true" remarks="" size="10" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="3" name="short_en" nullable="true" remarks="" size="10" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="4" name="short_ro" nullable="true" remarks="" size="10" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="5" name="value_fr" nullable="true" remarks="" size="50" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="6" name="value_en" nullable="true" remarks="" size="50" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="7" name="value_ro" nullable="true" remarks="" size="50" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="8" name="description_fr" nullable="true" remarks="" size="2147483647" type="text"/>
+         <column autoUpdated="false" digits="0" id="9" name="description_en" nullable="true" remarks="" size="2147483647" type="text"/>
+         <column autoUpdated="false" digits="0" id="10" name="description_ro" nullable="true" remarks="" size="2147483647" type="text"/>
+         <primaryKey column="id" sequenceNumberInPK="1"/>
+         <index name="vl_pressurecontrol_type_pk" unique="true">
+            <column ascending="true" name="id"/>
+         </index>
+      </table>
+      <table name="protectionzone_type" numRows="8" remarks="type of protection zone.&#10;&#10;Specifc to Switzerland:&#10;&#10;Groundwater protection zones are the most incisive tool available for planning purposes. Zones of this kind are to be designated around all groundwater wells serving the public interest.&#10;&#10;In the groundwater protection zones surrounding drinking water installations (groundwater wells, artificial recharge facilities), significant restrictions are imposed on human activities. The regulations become less stringent as one moves from the centre to the periphery:&#10;&#10;1. Wellhead protection zone S1&#10;The zone S1 comprises the area immediately surrounding a groundwater well or artificial recharge facility (at least 10 m around the well and around the collection system). In this zone, only construction work and activities connected with drinking water supply are permitted. The aim is to prevent damage to the facilities or direct contamination of the water abstracted. The zone S1 should therefore be purchased and fenced in by the drinking water supplier.&#10;&#10;2. Inner protection zone S2&#10;The inner protection zone S2 is primarily designed to prevent contamination of drinking water with pathogenic microorganisms and to ensure that groundwater flows are not adversely affected or obstructed as they approach the well.&#10;&#10;In this zone, the spreading of liquid manure is therefore prohibited, as are the infiltration of wastewater and the construction of buildings and installations.&#10;&#10;3. Outer protection zone S3&#10;The outer protection zone is designed to ensure that, in the event of an accident, sufficient time and space are available to ward off any hazards to drinking water. Thus, facilities that pose a hazard to groundwater (e.g. petrol stations) are not allowed to be located in zone S3. Wastewater seepage and gravel extraction are likewise prohibited in this area.&#10;&#10;Source: http://www.bafu.admin.ch/grundwasser/07483/07485/10037/index.html?lang=en" schema="qwat_vl" type="TABLE">
+         <column autoUpdated="false" digits="0" id="0" name="id" nullable="false" remarks="" size="10" type="int4">
+            <child column="fk_type" foreignKey="protectionzone_fk_type" implied="false" onDeleteCascade="false" table="protectionzone"/>
+         </column>
+         <column autoUpdated="false" defaultValue="true" digits="0" id="1" name="vl_active" nullable="true" remarks="" size="1" type="bool"/>
+         <column autoUpdated="false" digits="0" id="2" name="short_fr" nullable="true" remarks="" size="10" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="3" name="short_en" nullable="true" remarks="" size="10" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="4" name="short_ro" nullable="true" remarks="" size="10" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="5" name="value_fr" nullable="true" remarks="" size="50" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="6" name="value_en" nullable="true" remarks="" size="50" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="7" name="value_ro" nullable="true" remarks="" size="50" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="8" name="description_fr" nullable="true" remarks="" size="2147483647" type="text"/>
+         <column autoUpdated="false" digits="0" id="9" name="description_en" nullable="true" remarks="" size="2147483647" type="text"/>
+         <column autoUpdated="false" digits="0" id="10" name="description_ro" nullable="true" remarks="" size="2147483647" type="text"/>
+         <primaryKey column="id" sequenceNumberInPK="1"/>
+         <index name="vl_protectionzone_type_pk" unique="true">
+            <column ascending="true" name="id"/>
+         </index>
+      </table>
+      <table name="pump_operating" numRows="5" remarks="" schema="qwat_vl" type="TABLE">
+         <column autoUpdated="false" digits="0" id="0" name="id" nullable="false" remarks="" size="10" type="int4">
+            <child column="fk_pump_operating" foreignKey="pump_fk_pump_operating" implied="false" onDeleteCascade="false" table="pump"/>
+         </column>
+         <column autoUpdated="false" defaultValue="true" digits="0" id="1" name="vl_active" nullable="true" remarks="" size="1" type="bool"/>
+         <column autoUpdated="false" digits="0" id="2" name="short_fr" nullable="true" remarks="" size="10" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="3" name="short_en" nullable="true" remarks="" size="10" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="4" name="short_ro" nullable="true" remarks="" size="10" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="5" name="value_fr" nullable="true" remarks="" size="50" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="6" name="value_en" nullable="true" remarks="" size="50" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="7" name="value_ro" nullable="true" remarks="" size="50" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="8" name="description_fr" nullable="true" remarks="" size="2147483647" type="text"/>
+         <column autoUpdated="false" digits="0" id="9" name="description_en" nullable="true" remarks="" size="2147483647" type="text"/>
+         <column autoUpdated="false" digits="0" id="10" name="description_ro" nullable="true" remarks="" size="2147483647" type="text"/>
+         <column autoUpdated="false" digits="0" id="11" name="code_sire" nullable="true" remarks="" size="5" type="int2"/>
+         <primaryKey column="id" sequenceNumberInPK="1"/>
+         <index name="vl_pump_operating_pk" unique="true">
+            <column ascending="true" name="id"/>
+         </index>
+      </table>
+      <table name="pump_type" numRows="6" remarks="" schema="qwat_vl" type="TABLE">
+         <column autoUpdated="false" digits="0" id="0" name="id" nullable="false" remarks="" size="10" type="int4">
+            <child column="fk_pump_type" foreignKey="pump_fk_type" implied="false" onDeleteCascade="false" table="pump"/>
+         </column>
+         <column autoUpdated="false" defaultValue="true" digits="0" id="1" name="vl_active" nullable="true" remarks="" size="1" type="bool"/>
+         <column autoUpdated="false" digits="0" id="2" name="short_fr" nullable="true" remarks="" size="10" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="3" name="short_en" nullable="true" remarks="" size="10" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="4" name="short_ro" nullable="true" remarks="" size="10" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="5" name="value_fr" nullable="true" remarks="" size="50" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="6" name="value_en" nullable="true" remarks="" size="50" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="7" name="value_ro" nullable="true" remarks="" size="50" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="8" name="description_fr" nullable="true" remarks="" size="2147483647" type="text"/>
+         <column autoUpdated="false" digits="0" id="9" name="description_en" nullable="true" remarks="" size="2147483647" type="text"/>
+         <column autoUpdated="false" digits="0" id="10" name="description_ro" nullable="true" remarks="" size="2147483647" type="text"/>
+         <column autoUpdated="false" digits="0" id="11" name="code_sire" nullable="true" remarks="" size="5" type="int2"/>
+         <primaryKey column="id" sequenceNumberInPK="1"/>
+         <index name="vl_pump_type_pk" unique="true">
+            <column ascending="true" name="id"/>
+         </index>
+      </table>
+      <table name="remote_type" numRows="10" remarks="" schema="qwat_vl" type="TABLE">
+         <column autoUpdated="false" digits="0" id="0" name="id" nullable="false" remarks="" size="10" type="int4">
+            <child column="fk_remote" foreignKey="installation_fk_remote" implied="false" onDeleteCascade="false" table="installation"/>
+         </column>
+         <column autoUpdated="false" defaultValue="true" digits="0" id="1" name="vl_active" nullable="true" remarks="" size="1" type="bool"/>
+         <column autoUpdated="false" digits="0" id="2" name="short_fr" nullable="true" remarks="" size="10" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="3" name="short_en" nullable="true" remarks="" size="10" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="4" name="short_ro" nullable="true" remarks="" size="10" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="5" name="value_fr" nullable="true" remarks="" size="50" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="6" name="value_en" nullable="true" remarks="" size="50" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="7" name="value_ro" nullable="true" remarks="" size="50" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="8" name="description_fr" nullable="true" remarks="" size="2147483647" type="text"/>
+         <column autoUpdated="false" digits="0" id="9" name="description_en" nullable="true" remarks="" size="2147483647" type="text"/>
+         <column autoUpdated="false" digits="0" id="10" name="description_ro" nullable="true" remarks="" size="2147483647" type="text"/>
+         <primaryKey column="id" sequenceNumberInPK="1"/>
+         <index name="vl_remote_type_pk" unique="true">
+            <column ascending="true" name="id"/>
+         </index>
+      </table>
+      <table name="source_quality" numRows="6" remarks="" schema="qwat_vl" type="TABLE">
+         <column autoUpdated="false" digits="0" id="0" name="id" nullable="false" remarks="" size="10" type="int4">
+            <child column="fk_source_quality" foreignKey="source_fk_source_quality" implied="false" onDeleteCascade="false" table="source"/>
+         </column>
+         <column autoUpdated="false" defaultValue="true" digits="0" id="1" name="vl_active" nullable="true" remarks="" size="1" type="bool"/>
+         <column autoUpdated="false" digits="0" id="2" name="short_fr" nullable="true" remarks="" size="10" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="3" name="short_en" nullable="true" remarks="" size="10" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="4" name="short_ro" nullable="true" remarks="" size="10" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="5" name="value_fr" nullable="true" remarks="" size="50" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="6" name="value_en" nullable="true" remarks="" size="50" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="7" name="value_ro" nullable="true" remarks="" size="50" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="8" name="description_fr" nullable="true" remarks="" size="2147483647" type="text"/>
+         <column autoUpdated="false" digits="0" id="9" name="description_en" nullable="true" remarks="" size="2147483647" type="text"/>
+         <column autoUpdated="false" digits="0" id="10" name="description_ro" nullable="true" remarks="" size="2147483647" type="text"/>
+         <column autoUpdated="false" digits="0" id="11" name="code_sire" nullable="true" remarks="" size="5" type="int2"/>
+         <primaryKey column="id" sequenceNumberInPK="1"/>
+         <index name="vl_source_quality_pk" unique="true">
+            <column ascending="true" name="id"/>
+         </index>
+      </table>
+      <table name="source_type" numRows="7" remarks="" schema="qwat_vl" type="TABLE">
+         <column autoUpdated="false" digits="0" id="0" name="id" nullable="false" remarks="" size="10" type="int4">
+            <child column="fk_source_type" foreignKey="source_fk_type" implied="false" onDeleteCascade="false" table="source"/>
+         </column>
+         <column autoUpdated="false" defaultValue="true" digits="0" id="1" name="vl_active" nullable="true" remarks="" size="1" type="bool"/>
+         <column autoUpdated="false" digits="0" id="2" name="short_fr" nullable="true" remarks="" size="10" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="3" name="short_en" nullable="true" remarks="" size="10" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="4" name="short_ro" nullable="true" remarks="" size="10" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="5" name="value_fr" nullable="true" remarks="" size="50" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="6" name="value_en" nullable="true" remarks="" size="50" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="7" name="value_ro" nullable="true" remarks="" size="50" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="8" name="description_fr" nullable="true" remarks="" size="2147483647" type="text"/>
+         <column autoUpdated="false" digits="0" id="9" name="description_en" nullable="true" remarks="" size="2147483647" type="text"/>
+         <column autoUpdated="false" digits="0" id="10" name="description_ro" nullable="true" remarks="" size="2147483647" type="text"/>
+         <column autoUpdated="false" digits="0" id="11" name="code_sire" nullable="true" remarks="" size="5" type="int2"/>
+         <primaryKey column="id" sequenceNumberInPK="1"/>
+         <index name="vl_source_type_pk" unique="true">
+            <column ascending="true" name="id"/>
+         </index>
+      </table>
+      <table name="status" numRows="10" remarks="Status table, with SIRE id." schema="qwat_vl" type="TABLE">
+         <column autoUpdated="false" digits="0" id="0" name="id" nullable="false" remarks="" size="10" type="int4">
+            <child column="fk_status" foreignKey="element_fk_status" implied="false" onDeleteCascade="false" table="network_element"/>
+            <child column="fk_status" foreignKey="pipe_fk_status" implied="false" onDeleteCascade="false" table="pipe"/>
+            <child column="fk_status" foreignKey="remote_fk_status" implied="false" onDeleteCascade="false" table="remote"/>
+            <child column="fk_status" foreignKey="valve_fk_status" implied="false" onDeleteCascade="false" table="valve"/>
+         </column>
+         <column autoUpdated="false" defaultValue="true" digits="0" id="1" name="vl_active" nullable="true" remarks="" size="1" type="bool"/>
+         <column autoUpdated="false" digits="0" id="2" name="short_fr" nullable="true" remarks="" size="10" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="3" name="short_en" nullable="true" remarks="" size="10" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="4" name="short_ro" nullable="true" remarks="" size="10" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="5" name="value_fr" nullable="true" remarks="" size="50" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="6" name="value_en" nullable="true" remarks="" size="50" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="7" name="value_ro" nullable="true" remarks="" size="50" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="8" name="description_fr" nullable="true" remarks="" size="2147483647" type="text"/>
+         <column autoUpdated="false" digits="0" id="9" name="description_en" nullable="true" remarks="" size="2147483647" type="text"/>
+         <column autoUpdated="false" digits="0" id="10" name="description_ro" nullable="true" remarks="" size="2147483647" type="text"/>
+         <column autoUpdated="false" defaultValue="true" digits="0" id="11" name="active" nullable="true" remarks="" size="1" type="bool"/>
+         <column autoUpdated="false" defaultValue="true" digits="0" id="12" name="functional" nullable="true" remarks="" size="1" type="bool"/>
+         <column autoUpdated="false" digits="0" id="13" name="code_sire" nullable="true" remarks="" size="5" type="int2"/>
+         <primaryKey column="id" sequenceNumberInPK="1"/>
+         <index name="vl_status_pk" unique="true">
+            <column ascending="true" name="id"/>
+         </index>
+      </table>
+      <table name="subscriber_type" numRows="8" remarks="type for subscriber." schema="qwat_vl" type="TABLE">
+         <column autoUpdated="false" digits="0" id="0" name="id" nullable="false" remarks="" size="10" type="int4">
+            <child column="fk_subscriber_type" foreignKey="subscriber_fk_type" implied="false" onDeleteCascade="false" table="subscriber"/>
+         </column>
+         <column autoUpdated="false" defaultValue="true" digits="0" id="1" name="vl_active" nullable="true" remarks="" size="1" type="bool"/>
+         <column autoUpdated="false" digits="0" id="2" name="short_fr" nullable="true" remarks="" size="10" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="3" name="short_en" nullable="true" remarks="" size="10" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="4" name="short_ro" nullable="true" remarks="" size="10" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="5" name="value_fr" nullable="true" remarks="" size="50" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="6" name="value_en" nullable="true" remarks="" size="50" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="7" name="value_ro" nullable="true" remarks="" size="50" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="8" name="description_fr" nullable="true" remarks="" size="2147483647" type="text"/>
+         <column autoUpdated="false" digits="0" id="9" name="description_en" nullable="true" remarks="" size="2147483647" type="text"/>
+         <column autoUpdated="false" digits="0" id="10" name="description_ro" nullable="true" remarks="" size="2147483647" type="text"/>
+         <primaryKey column="id" sequenceNumberInPK="1"/>
+         <index name="vl_subscriber_type_pk" unique="true">
+            <column ascending="true" name="id"/>
+         </index>
+      </table>
+      <table name="survey_type" numRows="5" remarks="Water type table, with SIRE code." schema="qwat_vl" type="TABLE">
+         <column autoUpdated="false" digits="0" id="0" name="id" nullable="false" remarks="" size="10" type="int4">
+            <child column="fk_survey_type" foreignKey="surveypoint_fk_type" implied="false" onDeleteCascade="false" table="surveypoint"/>
+         </column>
+         <column autoUpdated="false" defaultValue="true" digits="0" id="1" name="vl_active" nullable="true" remarks="" size="1" type="bool"/>
+         <column autoUpdated="false" digits="0" id="2" name="short_fr" nullable="true" remarks="" size="10" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="3" name="short_en" nullable="true" remarks="" size="10" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="4" name="short_ro" nullable="true" remarks="" size="10" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="5" name="value_fr" nullable="true" remarks="" size="50" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="6" name="value_en" nullable="true" remarks="" size="50" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="7" name="value_ro" nullable="true" remarks="" size="50" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="8" name="description_fr" nullable="true" remarks="" size="2147483647" type="text"/>
+         <column autoUpdated="false" digits="0" id="9" name="description_en" nullable="true" remarks="" size="2147483647" type="text"/>
+         <column autoUpdated="false" digits="0" id="10" name="description_ro" nullable="true" remarks="" size="2147483647" type="text"/>
+         <column autoUpdated="false" digits="0" id="11" name="code_sire" nullable="true" remarks="" size="5" type="int2"/>
+         <primaryKey column="id" sequenceNumberInPK="1"/>
+         <index name="vl_survey_type_pk" unique="true">
+            <column ascending="true" name="id"/>
+         </index>
+      </table>
+      <table name="tank_firestorage" numRows="9" remarks="" schema="qwat_vl" type="TABLE">
+         <column autoUpdated="false" digits="0" id="0" name="id" nullable="false" remarks="" size="10" type="int4">
+            <child column="fk_tank_firestorage" foreignKey="tank_fk_tank_firestorage" implied="false" onDeleteCascade="false" table="tank"/>
+         </column>
+         <column autoUpdated="false" defaultValue="true" digits="0" id="1" name="vl_active" nullable="true" remarks="" size="1" type="bool"/>
+         <column autoUpdated="false" digits="0" id="2" name="short_fr" nullable="true" remarks="" size="10" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="3" name="short_en" nullable="true" remarks="" size="10" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="4" name="short_ro" nullable="true" remarks="" size="10" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="5" name="value_fr" nullable="true" remarks="" size="50" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="6" name="value_en" nullable="true" remarks="" size="50" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="7" name="value_ro" nullable="true" remarks="" size="50" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="8" name="description_fr" nullable="true" remarks="" size="2147483647" type="text"/>
+         <column autoUpdated="false" digits="0" id="9" name="description_en" nullable="true" remarks="" size="2147483647" type="text"/>
+         <column autoUpdated="false" digits="0" id="10" name="description_ro" nullable="true" remarks="" size="2147483647" type="text"/>
+         <primaryKey column="id" sequenceNumberInPK="1"/>
+         <index name="vl_tank_firestorage_pk" unique="true">
+            <column ascending="true" name="id"/>
+         </index>
+      </table>
+      <table name="value_list_base" numRows="895" remarks="Master tables for value lists. It will be inherited by value list tables. This table shall not be filled. Be warned that value list table shal have its own unique index on id since PG does not propagate indexes. Therefore unicity of id cannot be garanteed over all value lists." schema="qwat_vl" type="TABLE">
+         <column autoUpdated="false" digits="0" id="0" name="id" nullable="false" remarks="" size="10" type="int4"/>
+         <column autoUpdated="false" defaultValue="true" digits="0" id="1" name="vl_active" nullable="true" remarks="" size="1" type="bool"/>
+         <column autoUpdated="false" digits="0" id="2" name="short_fr" nullable="true" remarks="" size="10" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="3" name="short_en" nullable="true" remarks="" size="10" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="4" name="short_ro" nullable="true" remarks="" size="10" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="5" name="value_fr" nullable="true" remarks="" size="50" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="6" name="value_en" nullable="true" remarks="" size="50" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="7" name="value_ro" nullable="true" remarks="" size="50" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="8" name="description_fr" nullable="true" remarks="" size="2147483647" type="text"/>
+         <column autoUpdated="false" digits="0" id="9" name="description_en" nullable="true" remarks="" size="2147483647" type="text"/>
+         <column autoUpdated="false" digits="0" id="10" name="description_ro" nullable="true" remarks="" size="2147483647" type="text"/>
+         <primaryKey column="id" sequenceNumberInPK="1"/>
+         <index name="value_list_base_pk" unique="true">
+            <column ascending="true" name="id"/>
+         </index>
+      </table>
+      <table name="valve_actuation" numRows="7" remarks="valve actuation/actionnement/acţionare" schema="qwat_vl" type="TABLE">
+         <column autoUpdated="false" digits="0" id="0" name="id" nullable="false" remarks="" size="10" type="int4">
+            <child column="fk_valve_actuation" foreignKey="valve_fk_valve_actuation" implied="false" onDeleteCascade="false" table="valve"/>
+         </column>
+         <column autoUpdated="false" defaultValue="true" digits="0" id="1" name="vl_active" nullable="true" remarks="" size="1" type="bool"/>
+         <column autoUpdated="false" digits="0" id="2" name="short_fr" nullable="true" remarks="" size="10" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="3" name="short_en" nullable="true" remarks="" size="10" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="4" name="short_ro" nullable="true" remarks="" size="10" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="5" name="value_fr" nullable="true" remarks="" size="50" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="6" name="value_en" nullable="true" remarks="" size="50" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="7" name="value_ro" nullable="true" remarks="" size="50" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="8" name="description_fr" nullable="true" remarks="" size="2147483647" type="text"/>
+         <column autoUpdated="false" digits="0" id="9" name="description_en" nullable="true" remarks="" size="2147483647" type="text"/>
+         <column autoUpdated="false" digits="0" id="10" name="description_ro" nullable="true" remarks="" size="2147483647" type="text"/>
+         <column autoUpdated="false" defaultValue="true" digits="0" id="11" name="schema_visible" nullable="false" remarks="" size="1" type="bool"/>
+         <primaryKey column="id" sequenceNumberInPK="1"/>
+         <index name="vl_valve_actuation_pk" unique="true">
+            <column ascending="true" name="id"/>
+         </index>
+      </table>
+      <table name="valve_function" numRows="15" remarks="Functions for valves" schema="qwat_vl" type="TABLE">
+         <column autoUpdated="false" digits="0" id="0" name="id" nullable="false" remarks="" size="10" type="int4">
+            <child column="fk_valve_function" foreignKey="valve_fk_function" implied="false" onDeleteCascade="false" table="valve"/>
+         </column>
+         <column autoUpdated="false" defaultValue="true" digits="0" id="1" name="vl_active" nullable="true" remarks="" size="1" type="bool"/>
+         <column autoUpdated="false" digits="0" id="2" name="short_fr" nullable="true" remarks="" size="10" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="3" name="short_en" nullable="true" remarks="" size="10" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="4" name="short_ro" nullable="true" remarks="" size="10" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="5" name="value_fr" nullable="true" remarks="" size="50" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="6" name="value_en" nullable="true" remarks="" size="50" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="7" name="value_ro" nullable="true" remarks="" size="50" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="8" name="description_fr" nullable="true" remarks="" size="2147483647" type="text"/>
+         <column autoUpdated="false" digits="0" id="9" name="description_en" nullable="true" remarks="" size="2147483647" type="text"/>
+         <column autoUpdated="false" digits="0" id="10" name="description_ro" nullable="true" remarks="" size="2147483647" type="text"/>
+         <column autoUpdated="false" defaultValue="true" digits="0" id="11" name="schema_visible" nullable="false" remarks="" size="1" type="bool"/>
+         <primaryKey column="id" sequenceNumberInPK="1"/>
+         <index name="vl_valve_function_pk" unique="true">
+            <column ascending="true" name="id"/>
+         </index>
+      </table>
+      <table name="valve_maintenance" numRows="6" remarks="valve maintenance table." schema="qwat_vl" type="TABLE">
+         <column autoUpdated="false" digits="0" id="0" name="id" nullable="false" remarks="" size="10" type="int4"/>
+         <column autoUpdated="false" defaultValue="true" digits="0" id="1" name="vl_active" nullable="true" remarks="" size="1" type="bool"/>
+         <column autoUpdated="false" digits="0" id="2" name="short_fr" nullable="true" remarks="" size="10" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="3" name="short_en" nullable="true" remarks="" size="10" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="4" name="short_ro" nullable="true" remarks="" size="10" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="5" name="value_fr" nullable="true" remarks="" size="50" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="6" name="value_en" nullable="true" remarks="" size="50" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="7" name="value_ro" nullable="true" remarks="" size="50" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="8" name="description_fr" nullable="true" remarks="" size="2147483647" type="text"/>
+         <column autoUpdated="false" digits="0" id="9" name="description_en" nullable="true" remarks="" size="2147483647" type="text"/>
+         <column autoUpdated="false" digits="0" id="10" name="description_ro" nullable="true" remarks="" size="2147483647" type="text"/>
+         <column autoUpdated="false" digits="0" id="11" name="priority" nullable="true" remarks="" size="5" type="int2"/>
+         <primaryKey column="id" sequenceNumberInPK="1"/>
+         <index name="vlvalve_maintenance_pk" unique="true">
+            <column ascending="true" name="id"/>
+         </index>
+      </table>
+      <table name="valve_type" numRows="15" remarks="Types of valve" schema="qwat_vl" type="TABLE">
+         <column autoUpdated="false" digits="0" id="0" name="id" nullable="false" remarks="" size="10" type="int4">
+            <child column="fk_valve_type" foreignKey="valve_fk_type" implied="false" onDeleteCascade="false" table="valve"/>
+         </column>
+         <column autoUpdated="false" defaultValue="true" digits="0" id="1" name="vl_active" nullable="true" remarks="" size="1" type="bool"/>
+         <column autoUpdated="false" digits="0" id="2" name="short_fr" nullable="true" remarks="" size="10" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="3" name="short_en" nullable="true" remarks="" size="10" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="4" name="short_ro" nullable="true" remarks="" size="10" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="5" name="value_fr" nullable="true" remarks="" size="50" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="6" name="value_en" nullable="true" remarks="" size="50" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="7" name="value_ro" nullable="true" remarks="" size="50" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="8" name="description_fr" nullable="true" remarks="" size="2147483647" type="text"/>
+         <column autoUpdated="false" digits="0" id="9" name="description_en" nullable="true" remarks="" size="2147483647" type="text"/>
+         <column autoUpdated="false" digits="0" id="10" name="description_ro" nullable="true" remarks="" size="2147483647" type="text"/>
+         <primaryKey column="id" sequenceNumberInPK="1"/>
+         <index name="vl_valve_type_pk" unique="true">
+            <column ascending="true" name="id"/>
+         </index>
+      </table>
+      <table name="visible" numRows="3" remarks="Table for editing in qgis tri state boolean (NULL/True/False) by using value relation." schema="qwat_vl" type="TABLE">
+         <column autoUpdated="false" digits="0" id="0" name="id" nullable="false" remarks="" size="10" type="int4"/>
+         <column autoUpdated="false" defaultValue="true" digits="0" id="1" name="vl_active" nullable="true" remarks="" size="1" type="bool"/>
+         <column autoUpdated="false" digits="0" id="2" name="short_fr" nullable="true" remarks="" size="10" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="3" name="short_en" nullable="true" remarks="" size="10" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="4" name="short_ro" nullable="true" remarks="" size="10" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="5" name="value_fr" nullable="true" remarks="" size="50" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="6" name="value_en" nullable="true" remarks="" size="50" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="7" name="value_ro" nullable="true" remarks="" size="50" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="8" name="description_fr" nullable="true" remarks="" size="2147483647" type="text"/>
+         <column autoUpdated="false" digits="0" id="9" name="description_en" nullable="true" remarks="" size="2147483647" type="text"/>
+         <column autoUpdated="false" digits="0" id="10" name="description_ro" nullable="true" remarks="" size="2147483647" type="text"/>
+         <column autoUpdated="false" digits="0" id="11" name="vl_code" nullable="true" remarks="" size="1" type="bool">
+            <child column="schema_force_visible" foreignKey="network_element_schema_force_visible" implied="false" onDeleteCascade="false" table="network_element"/>
+            <child column="schema_force_visible" foreignKey="pipe_schema_force_visible" implied="false" onDeleteCascade="false" table="pipe"/>
+            <child column="schema_force_visible" foreignKey="valve_schema_force_visible" implied="false" onDeleteCascade="false" table="valve"/>
+         </column>
+         <column autoUpdated="false" digits="0" id="12" name="vl_code_int" nullable="true" remarks="" size="5" type="int2">
+            <child column="label_1_visible" foreignKey="cover_label_1_visible" implied="false" onDeleteCascade="false" table="cover"/>
+            <child column="label_2_visible" foreignKey="cover_label_2_visible" implied="false" onDeleteCascade="false" table="cover"/>
+            <child column="label_1_visible" foreignKey="district_label_1_visible" implied="false" onDeleteCascade="false" table="district"/>
+            <child column="label_2_visible" foreignKey="district_label_2_visible" implied="false" onDeleteCascade="false" table="district"/>
+            <child column="label_1_visible" foreignKey="leak_label_1_visible" implied="false" onDeleteCascade="false" table="leak"/>
+            <child column="label_2_visible" foreignKey="leak_label_2_visible" implied="false" onDeleteCascade="false" table="leak"/>
+            <child column="label_1_visible" foreignKey="network_element_label_1_visible" implied="false" onDeleteCascade="false" table="network_element"/>
+            <child column="label_2_visible" foreignKey="network_element_label_2_visible" implied="false" onDeleteCascade="false" table="network_element"/>
+            <child column="label_1_visible" foreignKey="pipe_label_1_visible" implied="false" onDeleteCascade="false" table="pipe"/>
+            <child column="label_2_visible" foreignKey="pipe_label_2_visible" implied="false" onDeleteCascade="false" table="pipe"/>
+            <child column="label_1_visible" foreignKey="pressurezone_label_1_visible" implied="false" onDeleteCascade="false" table="pressurezone"/>
+            <child column="label_2_visible" foreignKey="pressurezone_label_2_visible" implied="false" onDeleteCascade="false" table="pressurezone"/>
+            <child column="label_1_visible" foreignKey="printmap_label_1_visible" implied="false" onDeleteCascade="false" table="printmap"/>
+            <child column="label_2_visible" foreignKey="printmap_label_2_visible" implied="false" onDeleteCascade="false" table="printmap"/>
+            <child column="label_1_visible" foreignKey="remote_label_1_visible" implied="false" onDeleteCascade="false" table="remote"/>
+            <child column="label_2_visible" foreignKey="remote_label_2_visible" implied="false" onDeleteCascade="false" table="remote"/>
+            <child column="label_1_visible" foreignKey="valve_label_1_visible" implied="false" onDeleteCascade="false" table="valve"/>
+            <child column="label_2_visible" foreignKey="valve_label_2_visible" implied="false" onDeleteCascade="false" table="valve"/>
+         </column>
+         <primaryKey column="id" sequenceNumberInPK="1"/>
+         <index name="vl_visible_pk" unique="true">
+            <column ascending="true" name="id"/>
+         </index>
+         <index name="visible_code" unique="true">
+            <column ascending="true" name="vl_code"/>
+         </index>
+         <index name="visible_code_int" unique="true">
+            <column ascending="true" name="vl_code_int"/>
+         </index>
+      </table>
+      <table name="watertype" numRows="6" remarks="Water type table, with SIRE code." schema="qwat_vl" type="TABLE">
+         <column autoUpdated="false" digits="0" id="0" name="id" nullable="false" remarks="" size="10" type="int4">
+            <child column="fk_watertype" foreignKey="installation_fk_watertype" implied="false" onDeleteCascade="false" table="installation"/>
+            <child column="fk_watertype" foreignKey="pipe_fk_watertype" implied="false" onDeleteCascade="false" table="pipe"/>
+         </column>
+         <column autoUpdated="false" defaultValue="true" digits="0" id="1" name="vl_active" nullable="true" remarks="" size="1" type="bool"/>
+         <column autoUpdated="false" digits="0" id="2" name="short_fr" nullable="true" remarks="" size="10" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="3" name="short_en" nullable="true" remarks="" size="10" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="4" name="short_ro" nullable="true" remarks="" size="10" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="5" name="value_fr" nullable="true" remarks="" size="50" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="6" name="value_en" nullable="true" remarks="" size="50" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="7" name="value_ro" nullable="true" remarks="" size="50" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="8" name="description_fr" nullable="true" remarks="" size="2147483647" type="text"/>
+         <column autoUpdated="false" digits="0" id="9" name="description_en" nullable="true" remarks="" size="2147483647" type="text"/>
+         <column autoUpdated="false" digits="0" id="10" name="description_ro" nullable="true" remarks="" size="2147483647" type="text"/>
+         <column autoUpdated="false" digits="0" id="11" name="code_sire" nullable="true" remarks="" size="5" type="int2"/>
+         <primaryKey column="id" sequenceNumberInPK="1"/>
+         <index name="vl_watertype_pk" unique="true">
+            <column ascending="true" name="id"/>
+         </index>
+      </table>
+      <table name="worker_type" numRows="6" remarks="type for worker." schema="qwat_vl" type="TABLE">
+         <column autoUpdated="false" digits="0" id="0" name="id" nullable="false" remarks="" size="10" type="int4"/>
+         <column autoUpdated="false" defaultValue="true" digits="0" id="1" name="vl_active" nullable="true" remarks="" size="1" type="bool"/>
+         <column autoUpdated="false" digits="0" id="2" name="short_fr" nullable="true" remarks="" size="10" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="3" name="short_en" nullable="true" remarks="" size="10" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="4" name="short_ro" nullable="true" remarks="" size="10" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="5" name="value_fr" nullable="true" remarks="" size="50" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="6" name="value_en" nullable="true" remarks="" size="50" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="7" name="value_ro" nullable="true" remarks="" size="50" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="8" name="description_fr" nullable="true" remarks="" size="2147483647" type="text"/>
+         <column autoUpdated="false" digits="0" id="9" name="description_en" nullable="true" remarks="" size="2147483647" type="text"/>
+         <column autoUpdated="false" digits="0" id="10" name="description_ro" nullable="true" remarks="" size="2147483647" type="text"/>
+         <primaryKey column="id" sequenceNumberInPK="1"/>
+         <index name="vl_worker_type_pk" unique="true">
+            <column ascending="true" name="id"/>
+         </index>
+      </table>
+   </tables>
+</database>

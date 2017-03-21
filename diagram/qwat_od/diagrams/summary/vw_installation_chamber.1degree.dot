@@ -1,0 +1,44 @@
+// dot 2.38.0 on Linux 4.8.0-42-generic
+// SchemaSpy rev 590
+digraph "vw_installation_chamber" {
+  graph [
+    rankdir="RL"
+    bgcolor="#f7f7f7"
+    nodesep="0.18"
+    ranksep="0.46"
+    fontname="Helvetica"
+    fontsize="11"
+  ];
+  node [
+    fontname="Helvetica"
+    fontsize="11"
+    shape="plaintext"
+  ];
+  edge [
+    arrowsize="0.8"
+  ];
+  "vw_installation_chamber" [
+    label=<
+    <TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" BGCOLOR="#ffffff">
+      <TR><TD COLSPAN="3" BGCOLOR="#9bab96" ALIGN="CENTER">vw_installation_chamber</TD></TR>
+      <TR><TD PORT="id" COLSPAN="3" ALIGN="LEFT">id</TD></TR>
+      <TR><TD PORT="name" COLSPAN="3" ALIGN="LEFT">name</TD></TR>
+      <TR><TD PORT="fk_parent" COLSPAN="3" ALIGN="LEFT">fk_parent</TD></TR>
+      <TR><TD PORT="fk_remote" COLSPAN="3" ALIGN="LEFT">fk_remote</TD></TR>
+      <TR><TD PORT="fk_watertype" COLSPAN="3" ALIGN="LEFT">fk_watertype</TD></TR>
+      <TR><TD PORT="parcel" COLSPAN="3" ALIGN="LEFT">parcel</TD></TR>
+      <TR><TD PORT="eca" COLSPAN="3" ALIGN="LEFT">eca</TD></TR>
+      <TR><TD PORT="open_water_surface" COLSPAN="3" ALIGN="LEFT">open_water_surface</TD></TR>
+      <TR><TD PORT="geometry_polygon" COLSPAN="3" ALIGN="LEFT">geometry_polygon</TD></TR>
+      <TR><TD PORT="networkseparation" COLSPAN="3" ALIGN="LEFT">networkseparation</TD></TR>
+      <TR><TD PORT="flow_meter" COLSPAN="3" ALIGN="LEFT">flow_meter</TD></TR>
+      <TR><TD PORT="water_meter" COLSPAN="3" ALIGN="LEFT">water_meter</TD></TR>
+      <TR><TD PORT="manometer" COLSPAN="3" ALIGN="LEFT">manometer</TD></TR>
+      <TR><TD PORT="depth" COLSPAN="3" ALIGN="LEFT">depth</TD></TR>
+      <TR><TD PORT="no_valves" COLSPAN="3" ALIGN="LEFT">no_valves</TD></TR>
+      <TR><TD ALIGN="LEFT" BGCOLOR="#f7f7f7">  </TD><TD ALIGN="RIGHT" BGCOLOR="#f7f7f7">view</TD><TD ALIGN="RIGHT" BGCOLOR="#f7f7f7">  </TD></TR>
+    </TABLE>>
+    URL="tables/vw_installation_chamber.html"
+    tooltip="vw_installation_chamber"
+  ];
+}

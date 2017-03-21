@@ -1,0 +1,51 @@
+// dot 2.38.0 on Linux 4.8.0-42-generic
+// SchemaSpy rev 590
+digraph "vw_remote" {
+  graph [
+    rankdir="RL"
+    bgcolor="#f7f7f7"
+    nodesep="0.18"
+    ranksep="0.46"
+    fontname="Helvetica"
+    fontsize="11"
+  ];
+  node [
+    fontname="Helvetica"
+    fontsize="11"
+    shape="plaintext"
+  ];
+  edge [
+    arrowsize="0.8"
+  ];
+  "vw_remote" [
+    label=<
+    <TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" BGCOLOR="#ffffff">
+      <TR><TD COLSPAN="3" BGCOLOR="#9bab96" ALIGN="CENTER">vw_remote</TD></TR>
+      <TR><TD PORT="distributor" COLSPAN="3" ALIGN="LEFT">distributor</TD></TR>
+      <TR><TD PORT="status" COLSPAN="3" ALIGN="LEFT">status</TD></TR>
+      <TR><TD PORT="precision" COLSPAN="3" ALIGN="LEFT">precision</TD></TR>
+      <TR><TD PORT="material" COLSPAN="3" ALIGN="LEFT">material</TD></TR>
+      <TR><TD PORT="identification" COLSPAN="3" ALIGN="LEFT">identification</TD></TR>
+      <TR><TD PORT="year" COLSPAN="3" ALIGN="LEFT">year</TD></TR>
+      <TR><TD PORT="origin" COLSPAN="3" ALIGN="LEFT">origin</TD></TR>
+      <TR><TD PORT="destination" COLSPAN="3" ALIGN="LEFT">destination</TD></TR>
+      <TR><TD PORT="folder" COLSPAN="3" ALIGN="LEFT">folder</TD></TR>
+      <TR><TD PORT="plan" COLSPAN="3" ALIGN="LEFT">plan</TD></TR>
+      <TR><TD PORT="remark" COLSPAN="3" ALIGN="LEFT">remark</TD></TR>
+      <TR><TD PORT="label_1_visible" COLSPAN="3" ALIGN="LEFT">label_1_visible</TD></TR>
+      <TR><TD PORT="label_1_x" COLSPAN="3" ALIGN="LEFT">label_1_x</TD></TR>
+      <TR><TD PORT="label_1_y" COLSPAN="3" ALIGN="LEFT">label_1_y</TD></TR>
+      <TR><TD PORT="label_1_rotation" COLSPAN="3" ALIGN="LEFT">label_1_rotation</TD></TR>
+      <TR><TD PORT="label_1_text" COLSPAN="3" ALIGN="LEFT">label_1_text</TD></TR>
+      <TR><TD PORT="label_2_visible" COLSPAN="3" ALIGN="LEFT">label_2_visible</TD></TR>
+      <TR><TD PORT="label_2_x" COLSPAN="3" ALIGN="LEFT">label_2_x</TD></TR>
+      <TR><TD PORT="label_2_y" COLSPAN="3" ALIGN="LEFT">label_2_y</TD></TR>
+      <TR><TD PORT="label_2_rotation" COLSPAN="3" ALIGN="LEFT">label_2_rotation</TD></TR>
+      <TR><TD PORT="label_2_text" COLSPAN="3" ALIGN="LEFT">label_2_text</TD></TR>
+      <TR><TD PORT="geometry" COLSPAN="3" ALIGN="LEFT">geometry</TD></TR>
+      <TR><TD ALIGN="LEFT" BGCOLOR="#f7f7f7">  </TD><TD ALIGN="RIGHT" BGCOLOR="#f7f7f7">view</TD><TD ALIGN="RIGHT" BGCOLOR="#f7f7f7">  </TD></TR>
+    </TABLE>>
+    URL="tables/vw_remote.html"
+    tooltip="vw_remote"
+  ];
+}

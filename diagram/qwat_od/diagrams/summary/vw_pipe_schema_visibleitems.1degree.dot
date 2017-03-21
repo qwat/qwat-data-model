@@ -1,0 +1,39 @@
+// dot 2.38.0 on Linux 4.8.0-42-generic
+// SchemaSpy rev 590
+digraph "vw_pipe_schema_visibleitems" {
+  graph [
+    rankdir="RL"
+    bgcolor="#f7f7f7"
+    nodesep="0.18"
+    ranksep="0.46"
+    fontname="Helvetica"
+    fontsize="11"
+  ];
+  node [
+    fontname="Helvetica"
+    fontsize="11"
+    shape="plaintext"
+  ];
+  edge [
+    arrowsize="0.8"
+  ];
+  "vw_pipe_schema_visibleitems" [
+    label=<
+    <TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" BGCOLOR="#ffffff">
+      <TR><TD COLSPAN="3" BGCOLOR="#9bab96" ALIGN="CENTER">vw_pipe_schema_visibleitems</TD></TR>
+      <TR><TD PORT="id" COLSPAN="3" ALIGN="LEFT">id</TD></TR>
+      <TR><TD PORT="fk_parent" COLSPAN="3" ALIGN="LEFT">fk_parent</TD></TR>
+      <TR><TD PORT="fk_material" COLSPAN="3" ALIGN="LEFT">fk_material</TD></TR>
+      <TR><TD PORT="_length2d" COLSPAN="3" ALIGN="LEFT">_length2d</TD></TR>
+      <TR><TD PORT="_length3d" COLSPAN="3" ALIGN="LEFT">_length3d</TD></TR>
+      <TR><TD PORT="tunnel_or_bridge" COLSPAN="3" ALIGN="LEFT">tunnel_or_bridge</TD></TR>
+      <TR><TD PORT="schema_force_visible" COLSPAN="3" ALIGN="LEFT">schema_force_visible</TD></TR>
+      <TR><TD PORT="geometry" COLSPAN="3" ALIGN="LEFT">geometry</TD></TR>
+      <TR><TD PORT="_valve_count" COLSPAN="3" ALIGN="LEFT">_valve_count</TD></TR>
+      <TR><TD PORT="_valve_closed" COLSPAN="3" ALIGN="LEFT">_valve_closed</TD></TR>
+      <TR><TD ALIGN="LEFT" BGCOLOR="#f7f7f7">  </TD><TD ALIGN="RIGHT" BGCOLOR="#f7f7f7">view</TD><TD ALIGN="RIGHT" BGCOLOR="#f7f7f7">  </TD></TR>
+    </TABLE>>
+    URL="tables/vw_pipe_schema_visibleitems.html"
+    tooltip="vw_pipe_schema_visibleitems"
+  ];
+}

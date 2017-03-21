@@ -1,0 +1,193 @@
+// dot 2.38.0 on Linux 4.8.0-42-generic
+// SchemaSpy rev 590
+digraph "vw_export_pipe" {
+  graph [
+    rankdir="RL"
+    bgcolor="#f7f7f7"
+    nodesep="0.18"
+    ranksep="0.46"
+    fontname="Helvetica"
+    fontsize="11"
+  ];
+  node [
+    fontname="Helvetica"
+    fontsize="11"
+    shape="plaintext"
+  ];
+  edge [
+    arrowsize="0.8"
+  ];
+  "vw_export_pipe" [
+    label=<
+    <TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" BGCOLOR="#ffffff">
+      <TR><TD COLSPAN="3" BGCOLOR="#9bab96" ALIGN="CENTER">vw_export_pipe</TD></TR>
+      <TR><TD PORT="id" COLSPAN="3" ALIGN="LEFT">id</TD></TR>
+      <TR><TD PORT="fk_parent" COLSPAN="3" ALIGN="LEFT">fk_parent</TD></TR>
+      <TR><TD PORT="fk_function" COLSPAN="3" ALIGN="LEFT">fk_function</TD></TR>
+      <TR><TD PORT="fk_installmethod" COLSPAN="3" ALIGN="LEFT">fk_installmethod</TD></TR>
+      <TR><TD PORT="fk_material" COLSPAN="3" ALIGN="LEFT">fk_material</TD></TR>
+      <TR><TD PORT="fk_distributor" COLSPAN="3" ALIGN="LEFT">fk_distributor</TD></TR>
+      <TR><TD PORT="fk_precision" COLSPAN="3" ALIGN="LEFT">fk_precision</TD></TR>
+      <TR><TD PORT="fk_bedding" COLSPAN="3" ALIGN="LEFT">fk_bedding</TD></TR>
+      <TR><TD PORT="fk_protection" COLSPAN="3" ALIGN="LEFT">fk_protection</TD></TR>
+      <TR><TD PORT="fk_status" COLSPAN="3" ALIGN="LEFT">fk_status</TD></TR>
+      <TR><TD PORT="fk_watertype" COLSPAN="3" ALIGN="LEFT">fk_watertype</TD></TR>
+      <TR><TD PORT="fk_locationtype" COLSPAN="3" ALIGN="LEFT">fk_locationtype</TD></TR>
+      <TR><TD PORT="fk_folder" COLSPAN="3" ALIGN="LEFT">fk_folder</TD></TR>
+      <TR><TD PORT="year" COLSPAN="3" ALIGN="LEFT">year</TD></TR>
+      <TR><TD PORT="year_rehabilitation" COLSPAN="3" ALIGN="LEFT">year_rehabilitation</TD></TR>
+      <TR><TD PORT="year_end" COLSPAN="3" ALIGN="LEFT">year_end</TD></TR>
+      <TR><TD PORT="tunnel_or_bridge" COLSPAN="3" ALIGN="LEFT">tunnel_or_bridge</TD></TR>
+      <TR><TD PORT="pressure_nominal" COLSPAN="3" ALIGN="LEFT">pressure_nominal</TD></TR>
+      <TR><TD PORT="remark" COLSPAN="3" ALIGN="LEFT">remark</TD></TR>
+      <TR><TD PORT="_valve_count" COLSPAN="3" ALIGN="LEFT">_valve_count</TD></TR>
+      <TR><TD PORT="_valve_closed" COLSPAN="3" ALIGN="LEFT">_valve_closed</TD></TR>
+      <TR><TD PORT="schema_force_visible" COLSPAN="3" ALIGN="LEFT">schema_force_visible</TD></TR>
+      <TR><TD PORT="label_1_visible" COLSPAN="3" ALIGN="LEFT">label_1_visible</TD></TR>
+      <TR><TD PORT="label_1_text" COLSPAN="3" ALIGN="LEFT">label_1_text</TD></TR>
+      <TR><TD PORT="label_2_visible" COLSPAN="3" ALIGN="LEFT">label_2_visible</TD></TR>
+      <TR><TD PORT="label_2_text" COLSPAN="3" ALIGN="LEFT">label_2_text</TD></TR>
+      <TR><TD PORT="fk_node_a" COLSPAN="3" ALIGN="LEFT">fk_node_a</TD></TR>
+      <TR><TD PORT="fk_node_b" COLSPAN="3" ALIGN="LEFT">fk_node_b</TD></TR>
+      <TR><TD PORT="fk_district" COLSPAN="3" ALIGN="LEFT">fk_district</TD></TR>
+      <TR><TD PORT="fk_pressurezone" COLSPAN="3" ALIGN="LEFT">fk_pressurezone</TD></TR>
+      <TR><TD PORT="fk_printmap" COLSPAN="3" ALIGN="LEFT">fk_printmap</TD></TR>
+      <TR><TD PORT="_length2d" COLSPAN="3" ALIGN="LEFT">_length2d</TD></TR>
+      <TR><TD PORT="_length3d" COLSPAN="3" ALIGN="LEFT">_length3d</TD></TR>
+      <TR><TD PORT="_diff_elevation" COLSPAN="3" ALIGN="LEFT">_diff_elevation</TD></TR>
+      <TR><TD PORT="_printmaps" COLSPAN="3" ALIGN="LEFT">_printmaps</TD></TR>
+      <TR><TD PORT="_geometry_alt1_used" COLSPAN="3" ALIGN="LEFT">_geometry_alt1_used</TD></TR>
+      <TR><TD PORT="_geometry_alt2_used" COLSPAN="3" ALIGN="LEFT">_geometry_alt2_used</TD></TR>
+      <TR><TD PORT="update_geometry_alt1" COLSPAN="3" ALIGN="LEFT">update_geometry_alt1</TD></TR>
+      <TR><TD PORT="update_geometry_alt2" COLSPAN="3" ALIGN="LEFT">update_geometry_alt2</TD></TR>
+      <TR><TD PORT="geometry" COLSPAN="3" ALIGN="LEFT">geometry</TD></TR>
+      <TR><TD PORT="geometry_alt1" COLSPAN="3" ALIGN="LEFT">geometry_alt1</TD></TR>
+      <TR><TD PORT="geometry_alt2" COLSPAN="3" ALIGN="LEFT">geometry_alt2</TD></TR>
+      <TR><TD PORT="status_vl_active" COLSPAN="3" ALIGN="LEFT">status_vl_active</TD></TR>
+      <TR><TD PORT="status_short_fr" COLSPAN="3" ALIGN="LEFT">status_short_fr</TD></TR>
+      <TR><TD PORT="status_short_en" COLSPAN="3" ALIGN="LEFT">status_short_en</TD></TR>
+      <TR><TD PORT="status_short_ro" COLSPAN="3" ALIGN="LEFT">status_short_ro</TD></TR>
+      <TR><TD PORT="status_value_fr" COLSPAN="3" ALIGN="LEFT">status_value_fr</TD></TR>
+      <TR><TD PORT="status_value_en" COLSPAN="3" ALIGN="LEFT">status_value_en</TD></TR>
+      <TR><TD PORT="status_value_ro" COLSPAN="3" ALIGN="LEFT">status_value_ro</TD></TR>
+      <TR><TD PORT="status_description_fr" COLSPAN="3" ALIGN="LEFT">status_description_fr</TD></TR>
+      <TR><TD PORT="status_description_en" COLSPAN="3" ALIGN="LEFT">status_description_en</TD></TR>
+      <TR><TD PORT="status_description_ro" COLSPAN="3" ALIGN="LEFT">status_description_ro</TD></TR>
+      <TR><TD PORT="status_active" COLSPAN="3" ALIGN="LEFT">status_active</TD></TR>
+      <TR><TD PORT="status_functional" COLSPAN="3" ALIGN="LEFT">status_functional</TD></TR>
+      <TR><TD PORT="status_code_sire" COLSPAN="3" ALIGN="LEFT">status_code_sire</TD></TR>
+      <TR><TD PORT="function_vl_active" COLSPAN="3" ALIGN="LEFT">function_vl_active</TD></TR>
+      <TR><TD PORT="function_short_fr" COLSPAN="3" ALIGN="LEFT">function_short_fr</TD></TR>
+      <TR><TD PORT="function_short_en" COLSPAN="3" ALIGN="LEFT">function_short_en</TD></TR>
+      <TR><TD PORT="function_short_ro" COLSPAN="3" ALIGN="LEFT">function_short_ro</TD></TR>
+      <TR><TD PORT="function_value_fr" COLSPAN="3" ALIGN="LEFT">function_value_fr</TD></TR>
+      <TR><TD PORT="function_value_en" COLSPAN="3" ALIGN="LEFT">function_value_en</TD></TR>
+      <TR><TD PORT="function_value_ro" COLSPAN="3" ALIGN="LEFT">function_value_ro</TD></TR>
+      <TR><TD PORT="function_description_fr" COLSPAN="3" ALIGN="LEFT">function_description_fr</TD></TR>
+      <TR><TD PORT="function_description_en" COLSPAN="3" ALIGN="LEFT">function_description_en</TD></TR>
+      <TR><TD PORT="function_description_ro" COLSPAN="3" ALIGN="LEFT">function_description_ro</TD></TR>
+      <TR><TD PORT="function_schema_visible" COLSPAN="3" ALIGN="LEFT">function_schema_visible</TD></TR>
+      <TR><TD PORT="function_major" COLSPAN="3" ALIGN="LEFT">function_major</TD></TR>
+      <TR><TD PORT="function_code_sire" COLSPAN="3" ALIGN="LEFT">function_code_sire</TD></TR>
+      <TR><TD PORT="installmethod_vl_active" COLSPAN="3" ALIGN="LEFT">installmethod_vl_active</TD></TR>
+      <TR><TD PORT="installmethod_short_fr" COLSPAN="3" ALIGN="LEFT">installmethod_short_fr</TD></TR>
+      <TR><TD PORT="installmethod_short_en" COLSPAN="3" ALIGN="LEFT">installmethod_short_en</TD></TR>
+      <TR><TD PORT="installmethod_short_ro" COLSPAN="3" ALIGN="LEFT">installmethod_short_ro</TD></TR>
+      <TR><TD PORT="installmethod_value_fr" COLSPAN="3" ALIGN="LEFT">installmethod_value_fr</TD></TR>
+      <TR><TD PORT="installmethod_value_en" COLSPAN="3" ALIGN="LEFT">installmethod_value_en</TD></TR>
+      <TR><TD PORT="installmethod_value_ro" COLSPAN="3" ALIGN="LEFT">installmethod_value_ro</TD></TR>
+      <TR><TD PORT="installmethod_description_fr" COLSPAN="3" ALIGN="LEFT">installmethod_description_fr</TD></TR>
+      <TR><TD PORT="installmethod_description_en" COLSPAN="3" ALIGN="LEFT">installmethod_description_en</TD></TR>
+      <TR><TD PORT="installmethod_description_ro" COLSPAN="3" ALIGN="LEFT">installmethod_description_ro</TD></TR>
+      <TR><TD PORT="district_name" COLSPAN="3" ALIGN="LEFT">district_name</TD></TR>
+      <TR><TD PORT="district_shortname" COLSPAN="3" ALIGN="LEFT">district_shortname</TD></TR>
+      <TR><TD PORT="district_zip" COLSPAN="3" ALIGN="LEFT">district_zip</TD></TR>
+      <TR><TD PORT="district_land_registry" COLSPAN="3" ALIGN="LEFT">district_land_registry</TD></TR>
+      <TR><TD PORT="district_prefix" COLSPAN="3" ALIGN="LEFT">district_prefix</TD></TR>
+      <TR><TD PORT="district_colorcode" COLSPAN="3" ALIGN="LEFT">district_colorcode</TD></TR>
+      <TR><TD PORT="pressurezone_fk_distributor" COLSPAN="3" ALIGN="LEFT">pressurezone_fk_distributor</TD></TR>
+      <TR><TD PORT="pressurezone_fk_consumptionzone" COLSPAN="3" ALIGN="LEFT">pressurezone_fk_consumptionzone</TD></TR>
+      <TR><TD PORT="pressurezone_name" COLSPAN="3" ALIGN="LEFT">pressurezone_name</TD></TR>
+      <TR><TD PORT="pressurezone_population" COLSPAN="3" ALIGN="LEFT">pressurezone_population</TD></TR>
+      <TR><TD PORT="pressurezone_subscriber" COLSPAN="3" ALIGN="LEFT">pressurezone_subscriber</TD></TR>
+      <TR><TD PORT="pressurezone_colorcode" COLSPAN="3" ALIGN="LEFT">pressurezone_colorcode</TD></TR>
+      <TR><TD PORT="pressurezone__geometry_alt1_used" COLSPAN="3" ALIGN="LEFT">pressurezone__geometry_alt1_used</TD></TR>
+      <TR><TD PORT="pressurezone__geometry_alt2_used" COLSPAN="3" ALIGN="LEFT">pressurezone__geometry_alt2_used</TD></TR>
+      <TR><TD PORT="pressurezone_update_geometry_alt1" COLSPAN="3" ALIGN="LEFT">pressurezone_update_geometry_alt1</TD></TR>
+      <TR><TD PORT="pressurezone_update_geometry_alt2" COLSPAN="3" ALIGN="LEFT">pressurezone_update_geometry_alt2</TD></TR>
+      <TR><TD PORT="material_vl_active" COLSPAN="3" ALIGN="LEFT">material_vl_active</TD></TR>
+      <TR><TD PORT="material_short_fr" COLSPAN="3" ALIGN="LEFT">material_short_fr</TD></TR>
+      <TR><TD PORT="material_short_en" COLSPAN="3" ALIGN="LEFT">material_short_en</TD></TR>
+      <TR><TD PORT="material_short_ro" COLSPAN="3" ALIGN="LEFT">material_short_ro</TD></TR>
+      <TR><TD PORT="material_value_fr" COLSPAN="3" ALIGN="LEFT">material_value_fr</TD></TR>
+      <TR><TD PORT="material_value_en" COLSPAN="3" ALIGN="LEFT">material_value_en</TD></TR>
+      <TR><TD PORT="material_value_ro" COLSPAN="3" ALIGN="LEFT">material_value_ro</TD></TR>
+      <TR><TD PORT="material_description_fr" COLSPAN="3" ALIGN="LEFT">material_description_fr</TD></TR>
+      <TR><TD PORT="material_description_en" COLSPAN="3" ALIGN="LEFT">material_description_en</TD></TR>
+      <TR><TD PORT="material_description_ro" COLSPAN="3" ALIGN="LEFT">material_description_ro</TD></TR>
+      <TR><TD PORT="material__displayname_fr" COLSPAN="3" ALIGN="LEFT">material__displayname_fr</TD></TR>
+      <TR><TD PORT="material__displayname_en" COLSPAN="3" ALIGN="LEFT">material__displayname_en</TD></TR>
+      <TR><TD PORT="material__displayname_ro" COLSPAN="3" ALIGN="LEFT">material__displayname_ro</TD></TR>
+      <TR><TD PORT="material_diameter" COLSPAN="3" ALIGN="LEFT">material_diameter</TD></TR>
+      <TR><TD PORT="material_diameter_nominal" COLSPAN="3" ALIGN="LEFT">material_diameter_nominal</TD></TR>
+      <TR><TD PORT="material_diameter_internal" COLSPAN="3" ALIGN="LEFT">material_diameter_internal</TD></TR>
+      <TR><TD PORT="material_diameter_external" COLSPAN="3" ALIGN="LEFT">material_diameter_external</TD></TR>
+      <TR><TD PORT="material_code_sire" COLSPAN="3" ALIGN="LEFT">material_code_sire</TD></TR>
+      <TR><TD PORT="material_pressure_nominal" COLSPAN="3" ALIGN="LEFT">material_pressure_nominal</TD></TR>
+      <TR><TD PORT="material_sdr" COLSPAN="3" ALIGN="LEFT">material_sdr</TD></TR>
+      <TR><TD PORT="material_wall_thickness" COLSPAN="3" ALIGN="LEFT">material_wall_thickness</TD></TR>
+      <TR><TD PORT="material_sn" COLSPAN="3" ALIGN="LEFT">material_sn</TD></TR>
+      <TR><TD PORT="precision_vl_active" COLSPAN="3" ALIGN="LEFT">precision_vl_active</TD></TR>
+      <TR><TD PORT="precision_short_fr" COLSPAN="3" ALIGN="LEFT">precision_short_fr</TD></TR>
+      <TR><TD PORT="precision_short_en" COLSPAN="3" ALIGN="LEFT">precision_short_en</TD></TR>
+      <TR><TD PORT="precision_short_ro" COLSPAN="3" ALIGN="LEFT">precision_short_ro</TD></TR>
+      <TR><TD PORT="precision_value_fr" COLSPAN="3" ALIGN="LEFT">precision_value_fr</TD></TR>
+      <TR><TD PORT="precision_value_en" COLSPAN="3" ALIGN="LEFT">precision_value_en</TD></TR>
+      <TR><TD PORT="precision_value_ro" COLSPAN="3" ALIGN="LEFT">precision_value_ro</TD></TR>
+      <TR><TD PORT="precision_description_fr" COLSPAN="3" ALIGN="LEFT">precision_description_fr</TD></TR>
+      <TR><TD PORT="precision_description_en" COLSPAN="3" ALIGN="LEFT">precision_description_en</TD></TR>
+      <TR><TD PORT="precision_description_ro" COLSPAN="3" ALIGN="LEFT">precision_description_ro</TD></TR>
+      <TR><TD PORT="precision_code_sire" COLSPAN="3" ALIGN="LEFT">precision_code_sire</TD></TR>
+      <TR><TD PORT="protection_vl_active" COLSPAN="3" ALIGN="LEFT">protection_vl_active</TD></TR>
+      <TR><TD PORT="protection_short_fr" COLSPAN="3" ALIGN="LEFT">protection_short_fr</TD></TR>
+      <TR><TD PORT="protection_short_en" COLSPAN="3" ALIGN="LEFT">protection_short_en</TD></TR>
+      <TR><TD PORT="protection_short_ro" COLSPAN="3" ALIGN="LEFT">protection_short_ro</TD></TR>
+      <TR><TD PORT="protection_value_fr" COLSPAN="3" ALIGN="LEFT">protection_value_fr</TD></TR>
+      <TR><TD PORT="protection_value_en" COLSPAN="3" ALIGN="LEFT">protection_value_en</TD></TR>
+      <TR><TD PORT="protection_value_ro" COLSPAN="3" ALIGN="LEFT">protection_value_ro</TD></TR>
+      <TR><TD PORT="protection_description_fr" COLSPAN="3" ALIGN="LEFT">protection_description_fr</TD></TR>
+      <TR><TD PORT="protection_description_en" COLSPAN="3" ALIGN="LEFT">protection_description_en</TD></TR>
+      <TR><TD PORT="protection_description_ro" COLSPAN="3" ALIGN="LEFT">protection_description_ro</TD></TR>
+      <TR><TD PORT="distributor_name" COLSPAN="3" ALIGN="LEFT">distributor_name</TD></TR>
+      <TR><TD PORT="folder_identification" COLSPAN="3" ALIGN="LEFT">folder_identification</TD></TR>
+      <TR><TD PORT="folder_description" COLSPAN="3" ALIGN="LEFT">folder_description</TD></TR>
+      <TR><TD PORT="folder_date_start" COLSPAN="3" ALIGN="LEFT">folder_date_start</TD></TR>
+      <TR><TD PORT="folder_date_end" COLSPAN="3" ALIGN="LEFT">folder_date_end</TD></TR>
+      <TR><TD PORT="node_b_fk_district" COLSPAN="3" ALIGN="LEFT">node_b_fk_district</TD></TR>
+      <TR><TD PORT="node_b_fk_pressurezone" COLSPAN="3" ALIGN="LEFT">node_b_fk_pressurezone</TD></TR>
+      <TR><TD PORT="node_b_fk_printmap" COLSPAN="3" ALIGN="LEFT">node_b_fk_printmap</TD></TR>
+      <TR><TD PORT="node_b__printmaps" COLSPAN="3" ALIGN="LEFT">node_b__printmaps</TD></TR>
+      <TR><TD PORT="node_b__geometry_alt1_used" COLSPAN="3" ALIGN="LEFT">node_b__geometry_alt1_used</TD></TR>
+      <TR><TD PORT="node_b__geometry_alt2_used" COLSPAN="3" ALIGN="LEFT">node_b__geometry_alt2_used</TD></TR>
+      <TR><TD PORT="node_b__pipe_node_type" COLSPAN="3" ALIGN="LEFT">node_b__pipe_node_type</TD></TR>
+      <TR><TD PORT="node_b__pipe_orientation" COLSPAN="3" ALIGN="LEFT">node_b__pipe_orientation</TD></TR>
+      <TR><TD PORT="node_b__pipe_schema_visible" COLSPAN="3" ALIGN="LEFT">node_b__pipe_schema_visible</TD></TR>
+      <TR><TD PORT="node_b_update_geometry_alt1" COLSPAN="3" ALIGN="LEFT">node_b_update_geometry_alt1</TD></TR>
+      <TR><TD PORT="node_b_update_geometry_alt2" COLSPAN="3" ALIGN="LEFT">node_b_update_geometry_alt2</TD></TR>
+      <TR><TD PORT="node_a_fk_district" COLSPAN="3" ALIGN="LEFT">node_a_fk_district</TD></TR>
+      <TR><TD PORT="node_a_fk_pressurezone" COLSPAN="3" ALIGN="LEFT">node_a_fk_pressurezone</TD></TR>
+      <TR><TD PORT="node_a_fk_printmap" COLSPAN="3" ALIGN="LEFT">node_a_fk_printmap</TD></TR>
+      <TR><TD PORT="node_a__printmaps" COLSPAN="3" ALIGN="LEFT">node_a__printmaps</TD></TR>
+      <TR><TD PORT="node_a__geometry_alt1_used" COLSPAN="3" ALIGN="LEFT">node_a__geometry_alt1_used</TD></TR>
+      <TR><TD PORT="node_a__geometry_alt2_used" COLSPAN="3" ALIGN="LEFT">node_a__geometry_alt2_used</TD></TR>
+      <TR><TD PORT="node_a__pipe_node_type" COLSPAN="3" ALIGN="LEFT">node_a__pipe_node_type</TD></TR>
+      <TR><TD PORT="node_a__pipe_orientation" COLSPAN="3" ALIGN="LEFT">node_a__pipe_orientation</TD></TR>
+      <TR><TD PORT="node_a__pipe_schema_visible" COLSPAN="3" ALIGN="LEFT">node_a__pipe_schema_visible</TD></TR>
+      <TR><TD PORT="node_a_update_geometry_alt1" COLSPAN="3" ALIGN="LEFT">node_a_update_geometry_alt1</TD></TR>
+      <TR><TD PORT="node_a_update_geometry_alt2" COLSPAN="3" ALIGN="LEFT">node_a_update_geometry_alt2</TD></TR>
+      <TR><TD ALIGN="LEFT" BGCOLOR="#f7f7f7">  </TD><TD ALIGN="RIGHT" BGCOLOR="#f7f7f7">view</TD><TD ALIGN="RIGHT" BGCOLOR="#f7f7f7">  </TD></TR>
+    </TABLE>>
+    URL="tables/vw_export_pipe.html"
+    tooltip="vw_export_pipe"
+  ];
+}
