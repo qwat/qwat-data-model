@@ -9,6 +9,7 @@ HOST=localhost
 QWATSERVICE=qwat
 QWATSERVICETEST=qwat_test
 QWATSERVICETESTCONFORM=qwat_test_conform
+SRID=21781
 
 RED='\033[0;31m'
 GREEN='\033[0;32m'
@@ -189,40 +190,45 @@ do
     fi
 done
 
-
+echo
 echo "Reloading views and functions from last commit"
 export PGSERVICE=$QWATSERVICETEST
 SRID=$SRID ../ordinary_data/views/rewrite_views.sh
 SRID=$SRID ../ordinary_data/functions/rewrite_functions.sh
 
-
 # In the end, check if there are some POST files to execute (postfiles must be named exactly like the delta files that have been executed previously)
-printf "\n"
-
+unset PGSERVICE
+echo
 for i in "${TAB_FILES_POST[@]}"
 do
-   printf "\n    Processing POST file: ${GREEN}$i${NC}\n"
+   printf "\nProcessing POST file: ${GREEN}$i${NC}\n"
    /usr/bin/psql --host $HOST --port 5432 --username "$USER" --no-password -d "$TESTDB" -f $i
 #    /usr/bin/psql -v ON_ERROR_STOP=1 --host $HOST --port 5432 --username "$USER" --no-password -q -d "$TESTDB"
 done
 
+
 # Clean temporary DB
+echo
 echo "Dropping DB (qwat_test_conform)"
 /usr/bin/dropdb "$TESTCONFORMDB" --host $HOST --port 5432 --username "$USER" --no-password
 #/usr/bin/createdb -d "service=$QWATSERVICETEST"
 
+echo
 echo "Creating DB (qwat_test_conform)"
 /usr/bin/createdb "$TESTCONFORMDB" --host $HOST --port 5432 --username "$USER" --no-password
 #/usr/bin/createdb -d "service=$QWATSERVICETEST"
 
+echo
 echo "Initializing qwat DB in qwat_test_conform"
 cd ..
 ./init_qwat.sh -p $QWATSERVICETESTCONFORM -d > update/init_qwat.log
 cd update
 
+echo
 echo "Producing referential file for current qWat version (from $QWATSERVICETESTCONFORM)"
 /usr/bin/psql --host $HOST --port 5432 --username "$USER" --no-password -d "$QWATSERVICETESTCONFORM" -f test_migration.sql > test_migration.expected.sql
 
+echo
 echo "Performing conformity test"
 STATUS=$(python test_migration.py --pg_service $QWATSERVICETEST)
 
@@ -233,7 +239,7 @@ else
 fi
 
 
-
+echo
 echo "Cleaning"
 rm "$TODAY""_current_qwat.backup"
 rm init_qwat.log
