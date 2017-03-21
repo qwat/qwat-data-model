@@ -198,6 +198,7 @@ SRID=$SRID ../ordinary_data/functions/rewrite_functions.sh
 
 # In the end, check if there are some POST files to execute (postfiles must be named exactly like the delta files that have been executed previously)
 printf "\n"
+
 for i in "${TAB_FILES_POST[@]}"
 do
    printf "\n    Processing POST file: ${GREEN}$i${NC}\n"
