@@ -1,6 +1,6 @@
 /*
 	qWat - QGIS Water Module
-	
+
 	SQL file :: print table and function
 */
 
@@ -14,6 +14,8 @@ ALTER TABLE qwat_od.printmap ADD COLUMN name         varchar(20) ;
 ALTER TABLE qwat_od.printmap ADD COLUMN fk_district  smallint;
 ALTER TABLE qwat_od.printmap ADD COLUMN remark       text ;
 ALTER TABLE qwat_od.printmap ADD COLUMN version_date date;
+ALTER TABLE qwat_od.printmap ADD COLUMN print_scale  smallint;
+
 
 ALTER TABLE qwat_od.printmap ADD COLUMN x_min double precision;
 ALTER TABLE qwat_od.printmap ADD COLUMN y_min double precision;
@@ -22,7 +24,7 @@ ALTER TABLE qwat_od.printmap ADD COLUMN y_max double precision;
 
 /* geometry */
 ALTER TABLE qwat_od.printmap ADD COLUMN geometry geometry('POLYGON',:SRID);
-CREATE INDEX printmap_geoidx ON qwat_od.printmap USING GIST ( geometry ); 
+CREATE INDEX printmap_geoidx ON qwat_od.printmap USING GIST ( geometry );
 
 /* LABELS */
 DO $$ BEGIN PERFORM qwat_sys.fn_label_create_fields('printmap'); END $$;
