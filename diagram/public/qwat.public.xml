@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<database name="qwat" schema="public" type="PostgreSQL - 9.5.6">
+   <tables>
+      <table name="geography_columns" numRows="0" remarks="" schema="public" type="VIEW">
+         <column autoUpdated="false" digits="0" id="0" name="f_table_catalog" nullable="true" remarks="" size="2147483647" type="name"/>
+         <column autoUpdated="false" digits="0" id="1" name="f_table_schema" nullable="true" remarks="" size="2147483647" type="name"/>
+         <column autoUpdated="false" digits="0" id="2" name="f_table_name" nullable="true" remarks="" size="2147483647" type="name"/>
+         <column autoUpdated="false" digits="0" id="3" name="f_geography_column" nullable="true" remarks="" size="2147483647" type="name"/>
+         <column autoUpdated="false" digits="0" id="4" name="coord_dimension" nullable="true" remarks="" size="10" type="int4"/>
+         <column autoUpdated="false" digits="0" id="5" name="srid" nullable="true" remarks="" size="10" type="int4">
+            <parent column="srid" foreignKey="Implied Constraint" implied="true" onDeleteCascade="false" table="spatial_ref_sys"/>
+         </column>
+         <column autoUpdated="false" digits="0" id="6" name="type" nullable="true" remarks="" size="2147483647" type="text"/>
+      </table>
+      <table name="geometry_columns" numRows="0" remarks="" schema="public" type="VIEW">
+         <column autoUpdated="false" digits="0" id="0" name="f_table_catalog" nullable="true" remarks="" size="256" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="1" name="f_table_schema" nullable="true" remarks="" size="2147483647" type="name"/>
+         <column autoUpdated="false" digits="0" id="2" name="f_table_name" nullable="true" remarks="" size="2147483647" type="name"/>
+         <column autoUpdated="false" digits="0" id="3" name="f_geometry_column" nullable="true" remarks="" size="2147483647" type="name"/>
+         <column autoUpdated="false" digits="0" id="4" name="coord_dimension" nullable="true" remarks="" size="10" type="int4"/>
+         <column autoUpdated="false" digits="0" id="5" name="srid" nullable="true" remarks="" size="10" type="int4">
+            <parent column="srid" foreignKey="Implied Constraint" implied="true" onDeleteCascade="false" table="spatial_ref_sys"/>
+         </column>
+         <column autoUpdated="false" digits="0" id="6" name="type" nullable="true" remarks="" size="30" type="varchar"/>
+      </table>
+      <table name="raster_columns" numRows="0" remarks="" schema="public" type="VIEW">
+         <column autoUpdated="false" digits="0" id="0" name="r_table_catalog" nullable="true" remarks="" size="2147483647" type="name"/>
+         <column autoUpdated="false" digits="0" id="1" name="r_table_schema" nullable="true" remarks="" size="2147483647" type="name"/>
+         <column autoUpdated="false" digits="0" id="2" name="r_table_name" nullable="true" remarks="" size="2147483647" type="name"/>
+         <column autoUpdated="false" digits="0" id="3" name="r_raster_column" nullable="true" remarks="" size="2147483647" type="name"/>
+         <column autoUpdated="false" digits="0" id="4" name="srid" nullable="true" remarks="" size="10" type="int4">
+            <parent column="srid" foreignKey="Implied Constraint" implied="true" onDeleteCascade="false" table="spatial_ref_sys"/>
+         </column>
+         <column autoUpdated="false" digits="17" id="5" name="scale_x" nullable="true" remarks="" size="17" type="float8"/>
+         <column autoUpdated="false" digits="17" id="6" name="scale_y" nullable="true" remarks="" size="17" type="float8"/>
+         <column autoUpdated="false" digits="0" id="7" name="blocksize_x" nullable="true" remarks="" size="10" type="int4"/>
+         <column autoUpdated="false" digits="0" id="8" name="blocksize_y" nullable="true" remarks="" size="10" type="int4"/>
+         <column autoUpdated="false" digits="0" id="9" name="same_alignment" nullable="true" remarks="" size="1" type="bool"/>
+         <column autoUpdated="false" digits="0" id="10" name="regular_blocking" nullable="true" remarks="" size="1" type="bool"/>
+         <column autoUpdated="false" digits="0" id="11" name="num_bands" nullable="true" remarks="" size="10" type="int4"/>
+         <column autoUpdated="false" digits="0" id="12" name="pixel_types" nullable="true" remarks="" size="2147483647" type="_text"/>
+         <column autoUpdated="false" digits="17" id="13" name="nodata_values" nullable="true" remarks="" size="17" type="_float8"/>
+         <column autoUpdated="false" digits="0" id="14" name="out_db" nullable="true" remarks="" size="1" type="_bool"/>
+         <column autoUpdated="false" digits="0" id="15" name="extent" nullable="true" remarks="" size="2147483647" type="geometry"/>
+         <column autoUpdated="false" digits="0" id="16" name="spatial_index" nullable="true" remarks="" size="1" type="bool"/>
+      </table>
+      <table name="raster_overviews" numRows="0" remarks="" schema="public" type="VIEW">
+         <column autoUpdated="false" digits="0" id="0" name="o_table_catalog" nullable="true" remarks="" size="2147483647" type="name"/>
+         <column autoUpdated="false" digits="0" id="1" name="o_table_schema" nullable="true" remarks="" size="2147483647" type="name"/>
+         <column autoUpdated="false" digits="0" id="2" name="o_table_name" nullable="true" remarks="" size="2147483647" type="name"/>
+         <column autoUpdated="false" digits="0" id="3" name="o_raster_column" nullable="true" remarks="" size="2147483647" type="name"/>
+         <column autoUpdated="false" digits="0" id="4" name="r_table_catalog" nullable="true" remarks="" size="2147483647" type="name"/>
+         <column autoUpdated="false" digits="0" id="5" name="r_table_schema" nullable="true" remarks="" size="2147483647" type="name"/>
+         <column autoUpdated="false" digits="0" id="6" name="r_table_name" nullable="true" remarks="" size="2147483647" type="name"/>
+         <column autoUpdated="false" digits="0" id="7" name="r_raster_column" nullable="true" remarks="" size="2147483647" type="name"/>
+         <column autoUpdated="false" digits="0" id="8" name="overview_factor" nullable="true" remarks="" size="10" type="int4"/>
+      </table>
+      <table name="spatial_ref_sys" numRows="5435" remarks="" schema="public" type="TABLE">
+         <column autoUpdated="false" digits="0" id="0" name="srid" nullable="false" remarks="" size="10" type="int4">
+            <child column="srid" foreignKey="Implied Constraint" implied="true" onDeleteCascade="false" table="geography_columns"/>
+            <child column="srid" foreignKey="Implied Constraint" implied="true" onDeleteCascade="false" table="geometry_columns"/>
+            <child column="srid" foreignKey="Implied Constraint" implied="true" onDeleteCascade="false" table="raster_columns"/>
+         </column>
+         <column autoUpdated="false" digits="0" id="1" name="auth_name" nullable="true" remarks="" size="256" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="2" name="auth_srid" nullable="true" remarks="" size="10" type="int4"/>
+         <column autoUpdated="false" digits="0" id="3" name="srtext" nullable="true" remarks="" size="2048" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="4" name="proj4text" nullable="true" remarks="" size="2048" type="varchar"/>
+         <primaryKey column="srid" sequenceNumberInPK="1"/>
+         <index name="spatial_ref_sys_pkey" unique="true">
+            <column ascending="true" name="srid"/>
+         </index>
+      </table>
+   </tables>
+</database>

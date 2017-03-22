@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<database name="qwat" schema="qwat_dr" type="PostgreSQL - 9.5.6">
+   <tables>
+      <table name="annotationline" numRows="334" remarks="Table for annotationlines." schema="qwat_dr" type="TABLE">
+         <column autoUpdated="true" defaultValue="nextval('qwat_dr.annotationline_id_seq'::regclass)" digits="0" id="0" name="id" nullable="false" remarks="" size="10" type="serial"/>
+         <column autoUpdated="false" defaultValue="true" digits="0" id="1" name="labelvisible" nullable="false" remarks="" size="1" type="bool"/>
+         <column autoUpdated="false" digits="2" id="2" name="text_size" nullable="true" remarks="" size="7" type="numeric"/>
+         <column autoUpdated="false" digits="2" id="3" name="text_orientation" nullable="true" remarks="" size="7" type="numeric"/>
+         <column autoUpdated="false" digits="0" id="4" name="annotation" nullable="true" remarks="" size="2147483647" type="text"/>
+         <column autoUpdated="false" defaultValue="true" digits="0" id="5" name="scale_1" nullable="true" remarks="" size="1" type="bool"/>
+         <column autoUpdated="false" defaultValue="true" digits="0" id="6" name="scale_2" nullable="true" remarks="" size="1" type="bool"/>
+         <column autoUpdated="false" digits="0" id="7" name="geometry" nullable="true" remarks="" size="2147483647" type="geometry"/>
+         <primaryKey column="id" sequenceNumberInPK="1"/>
+         <index name="annotationline_pkey" unique="true">
+            <column ascending="true" name="id"/>
+         </index>
+         <index name="annotationline_geoidx" unique="false">
+            <column ascending="true" name="geometry"/>
+         </index>
+      </table>
+      <table name="annotationpoint" numRows="564" remarks="Table for annotationpoints." schema="qwat_dr" type="TABLE">
+         <column autoUpdated="true" defaultValue="nextval('qwat_dr.annotationpoint_id_seq'::regclass)" digits="0" id="0" name="id" nullable="false" remarks="" size="10" type="serial"/>
+         <column autoUpdated="false" digits="2" id="1" name="text_size" nullable="true" remarks="" size="7" type="numeric"/>
+         <column autoUpdated="false" digits="2" id="2" name="text_orientation" nullable="true" remarks="" size="7" type="numeric"/>
+         <column autoUpdated="false" digits="0" id="3" name="annotation" nullable="true" remarks="" size="2147483647" type="text"/>
+         <column autoUpdated="false" defaultValue="true" digits="0" id="4" name="scale_1" nullable="true" remarks="" size="1" type="bool"/>
+         <column autoUpdated="false" defaultValue="true" digits="0" id="5" name="scale_2" nullable="true" remarks="" size="1" type="bool"/>
+         <column autoUpdated="false" digits="0" id="6" name="geometry" nullable="true" remarks="" size="2147483647" type="geometry"/>
+         <primaryKey column="id" sequenceNumberInPK="1"/>
+         <index name="annotationpoint_pkey" unique="true">
+            <column ascending="true" name="id"/>
+         </index>
+         <index name="annotationpoint_geoidx" unique="false">
+            <column ascending="true" name="geometry"/>
+         </index>
+      </table>
+      <table name="constructionpoint" numRows="1" remarks="construction points are artificials points to build objects." schema="qwat_dr" type="TABLE">
+         <column autoUpdated="true" defaultValue="nextval('qwat_dr.constructionpoint_id_seq'::regclass)" digits="0" id="0" name="id" nullable="false" remarks="" size="10" type="serial"/>
+         <column autoUpdated="false" digits="3" id="1" name="altitude" nullable="true" remarks="" size="10" type="numeric"/>
+         <column autoUpdated="false" digits="0" id="2" name="fk_object_reference" nullable="true" remarks="" size="10" type="int4">
+            <parent column="id" foreignKey="constructionpoint_fk_object_reference" implied="false" onDeleteCascade="false" table="object_reference"/>
+         </column>
+         <column autoUpdated="false" digits="0" id="3" name="code" nullable="true" remarks="" size="15" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="4" name="measurement_campaign" nullable="true" remarks="" size="200" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="5" name="remark" nullable="true" remarks="" size="2147483647" type="text"/>
+         <column autoUpdated="false" digits="0" id="6" name="geometry" nullable="true" remarks="" size="2147483647" type="geometry"/>
+         <primaryKey column="id" sequenceNumberInPK="1"/>
+         <index name="constructionpoint_pkey" unique="true">
+            <column ascending="true" name="id"/>
+         </index>
+         <index name="constructionpoint_geoidx" unique="false">
+            <column ascending="true" name="geometry"/>
+         </index>
+         <index name="fki_constructionpoint_fk_object_reference" unique="false">
+            <column ascending="true" name="fk_object_reference"/>
+         </index>
+      </table>
+      <table name="dimension_distance" numRows="1263" remarks="dimension arcs displays measures done on the field. For example: distances to buildings corner" schema="qwat_dr" type="TABLE">
+         <column autoUpdated="true" defaultValue="nextval('qwat_dr.dimension_distance_id_seq'::regclass)" digits="0" id="0" name="id" nullable="false" remarks="" size="10" type="serial"/>
+         <column autoUpdated="false" digits="0" id="1" name="observation" nullable="true" remarks="" size="120" type="varchar"/>
+         <column autoUpdated="false" digits="17" id="2" name="_calculation" nullable="true" remarks="" size="17" type="float8"/>
+         <column autoUpdated="false" digits="0" id="3" name="remark" nullable="true" remarks="" size="2147483647" type="text"/>
+         <column autoUpdated="false" digits="0" id="4" name="geometry" nullable="true" remarks="" size="2147483647" type="geometry"/>
+         <primaryKey column="id" sequenceNumberInPK="1"/>
+         <index name="dimension_distance_pkey" unique="true">
+            <column ascending="true" name="id"/>
+         </index>
+         <index name="dimension_distance_geoidx" unique="false">
+            <column ascending="true" name="geometry"/>
+         </index>
+      </table>
+      <table name="dimension_orientation" numRows="0" remarks="dimension arcs displays measures done on the field. For example: orientations to buildings corner" schema="qwat_dr" type="TABLE">
+         <column autoUpdated="true" defaultValue="nextval('qwat_dr.dimension_orientation_id_seq'::regclass)" digits="0" id="0" name="id" nullable="false" remarks="" size="10" type="serial"/>
+         <column autoUpdated="false" digits="0" id="1" name="observation" nullable="true" remarks="" size="120" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="2" name="remark" nullable="true" remarks="" size="2147483647" type="text"/>
+         <column autoUpdated="false" digits="0" id="3" name="geometry" nullable="true" remarks="" size="2147483647" type="geometry"/>
+         <primaryKey column="id" sequenceNumberInPK="1"/>
+         <index name="dimension_orientation_pkey" unique="true">
+            <column ascending="true" name="id"/>
+         </index>
+         <index name="dimension_orientation_geoidx" unique="false">
+            <column ascending="true" name="geometry"/>
+         </index>
+      </table>
+   </tables>
+</database>

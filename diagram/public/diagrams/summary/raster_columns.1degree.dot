@@ -1,0 +1,46 @@
+// dot 2.38.0 on Linux 4.8.0-42-generic
+// SchemaSpy rev 590
+digraph "raster_columns" {
+  graph [
+    rankdir="RL"
+    bgcolor="#f7f7f7"
+    nodesep="0.18"
+    ranksep="0.46"
+    fontname="Helvetica"
+    fontsize="11"
+  ];
+  node [
+    fontname="Helvetica"
+    fontsize="11"
+    shape="plaintext"
+  ];
+  edge [
+    arrowsize="0.8"
+  ];
+  "raster_columns" [
+    label=<
+    <TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" BGCOLOR="#ffffff">
+      <TR><TD COLSPAN="3" BGCOLOR="#9bab96" ALIGN="CENTER">raster_columns</TD></TR>
+      <TR><TD PORT="r_table_catalog" COLSPAN="3" ALIGN="LEFT">r_table_catalog</TD></TR>
+      <TR><TD PORT="r_table_schema" COLSPAN="3" ALIGN="LEFT">r_table_schema</TD></TR>
+      <TR><TD PORT="r_table_name" COLSPAN="3" ALIGN="LEFT">r_table_name</TD></TR>
+      <TR><TD PORT="r_raster_column" COLSPAN="3" ALIGN="LEFT">r_raster_column</TD></TR>
+      <TR><TD PORT="srid" COLSPAN="3" ALIGN="LEFT">srid</TD></TR>
+      <TR><TD PORT="scale_x" COLSPAN="3" ALIGN="LEFT">scale_x</TD></TR>
+      <TR><TD PORT="scale_y" COLSPAN="3" ALIGN="LEFT">scale_y</TD></TR>
+      <TR><TD PORT="blocksize_x" COLSPAN="3" ALIGN="LEFT">blocksize_x</TD></TR>
+      <TR><TD PORT="blocksize_y" COLSPAN="3" ALIGN="LEFT">blocksize_y</TD></TR>
+      <TR><TD PORT="same_alignment" COLSPAN="3" ALIGN="LEFT">same_alignment</TD></TR>
+      <TR><TD PORT="regular_blocking" COLSPAN="3" ALIGN="LEFT">regular_blocking</TD></TR>
+      <TR><TD PORT="num_bands" COLSPAN="3" ALIGN="LEFT">num_bands</TD></TR>
+      <TR><TD PORT="pixel_types" COLSPAN="3" ALIGN="LEFT">pixel_types</TD></TR>
+      <TR><TD PORT="nodata_values" COLSPAN="3" ALIGN="LEFT">nodata_values</TD></TR>
+      <TR><TD PORT="out_db" COLSPAN="3" ALIGN="LEFT">out_db</TD></TR>
+      <TR><TD PORT="extent" COLSPAN="3" ALIGN="LEFT">extent</TD></TR>
+      <TR><TD PORT="spatial_index" COLSPAN="3" ALIGN="LEFT">spatial_index</TD></TR>
+      <TR><TD ALIGN="LEFT" BGCOLOR="#f7f7f7">  </TD><TD ALIGN="RIGHT" BGCOLOR="#f7f7f7">view</TD><TD ALIGN="RIGHT" BGCOLOR="#f7f7f7">  </TD></TR>
+    </TABLE>>
+    URL="tables/raster_columns.html"
+    tooltip="raster_columns"
+  ];
+}
