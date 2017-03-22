@@ -38,7 +38,7 @@ DO $$ BEGIN PERFORM qwat_sys.fn_enable_schemaview( 'pipe' ); END $$;
 DO $$ BEGIN PERFORM qwat_sys.fn_label_create_fields('pipe', false, false); END $$;
 
 /* Constraints */
-ALTER TABLE qwat_od.pipe ADD CONSTRAINT pipe_fk_parent         FOREIGN KEY (fk_parent)         REFERENCES qwat_od.pipe (id)              MATCH FULL; CREATE INDEX fki_pipe_fk_parent        ON qwat_od.pipe(fk_parent);
+ALTER TABLE qwat_od.pipe ADD CONSTRAINT pipe_fk_parent         FOREIGN KEY (fk_parent)         REFERENCES qwat_od.pipe (id)              MATCH FULL ON DELETE SET NULL; CREATE INDEX fki_pipe_fk_parent        ON qwat_od.pipe(fk_parent);
 ALTER TABLE qwat_od.pipe ADD CONSTRAINT pipe_fk_function       FOREIGN KEY (fk_function)       REFERENCES qwat_vl.pipe_function(id)      MATCH FULL; CREATE INDEX fki_pipe_fk_function      ON qwat_od.pipe(fk_function);
 ALTER TABLE qwat_od.pipe ADD CONSTRAINT pipe_fk_installmethod  FOREIGN KEY (fk_installmethod)  REFERENCES qwat_vl.pipe_installmethod(id) MATCH FULL; CREATE INDEX fki_pipe_fk_installmethod ON qwat_od.pipe(fk_installmethod);
 ALTER TABLE qwat_od.pipe ADD CONSTRAINT pipe_fk_material       FOREIGN KEY (fk_material)       REFERENCES qwat_vl.pipe_material(id)      MATCH FULL; CREATE INDEX fki_pipe_fk_material      ON qwat_od.pipe(fk_material);
