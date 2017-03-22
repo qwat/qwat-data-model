@@ -12,7 +12,6 @@ ALTER TABLE qwat_od.subscriber_reference ADD COLUMN fk_subscriber integer not nu
 /* GEOMETRY */
 ALTER TABLE qwat_od.subscriber_reference ADD COLUMN geometry geometry('POINT',:SRID);
 CREATE INDEX subscriber_reference_geoidx_sch ON qwat_od.subscriber_reference USING GIST ( geometry );
-			
-/* CONSTRAINTS */
-ALTER TABLE qwat_od.subscriber_reference ADD CONSTRAINT subscriber_reference_fk_subscriber FOREIGN KEY (fk_subscriber) REFERENCES qwat_od.subscriber (id) MATCH FULL; CREATE INDEX fki_subscriber_reference_fk_subscriber ON qwat_od.subscriber_reference(fk_subscriber);
 
+/* CONSTRAINTS */
+ALTER TABLE qwat_od.subscriber_reference ADD CONSTRAINT subscriber_reference_fk_subscriber FOREIGN KEY (fk_subscriber) REFERENCES qwat_od.subscriber (id) MATCH FULL ON DELETE CASCADE; CREATE INDEX fki_subscriber_reference_fk_subscriber ON qwat_od.subscriber_reference(fk_subscriber);
