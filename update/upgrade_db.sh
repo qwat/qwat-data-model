@@ -40,6 +40,10 @@ shift
 done
 
 
+if [[ $UPGRADE_REAL_DB =~ ^[Yy] ]]; then
+  printf "\n\n${RED}ATTENTION: this process will migrate your real DB. Please make sure you have made some backups${NC}\n\n\n"
+fi
+
 read -s  -p "Please enter the password for your DB user ($USER) (if the user does not exist, please edit this script and change it)": pwd
 export PGPASSWORD="$pwd"
 echo ""
@@ -55,19 +59,8 @@ if [[ $UPGRADE_REAL_DB =~ ^[Yy] ]]; then
     if [[ $REPLY =~ ^[Yy]$ ]]
     then
             echo "Upgrading qWat DB"
+            echo
 
-#             echo "Applying deltas on $TESTDB:"
-#             for f in $DIR/delta/*.sql
-#             do
-#                 CURRENT_DELTA=$(basename "$f")
-#                 CURRENT_DELTA_NUM_VERSION=$(echo $CURRENT_DELTA| cut -d'_' -f 2)
-#                 if [[ $CURRENT_DELTA_NUM_VERSION > $NUMVERSION ]]; then
-#                     printf "    Processing ${GREEN}$CURRENT_DELTA${NC}, num version = $CURRENT_DELTA_NUM_VERSION\n"
-#                     /usr/bin/psql --host $HOST --port 5432 --username "$USER" --no-password -q -d "$SRCDB" -f $f
-#                 else
-#                     printf "    Bypassing  ${RED}$CURRENT_DELTA${NC}, num version = $CURRENT_DELTA_NUM_VERSION\n"
-#                 fi
-#             done
             echo "Applying deltas on $SRCDB :"
             for f in $DIR/delta/*.sql
             do
@@ -81,7 +74,6 @@ if [[ $UPGRADE_REAL_DB =~ ^[Yy] ]]; then
 
                     # Check if there is a POST file associated to the delta, if so, store it in the array for later execution
                     EXISTS_POST_FILE=$f'.post'
-                    echo $EXISTS_POST_FILE
                     if [ -e "$EXISTS_POST_FILE" ]
                     then
                         TAB_FILES_POST+=($EXISTS_POST_FILE)
@@ -236,7 +228,7 @@ echo "Performing conformity test"
 STATUS=$(python test_migration.py --pg_service $QWATSERVICETEST)
 
 if [[ $STATUS == "DataModel is OK" ]]; then
-    printf "${GREEN}Migration TEST is successfull${NC}. You may now migrate your real DB\n"
+    printf "${GREEN}Migration TEST is successfull${NC}. You may now migrate your real DB by lauching the command './upgrade_db.sh -u yes' \n"
 else
     printf "${RED}Migration TEST has failed${NC}. Please contact qWat team and give them the following output :\n $STATUS \n\n"
 fi
