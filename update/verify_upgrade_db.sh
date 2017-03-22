@@ -167,12 +167,12 @@ if [[ $EXITCODE == 0 ]]; then
 
     printf "\n${YELLOW}Cloning Data-sample repository${NC}\n"
     git clone https://github.com/qwat/qwat-data-sample.git data-sample
-    printf "\n${YELLOW}Restoring data-sample in qwat_demo${NC}\n"
+    printf "\n${YELLOW}Restoring data-sample in qwat_demo :${NC}\n"
     for f in data-sample/*.backup
     do
         if [[ "$f" == *_data_and_structure_sample.backup ]]; then
-            printf "\n${YELLOW}Restoring $f ${NC}\n"
-            /usr/bin/pg_restore --host $HOST --port 5432 --username "$USER"  --no-password --dbname "$DEMODB" --verbose "data-sample/$f" >output.txt 2>&1
+            printf "\n${YELLOW}   Restoring $f ${NC}\n"
+            /usr/bin/pg_restore --host $HOST --port 5432 --username "$USER"  --no-password --dbname "$DEMODB" --verbose "$f" >output.txt 2>&1
         fi
     done
     echo "Done"
