@@ -217,7 +217,8 @@ if [[ $EXITCODE == 0 ]]; then
     printf "\n    Processing POST file: ${GREEN}$i${NC}\n"
     /usr/bin/psql --host $HOST --port 5432 --username "$USER" --no-password -d "$DEMODB" -f $i
     done
-    # 5 - Launch unit test on $DEMODB ?
+    # 5 - Mark the version
+    /usr/bin/psql -v ON_ERROR_STOP=1 --host $HOST --port 5432 --username "$USER" --no-password -q -d "$DEMODB" -t -c "UPDATE qwat_sys.versions SET version = $LAST_VERSION'';"
 
     # 6 - Dump the new DB
     printf -v FILE_NAME "/tmp/qwat_v%s_data_and_structure_sample.backup" $LAST_VERSION
