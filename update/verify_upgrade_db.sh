@@ -155,8 +155,7 @@ done
 cd ..
 printf "\n\n\n${GREEN}Updating DATA-SAMPLE${NC}\n\n\n"
 
-# TODO split that part in another .sh file ?
-# script2.sh "$ARG1" "$ARG2" "$ARG3"
+
 if [[ $EXITCODE == 0 ]]; then
 #if [[ $TRAVIS_BRANCH == 'master' ]]  # TODO reactivate in the end
     TAB_FILES_POST=()
@@ -169,7 +168,12 @@ if [[ $EXITCODE == 0 ]]; then
     printf "\n${YELLOW}Cloning Data-sample repository${NC}\n"
     git clone https://github.com/qwat/qwat-data-sample.git data-sample
     printf "\n${YELLOW}Restoring data-sample in qwat_demo${NC}\n"
-    /usr/bin/pg_restore --host $HOST --port 5432 --username "$USER"  --no-password --dbname "$DEMODB" --verbose "data-sample/qwat_v1.2.1_data_and_structure_sample.backup" >output.txt 2>&1 # TODO read the title dynamically
+    for f in $DIR/delta/*.sql
+    do
+        if [[ "$f" == *_data_and_structure_sample.backup ]] then
+            /usr/bin/pg_restore --host $HOST --port 5432 --username "$USER"  --no-password --dbname "$DEMODB" --verbose "data-sample/$f" >output.txt 2>&1
+        fi
+    done
     echo "Done"
 
     # 2 - Execute deltas on that base that are > to the DB version
