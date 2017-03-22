@@ -19,6 +19,7 @@ NC='\033[0m' # No Color
 TAB_FILES_POST=()
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+cd $DIR
 
 while [[ $# > 0 ]]; do
 key="$1"
@@ -129,7 +130,7 @@ TODAY=`date '+%Y%m%d'`
 /usr/bin/pg_dump --host $HOST --port 5432 --username "$USER" --format custom --file "$TODAY""_current_qwat.backup" "$SRCDB"
 #/usr/bin/pg_dump -d "service=$QWATSERVICE" --format custom --file "$TODAY""_current_qwat.backup"
 
-echo "Dropping existing qwat_test"
+echo "Dropping existing DB qwat_test"
 /usr/bin/dropdb "$TESTDB" --host $HOST --port 5432 --username "$USER" --no-password
 #/usr/bin/dropdb -d "service=$QWATSERVICETEST"
 
@@ -190,11 +191,13 @@ do
     fi
 done
 
+cd ..
 echo
-echo "Reloading views and functions from last commit"
+echo "Reloading views and functions"
 export PGSERVICE=$QWATSERVICETEST
-SRID=$SRID ../ordinary_data/views/rewrite_views.sh
-SRID=$SRID ../ordinary_data/functions/rewrite_functions.sh
+SRID=$SRID ./ordinary_data/views/rewrite_views.sh
+SRID=$SRID ./ordinary_data/functions/rewrite_functions.sh
+cd $DIR
 
 # In the end, check if there are some POST files to execute (postfiles must be named exactly like the delta files that have been executed previously)
 unset PGSERVICE
