@@ -135,7 +135,7 @@ echo "Performing conformity test"
 STATUS=$(python test_migration.py --pg_service $QWATSERVICETESTCONFORM)
 
 if [[ $STATUS == "DataModel is OK" ]]; then
-    STATUS=echo $STATUS | sed 's/%/\\045/'
+#     STATUS=echo $STATUS | sed 's/%/\\045/'
     printf "${GREEN}Migration TEST is successfull${NC}. You may now migrate your real DB\n"
     EXITCODE=0
 else
@@ -168,9 +168,9 @@ if [[ $EXITCODE == 0 ]]; then
     printf "\n${YELLOW}Cloning Data-sample repository${NC}\n"
     git clone https://github.com/qwat/qwat-data-sample.git data-sample
     printf "\n${YELLOW}Restoring data-sample in qwat_demo${NC}\n"
-    for f in $DIR/delta/*.sql
+    for f in data-sample/*.backup
     do
-        if [[ "$f" == *_data_and_structure_sample.backup ]] then
+        if [[ "$f" == *_data_and_structure_sample.backup ]]; then
             /usr/bin/pg_restore --host $HOST --port 5432 --username "$USER"  --no-password --dbname "$DEMODB" --verbose "data-sample/$f" >output.txt 2>&1
         fi
     done
