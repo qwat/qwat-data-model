@@ -101,7 +101,7 @@ where pp.oid = t.tgfoid
   and t.tgname = tl.tgname
   AND t.tgrelid = p.oid
   and  SUBSTR(p.relname, 1, 3) != 'vw_' -- We cannot check for vw_ views, because  they are created after that script
-ORDER BY p.relname, t.tgname 
+ORDER BY p.relname, t.tgname, pp.prosrc
 ) TO STDOUT WITH CSV FORCE QUOTE *;;
 
 /* List functions */
