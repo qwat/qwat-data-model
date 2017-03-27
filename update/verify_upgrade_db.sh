@@ -239,10 +239,6 @@ if [[ $EXITCODE == 0 ]]; then
     printf "\n${YELLOW}Dumping qwat_demo to $FILE_NAME ${NC}\n"
     /usr/bin/pg_dump --host $HOST --port 5432 --username "$USER" --no-password  --format custom --blobs --section data --verbose --file "$FILE_NAME" --schema "qwat_dr" --schema "qwat_od" "$DEMODB"
 
-    
-    # TEST
-    echo $GH_TOKEN
-    
     # 7 - Update git
     printf "\n${YELLOW}Updating qwat-data-sample repository with new DUMP $FILE_NAME ${NC}\n"
 #     cd data-sample
