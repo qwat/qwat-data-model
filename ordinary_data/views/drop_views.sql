@@ -19,13 +19,13 @@ drop view if exists qwat_od.vw_export_installation;
 drop view if exists qwat_od.vw_export_leak;  -- joins export_pipe so shall be removed prior to it
 drop view if exists qwat_od.vw_export_meter;
 drop view if exists qwat_od.vw_export_part;
+drop view if exists qwat_od.vw_export_printmap;
 drop view if exists qwat_od.vw_export_pipe;
 drop view if exists qwat_od.vw_export_subscriber;
 drop view if exists qwat_od.vw_export_valve;
 
 drop view if exists qwat_od.vw_remote;
 drop view if exists qwat_od.vw_consumptionzone;
-drop view if exists qwat_od.vw_printmap;
 drop view if exists qwat_od.vw_protectionzone;
 
 /* inheritance views*/
@@ -51,5 +51,3 @@ drop view if exists qwat_od.vw_qwat_installation;
 drop view if exists qwat_od.vw_node_element;
 
 drop type if exists qwat_od.installation_type;
-
-
