@@ -171,7 +171,9 @@ if [[ $EXITCODE == 0 ]]; then
     /usr/bin/psql --host $HOST --port 5432 --username "$USER" --no-password -d "$DEMODB" -c "CREATE EXTENSION postgis; CREATE EXTENSION hstore;"
 
     printf "\n${YELLOW}Cloning Data-sample repository${NC}\n"
-    git clone https://github.com/qwat/qwat-data-sample.git data-sample
+    
+    #git remote add upstream "https://$GH_TOKEN@github.com/rust-lang/rust-by-example.git"
+    git clone https://$GH_TOKEN@github.com/qwat/qwat-data-sample.git data-sample
     printf "\n${YELLOW}Restoring data-sample in qwat_demo :${NC}\n"
     for f in data-sample/*.backup
     do
