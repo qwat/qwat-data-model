@@ -227,11 +227,17 @@ if [[ $EXITCODE == 0 ]]; then
     /usr/bin/psql -v ON_ERROR_STOP=1 --host $HOST --port 5432 --username "$USER" --no-password -q -d "$DEMODB" -t -c "UPDATE qwat_sys.versions SET version = '$LAST_VERSION';"
 
     # 6 - Dump the new DB
-    printf -v FILE_NAME "/tmp/qwat_v%s_data_and_structure_sample.backup" $LAST_VERSION
+    printf -v FILE_NAME "/tmp/qwat_v%s_data_and_structure_sample_TEST.backup" $LAST_VERSION  # TODO remoe the _TEST tag
     printf "\n${YELLOW}Dumping qwat_demo to $FILE_NAME ${NC}\n"
     /usr/bin/pg_dump --host $HOST --port 5432 --username "$USER" --no-password  --format custom --blobs --section data --verbose --file "$FILE_NAME" --schema "qwat_dr" --schema "qwat_od" "$DEMODB"
+
     # 7 - Update git
-    # TODO call python script
+    printf "\n${YELLOW}Updating qwat-data-sample repository with new DUMP $FILE_NAME ${NC}\n"
+    cd data-sample
+    git add $FILE_NAME
+    git commit -m "Update data-sample"
+    git push
+
 #fi
 fi
 
