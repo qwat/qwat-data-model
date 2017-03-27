@@ -120,32 +120,16 @@ fi
 echo "Dumping actual DB"
 TODAY=`date '+%Y%m%d'`
 /usr/bin/pg_dump --host $HOST --port 5432 --username "$USER" --format custom --file "$TODAY""_current_qwat.backup" "$SRCDB"
-#/usr/bin/pg_dump -d "service=$QWATSERVICE" --format custom --file "$TODAY""_current_qwat.backup"
 
 echo "Dropping existing DB qwat_test"
 /usr/bin/dropdb "$TESTDB" --host $HOST --port 5432 --username "$USER" --no-password
-#/usr/bin/dropdb -d "service=$QWATSERVICETEST"
 
 echo "Creating DB qwat_test"
 /usr/bin/createdb "$TESTDB" --host $HOST --port 5432 --username "$USER" --no-password
-#/usr/bin/createdb -d "service=$QWATSERVICETEST"
 
 echo "Restoring current DB in qwat_test"
 /usr/bin/pg_restore --host $HOST --port 5432 --username "$USER" --dbname "$TESTDB" --no-password --single-transaction --exit-on-error "$TODAY""_current_qwat.backup"
-#/usr/bin/pg_restore -d "service=$QWATSERVICETEST" --single-transaction --exit-on-error "$TODAY""_current_qwat.backup"
 
-# echo "Applying deltas on $TESTDB:"
-# for f in $DIR/delta/*.sql
-# do
-#     CURRENT_DELTA=$(basename "$f")
-#     CURRENT_DELTA_NUM_VERSION=$(echo $CURRENT_DELTA| cut -d'_' -f 2)
-#     if [[ $CURRENT_DELTA_NUM_VERSION > $NUMVERSION ]]; then
-#         printf "    Processing ${GREEN}$CURRENT_DELTA${NC}, num version = $CURRENT_DELTA_NUM_VERSION\n"
-#         /usr/bin/psql --host $HOST --port 5432 --username "$USER" --no-password -q -d "$TESTDB" -f $f
-#     else
-#         printf "    Bypassing  ${RED}$CURRENT_DELTA${NC}, num version = $CURRENT_DELTA_NUM_VERSION\n"
-#     fi
-# done
 TAB_FILES_POST=()
 echo "Applying deltas on $TESTDB :"
 for f in $DIR/delta/*.sql
@@ -156,7 +140,6 @@ do
     CURRENT_DELTA_NUM_VERSION_FULL=$(echo $CURRENT_DELTA_WITHOUT_EXT| cut -d'_' -f 2)
     if [[ $CURRENT_DELTA_NUM_VERSION > $SHORT_LATEST_TAG || $CURRENT_DELTA_NUM_VERSION == $SHORT_LATEST_TAG || $SHORT_LATEST_TAG == '' ]]; then
         printf "    Processing ${GREEN}$CURRENT_DELTA${NC}, num version = $CURRENT_DELTA_NUM_VERSION ($CURRENT_DELTA_NUM_VERSION_FULL)\n"
-        #/usr/bin/psql -v ON_ERROR_STOP=1 --host $HOST --port 5432 --username "$USER" --no-password -q -d "$TESTDB" -f $f
         /usr/bin/psql --host $HOST --port 5432 --username "$USER" --no-password -q -d "$TESTDB" -f $f
 
         # Check if there is a POST file associated to the delta, if so, store it in the array for later execution
@@ -198,7 +181,6 @@ for i in "${TAB_FILES_POST[@]}"
 do
    printf "\nProcessing POST file: ${GREEN}$i${NC}\n"
    /usr/bin/psql --host $HOST --port 5432 --username "$USER" --no-password -d "$TESTDB" -f $i
-#    /usr/bin/psql -v ON_ERROR_STOP=1 --host $HOST --port 5432 --username "$USER" --no-password -q -d "$TESTDB"
 done
 
 
@@ -206,12 +188,10 @@ done
 echo
 echo "Dropping DB (qwat_test_conform)"
 /usr/bin/dropdb "$TESTCONFORMDB" --host $HOST --port 5432 --username "$USER" --no-password
-#/usr/bin/createdb -d "service=$QWATSERVICETEST"
 
 echo
 echo "Creating DB (qwat_test_conform)"
 /usr/bin/createdb "$TESTCONFORMDB" --host $HOST --port 5432 --username "$USER" --no-password
-#/usr/bin/createdb -d "service=$QWATSERVICETEST"
 
 echo
 echo "Initializing qwat DB in qwat_test_conform"
