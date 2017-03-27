@@ -72,7 +72,7 @@ fi
 
 
 PROPER_LATEST_TAG=$SHORT_LATEST_TAG".0.0"
-echo "Switching on lastest tag major version ${GREEN}$PROPER_LATEST_TAG)${NC}"
+echo "Switching on latest tag major version ${GREEN}$PROPER_LATEST_TAG)${NC}"
 git checkout tags/$PROPER_LATEST_TAG
 
 cd ..
