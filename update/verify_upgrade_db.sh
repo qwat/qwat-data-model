@@ -55,7 +55,7 @@ cd $DIR
 LATEST_TAG=$(git describe)
 #PROPER_LATEST_TAG=$(echo $LATEST_TAG| cut -d'-' -f 1)
 SHORT_LATEST_TAG=$(echo $LATEST_TAG| cut -c 1)
-printf "    Latest tag = ${GREEN}$SHORT_LATEST_TAG${NC}\n"
+printf "    Latest tag = ${GREEN}$SHORT_LATEST_TAG ($LATEST_TAG) ${NC}\n"
 
 
 # We need to execute init_qwat.sh from the lastest TAG version in $QWATSERVICETESTCONFORM
