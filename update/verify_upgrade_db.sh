@@ -242,6 +242,9 @@ if [[ $EXITCODE == 0 ]]; then
     # 7 - Update git
     printf "\n${YELLOW}Updating qwat-data-sample repository with new DUMP $FILE_NAME ${NC}\n"
 #     cd data-sample
+    git init
+    git config user.name "Sylvain Beorchia"
+    git config user.email "sylvain.beorchia@oslandia.com"
     git add $FILE_NAME
     git commit -m "Update data-sample"
     git push
