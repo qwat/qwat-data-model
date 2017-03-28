@@ -12,6 +12,8 @@ HOST=localhost
 QWATSERVICETEST=qwat_test
 QWATSERVICETESTCONFORM=qwat_test_conform
 SRID=21781
+QWAT_USER='Admin QWAT'
+QWAT_EMAIL='admin@qwat.org'
 
 RED='\033[0;31m'
 GREEN='\033[0;32m'
@@ -241,10 +243,9 @@ if [[ $EXITCODE == 0 ]]; then
 
     # 7 - Update git
     printf "\n${YELLOW}Updating qwat-data-sample repository with new DUMP $FILE_NAME ${NC}\n"
-#     cd data-sample
     git init
-    git config user.name "Sylvain Beorchia"
-    git config user.email "sylvain.beorchia@oslandia.com"
+    git config user.name "$QWAT_USER"
+    git config user.email "$QWAT_EMAIL"
     git add $FILE_NAME
     git commit -m "Update data-sample"
     git push
