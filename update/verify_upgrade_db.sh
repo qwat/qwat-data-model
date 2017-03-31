@@ -241,12 +241,23 @@ if [[ $EXITCODE == 0 ]]; then
     printf "\n${YELLOW}Dumping qwat_demo to $FILE_NAME ${NC}\n"
     /usr/bin/pg_dump --host $HOST --port 5432 --username "$USER" --no-password  --format custom --blobs --section data --verbose --file "$FILE_NAME" --schema "qwat_dr" --schema "qwat_od" "$DEMODB"
 
+    # Procude also a DUMP with the structure only + models (for windows users)
+    printf -v FILE_NAME_STRUCT "qwat_v%s_structure_sample_TEST.backup" $LAST_VERSION  # TODO remove the _TEST tag
+    printf "\n${YELLOW}Dumping qwat_demo structure to $FILE_NAME_STRUCT ${NC}\n"
+    /usr/bin/pg_dump --host $HOST --port 5432 --username "$USER" --no-password  --format custom --blobs --section data --verbose --file "$FILE_NAME_STRUCT" --schema "qwat_dr" --schema "qwat_od" --schema "qwat_sys" --schema-only "$DEMODB"
+
+    printf -v FILE_NAME_VL "qwat_v%s_qwatvl_sample_TEST.backup" $LAST_VERSION  # TODO remove the _TEST tag
+    printf "\n${YELLOW}Dumping qwat_demo structure to $FILE_NAME_VL ${NC}\n"
+    /usr/bin/pg_dump --host $HOST --port 5432 --username "$USER" --no-password  --format custom --blobs --section data --verbose --file "$FILE_NAME_VL" --schema "qwat_vl" "$DEMODB"
+
     # 7 - Update git
-    printf "\n${YELLOW}Updating qwat-data-sample repository with new DUMP $FILE_NAME ${NC}\n"
-    git init
+    printf "\n${YELLOW}Updating qwat-data-sample repository with new DUMPs $FILE_NAME, $FILE_NAME_STRUCT, $FILE_NAME_VL ${NC}\n"
+#     git init
     git config user.name "$QWAT_USER"
     git config user.email "$QWAT_EMAIL"
     git add $FILE_NAME
+    git add $FILE_NAME_STRUCT
+    git add $FILE_NAME_VL
     git commit -m "Update data-sample"
     git push
 
