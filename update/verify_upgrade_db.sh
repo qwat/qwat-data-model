@@ -257,9 +257,9 @@ if [[ $EXITCODE == 0 ]]; then
     # 7 - Update git
     printf "\n${YELLOW}Updating qwat-data-sample repository with new DUMPs $FILE_NAME, $FILE_NAME_STRUCT, $FILE_NAME_VL ${NC}\n"
 #     git init
-#     git config user.name "$QWAT_USER"
-#     git config user.email "$QWAT_EMAIL"
-#     git config --global push.default simple
+    git config user.name "$QWAT_USER"
+    git config user.email "$QWAT_EMAIL"
+    git config --global push.default simple
     git add $FILE_NAME
     git add $FILE_NAME_STRUCT
     git add $FILE_NAME_VL
