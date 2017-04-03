@@ -164,7 +164,7 @@ printf "\n\n\n${GREEN}Updating DATA-SAMPLE${NC}\n\n\n"
 
 
 if [[ $EXITCODE == 0 ]]; then
-    if [[ $TRAVIS_BRANCH == 'master' ]]  # TODO reactivate in the end
+    if [[ $TRAVIS_BRANCH == 'master' ]]; then
         TAB_FILES_POST=()
         # If all is OK, update the DUMP demo ONLY IF WE ARE in the master
         # 1 - Load the DEMO dump in a new demo DB
@@ -173,7 +173,7 @@ if [[ $EXITCODE == 0 ]]; then
         /usr/bin/psql --host $HOST --port 5432 --username "$USER" --no-password -d "$DEMODB" -c "CREATE EXTENSION postgis; CREATE EXTENSION hstore;"
 
         printf "\n${YELLOW}Cloning Data-sample repository${NC}\n"
-        
+
         #git remote add upstream "https://$GH_TOKEN@github.com/rust-lang/rust-by-example.git"
     #     git config user.name "$QWAT_USER"
     #     git config user.email "$QWAT_EMAIL"
