@@ -255,6 +255,7 @@ if [[ $EXITCODE == 0 ]]; then
 #     git init
     git config user.name "$QWAT_USER"
     git config user.email "$QWAT_EMAIL"
+    git config --global push.default simple
     git add $FILE_NAME
     git add $FILE_NAME_STRUCT
     git add $FILE_NAME_VL
