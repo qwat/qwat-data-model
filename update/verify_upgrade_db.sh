@@ -160,11 +160,12 @@ done
 
 
 cd ..
-printf "\n\n\n${GREEN}Updating DATA-SAMPLE${NC}\n\n\n"
 
 
 if [[ $EXITCODE == 0 ]]; then
     if [[ $TRAVIS_BRANCH == 'master' ]]; then
+        printf "\n\n\n${GREEN}Updating DATA-SAMPLE${NC}\n\n\n"
+
         TAB_FILES_POST=()
         # If all is OK, update the DUMP demo ONLY IF WE ARE in the master
         # 1 - Load the DEMO dump in a new demo DB
