@@ -12,7 +12,7 @@ HOST=localhost
 QWATSERVICETEST=qwat_test
 QWATSERVICETESTCONFORM=qwat_test_conform
 SRID=21781
-QWAT_USER='Admin QWAT'
+QWAT_USER='qwat-admin'
 QWAT_EMAIL='admin@qwat.org'
 
 RED='\033[0;31m'
@@ -259,7 +259,9 @@ if [[ $EXITCODE == 0 ]]; then
     git add $FILE_NAME_STRUCT
     git add $FILE_NAME_VL
     git commit -m "Update data-sample"
-    git push
+#     git push
+#     git push https://$QWAT_USER@github.com/<github repository>
+    git push https://$GH_TOKEN@github.com/qwat/qwat-data-sample.git
 
 #fi
 fi
