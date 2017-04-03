@@ -175,9 +175,9 @@ if [[ $EXITCODE == 0 ]]; then
     printf "\n${YELLOW}Cloning Data-sample repository${NC}\n"
     
     #git remote add upstream "https://$GH_TOKEN@github.com/rust-lang/rust-by-example.git"
-    git config user.name "$QWAT_USER"
-    git config user.email "$QWAT_EMAIL"
-    git config --global push.default simple
+#     git config user.name "$QWAT_USER"
+#     git config user.email "$QWAT_EMAIL"
+#     git config --global push.default simple
 
     git clone https://$GH_TOKEN@github.com/qwat/qwat-data-sample.git data-sample
     printf "\n${YELLOW}Restoring data-sample in qwat_demo :${NC}\n"
@@ -264,9 +264,9 @@ if [[ $EXITCODE == 0 ]]; then
     git add $FILE_NAME_STRUCT
     git add $FILE_NAME_VL
     git commit -m "Update data-sample"
-#     git push
+    git push
 #     git push https://$GH_TOKEN@github.com/qwat/qwat-data-sample.git
-    git push https://$QWAT_USER@github.com/qwat/qwat-data-sample.git
+#     git push https://$QWAT_USER@github.com/qwat/qwat-data-sample.git
 
 #fi
 fi
