@@ -264,7 +264,8 @@ if [[ $EXITCODE == 0 ]]; then
     git add $FILE_NAME_STRUCT
     git add $FILE_NAME_VL
     git commit -m "Update data-sample"
-    git push | head -n -2 -
+#     git push | head -n -2 -
+    git push -q
 #     git push https://$GH_TOKEN@github.com/qwat/qwat-data-sample.git
 #     git push https://$QWAT_USER@github.com/qwat/qwat-data-sample.git
 
