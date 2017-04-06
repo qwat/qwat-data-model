@@ -4,7 +4,7 @@
 
 This repository contains the definition of the data model used by [QWAT](https://github.com/qwat/QWAT) project, a module aimed at managing a water network in QGIS.
 
-A full web data model documentation with diagrams and relations is available [here](https://rawgit.com/qwat/qwat-data-model/better_doc/diagram/index.html).
+A full web data model documentation with diagrams and relations is available [here](https://rawgit.com/qwat/qwat-data-model/master/diagram/index.html).
 
 # Model changelog 
 - v1.2.2 : Integrates the new audit history system. Fixes an issue with multiple primary keys in conformity check procedure 
