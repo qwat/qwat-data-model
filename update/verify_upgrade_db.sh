@@ -202,6 +202,7 @@ if [[ $EXITCODE == 0 ]]; then
             CURRENT_DELTA=$(basename "$f")
             CURRENT_DELTA_WITHOUT_EXT="${CURRENT_DELTA%.*}"
             CURRENT_DELTA_NUM_VERSION=$(echo $CURRENT_DELTA_WITHOUT_EXT| cut -c 7)
+            echo $CURRENT_DELTA_NUM_VERSION
             CURRENT_DELTA_NUM_VERSION_FULL=$(echo $CURRENT_DELTA_WITHOUT_EXT| cut -d'_' -f 2)
             if [[ $CURRENT_DELTA_NUM_VERSION > $SAMPLE_VERSION || $CURRENT_DELTA_NUM_VERSION == $SAMPLE_VERSION || $SAMPLE_VERSION == '' ]]; then
                 printf "    Processing ${GREEN}$CURRENT_DELTA${NC}, num version = $CURRENT_DELTA_NUM_VERSION ($CURRENT_DELTA_NUM_VERSION_FULL)\n"
