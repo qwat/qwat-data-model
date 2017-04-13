@@ -1,14 +1,18 @@
 /* Audit */
 DO $$
 BEGIN
+--qwat_dr
 PERFORM qwat_sys.audit_table('qwat_dr.annotationline');
 PERFORM qwat_sys.audit_table('qwat_dr.annotationpoint');
 PERFORM qwat_sys.audit_table('qwat_dr.constructionpoint');
 PERFORM qwat_sys.audit_table('qwat_dr.dimension_distance');
 PERFORM qwat_sys.audit_table('qwat_dr.dimension_orientation');
 
--- PERFORM qwat_sys.audit_table('qwat_od.distributor');
--- PERFORM qwat_sys.audit_table('qwat_od.district');
+--qwat_od
+
+PERFORM qwat_sys.audit_table('qwat_od.distributor');
+PERFORM qwat_sys.audit_table('qwat_od.district');
+PERFORM qwat_sys.audit_table('qwat_od.folder');
 -- PERFORM qwat_sys.audit_table('qwat_od.hydrant');
 -- PERFORM qwat_sys.audit_table('qwat_od.installation');
 -- PERFORM qwat_sys.audit_table('qwat_od.pressurecontrol');
@@ -17,18 +21,20 @@ PERFORM qwat_sys.audit_table('qwat_dr.dimension_orientation');
 -- PERFORM qwat_sys.audit_table('qwat_od.treatment');
 -- PERFORM qwat_sys.audit_table('qwat_od.tank');
 -- PERFORM qwat_sys.audit_table('qwat_od.chamber');
--- PERFORM qwat_sys.audit_table('qwat_od.leak');
+PERFORM qwat_sys.audit_table('qwat_od.leak');
 -- PERFORM qwat_sys.audit_table('qwat_od.meter');
--- PERFORM qwat_sys.audit_table('qwat_od.pipe');
+PERFORM qwat_sys.audit_table('qwat_od.pipe');
 -- PERFORM qwat_sys.audit_table('qwat_od.pressurezone');
--- PERFORM qwat_sys.audit_table('qwat_od.printmap');
--- PERFORM qwat_sys.audit_table('qwat_od.protectionzone');
+PERFORM qwat_sys.audit_table('qwat_od.printmap');
+PERFORM qwat_sys.audit_table('qwat_od.protectionzone');
+PERFORM qwat_sys.audit_table('qwat_od.remote');
 -- PERFORM qwat_sys.audit_table('qwat_od.samplingpoint');
 -- PERFORM qwat_sys.audit_table('qwat_od.subscriber');
 -- PERFORM qwat_sys.audit_table('qwat_od.subscriber_reference');
--- PERFORM qwat_sys.audit_table('qwat_od.surveypoint');
+PERFORM qwat_sys.audit_table('qwat_od.surveypoint');
 PERFORM qwat_sys.audit_table('qwat_od.valve');
 
+-- qwat_vl
 PERFORM qwat_sys.audit_table('qwat_vl.cistern');
 PERFORM qwat_sys.audit_table('qwat_vl.hydrant_provider');
 PERFORM qwat_sys.audit_table('qwat_vl.hydrant_material');

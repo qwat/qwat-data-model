@@ -19,7 +19,7 @@ PERFORM qwat_sys.audit_view('qwat_od.vw_protectionzone', 'true'::boolean, '{}'::
 PERFORM qwat_sys.audit_view('qwat_od.vw_qwat_installation', 'true'::boolean, '{}'::text[], '{id}'::text[]);
 PERFORM qwat_sys.audit_view('qwat_od.vw_qwat_network_element', 'true'::boolean, '{}'::text[], '{id}'::text[]);
 PERFORM qwat_sys.audit_view('qwat_od.vw_qwat_node', 'true'::boolean, '{}'::text[], '{id}'::text[]);
-PERFORM qwat_sys.audit_view('qwat_od.vw_remote', 'true'::boolean, '{}'::text[], '{id}'::text[]);
+-- PERFORM qwat_sys.audit_view('qwat_od.vw_remote', 'true'::boolean, '{}'::text[], '{id}'::text[]);
 -- PERFORM qwat_sys.audit_view('qwat_od.vw_search_view', 'true'::boolean, '{}'::text[], '{id}'::text[]);
 -- PERFORM qwat_sys.audit_view('qwat_od.vw_subscriber_pipe_relation', 'true'::boolean, '{}'::text[], '{id}'::text[]);
 -- PERFORM qwat_sys.audit_view('qwat_od.vw_valve_lines', 'true'::boolean, '{}'::text[], '{id}'::text[]);
