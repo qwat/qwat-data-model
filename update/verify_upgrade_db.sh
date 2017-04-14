@@ -182,12 +182,14 @@ if [[ $EXITCODE == 0 ]]; then
 
         git clone https://$GH_TOKEN@github.com/qwat/qwat-data-sample.git data-sample
         printf "\n${YELLOW}Restoring data-sample in qwat_demo :${NC}\n"
-        # TODO We have to take the most recent DATA SAMPLE FILE
-        for f in data-sample/*.backup
+        # We have to take the most recent DATA SAMPLE FILE
+#         for f in data-sample/*.backup
+        for f in `ls data-sample/*_data_and_structure_sample.backup | sort -Vr`
         do
             if [[ "$f" == *_data_and_structure_sample.backup ]]; then
                 printf "\n${YELLOW}   Restoring $f ${NC}\n"
                 /usr/bin/pg_restore --host $HOST --port 5432 --username "$USER"  --no-password --dbname "$DEMODB" --verbose "$f" >output.txt 2>&1
+                break
             fi
         done
         echo "Done"
