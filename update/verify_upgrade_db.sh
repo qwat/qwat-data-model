@@ -255,11 +255,11 @@ if [[ $EXITCODE == 0 ]]; then
         /usr/bin/pg_dump --host $HOST --port 5432 --username "$USER" --no-password --blobs --section data --verbose --file "$FILE_NAME" --schema "qwat_dr" --schema "qwat_od" "$DEMODB"
 
         # Procude also a DUMP with the structure only + models (for windows users)
-        printf -v FILE_NAME_STRUCT "qwat_v%s_structure_sample.backup" $LAST_VERSION
+        printf -v FILE_NAME_STRUCT "qwat_v%s_structure_sample.sql" $LAST_VERSION
         printf "\n${YELLOW}Dumping qwat_demo structure to $FILE_NAME_STRUCT ${NC}\n"
         /usr/bin/pg_dump --host $HOST --port 5432 --username "$USER" --no-password --blobs --section data --verbose --file "$FILE_NAME_STRUCT" --schema "qwat_dr" --schema "qwat_od" --schema "qwat_sys" --schema-only "$DEMODB"
 
-        printf -v FILE_NAME_VL "qwat_v%s_qwatvl_sample.backup" $LAST_VERSION
+        printf -v FILE_NAME_VL "qwat_v%s_qwatvl_sample.sql" $LAST_VERSION
         printf "\n${YELLOW}Dumping qwat_demo structure to $FILE_NAME_VL ${NC}\n"
         /usr/bin/pg_dump --host $HOST --port 5432 --username "$USER" --no-password --blobs --section data --verbose --file "$FILE_NAME_VL" --schema "qwat_vl" "$DEMODB"
 
