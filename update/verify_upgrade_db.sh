@@ -184,7 +184,7 @@ if [[ $EXITCODE == 0 ]]; then
         printf "\n${YELLOW}Restoring data-sample in qwat_demo :${NC}\n"
         # We have to take the most recent DATA SAMPLE FILE
 #         for f in data-sample/*.backup
-        for f in `ls data-sample/*_data_and_structure_sample.backup | sort -Vr`
+        for f in `ls data-sample/*_data_and_structure_sample.backup | sort -r`
         do
             if [[ "$f" == *_data_and_structure_sample.backup ]]; then
                 printf "\n${YELLOW}   Restoring $f ${NC}\n"
