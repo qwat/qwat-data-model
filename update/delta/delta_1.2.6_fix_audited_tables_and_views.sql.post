@@ -2,6 +2,8 @@
 -- DO $$
 -- BEGIN
 
+# vw_remote is no more logged. nothing to do since it is a generated view
+
 
 
 -- END
