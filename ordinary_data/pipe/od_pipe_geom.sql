@@ -17,7 +17,7 @@ ALTER TABLE qwat_od.pipe ADD COLUMN update_geometry_alt2 boolean default null; -
 
 /* ---------------------------- */
 /* -------- ADD GEOM ---------- */
-ALTER TABLE qwat_od.pipe ADD COLUMN geometry      geometry('LINESTRINGZ',:SRID) NOT NULL;
+ALTER TABLE qwat_od.pipe ADD COLUMN geometry      geometry('LINESTRINGZ',:SRID) UNIQUE NOT NULL;
 ALTER TABLE qwat_od.pipe ADD COLUMN geometry_alt1 geometry('LINESTRINGZ',:SRID);
 ALTER TABLE qwat_od.pipe ADD COLUMN geometry_alt2 geometry('LINESTRINGZ',:SRID);
 
