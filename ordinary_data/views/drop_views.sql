@@ -21,10 +21,10 @@ drop view if exists qwat_od.vw_export_meter;
 drop view if exists qwat_od.vw_export_part;
 drop view if exists qwat_od.vw_export_printmap;
 drop view if exists qwat_od.vw_export_pipe;
+drop view if exists qwat_od.vw_export_remote;
 drop view if exists qwat_od.vw_export_subscriber;
 drop view if exists qwat_od.vw_export_valve;
 
-drop view if exists qwat_od.vw_remote;
 drop view if exists qwat_od.vw_consumptionzone;
 drop view if exists qwat_od.vw_protectionzone;
 

@@ -16,7 +16,6 @@ psql -v ON_ERROR_STOP=1 -c "$(${DIR}/inheritance/od_all_inheritance.py ${PGSERVI
 
 
 # export
-psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f ${DIR}/export/vw_remote.sql
 psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f ${DIR}/export/vw_consumptionzone.sql
 psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f ${DIR}/export/vw_protectionzone.sql
 
@@ -27,6 +26,7 @@ psql -v ON_ERROR_STOP=1 -c "$(${DIR}/export/export_meter.py ${PGSERVICE})"
 psql -v ON_ERROR_STOP=1 -c "$(${DIR}/export/export_part.py ${PGSERVICE})"
 psql -v ON_ERROR_STOP=1 -c "$(${DIR}/export/export_pipe.py ${PGSERVICE})"
 psql -v ON_ERROR_STOP=1 -c "$(${DIR}/export/export_printmap.py ${PGSERVICE})"
+psql -v ON_ERROR_STOP=1 -c "$(${DIR}/export/export_remote.py ${PGSERVICE})"
 psql -v ON_ERROR_STOP=1 -c "$(${DIR}/export/export_subscriber.py ${PGSERVICE})"
 psql -v ON_ERROR_STOP=1 -c "$(${DIR}/export/export_leak.py ${PGSERVICE})"  # depends on export_pipe
 
