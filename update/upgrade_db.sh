@@ -1,5 +1,10 @@
 #!/bin/bash
 
+# This script is manual
+# The process simulates a migration of your DB to the current version
+# If the simulation is OK, then the user is invited to migrate his real DB
+
+
 # PARAMS
 SRCDB=qwat
 TESTDB=qwat_test

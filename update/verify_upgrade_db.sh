@@ -1,5 +1,9 @@
 #!/bin/bash
 
+# This script is launched by travis when pushing modifications on github.
+# The process check if the current branch modifications are in sync with the delta files provided
+# It also updates automatically the data demo sample
+
 # exit on error
 set -e
 
