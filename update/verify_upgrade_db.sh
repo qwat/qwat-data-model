@@ -179,25 +179,14 @@ if [[ $EXITCODE == 0 ]]; then
 
         printf "\n${YELLOW}Cloning Data-sample repository${NC}\n"
 
-        #git remote add upstream "https://$GH_TOKEN@github.com/rust-lang/rust-by-example.git"
-    #     git config user.name "$QWAT_USER"
-    #     git config user.email "$QWAT_EMAIL"
-    #     git config --global push.default simple
-
         git clone --depth 1 https://$GH_TOKEN@github.com/qwat/qwat-data-sample.git data-sample
         printf "\n${YELLOW}Restoring data-sample in qwat_demo :${NC}\n"
         # We have to take the most recent DATA SAMPLE FILE
-#         for f in data-sample/*.backup
-        #for f in `ls data-sample/*_data_and_structure_sample.backup | sort -r`
         for f in `ls data-sample/*_data_and_structure_sample.sql | sort -r`
         do
-            #if [[ "$f" == *_data_and_structure_sample.backup ]]; then
-            if [[ "$f" == *_data_and_structure_sample.sql ]]; then
-                printf "\n${YELLOW}   Restoring $f ${NC}\n"
-                #/usr/bin/pg_restore --host $HOST --port 5432 --username "$USER"  --no-password --dbname "$DEMODB" --verbose "$f" >output.txt 2>&1
-                /usr/bin/psql -v ON_ERROR_STOP=1 --host $HOST --port 5432 --username "$USER" --no-password -q -d "$DEMODB" -f $f
-                break
-            fi
+            printf "\n${YELLOW}   Restoring $f ${NC}\n"
+            /usr/bin/psql -v ON_ERROR_STOP=1 --host $HOST --port 5432 --username "$USER" --no-password -q -d "$DEMODB" -f $f
+            break
         done
         echo "Done"
 
