@@ -184,7 +184,7 @@ if [[ $EXITCODE == 0 ]]; then
     #     git config user.email "$QWAT_EMAIL"
     #     git config --global push.default simple
 
-        git clone https://$GH_TOKEN@github.com/qwat/qwat-data-sample.git data-sample
+        git clone --depth 1 https://$GH_TOKEN@github.com/qwat/qwat-data-sample.git data-sample
         printf "\n${YELLOW}Restoring data-sample in qwat_demo :${NC}\n"
         # We have to take the most recent DATA SAMPLE FILE
 #         for f in data-sample/*.backup
