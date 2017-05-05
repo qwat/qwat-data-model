@@ -213,7 +213,7 @@ echo "Performing conformity test"
 STATUS=$(python test_migration.py --pg_service $QWATSERVICETEST)
 
 if [[ $STATUS == "DataModel is OK" ]]; then
-    printf "${GREEN}Migration TEST is successfull${NC}. You may now migrate your real DB by lauching the command './upgrade_db.sh -u yes' \n"
+    printf "${GREEN}Migration TEST is successfull${NC}. You may now migrate your real DB by launching the command './upgrade_db.sh -u yes' \n"
 else
     printf "${RED}Migration TEST has failed${NC}. Please contact qWat team and give them the following output :\n $STATUS \n\n"
 fi
