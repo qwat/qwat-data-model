@@ -1,19 +1,27 @@
 #!/bin/bash
 
+# This script is launched by travis when pushing modifications on github.
+# The process check if the current branch modifications are in sync with the delta files provided
+# It also updates automatically the data demo sample
+
 # exit on error
 set -e
 
 # PARAMS
 TESTDB=qwat_test
 TESTCONFORMDB=qwat_test_conform
+DEMODB=qwat_demo
 USER=postgres
 HOST=localhost
 QWATSERVICETEST=qwat_test
 QWATSERVICETESTCONFORM=qwat_test_conform
 SRID=21781
+QWAT_USER='qwat-admin'
+QWAT_EMAIL='admin@qwat.org'
 
 RED='\033[0;31m'
 GREEN='\033[0;32m'
+YELLOW='\033[0;33m'
 NC='\033[0m' # No Color
 
 TAB_FILES_POST=()
@@ -58,7 +66,7 @@ if [[ ${LATEST_TAG:0:1} == "v" ]] ; then
 else 
     SHORT_LATEST_TAG=$(echo $LATEST_TAG| cut -c 1)
 fi
-printf "    Latest tag = ${GREEN}$SHORT_LATEST_TAG${NC}\n"
+printf "    Latest tag = ${GREEN}$SHORT_LATEST_TAG ($LATEST_TAG) ${NC}\n"
 
 
 # We need to execute init_qwat.sh from the lastest TAG version in $QWATSERVICETESTCONFORM
@@ -75,7 +83,7 @@ fi
 
 
 PROPER_LATEST_TAG=$SHORT_LATEST_TAG".0.0"
-echo "Switching on lastest tag major version ${GREEN}$PROPER_LATEST_TAG)${NC}"
+echo "Switching on latest tag major version ${GREEN}$PROPER_LATEST_TAG)${NC}"
 git checkout tags/$PROPER_LATEST_TAG
 
 cd ..
@@ -119,7 +127,7 @@ do
             printf " Num in DB: ${GREEN}$OUTPUT_NUM${NC} - Num in file: ${RED}$CURRENT_DELTA_NUM_VERSION_FULL${NC} => ${GREEN}OK${NC}\n"
         fi
     else
-        printf "    Bypassing  ${RED}$CURRENT_DELTA${NC}, num version = $CURRENT_DELTA_NUM_VERSION\n"
+        printf "    Bypassing  ${RED}$CURRENT_DELTA${NC}, num version = $CURRENT_DELTA_NUM_VERSION_FULL\n"
     fi
 done
 
@@ -138,7 +146,7 @@ echo "Performing conformity test"
 STATUS=$(python test_migration.py --pg_service $QWATSERVICETESTCONFORM)
 
 if [[ $STATUS == "DataModel is OK" ]]; then
-    STATUS=echo $STATUS | sed 's/%/\\045/'
+#     STATUS=echo $STATUS | sed 's/%/\\045/'
     printf "${GREEN}Migration TEST is successfull${NC}. You may now migrate your real DB\n"
     EXITCODE=0
 else
@@ -153,5 +161,114 @@ do
    printf "\n    Processing POST file: ${GREEN}$i${NC}\n"
    /usr/bin/psql --host $HOST --port 5432 --username "$USER" --no-password -d "$QWATSERVICETEST" -f $i
 done
+
+
+cd ..
+
+
+if [[ $EXITCODE == 0 ]]; then
+    if [[ $TRAVIS_BRANCH == 'master' ]]; then
+        printf "\n\n\n${GREEN}Updating DATA-SAMPLE${NC}\n\n\n"
+
+        TAB_FILES_POST=()
+        # If all is OK, update the DUMP demo ONLY IF WE ARE in the master
+        # 1 - Load the DEMO dump in a new demo DB
+        printf "${YELLOW}Creating DB (qwat_demo)${NC}\n"
+        /usr/bin/createdb "$DEMODB" --host $HOST --port 5432 --username "$USER" --no-password
+        /usr/bin/psql --host $HOST --port 5432 --username "$USER" --no-password -d "$DEMODB" -c "CREATE EXTENSION postgis; CREATE EXTENSION hstore;"
+
+        printf "\n${YELLOW}Cloning Data-sample repository${NC}\n"
+
+        git clone --depth 1 https://$GH_TOKEN@github.com/qwat/qwat-data-sample.git data-sample
+        printf "\n${YELLOW}Restoring data-sample in qwat_demo :${NC}\n"
+        # We have to take the most recent DATA SAMPLE FILE
+        for f in `ls data-sample/*_data_and_structure_sample.sql | sort -r`
+        do
+            printf "\n${YELLOW}   Restoring $f ${NC}\n"
+            /usr/bin/psql -v ON_ERROR_STOP=1 --host $HOST --port 5432 --username "$USER" --no-password -q -d "$DEMODB" -f $f
+            break
+        done
+        echo "Done"
+
+        # 2 - Execute deltas on that base that are > to the DB version
+        printf "\n${YELLOW}Getting num version from qwat_demo${NC}\n"
+        SAMPLE_VERSION=`/usr/bin/psql -v ON_ERROR_STOP=1 --host $HOST --port 5432 --username "$USER" --no-password -q -d "$DEMODB" -t -c "SELECT version FROM qwat_sys.versions;"`
+        printf "\n${GREEN}${SAMPLE_VERSION}${NC}\n"
+
+        printf "\n${YELLOW}Applying deltas on qwat_demo${NC}\n"
+        for f in $DIR/delta/*.sql
+        do
+            CURRENT_DELTA=$(basename "$f")
+            CURRENT_DELTA_WITHOUT_EXT="${CURRENT_DELTA%.*}"
+            CURRENT_DELTA_NUM_VERSION=$(echo $CURRENT_DELTA_WITHOUT_EXT| cut -c 7)
+            CURRENT_DELTA_NUM_VERSION_FULL=$(echo $CURRENT_DELTA_WITHOUT_EXT| cut -d'_' -f 2)
+            if [[ $CURRENT_DELTA_NUM_VERSION_FULL > $SAMPLE_VERSION || $CURRENT_DELTA_NUM_VERSION == $SAMPLE_VERSION || $SAMPLE_VERSION == '' ]]; then
+                printf "    Processing ${GREEN}$CURRENT_DELTA${NC}, num version = $CURRENT_DELTA_NUM_VERSION ($CURRENT_DELTA_NUM_VERSION_FULL)\n"
+                /usr/bin/psql -v ON_ERROR_STOP=1 --host $HOST --port 5432 --username "$USER" --no-password -q -d "$DEMODB" -f $f
+
+                # Check if there is a POST file associated to the delta, if so, store it in the array for later execution
+                EXISTS_POST_FILE=$f'.post'
+                if [ -e "$EXISTS_POST_FILE" ]
+                then
+                    TAB_FILES_POST+=($EXISTS_POST_FILE)
+                fi
+            else
+                printf "    Bypassing  ${RED}$CURRENT_DELTA${NC}, num version = $CURRENT_DELTA_NUM_VERSION_FULL\n"
+            fi
+        done
+        LAST_VERSION=$CURRENT_DELTA_NUM_VERSION_FULL
+
+        # Checking version
+        if [[ $LAST_VERSION < $SAMPLE_VERSION ]]; then
+            LAST_VERSION=$SAMPLE_VERSION
+        fi
+
+        # 3 - re-create views & triggers
+        printf "\n${YELLOW}Reloading views and functions${NC}\n"
+
+        export PGSERVICE=$DEMODB
+        SRID=$SRID ./ordinary_data/views/rewrite_views.sh
+        SRID=$SRID ./ordinary_data/functions/rewrite_functions.sh
+        # 4 - Execute post delta files if there are
+        printf "\n"
+        for i in "${TAB_FILES_POST[@]}"
+        do
+        printf "\n    Processing POST file: ${GREEN}$i${NC}\n"
+        /usr/bin/psql --host $HOST --port 5432 --username "$USER" --no-password -d "$DEMODB" -f $i
+        done
+        # 5 - Mark the version
+        /usr/bin/psql -v ON_ERROR_STOP=1 --host $HOST --port 5432 --username "$USER" --no-password -q -d "$DEMODB" -t -c "UPDATE qwat_sys.versions SET version = '$LAST_VERSION';"
+
+        # 6 - Dump the new DB
+        cd data-sample
+        #printf -v FILE_NAME "qwat_v%s_data_and_structure_sample.backup" $LAST_VERSION
+        printf -v FILE_NAME "qwat_v%s_data_and_structure_sample.sql" $LAST_VERSION
+        printf "\n${YELLOW}Dumping qwat_demo to $FILE_NAME ${NC}\n"
+        #/usr/bin/pg_dump --host $HOST --port 5432 --username "$USER" --no-password  --format custom --blobs --section data --verbose --file "$FILE_NAME" --schema "qwat_dr" --schema "qwat_od" "$DEMODB"
+        /usr/bin/pg_dump --host $HOST --port 5432 --username "$USER" --no-password --blobs --section data --verbose --file "$FILE_NAME" --schema "qwat_dr" --schema "qwat_od" "$DEMODB"
+
+        # Procude also a DUMP with the structure only + models (for windows users)
+        printf -v FILE_NAME_STRUCT "qwat_v%s_structure_sample.sql" $LAST_VERSION
+        printf "\n${YELLOW}Dumping qwat_demo structure to $FILE_NAME_STRUCT ${NC}\n"
+        /usr/bin/pg_dump --host $HOST --port 5432 --username "$USER" --no-password --blobs --section data --verbose --file "$FILE_NAME_STRUCT" --schema "qwat_dr" --schema "qwat_od" --schema "qwat_sys" --schema-only "$DEMODB"
+
+        printf -v FILE_NAME_VL "qwat_v%s_qwatvl_sample.sql" $LAST_VERSION
+        printf "\n${YELLOW}Dumping qwat_demo structure to $FILE_NAME_VL ${NC}\n"
+        /usr/bin/pg_dump --host $HOST --port 5432 --username "$USER" --no-password --blobs --section data --verbose --file "$FILE_NAME_VL" --schema "qwat_vl" "$DEMODB"
+
+        # 7 - Update git
+        printf "\n${YELLOW}Updating qwat-data-sample repository with new DUMPs $FILE_NAME, $FILE_NAME_STRUCT, $FILE_NAME_VL ${NC}\n"
+        git config user.name "$QWAT_USER"
+        git config user.email "$QWAT_EMAIL"
+        git config --global push.default simple
+        git add $FILE_NAME
+        git add $FILE_NAME_STRUCT
+        git add $FILE_NAME_VL
+        git commit -m "Update data-sample"
+    #     git push | head -n -2 -
+        git push -q
+
+    fi
+fi
 
 exit $EXITCODE

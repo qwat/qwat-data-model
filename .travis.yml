@@ -14,11 +14,15 @@ install:
   - pip install psycopg2 --quiet
   - pip install pyyaml --quiet
 
-before_script:
-  - printf "[qwat_test]\nhost=localhost\ndbname=qwat_test\nuser=postgres\n\n[qwat_test_conform]\nhost=localhost\ndbname=qwat_test_conform\nuser=postgres" > ~/.pg_service.conf
+before_script: 
+  - printf "[qwat_test]\nhost=localhost\ndbname=qwat_test\nuser=postgres\n\n[qwat_test_conform]\nhost=localhost\ndbname=qwat_test_conform\nuser=postgres\n\n[qwat_demo]\nhost=localhost\ndbname=qwat_demo\nuser=postgres\n\n" > ~/.pg_service.conf
   - psql -c 'CREATE DATABASE qwat_test;' -U postgres
 
 script:
   - $TRAVIS_BUILD_DIR/init_qwat.sh -p qwat_test -s 21781 -r
   - $TRAVIS_BUILD_DIR/tests/tests.sh --no-init
   - $TRAVIS_BUILD_DIR/update/verify_upgrade_db.sh
+
+env:
+  global:
+    - secure: "d7UhfSMwijjqt8bfr21XRMTuTAUB9Ac5lRzodoy+ubt5ASpSQASJobHzVOyrbiiTjJXAAUbXCpEtFYC1HgkQdCh3lTFJyBAQFfXQJYnu8i9dxHJtGWe6Lg0ZdYlV0v5iJdehNx4Tars+4JxnDpmLzxv5GBl4dWsksDTNuX6G9p1Gp0ggFXLKkP5xYfnYpx7DyQVRuZVi7vBkQX+/I3NHNCLJDU38vWrMaxvdmugYSk+8SwdsY9JuMNvZ5igU8K9MN62pWlb9aoL2zbDw3/bu0HrPlj0ytdJAK0nyFCPZWHsHGY8Js12RD5A9tBVbykUI2fOFAjLEbqQwPg0CdczNmSigUgUPpJQRNXGAuGbDYc90E5SLZH/isquuiJV9M7TvVju8V92LEi3YKOCTNc1+SVTEdf21WdpUD3qETZk5dECCLqYvc9ej4SBuFemdpWqTx4N5Wm2ona39JvwlVmJstKm5SLY/DhGOrE8JtTBTiHlBLET5lYg5q8v/cKhJZwW2opWWQCxfZtRDwvL6FmJfem9Pr+sHEbizDh8yrWChCMxaHfnDRj9XarZJMFAhrHnAkFyeFbY7luhocFKWudBpqEYE8i3MtuJlI2MvlnuFO/RDvg7dCndzsRXfCdG5Jm6ra42BNpkmHhWZAdFyEYttmDMivF2rpU3QaDAHI2fk2Sg="
