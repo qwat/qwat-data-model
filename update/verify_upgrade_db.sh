@@ -203,18 +203,20 @@ if [[ $EXITCODE == 0 ]]; then
             #CURRENT_DELTA_NUM_VERSION=$(echo $CURRENT_DELTA_WITHOUT_EXT| cut -c 7)
             CURRENT_DELTA_NUM_VERSION_FULL=$(echo $CURRENT_DELTA_WITHOUT_EXT| cut -d'_' -f 2)
             #if [[ $CURRENT_DELTA_NUM_VERSION_FULL > $SAMPLE_VERSION || $CURRENT_DELTA_NUM_VERSION == $SAMPLE_VERSION || $SAMPLE_VERSION == '' ]]; then
-            if [[ ($CURRENT_DELTA_NUM_VERSION_FULL > $SAMPLE_VERSION || $SAMPLE_VERSION == '') && $CURRENT_DELTA_NUM_VERSION_FULL != $SAMPLE_VERSION  ]]; then
-                printf "    Processing ${GREEN}$CURRENT_DELTA${NC}, num version = $CURRENT_DELTA_NUM_VERSION_FULL\n"
-                /usr/bin/psql -v ON_ERROR_STOP=1 --host $HOST --port 5432 --username "$USER" --no-password -q -d "$DEMODB" -f $f
+            if [[ $CURRENT_DELTA_NUM_VERSION_FULL != $SAMPLE_VERSION  ]]; then
+                if [[ $CURRENT_DELTA_NUM_VERSION_FULL > $SAMPLE_VERSION || $SAMPLE_VERSION == '' ]]; then
+                    printf "    Processing ${GREEN}$CURRENT_DELTA${NC}, num version = $CURRENT_DELTA_NUM_VERSION_FULL\n"
+                    /usr/bin/psql -v ON_ERROR_STOP=1 --host $HOST --port 5432 --username "$USER" --no-password -q -d "$DEMODB" -f $f
 
-                # Check if there is a POST file associated to the delta, if so, store it in the array for later execution
-                EXISTS_POST_FILE=$f'.post'
-                if [ -e "$EXISTS_POST_FILE" ]
-                then
-                    TAB_FILES_POST+=($EXISTS_POST_FILE)
+                    # Check if there is a POST file associated to the delta, if so, store it in the array for later execution
+                    EXISTS_POST_FILE=$f'.post'
+                    if [ -e "$EXISTS_POST_FILE" ]
+                    then
+                        TAB_FILES_POST+=($EXISTS_POST_FILE)
+                    fi
+                else
+                    printf "    Bypassing  ${RED}$CURRENT_DELTA${NC}, num version = $CURRENT_DELTA_NUM_VERSION_FULL\n"
                 fi
-            else
-                printf "    Bypassing  ${RED}$CURRENT_DELTA${NC}, num version = $CURRENT_DELTA_NUM_VERSION_FULL\n"
             fi
         done
         LAST_VERSION=$CURRENT_DELTA_NUM_VERSION_FULL
