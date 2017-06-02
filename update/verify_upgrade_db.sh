@@ -269,7 +269,8 @@ if [[ $EXITCODE == 0 ]]; then
         git commit -m "Update data-sample"
     #     git push | head -n -2 -
     #    git push -q
-        git push -q https://$GH_TOKEN@github.com/qwat/qwat-data-sample.git master
+        #git push -q https://$GH_TOKEN@github.com/qwat/qwat-data-sample.git master
+        git push -fq origin master
 
     fi
 fi
