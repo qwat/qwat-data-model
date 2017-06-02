@@ -268,7 +268,8 @@ if [[ $EXITCODE == 0 ]]; then
         git add $FILE_NAME_VL
         git commit -m "Update data-sample"
     #     git push | head -n -2 -
-        git push -q
+    #    git push -q
+        git push -q https://$GH_TOKEN@github.com/qwat/qwat-data-sample.git master
 
     fi
 fi
