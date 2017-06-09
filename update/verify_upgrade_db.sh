@@ -179,7 +179,9 @@ if [[ $EXITCODE == 0 ]]; then
 
         printf "\n${YELLOW}Cloning Data-sample repository${NC}\n"
 
-        git clone --depth 1 https://$GH_TOKEN@github.com/qwat/qwat-data-sample.git data-sample
+        #git clone --depth 1 https://$GH_TOKEN@github.com/qwat/qwat-data-sample.git data-sample
+        git clone --depth 1 https://qwat-admin:$GH_TOKEN@github.com/qwat/qwat-data-sample.git data-sample
+
         printf "\n${YELLOW}Restoring data-sample in qwat_demo :${NC}\n"
         # We have to take the most recent DATA SAMPLE FILE
         for f in `ls data-sample/*_data_and_structure_sample.sql | sort -r`
@@ -270,7 +272,8 @@ if [[ $EXITCODE == 0 ]]; then
     #     git push | head -n -2 -
     #    git push -q
         #git push -q https://$GH_TOKEN@github.com/qwat/qwat-data-sample.git master
-        git push -fq origin master
+        #git push -fq origin master
+        git push -q https://qwat-admin:$GH_TOKEN@github.com/qwat/qwat-data-sample.git master
 
     fi
 fi
