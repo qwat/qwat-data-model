@@ -7,6 +7,9 @@
 CREATE TABLE qwat_vl.hydrant_model_sup () INHERITS ( qwat_vl.value_list_base);
 ALTER TABLE qwat_vl.hydrant_model_sup ADD CONSTRAINT vl_hydrant_model_sup_pk PRIMARY KEY (id);
 
+/* COMMENTS */
+COMMENT ON TABLE qwat_vl.hydrant_model_sup IS 'Holds the values for the above ground hydrant models';
+
 /* VALUES */
 INSERT INTO qwat_vl.hydrant_model_sup (id, value_en, value_fr, value_ro ) VALUES (101, 'other', 'autre', 'alta');
 INSERT INTO qwat_vl.hydrant_model_sup (id, value_en, value_fr, value_ro ) VALUES (102, 'unknown', 'inconnu', 'necunoscută');
@@ -43,6 +46,9 @@ INSERT INTO qwat_vl.hydrant_model_sup (id,value_fr,value_ro) VALUES (7219,'VonRo
 
 CREATE TABLE qwat_vl.hydrant_model_inf () INHERITS ( qwat_vl.value_list_base);
 ALTER TABLE qwat_vl.hydrant_model_inf ADD CONSTRAINT vl_hydrant_model_inf_pk PRIMARY KEY (id);
+
+/* COMMENTS */
+COMMENT ON TABLE qwat_vl.hydrant_model_sup IS 'Holds the values for the underground hydrant models';
 
 /* VALUES */
 INSERT INTO qwat_vl.hydrant_model_inf (id, value_en, value_fr, value_ro ) VALUES (101, 'other', 'autre', 'alta');
