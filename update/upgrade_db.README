@@ -2,6 +2,11 @@
 Upgrade database
 ****************
 
+/!\ WARNING - all the database version control system uses git tags to switch between code versions. 
+Some GIT client configurations do not fetch tags by default and the whole process will fail. 
+If you end up with errors indicating version is still 0.1 or saying not tag could be found, please read this:
+https://stackoverflow.com/questions/8432953/if-a-git-tag-changes-on-remote-a-git-fetch-does-not-update-it-locally-is-this
+
 See online documentation for more informations.
 
 How to use the upgrade_db.sh script ?
