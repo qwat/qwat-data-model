@@ -18,8 +18,8 @@ ALTER TABLE qwat_od.hydrant ADD COLUMN fk_model_sup       integer not null      
 ALTER TABLE qwat_od.hydrant ADD COLUMN fk_model_inf       integer not null      ;
 ALTER TABLE qwat_od.hydrant ADD COLUMN fk_material        integer not null      ;
 ALTER TABLE qwat_od.hydrant ADD COLUMN fk_output          integer not null      ;
-ALTER TABLE qwat_od.hydrant ADD COLUMN underground        boolean default false ;
-ALTER TABLE qwat_od.hydrant ADD COLUMN marked        	  boolean default false ; COMMENT ON COLUMN qwat_od.hydrant.marked IS 'does it have markings pointing to it';
+ALTER TABLE qwat_od.hydrant ADD COLUMN underground        boolean  ;
+ALTER TABLE qwat_od.hydrant ADD COLUMN marked        	  boolean  ; COMMENT ON COLUMN qwat_od.hydrant.marked IS 'does it have markings pointing to it';
 ALTER TABLE qwat_od.hydrant ADD COLUMN pressure_static    decimal(5,2)          ; COMMENT ON COLUMN qwat_od.hydrant.pressure_static IS 'pression statique [bar]';
 ALTER TABLE qwat_od.hydrant ADD COLUMN pressure_dynamic   decimal(5,2)          ; COMMENT ON COLUMN qwat_od.hydrant.pressure_dynamic IS 'pression dynamique [bar]';
 ALTER TABLE qwat_od.hydrant ADD COLUMN flow               decimal(8,2)          ; COMMENT ON COLUMN qwat_od.hydrant.flow IS 'debit dynamique pour une pression dynamique de 2 bars [l/min]';
