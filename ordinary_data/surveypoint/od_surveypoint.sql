@@ -7,7 +7,6 @@
 
 /* create */
 CREATE TABLE qwat_od.surveypoint ();
-COMMENT ON TABLE qwat_od.surveypoint IS 'Table for sampling points. Inherits from surveypoint.';
 
 ALTER TABLE qwat_od.surveypoint ADD COLUMN id integer NOT NULL REFERENCES qwat_od.surveypoint(id) PRIMARY KEY;
 ALTER TABLE qwat_od.surveypoint ADD COLUMN fk_survey_type   integer not null;
