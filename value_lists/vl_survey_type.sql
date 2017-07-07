@@ -18,5 +18,6 @@ INSERT INTO qwat_vl.survey_type (id, value_en, value_fr, value_ro ) VALUES (102,
 INSERT INTO qwat_vl.survey_type (id, value_en, value_fr, value_ro ) VALUES (103, 'to be determined', 'à déterminer', 'de determinat');
 
 INSERT INTO qwat_vl.survey_type (id, value_en, value_fr, value_ro ) VALUES (9901, 'GPS'      , 'GPS'       , 'GPS' );
-INSERT INTO qwat_vl.survey_type (id, value_en, value_fr, value_ro ) VALUES (9902, 'meter?', 'chevillère'     , '?');
+INSERT INTO qwat_vl.survey_type (id, value_en, value_fr, value_ro ) VALUES (9902, 'measuring tape', 'ruban métrique'     , 'ruletă');
+INSERT INTO qwat_vl.survey_type (id, value_en, value_fr, value_ro ) VALUES (9903, 'total station', 'station totale'     , 'stație totală');
 
