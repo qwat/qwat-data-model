@@ -49,12 +49,12 @@ class Manager():
         # create db_comp with init_qwat.sh
 
         checker = Checker(self.pg_service_test, self.pg_service_comp)
-        checker.check_all()
-
-        # if check == OK
-
-        upgrader = Upgrader(self.pg_service_prod, self.upgrades_table, self.delta_dir)
-        upgrader.run()
+        if checker.check_all():
+            upgrader = Upgrader(self.pg_service_prod, self.upgrades_table, self.delta_dir)
+            upgrader.run()
+        else:
+            #TODO
+            pass
 
 
 if __name__ == "__main__":

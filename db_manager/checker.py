@@ -27,22 +27,48 @@ class Checker():
         self.cur2 = self.conn2.cursor()
 
     def check_schemas(self):
+        """Check if the schemas are equals.
+        
+        Returns
+        -------
+        bool
+            True if the schemas are the same
+            False otherwise            
+        """
+
         query = """SELECT DISTINCT schema_name 
                 FROM information_schema.schemata
                 WHERE schema_name NOT IN ('information_schema') AND schema_name NOT LIKE 'pg\_%'
                 ORDER BY schema_name """
 
-        self.__check_differences(query, 'Schemas diff:')
+        return self.__check_equals(query, 'Schemas diff:')
 
     def check_tables(self):
+        """Check if the tables are equals.
+
+            Returns
+            -------
+            bool
+                True if the schemas are the same
+                False otherwise            
+        """
         query = """SELECT table_schema, table_name 
                 FROM information_schema.tables 
                 WHERE table_schema NOT IN ('information_schema') AND table_schema NOT LIKE 'pg\_%' 
                 ORDER BY table_schema, table_name"""
 
-        self.__check_differences(query, 'Tables diff:')
+        return self.__check_equals(query, 'Tables diff:')
 
     def check_columns(self):
+        """Check if the columns in all tables are equals.
+
+            Returns
+            -------
+            bool
+                True if the schemas are the same
+                False otherwise            
+        """
+
         query = """WITH table_list AS ( 
                 SELECT table_schema, table_name 
                 FROM information_schema.tables 
@@ -57,9 +83,17 @@ class Checker():
                 AND isc.table_name = tl.table_name 
                 ORDER BY isc.table_schema, isc.table_name, column_name"""
 
-        self.__check_differences(query, 'Columns diff:')
+        return self.__check_equals(query, 'Columns diff:')
 
     def check_constraints(self):
+        """Check if the constraints are equals.
+
+            Returns
+            -------
+            bool
+                True if the schemas are the same
+                False otherwise            
+        """
         query = """ select
                         tc.constraint_name,
                         tc.constraint_schema || '.' || tc.table_name || '.' || kcu.column_name as physical_full_name,
@@ -74,10 +108,17 @@ class Checker():
                     join information_schema.constraint_column_usage as ccu on ccu.constraint_name = tc.constraint_name
                     ORDER BY tc.constraint_schema, physical_full_name, tc.constraint_name, foreign_table_name, foreign_column_name  """
 
-        self.__check_differences(query, 'Constraints diff:')
+        return self.__check_equals(query, 'Constraints diff:')
 
     def check_views(self):
-        #TODO why replace(view_definition...)?
+        """Check if the views are equals.
+
+            Returns
+            -------
+            bool
+                True if the schemas are the same
+                False otherwise            
+        """
         query = """
         SELECT table_name, REPLACE(view_definition,'"','')
         FROM INFORMATION_SCHEMA.views
@@ -85,20 +126,37 @@ class Checker():
         AND table_name not like 'vw_export_%'
         ORDER BY table_schema, table_name"""
 
-        self.__check_differences(query, 'Views diff:')
+        return self.__check_equals(query, 'Views diff:')
 
 
     def check_sequences(self):
+        """Check if the sequences are equals.
+
+            Returns
+            -------
+            bool
+                True if the schemas are the same
+                False otherwise            
+        """
         query = """
         SELECT c.relname
         FROM pg_class c
         WHERE c.relkind = 'S'
         ORDER BY c.relname"""
 
-        self.__check_differences(query, 'Sequences diff:')
+        return self.__check_equals(query, 'Sequences diff:')
 
 
     def check_indexes(self):
+        """Check if the indexes are equals.
+
+            Returns
+            -------
+            bool
+                True if the schemas are the same
+                False otherwise            
+        """
+
         query = """
         select
             t.relname as table_name,
@@ -122,10 +180,17 @@ class Checker():
             i.relname,
             a.attname
         """
-        self.__check_differences(query, 'Indexes diff:')
+        return self.__check_equals(query, 'Indexes diff:')
         
     def check_triggers(self):
-        #TODO verificare l'altra query dei triggers
+        """Check if the triggers are equals.
+
+            Returns
+            -------
+            bool
+                True if the schemas are the same
+                False otherwise            
+        """
         query = """
         WITH trigger_list AS (
             select tgname from pg_trigger
@@ -139,9 +204,17 @@ class Checker():
             and  SUBSTR(p.relname, 1, 3) != 'vw_' -- We cannot check for vw_ views, because  they are created after that script
         ORDER BY p.relname, /*t.tgname, */pp.prosrc"""
 
-        self.__check_differences(query, 'Triggers diff:')
+        return self.__check_equals(query, 'Triggers diff:')
         
     def check_functions(self):
+        """Check if the functions are equals.
+
+            Returns
+            -------
+            bool
+                True if the schemas are the same
+                False otherwise            
+        """
         query = """
         SELECT routines.routine_name, parameters.data_type, routines.routine_definition
         FROM information_schema.routines
@@ -149,9 +222,17 @@ class Checker():
         WHERE routines.specific_schema NOT IN ('information_schema') AND routines.specific_schema NOT LIKE 'pg\_%' 
         ORDER BY routines.routine_name, parameters.data_type, routines.routine_definition, parameters.ordinal_position"""
 
-        self.__check_differences(query, 'Functions diff:')
+        return self.__check_equals(query, 'Functions diff:')
         
     def check_roles(self):
+        """Check if the roles are equals.
+
+            Returns
+            -------
+            bool
+                True if the schemas are the same
+                False otherwise            
+        """
         query = """
         select n.nspname as rule_schema,
         c.relname as rule_table,
@@ -169,14 +250,16 @@ class Checker():
         WHERE n.nspname NOT IN ('information_schema') AND n.nspname NOT LIKE 'pg\_%' 
         ORDER BY n.nspname, c.relname, rule_event"""
 
-        self.__check_differences(query, 'Roles diff:')
+        return self.__check_equals(query, 'Roles diff:')
         
-    def __check_differences(self, query, context=""):
+    def __check_equals(self, query, context=""):
         self.cur1.execute(query)
         records1 = self.cur1.fetchall()
 
         self.cur2.execute(query)
         records2 = self.cur2.fetchall()
+
+        result = True
 
         print context
 
@@ -185,12 +268,46 @@ class Checker():
         for line in d.compare(records1, records2):
             if line[0] in ('-', '+'):
                 print(line)
+                result = False
 
         print ""
 
+        return result
+
     def check_all(self):
-        #TODO
-        pass
+        """Run all the checks functions.
+
+            Returns
+            -------
+            bool
+                True if all the checks are true
+                False otherwise            
+        """
+
+        result = True
+
+        if not self.check_schemas():
+            result = False
+        if not self.check_tables():
+            result = False
+        if not self.check_columns():
+            result = False
+        if not self.check_constraints():
+            result = False
+        if not self.check_views():
+            result = False
+        if not self.check_sequences():
+            result = False
+        if not self.check_indexes():
+            result = False
+        if not self.check_triggers():
+            result = False
+        if not self.check_functions():
+            result = False
+        if not self.check_roles():
+            result = False
+
+        return result
 
 if __name__ == "__main__":
     """
