@@ -49,8 +49,12 @@ class TestUpgrader(TestCase):
         self.assertEqual(delta.get_name(), 'foo')
 
     def test_delta_get_checksum(self):
-        #TODO
-        pass
+        file = open('/tmp/foo.bar', 'w+')
+        delta = Delta('/tmp/foo.bar')
+        self.assertEqual(delta.get_checksum(), 'd41d8cd98f00b204e9800998ecf8427e')
+        file.write('The quick brown fox jumps over the lazy dog')
+        file.close()
+        self.assertEqual(delta.get_checksum(), '9e107d9d372bb6826bd81d3542a419d6')
 
     def test_delta_get_type(self):
         delta = Delta('delta_0.0.0_17072017.sql')

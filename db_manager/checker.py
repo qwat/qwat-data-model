@@ -28,30 +28,13 @@ class Checker():
 
         self.silent = silent
 
-    def check_schemas(self):
-        """Check if the schemas are equals.
-        
-        Returns
-        -------
-        bool
-            True if the schemas are the same
-            False otherwise            
-        """
-
-        query = """SELECT DISTINCT schema_name 
-                FROM information_schema.schemata
-                WHERE schema_name NOT IN ('information_schema') AND schema_name NOT LIKE 'pg\_%'
-                ORDER BY schema_name """
-
-        return self.__check_equals(query, 'Schemas diff:')
-
     def check_tables(self):
         """Check if the tables are equals.
 
             Returns
             -------
             bool
-                True if the schemas are the same
+                True if the tables are the same
                 False otherwise            
         """
         query = """SELECT table_schema, table_name 
@@ -67,7 +50,7 @@ class Checker():
             Returns
             -------
             bool
-                True if the schemas are the same
+                True if the columns are the same
                 False otherwise            
         """
 
@@ -93,7 +76,7 @@ class Checker():
             Returns
             -------
             bool
-                True if the schemas are the same
+                True if the constraints are the same
                 False otherwise            
         """
         query = """ select
@@ -118,7 +101,7 @@ class Checker():
             Returns
             -------
             bool
-                True if the schemas are the same
+                True if the views are the same
                 False otherwise            
         """
         query = """
@@ -137,7 +120,7 @@ class Checker():
             Returns
             -------
             bool
-                True if the schemas are the same
+                True if the sequences are the same
                 False otherwise            
         """
         query = """
@@ -155,7 +138,7 @@ class Checker():
             Returns
             -------
             bool
-                True if the schemas are the same
+                True if the indexes are the same
                 False otherwise            
         """
 
@@ -190,7 +173,7 @@ class Checker():
             Returns
             -------
             bool
-                True if the schemas are the same
+                True if the triggers are the same
                 False otherwise            
         """
         query = """
@@ -214,7 +197,7 @@ class Checker():
             Returns
             -------
             bool
-                True if the schemas are the same
+                True if the functions are the same
                 False otherwise            
         """
         query = """
@@ -226,13 +209,13 @@ class Checker():
 
         return self.__check_equals(query, 'Functions diff:')
         
-    def check_roles(self):
-        """Check if the roles are equals.
+    def check_rules(self):
+        """Check if the rules are equals.
 
             Returns
             -------
             bool
-                True if the schemas are the same
+                True if the rules are the same
                 False otherwise            
         """
         query = """
@@ -268,6 +251,9 @@ class Checker():
 
         #TODO add an option to choose which differences to show
         d = difflib.Differ()
+        records1 = [str(x) for x in records1]
+        records2 = [str(x) for x in records2]
+
         for line in d.compare(records1, records2):
             if line[0] in ('-', '+'):
                 if not self.silent:
@@ -291,8 +277,6 @@ class Checker():
 
         result = True
 
-        if not self.check_schemas():
-            result = False
         if not self.check_tables():
             result = False
         if not self.check_columns():
@@ -309,7 +293,7 @@ class Checker():
             result = False
         if not self.check_functions():
             result = False
-        if not self.check_roles():
+        if not self.check_rules():
             result = False
 
         return result
