@@ -5,13 +5,22 @@ from dumper import Dumper
 from upgrader import Upgrader
 from checker import Checker
 from datetime import date
+import yaml
 
 class Manager():
 
-    def __init__(self, pg_service_prod, pg_service_test, pg_service_comp):
+    def __init__(self, pg_service_prod, pg_service_test, pg_service_comp, config_file='db_manager_config.yaml'):
         self.pg_service_prod = pg_service_prod
         self.pg_service_test = pg_service_test
         self.pg_service_comp = pg_service_comp
+        self.config_file = config_file
+        self.load_config()
+
+    def load_config(self):
+        config = yaml.safe_load(open(self.config_file))
+        self.upgrades_table = config['upgrades_table']
+        self.delta_dir = config['delta_dir']
+
 
     def run(self):
         # create db test
@@ -34,7 +43,7 @@ class Manager():
         dumper = Dumper(self.pg_service_test)
         dumper.pg_restore(backup_filename)
 
-        upgrader = Upgrader(self.pg_service_test, 'qwat_sys.upgrades', '/home/mario/tmp/qwat_upgrade_test_1')
+        upgrader = Upgrader(self.pg_service_test, self.upgrades_table, self.delta_dir)
         upgrader.run()
 
         # create db_comp with init_qwat.sh
@@ -44,7 +53,7 @@ class Manager():
 
         # if check == OK
 
-        upgrader = Upgrader(self.pg_service_prod, 'qwat_sys.upgrades', '/home/mario/tmp/qwat_upgrade_test_1')
+        upgrader = Upgrader(self.pg_service_prod, self.upgrades_table, self.delta_dir)
         upgrader.run()
 
 
@@ -62,8 +71,11 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
 
-    if not args.pg_service_prod or not args.pg_service_test or not args.pg_service_comp:
-        parser.print_help()
-    else:
-        manager = Manager(args.pg_service_prod, args.pg_service_test, args.pg_service_comp)
-        manager.run()
+    #if not args.pg_service_prod or not args.pg_service_test or not args.pg_service_comp:
+    #    parser.print_help()
+    #else:
+    #    manager = Manager(args.pg_service_prod, args.pg_service_test, args.pg_service_comp)
+    #    manager.run()
+
+    manager = Manager('a', 'b', 'c')
+    manager.load_config()
