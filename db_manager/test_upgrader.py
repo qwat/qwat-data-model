@@ -1,5 +1,5 @@
 from unittest import TestCase
-from Upgrader import Delta
+from upgrader import Delta
 
 class TestUpgrader(TestCase):
     """Test the class Upgrader."""
