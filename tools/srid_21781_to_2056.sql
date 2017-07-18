@@ -23,3 +23,25 @@ BEGIN
 	SET session_replication_role = DEFAULT;
 END
 $$;
+
+-- update label
+update qwat_od.network_element set
+label_1_x = st_x(ST_GeomFromEWKB(ST_Fineltra(ST_SetSRID(ST_MakePoint(label_1_x,label_1_y),21781), 'chenyx06.chenyx06_triangles', 'the_geom_lv03', 'the_geom_lv95'))),
+label_1_y = st_y(ST_GeomFromEWKB(ST_Fineltra(ST_SetSRID(ST_MakePoint(label_1_x,label_1_y),21781), 'chenyx06.chenyx06_triangles', 'the_geom_lv03', 'the_geom_lv95')))
+where label_1_x is not null and label_1_y is not null;
+
+update qwat_od.network_element set
+label_2_x = st_x(ST_GeomFromEWKB(ST_Fineltra(ST_SetSRID(ST_MakePoint(label_2_x,label_2_y),21781), 'chenyx06.chenyx06_triangles', 'the_geom_lv03', 'the_geom_lv95'))),
+label_2_y = st_y(ST_GeomFromEWKB(ST_Fineltra(ST_SetSRID(ST_MakePoint(label_2_x,label_2_y),21781), 'chenyx06.chenyx06_triangles', 'the_geom_lv03', 'the_geom_lv95')))
+where label_2_x is not null and label_2_y is not null;
+
+update qwat_od.valve set
+label_1_x = st_x(ST_GeomFromEWKB(ST_Fineltra(ST_SetSRID(ST_MakePoint(label_1_x,label_1_y),21781), 'chenyx06.chenyx06_triangles', 'the_geom_lv03', 'the_geom_lv95'))),
+label_1_y = st_y(ST_GeomFromEWKB(ST_Fineltra(ST_SetSRID(ST_MakePoint(label_1_x,label_1_y),21781), 'chenyx06.chenyx06_triangles', 'the_geom_lv03', 'the_geom_lv95')))
+where label_1_x is not null and label_1_y is not null;
+
+update qwat_od.valve set
+label_2_x = st_x(ST_GeomFromEWKB(ST_Fineltra(ST_SetSRID(ST_MakePoint(label_2_x,label_2_y),21781), 'chenyx06.chenyx06_triangles', 'the_geom_lv03', 'the_geom_lv95'))),
+label_2_y = st_y(ST_GeomFromEWKB(ST_Fineltra(ST_SetSRID(ST_MakePoint(label_2_x,label_2_y),21781), 'chenyx06.chenyx06_triangles', 'the_geom_lv03', 'the_geom_lv95')))
+where label_2_x is not null and label_2_y is not null;
+
