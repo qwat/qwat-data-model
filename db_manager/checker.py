@@ -9,7 +9,7 @@ import difflib
 class Checker():
     """This class is used to compare 2 Postgres databases and show the differences."""
 
-    def __init__(self, pg_service1, pg_service2):
+    def __init__(self, pg_service1, pg_service2, silent=False):
         """Constructor
         
         Parameters
@@ -25,6 +25,8 @@ class Checker():
 
         self.conn2 = psycopg2.connect("service={0}".format(pg_service2))
         self.cur2 = self.conn2.cursor()
+
+        self.silent = silent
 
     def check_schemas(self):
         """Check if the schemas are equals.
@@ -261,16 +263,19 @@ class Checker():
 
         result = True
 
-        print context
+        if not self.silent:
+            print context
 
         #TODO add an option to choose which differences to show
         d = difflib.Differ()
         for line in d.compare(records1, records2):
             if line[0] in ('-', '+'):
-                print(line)
+                if not self.silent:
+                    print(line)
                 result = False
 
-        print ""
+        if not self.silent:
+            print ""
 
         return result
 
@@ -317,19 +322,11 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument('--pg_service1', help='Name of the first postgres service')
     parser.add_argument('--pg_service2', help='Name of the second postgres service')
+    parser.add_argument('--silent', help='don\'t print lines with differences')
     args = parser.parse_args()
 
     if not args.pg_service1 or not args.pg_service2:
         parser.print_help()
     else:
-        db_checker = Checker(args.pg_service1, args.pg_service2)
-        db_checker.check_schemas()
-        db_checker.check_tables()
-        db_checker.check_columns()
-        db_checker.check_constraints()
-        db_checker.check_views()
-        db_checker.check_sequences()
-        db_checker.check_indexes()
-        db_checker.check_triggers()
-        db_checker.check_functions()
-        db_checker.check_roles()
+        db_checker = Checker(args.pg_service1, args.pg_service2, args.silent)
+        db_checker.check_all()

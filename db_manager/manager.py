@@ -71,11 +71,9 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
 
-    #if not args.pg_service_prod or not args.pg_service_test or not args.pg_service_comp:
-    #    parser.print_help()
-    #else:
-    #    manager = Manager(args.pg_service_prod, args.pg_service_test, args.pg_service_comp)
-    #    manager.run()
-
-    manager = Manager('a', 'b', 'c')
-    manager.load_config()
+    if not args.pg_service_prod or not args.pg_service_test or not args.pg_service_comp:
+        parser.print_help()
+    else:
+        manager = Manager(args.pg_service_prod, args.pg_service_test, args.pg_service_comp)
+        manager.run()
+        
