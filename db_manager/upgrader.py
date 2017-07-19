@@ -32,7 +32,7 @@ class Upgrader():
         self.dir = dir
 
     def run(self):
-        deltas = db_upgrader.__get_delta_files()
+        deltas = self.__get_delta_files()
         for d in deltas:
             print d.get_version(), d.get_name(), d.get_type()
             print 'is_applied',self.__is_applied(d)
@@ -199,7 +199,7 @@ class Upgrader():
         ) VALUES(
             '{}', 
             '{}', 
-            '{}',
+            {},
             '{}',
             '{}',
             '{}',
