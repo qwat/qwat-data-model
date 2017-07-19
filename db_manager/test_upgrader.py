@@ -39,11 +39,6 @@ class TestUpgrader(TestCase):
             """.format(self.upgrades_table))
         self.conn1.commit()
 
-        #try:
-        #    os.removedirs('/tmp/test_upgrader')
-        #except:
-        #    pass
-
         shutil.rmtree('/tmp/test_upgrader')
         
         os.mkdir('/tmp/test_upgrader/')
@@ -55,17 +50,11 @@ class TestUpgrader(TestCase):
 
         self.upgrader = Upgrader(pg_service1, self.upgrades_table, '/tmp/test_upgrader/')
 
-    def test_get_delta_files(self):
+    def test_upgrader_run(self):
         self.upgrader.run()
-
-        self.cur1.execute("""SELECT EXISTS (
-        SELECT 1
-        FROM   information_schema.tables 
-        WHERE  table_schema = 'test_upgrader'
-        AND    table_name = 'bar'
-        );""")
-
-        self.assertTrue(self.cur1.fetchone()[0])
+        #postgres > 9.4
+        self.cur1.execute("SELECT to_regclass('{}');".format(self.upgrades_table))
+        self.assertIsNotNone(self.cur1.fetchone()[0])
 
     def test_delta_valid_name(self):
         self.assertTrue(Delta.is_valid_delta_name('delta_1.1.0_17072017.sql'))
