@@ -249,7 +249,6 @@ class Checker():
         if not self.silent:
             print context
 
-        #TODO add an option to choose which differences to show
         d = difflib.Differ()
         records1 = [str(x) for x in records1]
         records2 = [str(x) for x in records2]
@@ -267,6 +266,11 @@ class Checker():
 
     def check_all(self, ignore):
         """Run all the checks functions.
+
+            Parameters
+            ----------
+            ignore: list of strings
+                List of elements to be ignored in check (ex. tables, columns, views, ...)
 
             Returns
             -------
@@ -304,13 +308,22 @@ if __name__ == "__main__":
     """
 
     parser = argparse.ArgumentParser()
-    parser.add_argument('--pg_service1', help='Name of the first postgres service', required=True)
-    parser.add_argument('--pg_service2', help='Name of the second postgres service', required=True)
-    parser.add_argument('--silent', help='Don\'t print lines with differences')
-    parser.add_argument('--ignore', help='Elements to be ignored', nargs='+')
+    parser.add_argument('-p1', '--pg_service1', help='Name of the first postgres service', required=True)
+    parser.add_argument('-p2', '--pg_service2', help='Name of the second postgres service', required=True)
+    parser.add_argument('-s', '--silent', help='Don\'t print lines with differences')
+    parser.add_argument('-i', '--ignore', help='Elements to be ignored', nargs='+', choices=['tables',
+                                                                                       'columns',
+                                                                                       'constraints',
+                                                                                       'views',
+                                                                                       'sequences',
+                                                                                       'indexes',
+                                                                                       'triggers',
+                                                                                       'functions',
+                                                                                       'rules'])
     args = parser.parse_args()
 
     db_checker = Checker(args.pg_service1, args.pg_service2, args.silent)
     if db_checker.check_all(args.ignore):
         print "The checked elements are equals"
-    print "The checked elements are not equals"
+    else:
+        print "The checked elements are not equals"
