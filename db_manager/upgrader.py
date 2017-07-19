@@ -304,14 +304,15 @@ if __name__ == "__main__":
     """
 
     parser = argparse.ArgumentParser()
-    parser.add_argument('--pg_service', help='Name of the postgres service')
-    parser.add_argument('--table', help='Version table')
-    parser.add_argument('--dir', help='Delta directory')
+    parser.add_argument('-p', '--pg_service', help='Name of the postgres service', required=True)
+    parser.add_argument('-t', '--table', help='Version table', required=True)
+    parser.add_argument('-d', '--dir', help='Delta directory', required=True)
+    parser.add_argument('-i', '--info', help='Show only info', action='store_true')
 
     args = parser.parse_args()
 
-    if not args.pg_service or not args.table or not args.dir:
-        parser.print_help()
-    else:
-        db_upgrader = Upgrader(args.pg_service, args.table, args.dir)
+    db_upgrader = Upgrader(args.pg_service, args.table, args.dir)
+    if args.info:
         db_upgrader.show_info()
+    else:
+        db_upgrader.run()

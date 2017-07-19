@@ -86,13 +86,18 @@ if __name__ == "__main__":
     """
 
     parser = argparse.ArgumentParser()
-    parser.add_argument('--pg_service', help='Name of the postgres service')
+    parser.add_argument('-p', '--pg_service', help='Name of the postgres service', required=True)
+    parser.add_argument('-d', '--dump', help='Make a backup file of the database', action='store_true')
+    parser.add_argument('-r', '--restore', help='Restore the db from the backup file', action='store_true')
+    parser.add_argument('file', help='The backup file')
     args = parser.parse_args()
+    #TODO options dump and restore cannot be true together
 
-    if not args.pg_service:
-        parser.print_help()
-    else:
-        db_dumper = Dumper(args.pg_service)
-        #db_dumper.pg_backup('/home/mario/tmp/backup_checker1.sql')
-        db_dumper.pg_restore('/home/mario/tmp/backup_checker1.sql')
+    parser.print_help()
+    db_dumper = Dumper(args.pg_service)
+
+    if args.dump:
+        db_dumper.pg_backup(args.file)
+    elif args.restore:
+        db_dumper.pg_restore(args.file)
 

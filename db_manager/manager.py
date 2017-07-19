@@ -72,17 +72,14 @@ if __name__ == "__main__":
     """
 
     parser = argparse.ArgumentParser()
-    parser.add_argument('--pg_service_prod', help='Name of the pg_service related to production db')
-    parser.add_argument('--pg_service_test', help='Name of the pg_service related to a test db used to test the '
-                        'migration')
-    parser.add_argument('--pg_service_comp', help='Name of the pg_service related to a db used to compare the '
-                                                  'updated db test with the last version of the db')
+    parser.add_argument('-p1', '--pg_service_prod', help='Name of the pg_service related to production db', required=True)
+    parser.add_argument('-p2', '--pg_service_test', help='Name of the pg_service related to a test db used to test the '
+                        'migration', required=True)
+    parser.add_argument('-p3', '--pg_service_comp', help='Name of the pg_service related to a db used to compare the '
+                                                  'updated db test with the last version of the db', required=True)
 
     args = parser.parse_args()
 
-    if not args.pg_service_prod or not args.pg_service_test or not args.pg_service_comp:
-        parser.print_help()
-    else:
-        manager = Manager(args.pg_service_prod, args.pg_service_test, args.pg_service_comp)
-        manager.run()
+    manager = Manager(args.pg_service_prod, args.pg_service_test, args.pg_service_comp)
+    manager.run()
         
