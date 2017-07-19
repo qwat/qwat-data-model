@@ -4,9 +4,9 @@ import psycopg2.extras
 from checker import Checker
 
 class TestChecker(TestCase):
-    """Test the class Upgrader.
+    """Test the class Checker.
     
-    2 pg_services needed for test:
+    2 pg_services related to 2 empty db, needed for test:
         qwat_test_1 
         qwat_test_2
     """
