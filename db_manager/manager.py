@@ -8,6 +8,7 @@ from datetime import date
 import yaml
 
 class Manager():
+    """This class is used to managing qwat upgrade procedure."""
 
     def __init__(self, pg_service_prod, pg_service_test, pg_service_comp, config_file='db_manager_config.yaml'):
         self.pg_service_prod = pg_service_prod
@@ -21,38 +22,46 @@ class Manager():
         self.upgrades_table = config['upgrades_table']
         self.delta_dir = config['delta_dir']
 
-
     def run(self):
-        # create db test
-        # backup db prod
-        # restore backup in db test
-        # apply delta to db test
-        # create db compare with init_qwat.sh
-        # compare db compare with db test
-        # if all ok, apply delta (+ pre and post) to db_prod
-
-        # TODO
+        # TODO print some output and ask for confirmations
 
         today = date.today()
+        backup_filename = u'pg_dump-{}{}{}.dump'.format(today.year, today.month, today.day)
 
-        backup_filename = u'pg_dump-{1}{2}{3}.dump'.format(today.year, today.month, today.day)
+        #TODO check if we have all we need
+        upgrader = Upgrader(self.pg_service_test, self.upgrades_table, self.delta_dir)
+        if not upgrader.exists_table_upgrades():
+            #TODO
+            print 'Table upgrades not found'
+            return
 
+        print 'Creating db backup in {}'.format(backup_filename)
         dumper = Dumper(self.pg_service_prod)
         dumper.pg_backup(backup_filename)
+        print 'Done'
 
+        print 'Restoring backup on db_test'
         dumper = Dumper(self.pg_service_test)
         dumper.pg_restore(backup_filename)
+        print 'Done'
 
-        upgrader = Upgrader(self.pg_service_test, self.upgrades_table, self.delta_dir)
+        print 'Applying deltas to db_test'
         upgrader.run()
+        print 'Done'
 
+        print 'Creating db_comp with init_qwat.sh'
         # create db_comp with init_qwat.sh
+        print 'Done'
 
+        print 'Checking db_test with db_comp'
         checker = Checker(self.pg_service_test, self.pg_service_comp)
         if checker.check_all():
+            print 'Check ok, applying deltas to db'
             upgrader = Upgrader(self.pg_service_prod, self.upgrades_table, self.delta_dir)
-            upgrader.run()
+            #upgrader.run()
+            print 'Done'
         else:
+            print 'Check not ok'
             #TODO
             pass
 

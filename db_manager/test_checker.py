@@ -193,8 +193,7 @@ class TestChecker(TestCase):
 
         self.assertTrue(self.checker.check_functions())
 
-    def test_check_roles(self):
-        'CREATE ROLE jonathan LOGIN;'
+    def test_check_rules(self):
         self.cur1.execute('DROP RULE IF EXISTS foorule ON schema_foo.bar;')
         self.conn1.commit()
         self.cur2.execute('DROP RULE IF EXISTS foorule ON schema_foo.bar;')

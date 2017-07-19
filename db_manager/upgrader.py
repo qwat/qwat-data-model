@@ -39,6 +39,22 @@ class Upgrader():
             if not self.__is_applied(d):
                 self.__run_delta(d)
 
+    def exists_table_upgrades(self):
+        """Return if the upgrades table exists
+        
+        Returns
+        -------
+        bool
+            True if the table exists
+            False if the table don't exists"""
+        try:
+            # from postgres > 9.4 it's possible to use SELECT to_regclass('{}'); which return null instead of an
+            # exception if the table is not found, but QWAT requirements are for postgres > 9.3...
+            self.cursor.execute("SELECT '{}'::regclass;".format(self.upgrades_table))
+        except:
+            return False
+        return True
+
     def __get_dbname(self):
         """Return the db name."""
         return self.connection.get_dsn_parameters()['dbname']
@@ -96,8 +112,9 @@ class Upgrader():
 
         self.__print_table(table)
 
-        print 'Applied upgrade in database'
-        # TODO sistemare query senza *
+        print ''
+        print 'Applied upgrades in database'
+
         query = """SELECT 
                 version, 
                 description,
@@ -165,7 +182,8 @@ class Upgrader():
         Returns
         -------
         bool
-            True if the delta is already applied on the db, False otherwise 
+            True if the delta is already applied on the db 
+            False otherwise 
         """
 
         query = """

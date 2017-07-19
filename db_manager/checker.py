@@ -235,7 +235,7 @@ class Checker():
         WHERE n.nspname NOT IN ('information_schema') AND n.nspname NOT LIKE 'pg\_%' 
         ORDER BY n.nspname, c.relname, rule_event"""
 
-        return self.__check_equals(query, 'Roles diff:')
+        return self.__check_equals(query, 'Rules diff:')
         
     def __check_equals(self, query, context=""):
         self.cur1.execute(query)
@@ -265,7 +265,7 @@ class Checker():
 
         return result
 
-    def check_all(self):
+    def check_all(self, ignore):
         """Run all the checks functions.
 
             Returns
@@ -277,23 +277,23 @@ class Checker():
 
         result = True
 
-        if not self.check_tables():
+        if (not 'tables' in ignore) and (not self.check_tables()):
             result = False
-        if not self.check_columns():
+        if (not 'columns' in ignore) and (not self.check_columns()):
             result = False
-        if not self.check_constraints():
+        if (not 'constraints' in ignore) and (not self.check_constraints()):
             result = False
-        if not self.check_views():
+        if (not 'views' in ignore) and (not self.check_views()):
             result = False
-        if not self.check_sequences():
+        if (not 'sequences' in ignore) and (not self.check_sequences()):
             result = False
-        if not self.check_indexes():
+        if (not 'indexes' in ignore) and (not self.check_indexes()):
             result = False
-        if not self.check_triggers():
+        if (not 'triggers' in ignore) and (not self.check_triggers()):
             result = False
-        if not self.check_functions():
+        if (not 'functions' in ignore) and (not self.check_functions()):
             result = False
-        if not self.check_rules():
+        if (not 'rules' in ignore) and (not self.check_rules()):
             result = False
 
         return result
@@ -304,13 +304,13 @@ if __name__ == "__main__":
     """
 
     parser = argparse.ArgumentParser()
-    parser.add_argument('--pg_service1', help='Name of the first postgres service')
-    parser.add_argument('--pg_service2', help='Name of the second postgres service')
-    parser.add_argument('--silent', help='don\'t print lines with differences')
+    parser.add_argument('--pg_service1', help='Name of the first postgres service', required=True)
+    parser.add_argument('--pg_service2', help='Name of the second postgres service', required=True)
+    parser.add_argument('--silent', help='Don\'t print lines with differences')
+    parser.add_argument('--ignore', help='Elements to be ignored', nargs='+')
     args = parser.parse_args()
 
-    if not args.pg_service1 or not args.pg_service2:
-        parser.print_help()
-    else:
-        db_checker = Checker(args.pg_service1, args.pg_service2, args.silent)
-        db_checker.check_all()
+    db_checker = Checker(args.pg_service1, args.pg_service2, args.silent)
+    if db_checker.check_all(args.ignore):
+        print "The checked elements are equals"
+    print "The checked elements are not equals"
