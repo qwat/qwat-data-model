@@ -11,8 +11,9 @@ import psycopg2.extras
 class Dumper():
     """This class is used to dump and restore a Postgres database."""
 
-    def __init__(self, pg_service):
+    def __init__(self, pg_service, file):
         self.connection = psycopg2.connect("service={}".format(pg_service))
+        self.file = file
 
     def __get_dbname(self):
         return self.connection.get_dsn_parameters()['dbname']
@@ -33,7 +34,7 @@ class Dumper():
         print self.connection.get_dsn_parameters()
         cursor.close()
 
-    def pg_backup(self, file):
+    def pg_backup(self):
         #TODO test on Windows and OSX
 
         #pg_dump_exe = 'C:\\Program Files\\PostgreSQL\\9.3\\bin\\pg_dump.exe'
@@ -45,7 +46,7 @@ class Dumper():
         command.append('-U')
         command.append(self.__get_dbuser())
         command.append('-f')
-        command.append(file)
+        command.append(self.file)
         command.append(self.__get_dbname())
 
         try:
@@ -56,7 +57,7 @@ class Dumper():
             print 'pg_dump failed'
             raise SystemExit(1)
 
-    def pg_restore(self, file):
+    def pg_restore(self):
         #TODO
         # TODO test on Windows and OSX
 
@@ -69,7 +70,7 @@ class Dumper():
         command.append(self.__get_dbuser())
         command.append('-d')
         command.append(self.__get_dbname())
-        command.append(file)
+        command.append(self.file)
 
         try:
             subprocess.check_output(command)
