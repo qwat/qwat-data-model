@@ -58,7 +58,6 @@ class Dumper():
             raise SystemExit(1)
 
     def pg_restore(self):
-        #TODO
         # TODO test on Windows and OSX
 
         # pg_restore_exe = 'C:\\Program Files\\PostgreSQL\\9.3\\bin\\pg_restore.exe'
@@ -95,10 +94,10 @@ if __name__ == "__main__":
     #TODO options dump and restore cannot be true together
 
     parser.print_help()
-    db_dumper = Dumper(args.pg_service)
+    db_dumper = Dumper(args.pg_service, args.file)
 
     if args.dump:
-        db_dumper.pg_backup(args.file)
+        db_dumper.pg_backup()
     elif args.restore:
-        db_dumper.pg_restore(args.file)
+        db_dumper.pg_restore()
 
