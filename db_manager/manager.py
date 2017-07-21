@@ -45,11 +45,6 @@ class Manager():
 
         print('Applying deltas to db_test... ', end='')
         upgrader_test = Upgrader(self.pg_service_test, self.upgrades_table, self.delta_dir)
-
-
-        upgrader_test.show_info()
-
-        
         upgrader_test.run()
         print(Bcolors.OKGREEN + 'OK' + Bcolors.ENDC)
 
@@ -63,7 +58,7 @@ class Manager():
         if checker.check_all():
             print(Bcolors.OKGREEN + 'OK' + Bcolors.ENDC)
             print('Applying deltas to db... ', end='')
-            #TODO
+            #TODO remove comment
             #upgrader_prod.run()
             print(Bcolors.OKGREEN + 'OK' + Bcolors.ENDC)
         else:
