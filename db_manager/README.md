@@ -17,6 +17,8 @@ In the config file db_manager_config.yaml, you have to define:
 - **upgrades_table**: the name (and schema) of the table with the migration informations 
 - **delta_dir**: the directory with the delta files.
 - **backup_file**: the temporary db dump file used to copy the prod db to a test db
+- **ignore_elements**: list of elements to ignore in db compare. Valid elements: tables, columns, 
+constraints, views, sequences, indexes, triggers, functions or rules
  
 ### Qwat upgrade procedure
 
@@ -41,8 +43,8 @@ and set the baseline of the table with the current version founded in *qwat_sys.
 - creates a dump of the PG_SERVICE_PROD db
 - restores the db dump into PG_SERVICE_TEST
 - applies the delta files found in the delta directory to the PG_SERVICE_TEST db. Only the delta 
-files with version greater than the current version are applied
+files with version greater or equal than the current version are applied
 - creates PG_SERVICE_COMP whit the last qwat db version, using init_qwat.sh script
 - checks if there are differences between PG_SERVICE_TEST and PG_SERVICE_COMP
 - if no significant differences are found, applies the delta files to PG_SERVICE_PROD. Only the delta 
-files with version greater than the current version are applied
+files with version greater or equal than the current version are applied

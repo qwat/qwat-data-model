@@ -41,8 +41,8 @@ class Upgrader():
             if verbose:
                 print('Found delta {}, version {}, type {}'.format(d.get_name(), d.get_version(), d.get_type()))
                 print('     Already applied: ',self.__is_applied(d))
-                print('     Version greather than current: ', self.__is_version_greater_than_current(d.get_version()))
-            if (not self.__is_applied(d)) and (self.__is_version_greater_than_current(d.get_version())):
+                print('     Version greather than current: ', self.__is_version_greater_or_equal_than_current(d.get_version()))
+            if (not self.__is_applied(d)) and (self.__is_version_greater_or_equal_than_current(d.get_version())):
                 self.__run_delta(d)
             else:
                 if verbose:
@@ -291,7 +291,7 @@ class Upgrader():
         self.cursor.execute(query)
         self.connection.commit()
 
-    def __is_version_greater_than_current(self, version):
+    def __is_version_greater_or_equal_than_current(self, version):
         #TODO docstring
         query = """
         SELECT version from {} WHERE success = TRUE ORDER BY version DESC        
@@ -299,7 +299,7 @@ class Upgrader():
 
         self.cursor.execute(query)
 
-        if version > self.cursor.fetchone()[0]:
+        if version >= self.cursor.fetchone()[0]:
             return True
         return False
 

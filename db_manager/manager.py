@@ -26,6 +26,7 @@ class Manager():
         self.upgrades_table = config['upgrades_table']
         self.delta_dir = config['delta_dir']
         self.backup_file = config['backup_file']
+        self.ignore_list = config['ignore_elements']
 
     def run(self):
         upgrader_prod = Upgrader(self.pg_service_prod, self.upgrades_table, self.delta_dir)
@@ -55,12 +56,12 @@ class Manager():
 
         print('Checking db_test with db_comp... ', end='')
         checker = Checker(self.pg_service_test, self.pg_service_comp, silent=False)
-        if checker.check_all():
+        if checker.check_all(self.ignore_list):
             print(Bcolors.OKGREEN + 'OK' + Bcolors.ENDC)
-            print('Applying deltas to db... ', end='')
-            #TODO remove comment
-            #upgrader_prod.run()
-            print(Bcolors.OKGREEN + 'OK' + Bcolors.ENDC)
+            if self.__confirm(prompt='Apply deltas to {}?'.format(upgrader_prod.connection.dsn)):
+                print('Applying deltas to db... ', end='')
+                upgrader_prod.run()
+                print(Bcolors.OKGREEN + 'OK' + Bcolors.ENDC)
         else:
             print(Bcolors.FAIL + 'FAILED' + Bcolors.ENDC)
 
@@ -81,17 +82,6 @@ class Manager():
 
         'resp' should be set to the default value assumed by the caller when
         user simply types ENTER.
-
-        >>> confirm(prompt='Create Directory?', resp=True)
-        Create Directory? [y]|n: 
-        True
-        >>> confirm(prompt='Create Directory?', resp=False)
-        Create Directory? [n]|y: 
-        False
-        >>> confirm(prompt='Create Directory?', resp=False)
-        Create Directory? [n]|y: y
-        True
-
         """
 
         if prompt is None:
