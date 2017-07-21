@@ -1,2 +1,3 @@
-upgrades_table: qwat_sys.upgrades
-delta_dir: /tmp/test_upgrader/
+upgrades_table: public.upgrades
+delta_dir: /home/mario/Dropbox/AA Tardis/Opengis/qWat/db/delta
+backup_file: /tmp/test_dumper/backup.dump

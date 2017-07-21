@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+from __future__ import print_function
 import argparse
 import os
 import subprocess
@@ -30,8 +31,8 @@ class Dumper():
                        ', now()::text as query_time '
                        )
         result = cursor.fetchone()
-        print result
-        print self.connection.get_dsn_parameters()
+        print(result)
+        print(self.connection.get_dsn_parameters())
         cursor.close()
 
     def pg_backup(self):
@@ -54,7 +55,7 @@ class Dumper():
 
         except:
             #TODO Exception
-            print 'pg_dump failed'
+            print('pg_dump failed')
             raise SystemExit(1)
 
     def pg_restore(self):
@@ -76,7 +77,7 @@ class Dumper():
 
         except:
             # TODO exception
-            print 'pg_dump failed'
+            print('pg_dump failed')
             raise SystemExit(1)
 
 
@@ -97,7 +98,11 @@ if __name__ == "__main__":
     db_dumper = Dumper(args.pg_service, args.file)
 
     if args.dump:
+        print('Creating db backup in {}... '.format(args.file), end='')
         db_dumper.pg_backup()
+        print('OK')
     elif args.restore:
+        print('Restoring db backup... ', end='')
         db_dumper.pg_restore()
+        print('OK')
 

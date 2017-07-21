@@ -1,4 +1,4 @@
-CREATE TABLE public.upgrades
+CREATE TABLE IF NOT EXISTS public.upgrades
 (
   id serial NOT NULL,
   version character varying(50),
