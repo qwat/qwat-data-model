@@ -49,6 +49,7 @@ class TestUpgrader(TestCase):
         file.close()
 
         self.upgrader = Upgrader(pg_service1, self.upgrades_table, '/tmp/test_upgrader/')
+        self.upgrader.set_baseline('0.0.1')
 
     def test_upgrader_run(self):
         self.upgrader.run()

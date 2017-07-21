@@ -385,7 +385,7 @@ if __name__ == "__main__":
     parser.add_argument('-t', '--table', help='Version table', required=True)
     parser.add_argument('-d', '--dir', help='Delta directory', required=True)
     parser.add_argument('-i', '--info', help='Show only info', action='store_true')
-
+    parser.add_argument('-b', '--baseline', help='Create baseline')
     args = parser.parse_args()
 
     db_upgrader = Upgrader(args.pg_service, args.table, args.dir)
@@ -393,10 +393,13 @@ if __name__ == "__main__":
 
     if args.info:
         db_upgrader.show_info()
+    elif args.baseline:
+        db_upgrader.create_upgrades_table()
+        db_upgrader.set_baseline(args.baseline)
+        print('Created table upgrades with baseline')
     else:
         if not db_upgrader.exists_table_upgrades():
-            #TODO correct command
-            print('Table upgrades don\'t exists. Run TODO to create')
+            print('Table upgrades don\'t exists. Run upgrader.py -b BASELINE to create')
         else:
             print('Running upgrader')
             db_upgrader.run(verbose=True)
