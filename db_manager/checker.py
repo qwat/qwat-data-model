@@ -264,7 +264,7 @@ class Checker():
 
         return result
 
-    def check_all(self, ignore):
+    def check_all(self, ignore=[]):
         """Run all the checks functions.
 
             Parameters
@@ -323,7 +323,8 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     db_checker = Checker(args.pg_service1, args.pg_service2, args.silent)
+    print 'Running checker'
     if db_checker.check_all(args.ignore):
-        print "The checked elements are equals"
+        print 'The checked elements are equals'
     else:
-        print "The checked elements are not equals"
+        print 'The checked elements are not equals'
