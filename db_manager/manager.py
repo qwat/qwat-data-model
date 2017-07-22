@@ -15,6 +15,19 @@ class Manager():
     """This class is used to managing qwat upgrade procedure."""
 
     def __init__(self, pg_service_prod, pg_service_test, pg_service_comp, config_file='db_manager_config.yaml'):
+        """Create the manager class instance.
+
+            Parameters
+            ----------
+            pg_service_prod: basestring
+                The name of the postgres service (defined in pg_service.conf) related to the production db
+            pg_service_test: string
+                The name of the postgres service (defined in pg_service.conf) related to the test db (copy of the 
+                production db where the delta are applied for testing the procedure)
+            pg_service_comp: basestring
+                The name of the postgres service (defined in pg_service.conf) related to the comparation db
+                (db generated with init_qwat.sh script, used to verifiy if db test is correct)
+        """
         self.pg_service_prod = pg_service_prod
         self.pg_service_test = pg_service_test
         self.pg_service_comp = pg_service_comp
@@ -22,6 +35,7 @@ class Manager():
         self.load_config()
 
     def load_config(self):
+        """Load the configurations from yaml configuration file and store it to instance variables."""
         config = yaml.safe_load(open(self.config_file))
         self.upgrades_table = config['upgrades_table']
         self.delta_dir = config['delta_dir']
@@ -29,6 +43,18 @@ class Manager():
         self.ignore_list = config['ignore_elements']
 
     def run(self):
+        """Run the qwat upgrade procedure:
+            - check if the upgrades table exists in PG_SERVICE_PROD, if not, ask the user if want to create it
+              and set the baseline of the table with the current version founded in *qwat_sys.versions*
+            - createe a dump of the PG_SERVICE_PROD db
+            - restore the db dump into PG_SERVICE_TEST
+            - apply the delta files found in the delta directory to the PG_SERVICE_TEST db. Only the delta 
+              files with version greater or equal than the current version are to be applied
+            - create PG_SERVICE_COMP whit the last qwat db version, using init_qwat.sh script
+            - check if there are differences between PG_SERVICE_TEST and PG_SERVICE_COMP
+            - if no significant differences are found, apply the delta files to PG_SERVICE_PROD. Only the delta 
+              files with version greater or equal than the current version are to be applied
+        """
         upgrader_prod = Upgrader(self.pg_service_prod, self.upgrades_table, self.delta_dir)
         if not upgrader_prod.exists_table_upgrades():
             self.__ask_create_upgrades_table(upgrader_prod)
@@ -66,6 +92,13 @@ class Manager():
             print(Bcolors.FAIL + 'FAILED' + Bcolors.ENDC)
 
     def __ask_create_upgrades_table(self, upgrader):
+        """Ask the user if he want to create the upgrades table.
+
+            Parameters
+            ----------
+            upgrader: Upgrader
+                The Upgrader instance designate to create the table.
+        """
         print(Bcolors.FAIL + 'Table {} not found in {}'.format(upgrader.upgrades_table, upgrader.connection.dsn) + Bcolors.ENDC)
         print('Do you want to create it now?')
 
@@ -77,11 +110,20 @@ class Manager():
 
         # From http://code.activestate.com/recipes/541096-prompt-the-user-for-confirmation/
     def __confirm(self, prompt=None, resp=False):
-        """prompts for yes or no response from the user. Returns True for yes and
-        False for no.
+        """Prompt for yes or no response from the user.
 
-        'resp' should be set to the default value assumed by the caller when
-        user simply types ENTER.
+            Parameters
+            ----------
+            prompt: basestring
+                The question to be prompted to the user.
+            resp: bool
+                The default value assumed by the caller when user simply types ENTER.
+                
+            Returns
+            -------
+            bool
+                True if the user response is 'y' or 'Y'
+                False if the user response is 'n' or 'N'
         """
 
         if prompt is None:
@@ -105,7 +147,18 @@ class Manager():
                 return False
 
     def __set_baseline(self, pg_service, upgrader):
-        #TODO docstring
+        """Set the version of the current db version into the upgrades table.
+
+            Parameters
+            ----------
+            pg_service: basestring
+                The name of the postgres service (defined in pg_service.conf) related to the db where find the qwat db
+                version.
+            upgrader: Upgrader
+                The Upgrader instance designate to set the baseline.
+                
+            This method is to be called right after the creation of the upgrades table.
+        """
 
         query = """
                 SELECT version FROM qwat_sys.versions

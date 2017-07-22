@@ -19,6 +19,8 @@ In the config file db_manager_config.yaml, you have to define:
 - **backup_file**: the temporary db dump file used to copy the prod db to a test db
 - **ignore_elements**: list of elements to ignore in db compare. Valid elements: tables, columns, 
 constraints, views, sequences, indexes, triggers, functions or rules
+
+
  
 ### Qwat upgrade procedure
 
