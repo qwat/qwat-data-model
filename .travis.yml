@@ -1,5 +1,8 @@
 language: python
 
+notifications:
+  emails: false
+
 # run on Travis container-based infrastructure
 dist: trusty
 sudo: false
