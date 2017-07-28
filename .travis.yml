@@ -22,6 +22,10 @@ before_script:
   - psql -c 'CREATE DATABASE qwat_prod;' -U postgres
   - psql -c 'CREATE DATABASE qwat_test;' -U postgres
   - psql -c 'CREATE DATABASE qwat_conf;' -U postgres
+  - psql -c 'CREATE ROLE qwat_viewer NOSUPERUSER INHERIT NOCREATEDB NOCREATEROLE NOREPLICATION;' -U postgres
+  - psql -c 'CREATE ROLE qwat_user NOSUPERUSER INHERIT NOCREATEDB NOCREATEROLE NOREPLICATION;' -U postgres
+  - psql -c 'CREATE ROLE qwat_manager NOSUPERUSER INHERIT NOCREATEDB NOCREATEROLE NOREPLICATION;' -U postgres
+  - psql -c 'CREATE ROLE qwat_sysadmin NOSUPERUSER INHERIT NOCREATEDB NOCREATEROLE NOREPLICATION;' -U postgres
   - pg_dump -V
   - pg_restore -V
 
