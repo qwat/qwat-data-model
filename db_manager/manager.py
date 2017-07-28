@@ -72,7 +72,7 @@ class Manager():
 
         print('Applying deltas to db_test... ', end='')
         upgrader_test = Upgrader(self.pg_service_test, self.upgrades_table, self.delta_dir)
-        upgrader_test.run(verbose=True)
+        upgrader_test.run()
         print(Bcolors.OKGREEN + 'OK' + Bcolors.ENDC)
 
         print('Creating db_comp with init_qwat.sh... ', end='')
@@ -86,7 +86,7 @@ class Manager():
             print(Bcolors.OKGREEN + 'OK' + Bcolors.ENDC)
             if self.__confirm(prompt='Apply deltas to {}?'.format(upgrader_prod.connection.dsn)):
                 print('Applying deltas to db... ', end='')
-                upgrader_prod.run(verbose=True)
+                upgrader_prod.run()
                 print(Bcolors.OKGREEN + 'OK' + Bcolors.ENDC)
         else:
             print(Bcolors.FAIL + 'FAILED' + Bcolors.ENDC)
