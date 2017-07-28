@@ -39,7 +39,9 @@ class Checker():
         """
         query = """SELECT table_schema, table_name 
                 FROM information_schema.tables 
-                WHERE table_schema NOT IN ('information_schema') AND table_schema NOT LIKE 'pg\_%' 
+                WHERE table_schema NOT IN ('information_schema') 
+                    AND table_schema NOT LIKE 'pg\_%' 
+                    AND table_type NOT LIKE 'VIEW' 
                 ORDER BY table_schema, table_name"""
 
         return self.__check_equals(query, 'Tables diff:')
