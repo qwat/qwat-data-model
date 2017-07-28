@@ -90,6 +90,7 @@ class Manager():
                 print(Bcolors.OKGREEN + 'OK' + Bcolors.ENDC)
         else:
             print(Bcolors.FAIL + 'FAILED' + Bcolors.ENDC)
+            raise SystemExit(1)
 
     def __ask_create_upgrades_table(self, upgrader):
         """Ask the user if he want to create the upgrades table.
