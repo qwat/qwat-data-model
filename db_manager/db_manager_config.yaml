@@ -1,8 +1,7 @@
 upgrades_table: public.upgrades
-delta_dir: /home/mario/Dropbox/AA Tardis/Opengis/qWat/db/delta
-backup_file: /tmp/test_dumper/backup.dump
+delta_dir: ./update/delta/
+backup_file: /tmp/backup.dump
 ignore_elements:
-  - tables
   - columns
   - constraints
   - views
