@@ -78,6 +78,7 @@ class Manager():
         print('Creating db_comp with init_qwat.sh... ', end='')
         os.chdir('..')
         os.system('./init_qwat.sh -p {}'.format(self.pg_service_comp))
+        os.chdir('db_manager')
         print(Bcolors.OKGREEN + 'OK' + Bcolors.ENDC)
 
         print('Checking db_test with db_comp... ', end='')
