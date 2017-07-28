@@ -1,5 +1,4 @@
 ﻿-- adds new auditing functions
-
 CREATE TABLE IF NOT EXISTS qwat_sys.logged_relations (
     relation_name text not null,
     uid_column text not null,
