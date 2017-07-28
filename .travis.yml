@@ -18,11 +18,17 @@ install:
   - pip install pyyaml --quiet
 
 before_script:
-  - printf "[qwat_test]\nhost=localhost\ndbname=qwat_test\nuser=postgres\n\n[qwat_test_conform]\nhost=localhost\ndbname=qwat_test_conform\nuser=postgres\n\n[qwat_demo]\nhost=localhost\ndbname=qwat_demo\nuser=postgres\n\n" > ~/.pg_service.conf
+  - printf "[qwat_prod]\nhost=localhost\ndbname=qwat_prod\nuser=postgres\n\n[qwat_test]\nhost=localhost\ndbname=qwat_test\nuser=postgres\n\n[qwat_test_conform]\nhost=localhost\ndbname=qwat_conf\nuser=postgres\n\n[qwat_demo]\nhost=localhost\ndbname=qwat_demo\nuser=postgres\n\n" > ~/.pg_service.conf
+  - psql -c 'CREATE DATABASE qwat_prod;' -U postgres
   - psql -c 'CREATE DATABASE qwat_test;' -U postgres
+  - psql -c 'CREATE DATABASE qwat_conf;' -U postgres
 
 script:
-  - python $TRAVIS_BUILD_DIR/db_manager/manager.py
+# Create a qwat 1.0.0 db from a dump file
+  - python $TRAVIS_BUILD_DIR/db_manager/dumper.py -p qwat_prod -r $TRAVIS_BUILD_DIR/update/delta/dump_1.0.0.dump
+
+
+#  - python $TRAVIS_BUILD_DIR/db_manager/manager.py
 
 #  - $TRAVIS_BUILD_DIR/init_qwat.sh -p qwat_test -s 21781 -r
 #  - $TRAVIS_BUILD_DIR/tests/tests.sh --no-init
