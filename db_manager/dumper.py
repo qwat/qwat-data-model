@@ -51,7 +51,7 @@ class Dumper():
         command.append(self.__get_dbname())
 
         try:
-            subprocess.check_output(command)
+            subprocess.check_output(command, stderr=subprocess.STDOUT)
 
         except:
             #TODO Exception
@@ -73,7 +73,7 @@ class Dumper():
         command.append(self.file)
 
         try:
-            subprocess.check_output(command)
+            subprocess.check_output(command, stderr=subprocess.STDOUT)
 
         except:
             # TODO exception
@@ -94,7 +94,6 @@ if __name__ == "__main__":
     args = parser.parse_args()
     #TODO options dump and restore cannot be true together
 
-    parser.print_help()
     db_dumper = Dumper(args.pg_service, args.file)
 
     if args.dump:
