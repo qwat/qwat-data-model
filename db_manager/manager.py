@@ -197,6 +197,6 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     #TODO add an option to set config file
-    manager = Manager(args.pg_service_prod, args.pg_service_test, args.pg_service_comp, config_file='./db_manager/db_manager_config.yaml')
+    manager = Manager(args.pg_service_prod, args.pg_service_test, args.pg_service_comp)
     manager.run()
         
