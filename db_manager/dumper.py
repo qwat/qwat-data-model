@@ -72,7 +72,6 @@ class Dumper():
         command.append(self.__get_dbname())
         command.append(self.file)
 
-        print('Command: ', command)
         try:
             subprocess.check_output(command, stderr=subprocess.STDOUT)
 
