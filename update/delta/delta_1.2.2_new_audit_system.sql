@@ -1,9 +1,4 @@
-﻿SELECT 1;
--- adds new auditing functions
-
-SELECT 1;
-
-CREATE TABLE IF NOT EXISTS qwat_sys.logged_relations (
+﻿CREATE TABLE IF NOT EXISTS qwat_sys.logged_relations (
     relation_name text not null,
     uid_column text not null,
     PRIMARY KEY (relation_name, uid_column)
