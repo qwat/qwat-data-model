@@ -51,12 +51,12 @@ class Dumper():
         command.append(self.__get_dbname())
 
         try:
-            subprocess.check_output(command)
+            subprocess.check_output(command, stderr=subprocess.STDOUT)
 
-        except:
-            #TODO Exception
-            print('pg_dump failed')
+        except subprocess.CalledProcessError as e:
+            print('pg_dump failed', e.output)
             raise SystemExit(1)
+
 
     def pg_restore(self):
         # TODO test on Windows and OSX
@@ -73,11 +73,10 @@ class Dumper():
         command.append(self.file)
 
         try:
-            subprocess.check_output(command)
+            subprocess.check_output(command, stderr=subprocess.STDOUT)
 
-        except:
-            # TODO exception
-            print('pg_dump failed')
+        except subprocess.CalledProcessError as e:
+            print('pg_restore failed', e.output)
             raise SystemExit(1)
 
 
@@ -94,7 +93,6 @@ if __name__ == "__main__":
     args = parser.parse_args()
     #TODO options dump and restore cannot be true together
 
-    parser.print_help()
     db_dumper = Dumper(args.pg_service, args.file)
 
     if args.dump:

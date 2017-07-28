@@ -41,9 +41,11 @@ class Upgrader():
             if verbose:
                 print('Found delta {}, version {}, type {}'.format(d.get_name(), d.get_version(), d.get_type()))
                 print('     Already applied: ',self.__is_applied(d))
-                print('     Version greather than current: ', self.__is_version_greater_or_equal_than_current(d.get_version()))
+                print('     Version greather or equal than current: ', self.__is_version_greater_or_equal_than_current(d.get_version()))
             if (not self.__is_applied(d)) and (self.__is_version_greater_or_equal_than_current(d.get_version())):
+                print('     Applying delta {} {}...'.format(d.get_version(), d.get_type()), end=' ')
                 self.__run_delta(d)
+                print('OK')
             else:
                 if verbose:
                     print('Delta not applied')
