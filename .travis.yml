@@ -22,9 +22,11 @@ before_script:
   - psql -c 'CREATE DATABASE qwat_test;' -U postgres
 
 script:
-  - $TRAVIS_BUILD_DIR/init_qwat.sh -p qwat_test -s 21781 -r
-  - $TRAVIS_BUILD_DIR/tests/tests.sh --no-init
-  - $TRAVIS_BUILD_DIR/update/verify_upgrade_db.sh
+  - python $TRAVIS_BUILD_DIR/db_manager/manager.py
+
+#  - $TRAVIS_BUILD_DIR/init_qwat.sh -p qwat_test -s 21781 -r
+#  - $TRAVIS_BUILD_DIR/tests/tests.sh --no-init
+#  - $TRAVIS_BUILD_DIR/update/verify_upgrade_db.sh
 
 env:
   global:
