@@ -128,6 +128,7 @@ psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f ${DIR}/system/settings_insert.sql
 psql -v ON_ERROR_STOP=1 -f ${DIR}/system/audit.sql
 psql -v ON_ERROR_STOP=1 -f ${DIR}/system/fn_enable_schemaview.sql
 psql -v ON_ERROR_STOP=1 -f ${DIR}/system/fn_label.sql
+psql -v ON_ERROR_STOP=1 -f ${DIR}/system/upgrades_table.sql
 
 # Value lists
 psql -v ON_ERROR_STOP=1 -c "CREATE SCHEMA qwat_vl;"

@@ -1,4 +1,4 @@
-upgrades_table: public.upgrades
+upgrades_table: qwat_sys.upgrades
 delta_dir: ../update/delta/
 backup_file: /tmp/backup.dump
 ignore_elements:

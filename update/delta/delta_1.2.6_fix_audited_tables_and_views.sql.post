@@ -4,8 +4,8 @@
 
 -- vw_remote is no more logged. nothing to do since it is a generated view
 
+-- to avoid empty query error
 SELECT 1;
-
 
 -- END
 -- $$;
