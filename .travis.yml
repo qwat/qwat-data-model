@@ -35,7 +35,7 @@ before_script:
 script:
   - cd $TRAVIS_BUILD_DIR/db_manager
 # Create a qwat 1.0.0 db from a dump file
-  - python dumper.py -p qwat_prod -r $TRAVIS_BUILD_DIR/update/delta/dump_1.0.0.dump
+  - python dumper.py -p qwat_prod -r $TRAVIS_BUILD_DIR/update/delta/qwat_1_0_0_dump.dump
 # run manager
   - yes | python manager.py -pp qwat_prod -pt qwat_test -pc qwat_conf
 
