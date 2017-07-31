@@ -46,8 +46,13 @@ class Checker():
 
         return self.__check_equals(query, 'Tables diff:')
 
-    def check_columns(self):
+    def check_columns(self, check_views = True):
         """Check if the columns in all tables are equals.
+            
+            Parameters
+            ----------
+            check_views: bool
+                if True, check the columns of all the tables and views, if False check only the columns of the tables
 
             Returns
             -------
@@ -55,11 +60,12 @@ class Checker():
                 True if the columns are the same
                 False otherwise            
         """
-
-        query = """WITH table_list AS ( 
+        if check_views:
+            query = """WITH table_list AS ( 
                 SELECT table_schema, table_name 
                 FROM information_schema.tables 
-                WHERE table_schema NOT IN ('information_schema') AND table_schema NOT LIKE 'pg\_%' 
+                WHERE table_schema NOT IN ('information_schema') 
+                    AND table_schema NOT LIKE 'pg\_%' 
                 ORDER BY table_schema,table_name 
                 ) 
                 SELECT isc.table_schema, isc.table_name, column_name, column_default, is_nullable, 
@@ -67,7 +73,24 @@ class Checker():
                 numeric_precision_radix::text, datetime_precision::text FROM information_schema.columnS isc,
                 table_list tl 
                 WHERE isc.table_schema = tl.table_schema 
-                AND isc.table_name = tl.table_name 
+                    AND isc.table_name = tl.table_name 
+                ORDER BY isc.table_schema, isc.table_name, column_name"""
+
+        else:
+            query = """WITH table_list AS ( 
+                SELECT table_schema, table_name 
+                FROM information_schema.tables 
+                WHERE table_schema NOT IN ('information_schema') 
+                    AND table_schema NOT LIKE 'pg\_%'
+                    AND table_type NOT LIKE 'VIEW'
+                ORDER BY table_schema,table_name 
+                ) 
+                SELECT isc.table_schema, isc.table_name, column_name, column_default, is_nullable, 
+                data_type, character_maximum_length::text, numeric_precision::text, 
+                numeric_precision_radix::text, datetime_precision::text FROM information_schema.columnS isc,
+                table_list tl 
+                WHERE isc.table_schema = tl.table_schema 
+                    AND isc.table_name = tl.table_name 
                 ORDER BY isc.table_schema, isc.table_name, column_name"""
 
         return self.__check_equals(query, 'Columns diff:')
@@ -285,8 +308,11 @@ class Checker():
 
         if (not 'tables' in ignore) and (not self.check_tables()):
             result = False
-        if (not 'columns' in ignore) and (not self.check_columns()):
-            result = False
+        if (not 'columns' in ignore):
+            if 'views' in ignore:
+                result = self.check_columns(False)
+            else:
+                result = self.check_columns(True)
         if (not 'constraints' in ignore) and (not self.check_constraints()):
             result = False
         if (not 'views' in ignore) and (not self.check_views()):
