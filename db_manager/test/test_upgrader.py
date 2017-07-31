@@ -1,5 +1,5 @@
 from unittest import TestCase
-from upgrader import Upgrader, Delta
+from db_manager.upgrader import Upgrader, Delta
 import psycopg2
 import psycopg2.extras
 import os

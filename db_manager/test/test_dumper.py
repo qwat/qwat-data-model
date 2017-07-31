@@ -1,5 +1,5 @@
 from unittest import TestCase
-from dumper import Dumper
+from db_manager.dumper import Dumper
 import psycopg2
 import psycopg2.extras
 import os

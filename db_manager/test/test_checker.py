@@ -1,7 +1,7 @@
 from unittest import TestCase
 import psycopg2
 import psycopg2.extras
-from checker import Checker
+from db_manager.checker import Checker
 
 class TestChecker(TestCase):
     """Test the class Checker.
