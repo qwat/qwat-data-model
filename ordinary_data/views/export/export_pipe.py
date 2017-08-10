@@ -39,7 +39,7 @@ joins:
   folder:
     table: qwat_od.folder
     fkey: fk_folder
-  function:
+  pipe_function:
     table: qwat_vl.pipe_function
     fkey: fk_function
   installmethod:
