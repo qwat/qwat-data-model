@@ -45,7 +45,7 @@ joins:
   installmethod:
     table: qwat_vl.pipe_installmethod
     fkey: fk_installmethod
-  material:
+  pipe_material:
     table: qwat_vl.pipe_material
     fkey: fk_material
   protection:
