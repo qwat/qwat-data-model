@@ -35,7 +35,7 @@ class SqlExportView():
 
 		if 'extra_fields' in self.definition:
 			for extra_field in self.definition['extra_fields']:
-				sql +='\n\t\t\t\t, {0} AS {1}'.format(self.definition['extra_fields'][extra_field], extra_field)
+				sql +='\n\t\t\t\t, {0} AS {1}'.format(self.definition['extra_fields'][extra_field], extra_field)
 
 		for join in self.definition['joins']:
 			columns = self.get_columns(self.definition['joins'][join]['table'], exclude_join_fields)
