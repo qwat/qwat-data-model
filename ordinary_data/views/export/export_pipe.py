@@ -1,4 +1,6 @@
 #!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
 
 import yaml
 import sys
@@ -19,6 +21,10 @@ exclude_join_fields:
   - geometry%
   - label_1%
   - label_2%
+
+extra_fields:
+  geometry2d: 'ST_Force2D(pipe.geometry)'
+  schema_visible: 'COALESCE(schema_force_visible, pipe_function.schema_visible)'
 
 joins:
   district:
