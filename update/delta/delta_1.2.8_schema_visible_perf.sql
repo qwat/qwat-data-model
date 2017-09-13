@@ -86,5 +86,6 @@ UPDATE qwat_od.valve SET schema_force_visible = schema_force_visible_old;
 ALTER TABLE qwat_od.pipe DROP COLUMN schema_force_visible_old;
 ALTER TABLE qwat_od.valve DROP COLUMN schema_force_visible_old;
 
+UPDATE qwat_sys.versions SET version = '1.2.8';
 
 COMMIT;
