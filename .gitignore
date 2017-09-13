@@ -4,4 +4,4 @@
 tmp/
 update/test_migration.expected.sql
 *.orig
-
+logfile
