@@ -57,15 +57,15 @@ $BODY$
 				_vl_table,
 				_fk_field);
 
-		EXECUTE format('CREATE TRIGGER tr_%1$I_schema_view_update
-						BEFORE UPDATE OF %2$I
+		EXECUTE format('CREATE TRIGGER tr_%1$I_schema_visible_update
+						BEFORE UPDATE OF schema_force_visible, %2$I
 						ON qwat_od.%1$I
 						FOR EACH ROW
   					EXECUTE PROCEDURE qwat_od.ft_%1$I_schema_visible();',
 				_table_name,
 				_fk_field);
 
-		EXECUTE format('CREATE TRIGGER tr_%1$I_schema_view_insert
+		EXECUTE format('CREATE TRIGGER tr_%1$I_schema_visible_insert
 						BEFORE INSERT
 						ON qwat_od.%1$I
 						FOR EACH ROW
@@ -80,8 +80,11 @@ COMMENT ON FUNCTION qwat_sys.fn_enable_schemavisible(text,text,text) IS 'Add a c
 DO $$ BEGIN PERFORM qwat_sys.fn_enable_schemavisible('valve', 'valve_function', 'fk_valve_function'); END $$;
 DO $$ BEGIN PERFORM qwat_sys.fn_enable_schemavisible('pipe', 'pipe_function', 'fk_function'); END $$;
 
-UPDATE qwat_od.pipe SET schema_force_visible = schema_force_visible_old;
-UPDATE qwat_od.valve SET schema_force_visible = schema_force_visible_old;
+UPDATE qwat_od.pipe SET schema_force_visible = schema_force_visible_old where schema_force_visible_old is not null;
+UPDATE qwat_od.valve SET schema_force_visible = schema_force_visible_old where schema_force_visible_old is not null;
+
+UPDATE qwat_od.pipe SET _schema_visible = schema_visible FROM qwat_vl.pipe_function where pipe_function.id = fk_function AND schema_force_visible is NULL;
+UPDATE qwat_od.valve SET _schema_visible = schema_visible FROM qwat_vl.valve_function where valve_function.id = fk_valve_function AND schema_force_visible is NULL;
 
 ALTER TABLE qwat_od.pipe DROP COLUMN schema_force_visible_old;
 ALTER TABLE qwat_od.valve DROP COLUMN schema_force_visible_old;
