@@ -8,6 +8,7 @@ fixes performance issues if calculation is done on client side.
 * schema_visible field is dropped on network_element as it is not used (was introduced for valves at the origin)
 * _schema_visible and schema_force_visible are added to pipe and valve tables by the qwat_sys.fn_enable_schemavisible function
 * old function qwat_sys.fn_enable_schemaview is enhanced and renamed
+* see https://github.com/qwat/qwat-data-model/pull/194
 */
 BEGIN;
 
@@ -88,6 +89,10 @@ UPDATE qwat_od.valve SET _schema_visible = schema_visible FROM qwat_vl.valve_fun
 
 ALTER TABLE qwat_od.pipe DROP COLUMN schema_force_visible_old;
 ALTER TABLE qwat_od.valve DROP COLUMN schema_force_visible_old;
+
+-- also add automatic valve actuation to fit automatic air release valve
+-- see https://github.com/qwat/qwat-data-model/pull/191
+INSERT INTO qwat_vl.valve_actuation (id, value_en, value_fr, value_ro ) VALUES (6405, 'automatic', 'automatique', 'automată');
 
 UPDATE qwat_sys.versions SET version = '1.2.8';
 
