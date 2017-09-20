@@ -78,7 +78,7 @@ ALTER TABLE qwat_od.valve ADD COLUMN update_geometry_alt2 boolean default null; 
 
 
 /* Schema view */
-DO $$ BEGIN PERFORM qwat_sys.fn_enable_schemaview('valve'); END $$;
+DO $$ BEGIN PERFORM qwat_sys.fn_enable_schemavisible('valve', 'valve_function', 'fk_valve_function'); END $$;
 
 /* LABELS */
 DO $$ BEGIN PERFORM qwat_sys.fn_label_create_fields('valve'); END $$;
@@ -222,4 +222,3 @@ CREATE TRIGGER tr_valve_add_pipe_vertex_update
   WHEN (ST_Equals(ST_Force2d(NEW.geometry), ST_Force2d(OLD.geometry)) IS FALSE )
   EXECUTE PROCEDURE qwat_od.ft_valve_add_pipe_vertex();
 COMMENT ON TRIGGER tr_valve_add_pipe_vertex_update ON qwat_od.valve IS 'Trigger: updates auto fields after geom update.';
-

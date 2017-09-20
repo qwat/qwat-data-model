@@ -22,6 +22,7 @@ INSERT INTO qwat_vl.valve_actuation (id, value_en, value_fr, value_ro )         
 INSERT INTO qwat_vl.valve_actuation (id, value_en, value_fr, value_ro )         VALUES (6402, 'left hand control', 'manuel à gauche', 'manuală la stânga');
 INSERT INTO qwat_vl.valve_actuation (id, value_en, value_fr, value_ro )       	VALUES (6403, 'electric drive', 'électrique', 'electrică');
 INSERT INTO qwat_vl.valve_actuation (id, value_en, value_fr, value_ro )       	VALUES (6404, 'remote controlled', 'télécommandée', 'telecomandată');
+INSERT INTO qwat_vl.valve_actuation (id, value_en, value_fr, value_ro )         VALUES (6405, 'automatic', 'automatique', 'automată');
 
 
 

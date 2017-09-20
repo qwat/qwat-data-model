@@ -27,9 +27,6 @@ ALTER TABLE qwat_od.network_element ADD COLUMN year_end            smallint CHEC
 ALTER TABLE qwat_od.network_element ADD COLUMN orientation         float default null; COMMENT ON COLUMN qwat_od.network_element.orientation IS 'orientation field aims at overwrtiting qwat_od.node._pipe_orientation which is automatically calculated from the pipes. In the editable views, orientation will be COALESCE(netwrok_element.orientation, node._pipe_orientation). Update will be forwarded to network_element.';
 ALTER TABLE qwat_od.network_element ADD COLUMN remark              text;
 
-/* SCHEMA VIEW */
-DO $$ BEGIN PERFORM qwat_sys.fn_enable_schemaview('network_element'); END $$;
-
 /* LABELS */
 DO $$ BEGIN PERFORM qwat_sys.fn_label_create_fields('network_element'); END $$;
 
