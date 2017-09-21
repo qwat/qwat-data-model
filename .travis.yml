@@ -36,18 +36,19 @@ before_script:
   - pg_restore -V
 
 script:
-  - cd $TRAVIS_BUILD_DIR/pum
+  - cd $TRAVIS_BUILD_DIR/
 
   # Create a qwat 1.0.0 db from a dump file. This simulate the prod db
-  - python pum.py restore -p qwat_prod $TRAVIS_BUILD_DIR/update/delta/qwat_1_0_0_dump.dump
-  - python pum.py baseline -p qwat_prod -t qwat_sys.info -d $TRAVIS_BUILD_DIR/update/delta/ -b 1.0.0
+  - python pum/pum.py restore -p qwat_prod $TRAVIS_BUILD_DIR/update/delta/qwat_1_0_0_dump.dump
+  - python pum/pum.py baseline -p qwat_prod -t qwat_sys.info -d $TRAVIS_BUILD_DIR/update/delta/ -b 1.0.0
 
   # Run init_qwat.sh to create the last version of qwat db used as comp db
   - $TRAVIS_BUILD_DIR/init_qwat.sh -p qwat_comp -s 21781 -r
-  - python pum.py baseline -p qwat_comp -t qwat_sys.info -d $TRAVIS_BUILD_DIR/update/delta/ -b 1.2.8
+
+  - python pum/pum.py baseline -p qwat_comp -t qwat_sys.info -d $TRAVIS_BUILD_DIR/update/delta/ -b 1.2.8
 
   # Run pum's test and upgrade
-  - yes | python pum.py test-and-upgrade -pp qwat_prod -pt qwat_test -pc qwat_comp -t qwat_sys.info -d $TRAVIS_BUILD_DIR/update/delta/ -f /tmp/qwat_dump -i columns constraints views sequences indexes triggers functions rules
+  - yes | python pum/pum.py test-and-upgrade -pp qwat_prod -pt qwat_test -pc qwat_comp -t qwat_sys.info -d $TRAVIS_BUILD_DIR/update/delta/ -f /tmp/qwat_dump -i columns constraints views sequences indexes triggers functions rules
 
 
 #  - $TRAVIS_BUILD_DIR/init_qwat.sh -p qwat_test -s 21781 -r
