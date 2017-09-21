@@ -21,10 +21,13 @@ install:
   - pip install pyyaml --quiet
 
 before_script:
+  # Write into pg_service.conf
   - printf "[qwat_prod]\nhost=localhost\ndbname=qwat_prod\nuser=postgres\n\n[qwat_test]\nhost=localhost\ndbname=qwat_test\nuser=postgres\n\n[qwat_conf]\nhost=localhost\ndbname=qwat_conf\nuser=postgres\n\n[qwat_demo]\nhost=localhost\ndbname=qwat_demo\nuser=postgres\n\n" > ~/.pg_service.conf
+  # Create the 3 used databases
   - psql -c 'CREATE DATABASE qwat_prod;' -U postgres
   - psql -c 'CREATE DATABASE qwat_test;' -U postgres
   - psql -c 'CREATE DATABASE qwat_conf;' -U postgres
+
   - psql -c 'CREATE ROLE qwat_viewer NOSUPERUSER INHERIT NOCREATEDB NOCREATEROLE NOREPLICATION;' -U postgres
   - psql -c 'CREATE ROLE qwat_user NOSUPERUSER INHERIT NOCREATEDB NOCREATEROLE NOREPLICATION;' -U postgres
   - psql -c 'CREATE ROLE qwat_manager NOSUPERUSER INHERIT NOCREATEDB NOCREATEROLE NOREPLICATION;' -U postgres
@@ -34,10 +37,18 @@ before_script:
 
 script:
   - cd $TRAVIS_BUILD_DIR/db_manager
-# Create a qwat 1.0.0 db from a dump file
-  - python dumper.py -p qwat_prod -r $TRAVIS_BUILD_DIR/update/delta/qwat_1_0_0_dump.dump
-# run manager
-  - yes | python manager.py -pp qwat_prod -pt qwat_test -pc qwat_conf
+
+  # Create a qwat 1.0.0 db from a dump file. This simulate the prod db
+  - python pum.py restore -p qwat_prod $TRAVIS_BUILD_DIR/update/delta/qwat_1_0_0_dump.dump
+  - python pum.py baseline -p qwat_prod -t qwat_sys.info -d $TRAVIS_BUILD_DIR/update/delta/ -b 1.0.0
+
+  # Run init_qwat.sh to create the last version of qwat db used as comp db
+  - $TRAVIS_BUILD_DIR/init_qwat.sh -p qwat_comp -s 21781 -r
+  - python pum.py baseline -p qwat_comp -t qwat_sys.info -d $TRAVIS_BUILD_DIR/update/delta/ -b 1.2.8
+
+  # Run pum's test and upgrade
+  -  yes | python pum.py test-and-upgrade -pp qwat_prod -pt qwat_test -pc qwat_comp -t qwat_sys.info -d $TRAVIS_BUILD_DIR/update/delta/ -f /tmp/qwat_dump -i columns constraints views sequences indexes triggers functions rules
+
 
 #  - $TRAVIS_BUILD_DIR/init_qwat.sh -p qwat_test -s 21781 -r
 #  - $TRAVIS_BUILD_DIR/tests/tests.sh --no-init
