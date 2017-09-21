@@ -44,12 +44,14 @@ script:
 
   # Run init_qwat.sh to create the last version of qwat db used as comp db
   - $TRAVIS_BUILD_DIR/init_qwat.sh -p qwat_comp -s 21781 -r
-
   - python pum/pum.py baseline -p qwat_comp -t qwat_sys.info -d $TRAVIS_BUILD_DIR/update/delta/ -b 1.2.8
 
   # Run pum's test and upgrade
   - yes | python pum/pum.py test-and-upgrade -pp qwat_prod -pt qwat_test -pc qwat_comp -t qwat_sys.info -d $TRAVIS_BUILD_DIR/update/delta/ -f /tmp/qwat_dump -i columns constraints views sequences indexes triggers functions rules
+  - python pum/pum.py check -p1 qwat_prod -p2 qwat_comp
 
+
+  # Run a last check between qwat_prod and qwat_comp
 
 #  - $TRAVIS_BUILD_DIR/init_qwat.sh -p qwat_test -s 21781 -r
 #  - $TRAVIS_BUILD_DIR/tests/tests.sh --no-init
