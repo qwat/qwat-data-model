@@ -3,4 +3,4 @@
 	url = https://github.com/opengisch/metaproject.git
 [submodule "pum"]
 	path = pum
-	url = git@github.com:opengisch/pum.git
+	url = https://github.com/opengisch/pum.git
