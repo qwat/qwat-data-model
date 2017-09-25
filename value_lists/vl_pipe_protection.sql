@@ -27,6 +27,9 @@ INSERT INTO qwat_vl.pipe_protection (id,value_fr,value_ro) VALUES (4307,'ancienn
 INSERT INTO qwat_vl.pipe_protection (id,value_fr,value_ro) VALUES (4308,'ancienne conduite autre','conductă veche de alt tip'); /* TB_id: 8  */
 INSERT INTO qwat_vl.pipe_protection (id,value_fr,value_ro) VALUES (4309,'dans tuyau ciment','în conductă ciment');              /* TB_id: 9  */
 INSERT INTO qwat_vl.pipe_protection (id,value_fr,value_ro) VALUES (4311,'flexible','flexibilă');                                /* TB_id: 12 */
+INSERT INTO qwat_vl.pipe_protection (id,value_fr,value_ro) VALUES (4313,'conduite AC','conductă OL');                           /* TB_id: 13 */
+INSERT INTO qwat_vl.pipe_protection (id,value_fr,value_ro) VALUES (4314,'conduite PE','conductă PE');                           /* TB_id: 14 */
+INSERT INTO qwat_vl.pipe_protection (id,value_fr,value_ro) VALUES (4315,'conduite PVC','conductă PVC');                         /* TB_id: 15 */
 
 
 
