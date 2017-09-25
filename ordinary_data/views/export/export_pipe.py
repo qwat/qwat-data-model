@@ -1,4 +1,6 @@
 #!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
 
 import yaml
 import sys
@@ -20,6 +22,10 @@ exclude_join_fields:
   - label_1%
   - label_2%
 
+extra_fields:
+  geometry2d: 'ST_Force2D(pipe.geometry)'
+  schema_visible: 'COALESCE(schema_force_visible, pipe_function.schema_visible)'
+
 joins:
   district:
     table: qwat_od.district
@@ -39,13 +45,13 @@ joins:
   folder:
     table: qwat_od.folder
     fkey: fk_folder
-  function:
+  pipe_function:
     table: qwat_vl.pipe_function
     fkey: fk_function
   installmethod:
     table: qwat_vl.pipe_installmethod
     fkey: fk_installmethod
-  material:
+  pipe_material:
     table: qwat_vl.pipe_material
     fkey: fk_material
   protection:

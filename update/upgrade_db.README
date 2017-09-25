@@ -31,3 +31,13 @@ The process will create a qwat_test and a qwat_test_conform DB.
 
 If the process is successfull, you will be able to migrate your real database by lauching the command again with " --upgrade yes " parameter. Otherwise, the process is only launched on test DB.
 
+**************
+Debuging Hints
+**************
+On https://github.com/qwat/qwat-data-model/blob/master/update/upgrade_db.sh#L136
+
+   --single-transaction --exit-on-error 
+
+Can be problematic on restore : see https://lists.osgeo.org/pipermail/postgis-users/2015-November/040950.html
+
+Avoiding quiet mode -q can be a great help to determine which query is failing.

@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-
+# -*- coding: utf-8 -*-
 
 import sys
 import psycopg2, psycopg2.extras
@@ -25,13 +25,17 @@ class SqlExportView():
 		if 'exclude_join_fields' in self.definition:
 			exclude_join_fields = self.definition['exclude_join_fields']
 		exclude_join_fields.append('id')
-		
+
 		sql = """
 		CREATE OR REPLACE VIEW {0} AS
 			SELECT \n\t\t\t\t{1}""".format(
 				self.definition['name'],
 				'\n\t\t\t\t, '.join(['{0}.{1}'.format(self.definition['from'], col) for col in self.get_columns(self.definition['from'])])
 				)
+
+		if 'extra_fields' in self.definition:
+			for extra_field in self.definition['extra_fields']:
+				sql +='\n\t\t\t\t, {0} AS {1}'.format(self.definition['extra_fields'][extra_field], extra_field)
 
 		for join in self.definition['joins']:
 			columns = self.get_columns(self.definition['joins'][join]['table'], exclude_join_fields)

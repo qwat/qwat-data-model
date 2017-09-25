@@ -32,7 +32,7 @@ ALTER TABLE qwat_od.pipe ADD COLUMN _valve_count     smallint default NULL;
 ALTER TABLE qwat_od.pipe ADD COLUMN _valve_closed    boolean default NULL;
 
 /* schema view */
-DO $$ BEGIN PERFORM qwat_sys.fn_enable_schemaview( 'pipe' ); END $$;
+DO $$ BEGIN PERFORM qwat_sys.fn_enable_schemavisible( 'pipe', 'pipe_function', 'fk_function' ); END $$;
 
 /* LABELS */
 DO $$ BEGIN PERFORM qwat_sys.fn_label_create_fields('pipe', false, false); END $$;
