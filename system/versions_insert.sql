@@ -2,4 +2,4 @@
 
 
 
-INSERT INTO qwat_sys.versions (module, version) values ('model.core','1.2.8');
+INSERT INTO qwat_sys.versions (module, version) values ('model.core','1.2.9');
