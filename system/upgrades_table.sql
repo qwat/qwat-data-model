@@ -1,5 +1,5 @@
 
--- adds informations table used by the new db_manager
+-- adds informations table used by pum
 
 CREATE TABLE IF NOT EXISTS qwat_sys.upgrades
                 (
