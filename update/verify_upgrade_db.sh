@@ -58,7 +58,7 @@ echo "Creating DB (qwat_test_conform)"
 
 echo "Getting lastest Tag num"
 cd $DIR
-LATEST_TAG=$(git describe)
+LATEST_TAG=$(git describe --tags)
 #PROPER_LATEST_TAG=$(echo $LATEST_TAG| cut -d'-' -f 1)
 # SHORT_LATEST_TAG=$(echo $LATEST_TAG| cut -c 1)
 if [[ ${LATEST_TAG:0:1} == "v" ]] ; then
