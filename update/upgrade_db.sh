@@ -9,7 +9,7 @@
 SRCDB=qwat
 TESTDB=qwat_test
 TESTCONFORMDB=qwat_test_conform
-USER=test
+USER=postgres
 HOST=localhost
 QWATSERVICE=qwat
 QWATSERVICETEST=qwat_test
@@ -22,6 +22,9 @@ YELLOW='\033[0;33m'
 NC='\033[0m' # No Color
 
 TAB_FILES_POST=()
+
+#version comparison function
+function version_gt() { test "$(echo "$@" | tr " " "\n" | sort -V | head -n 1)" != "$1"; }
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 cd $DIR
@@ -54,8 +57,9 @@ export PGPASSWORD="$pwd"
 echo ""
 
 echo "Getting current num version"
-NUMVERSION=\"$(/usr/bin/psql --host $HOST --port 5432 --username "$USER" --no-password -d "$SRCDB" -c "COPY(SELECT version FROM qwat_sys.versions WHERE module='model.core') TO STDOUT")\"
-printf "You are currently using qWat v${GREEN}$NUMVERSION${NC}\n"
+RAW_VERSION=$(/usr/bin/psql --host $HOST --port 5432 --username "$USER"  -d "$SRCDB" -c "COPY(SELECT version FROM qwat_sys.versions WHERE module='model.core') TO STDOUT ")
+CURRENTNUMVERSION=$RAW_VERSION
+printf "You are currently using qWat version $CURRENTNUMVERSION\n"
 
 
 if [[ $UPGRADE_REAL_DB =~ ^[Yy] ]]; then
@@ -73,9 +77,21 @@ if [[ $UPGRADE_REAL_DB =~ ^[Yy] ]]; then
                 CURRENT_DELTA_WITHOUT_EXT="${CURRENT_DELTA%.*}"
                 CURRENT_DELTA_NUM_VERSION=$(echo $CURRENT_DELTA_WITHOUT_EXT| cut -c 7)
                 CURRENT_DELTA_NUM_VERSION_FULL=$(echo $CURRENT_DELTA_WITHOUT_EXT| cut -d'_' -f 2)
-                if [[ $CURRENT_DELTA_NUM_VERSION > $SHORT_LATEST_TAG || $CURRENT_DELTA_NUM_VERSION == $SHORT_LATEST_TAG || $SHORT_LATEST_TAG == '' ]]; then
-                    printf "    Processing ${GREEN}$CURRENT_DELTA${NC}, num version = $CURRENT_DELTA_NUM_VERSION ($CURRENT_DELTA_NUM_VERSION_FULL)\n"
-                    /usr/bin/psql -v ON_ERROR_STOP=1 --host $HOST --port 5432 --username "$USER" --no-password -q -d "$SRCDB" -f $f
+                if version_gt $CURRENT_DELTA_NUM_VERSION_FULL $CURRENTNUMVERSION; then
+                    printf "    Processing ${GREEN}$CURRENT_DELTA${NC}, num version = $CURRENT_DELTA_NUM_VERSION ($SHORT_LATEST_TAG)\n"
+
+                    # drop views
+                    echo $DIR
+                    /usr/bin/psql --host $HOST --port 5432 --username "$USER" --no-password -q -d "$SRCDB" -f ../ordinary_data/views/drop_views.sql
+
+                    # apply update
+                    /usr/bin/psql --host $HOST --port 5432 --username "$USER" --no-password -q -d "$SRCDB" -f $f
+
+                    # rewrite views
+                    echo "Reloading views and functions from last commit"
+                    export PGSERVICE=$QWATSERVICE
+                    SRID=$SRID ../ordinary_data/views/insert_views.sh
+
 
                     # Check if there is a POST file associated to the delta, if so, store it in the array for later execution
                     EXISTS_POST_FILE=$f'.post'
@@ -133,7 +149,16 @@ echo "Creating DB qwat_test"
 /usr/bin/createdb "$TESTDB" --host $HOST --port 5432 --username "$USER" --no-password
 
 echo "Restoring current DB in qwat_test"
-/usr/bin/pg_restore --host $HOST --port 5432 --username "$USER" --dbname "$TESTDB" --no-password --single-transaction --exit-on-error "$TODAY""_current_qwat.backup"
+
+if ! /usr/bin/pg_restore --host $HOST --port 5432 --username "$USER" --dbname "$TESTDB" --no-password --single-transaction --exit-on-error "$TODAY""_current_qwat.backup" ; then
+    echo 'Failed to restore test db'
+    echo "Cleaning"
+    rm "$TODAY""_current_qwat.backup"
+    rm init_qwat.log
+    exit 1;
+fi
+
+
 
 TAB_FILES_POST=()
 echo "Applying deltas on $TESTDB :"
@@ -143,9 +168,21 @@ do
     CURRENT_DELTA_WITHOUT_EXT="${CURRENT_DELTA%.*}"
     CURRENT_DELTA_NUM_VERSION=$(echo $CURRENT_DELTA_WITHOUT_EXT| cut -c 7)
     CURRENT_DELTA_NUM_VERSION_FULL=$(echo $CURRENT_DELTA_WITHOUT_EXT| cut -d'_' -f 2)
-    if [[ $CURRENT_DELTA_NUM_VERSION > $SHORT_LATEST_TAG || $CURRENT_DELTA_NUM_VERSION == $SHORT_LATEST_TAG || $SHORT_LATEST_TAG == '' ]]; then
-        printf "    Processing ${GREEN}$CURRENT_DELTA${NC}, num version = $CURRENT_DELTA_NUM_VERSION ($CURRENT_DELTA_NUM_VERSION_FULL)\n"
+    printf "$CURRENT_DELTA_NUM_VERSION_FULL $CURRENTNUMVERSION  "
+
+    if version_gt $CURRENT_DELTA_NUM_VERSION_FULL $CURRENTNUMVERSION; then
+        printf "    Processing ${GREEN}$CURRENT_DELTA${NC}, num version = $CURRENT_DELTA_NUM_VERSION_FULL ( > $CURRENTNUMVERSION   )\n"
+        # drop views
+        echo $DIR
+        /usr/bin/psql --host $HOST --port 5432 --username "$USER" --no-password -q -d "$TESTDB" -f ../ordinary_data/views/drop_views.sql
+
+        # apply update
         /usr/bin/psql --host $HOST --port 5432 --username "$USER" --no-password -q -d "$TESTDB" -f $f
+
+        # rewrite views
+        echo "Reloading views and functions from last commit"
+        export PGSERVICE=$QWATSERVICETEST
+        SRID=$SRID ../ordinary_data/views/insert_views.sh
 
         # Check if there is a POST file associated to the delta, if so, store it in the array for later execution
         EXISTS_POST_FILE=$f'.post'
@@ -215,11 +252,11 @@ STATUS=$(python test_migration.py --pg_service $QWATSERVICETEST)
 if [[ $STATUS == "DataModel is OK" ]]; then
     printf "${GREEN}Migration TEST is successfull${NC}. You may now migrate your real DB by launching the command './upgrade_db.sh -u yes' \n"
 else
-    printf "${RED}Migration TEST has failed${NC}. Please contact qWat team and give them the following output :\n $STATUS \n\n"
+    printf "${RED}Migration TEST has failed${NC}. Please contact qWat team and give them the following output :\n "
+    printf %b "$STATUS \n\n"
 fi
 
 
-echo
 echo "Cleaning"
 rm "$TODAY""_current_qwat.backup"
 rm init_qwat.log
