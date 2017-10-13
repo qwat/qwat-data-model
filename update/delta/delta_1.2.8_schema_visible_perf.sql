@@ -58,15 +58,15 @@ $BODY$
 				_vl_table,
 				_fk_field);
 
-		EXECUTE format('CREATE TRIGGER tr_%1$I_schema_visible_update
-						BEFORE UPDATE OF schema_force_visible, %2$I
+		EXECUTE format('CREATE TRIGGER tr_%1$I_schema_view_update
+						BEFORE UPDATE OF %2$I
 						ON qwat_od.%1$I
 						FOR EACH ROW
   					EXECUTE PROCEDURE qwat_od.ft_%1$I_schema_visible();',
 				_table_name,
 				_fk_field);
 
-		EXECUTE format('CREATE TRIGGER tr_%1$I_schema_visible_insert
+		EXECUTE format('CREATE TRIGGER tr_%1$I_schema_view_insert
 						BEFORE INSERT
 						ON qwat_od.%1$I
 						FOR EACH ROW
