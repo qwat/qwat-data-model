@@ -70,7 +70,14 @@ if [[ $UPGRADE_REAL_DB =~ ^[Yy] ]]; then
             echo "Upgrading qWat DB"
             echo
 
+
+            # drop views
+            echo "Dropping views on $SRCDB :"
+
+            /usr/bin/psql --host $HOST --port 5432 --username "$USER" --no-password -q -d "$SRCDB" -f ../ordinary_data/views/drop_views.sql
+
             echo "Applying deltas on $SRCDB :"
+
             for f in $DIR/delta/*.sql
             do
                 CURRENT_DELTA=$(basename "$f")
@@ -80,17 +87,10 @@ if [[ $UPGRADE_REAL_DB =~ ^[Yy] ]]; then
                 if version_gt $CURRENT_DELTA_NUM_VERSION_FULL $CURRENTNUMVERSION; then
                     printf "    Processing ${GREEN}$CURRENT_DELTA${NC}, num version = $CURRENT_DELTA_NUM_VERSION ($SHORT_LATEST_TAG)\n"
 
-                    # drop views
-                    echo $DIR
-                    /usr/bin/psql --host $HOST --port 5432 --username "$USER" --no-password -q -d "$SRCDB" -f ../ordinary_data/views/drop_views.sql
 
                     # apply update
                     /usr/bin/psql --host $HOST --port 5432 --username "$USER" --no-password -q -d "$SRCDB" -f $f
 
-                    # rewrite views
-                    echo "Reloading views and functions from last commit"
-                    export PGSERVICE=$QWATSERVICE
-                    SRID=$SRID ../ordinary_data/views/insert_views.sh
 
 
                     # Check if there is a POST file associated to the delta, if so, store it in the array for later execution
@@ -117,6 +117,7 @@ if [[ $UPGRADE_REAL_DB =~ ^[Yy] ]]; then
                 fi
             done
 
+            # recreate views
             echo "Reloading views and functions from last commit"
             export PGSERVICE=$QWATSERVICE
             SRID=$SRID ./ordinary_data/views/rewrite_views.sh
@@ -161,6 +162,13 @@ fi
 
 
 TAB_FILES_POST=()
+
+# drop views
+echo "Dropping views on $SRCDB :"
+
+# drop views
+/usr/bin/psql --host $HOST --port 5432 --username "$USER" --no-password -q -d "$TESTDB" -f ../ordinary_data/views/drop_views.sql
+
 echo "Applying deltas on $TESTDB :"
 for f in $DIR/delta/*.sql
 do
@@ -172,17 +180,10 @@ do
 
     if version_gt $CURRENT_DELTA_NUM_VERSION_FULL $CURRENTNUMVERSION; then
         printf "    Processing ${GREEN}$CURRENT_DELTA${NC}, num version = $CURRENT_DELTA_NUM_VERSION_FULL ( > $CURRENTNUMVERSION   )\n"
-        # drop views
-        echo $DIR
-        /usr/bin/psql --host $HOST --port 5432 --username "$USER" --no-password -q -d "$TESTDB" -f ../ordinary_data/views/drop_views.sql
 
         # apply update
         /usr/bin/psql --host $HOST --port 5432 --username "$USER" --no-password -q -d "$TESTDB" -f $f
 
-        # rewrite views
-        echo "Reloading views and functions from last commit"
-        export PGSERVICE=$QWATSERVICETEST
-        SRID=$SRID ../ordinary_data/views/insert_views.sh
 
         # Check if there is a POST file associated to the delta, if so, store it in the array for later execution
         EXISTS_POST_FILE=$f'.post'

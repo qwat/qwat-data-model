@@ -95,6 +95,11 @@ git checkout $CURRENT_COMMIT
 
 
 echo "Applying deltas on $TESTCONFORMDB:"
+
+# drop views
+echo "Dropping views on $SRCDB :"
+/usr/bin/psql --host $HOST --port 5432 --username "$USER" --no-password -q -d "$TESTCONFORMDB" -f ./ordinary_data/views/drop_views.sql
+
 for f in $DIR/delta/*.sql
 do
     CURRENT_DELTA=$(basename "$f")
@@ -104,17 +109,9 @@ do
     CURRENT_DELTA_NUM_VERSION_FULL=$(echo $CURRENT_DELTA_WITHOUT_EXT| cut -d'_' -f 2)
     if [[ $CURRENT_DELTA_NUM_VERSION > $SHORT_LATEST_TAG || $CURRENT_DELTA_NUM_VERSION == $SHORT_LATEST_TAG || $SHORT_LATEST_TAG == '' ]]; then
         printf "    Processing ${GREEN}$CURRENT_DELTA${NC}, num version = $CURRENT_DELTA_NUM_VERSION ($CURRENT_DELTA_NUM_VERSION_FULL)\n"
-        # drop views
-        echo $DIR
-        /usr/bin/psql --host $HOST --port 5432 --username "$USER" --no-password -q -d "$TESTCONFORMDB" -f ./ordinary_data/views/drop_views.sql
 
         # apply update
         /usr/bin/psql -v ON_ERROR_STOP=1 --host $HOST --port 5432 --username "$USER" --no-password -q -d "$TESTCONFORMDB" -f $f
-
-        # recreate views
-        echo "Reloading views and functions from last commit"
-        export PGSERVICE=$QWATSERVICETESTCONFORM
-        SRID=$SRID ./ordinary_data/views/insert_views.sh
 
         # Check if there is a POST file associated to the delta, if so, store it in the array for later execution
         EXISTS_POST_FILE=$f'.post'
@@ -208,7 +205,12 @@ if [[ $EXITCODE == 0 ]]; then
         SAMPLE_VERSION="$(echo -e "${SAMPLE_VERSION}" | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//')"
         printf "\n${GREEN}${SAMPLE_VERSION}${NC}\n"
 
+        # drop views
+        echo "Dropping views on $SRCDB :"
+        /usr/bin/psql --host $HOST --port 5432 --username "$USER" --no-password -q -d "$DEMODB" -f ./ordinary_data/views/drop_views.sql
+
         printf "\n${YELLOW}Applying deltas on qwat_demo${NC}\n"
+
         for f in $DIR/delta/*.sql
         do
             CURRENT_DELTA=$(basename "$f")
@@ -219,17 +221,10 @@ if [[ $EXITCODE == 0 ]]; then
             if [[ ($CURRENT_DELTA_NUM_VERSION_FULL > $SAMPLE_VERSION || $SAMPLE_VERSION == '') && $CURRENT_DELTA_NUM_VERSION_FULL != $SAMPLE_VERSION  ]]; then
                 printf "    Processing ${GREEN}$CURRENT_DELTA${NC}, num version = $CURRENT_DELTA_NUM_VERSION_FULL\n"
 
-                # drop views
-                echo $DIR
-                /usr/bin/psql --host $HOST --port 5432 --username "$USER" --no-password -q -d "$DEMODB" -f ./ordinary_data/views/drop_views.sql
 
                 # apply update
                 /usr/bin/psql -v ON_ERROR_STOP=1 --host $HOST --port 5432 --username "$USER" --no-password -q -d "$DEMODB" -f $f
 
-                # recreate views
-                echo "Reloading views and functions from last commit"
-                export PGSERVICE=$DEMODB
-                SRID=$SRID ./ordinary_data/views/insert_views.sh
 
                 # Check if there is a POST file associated to the delta, if so, store it in the array for later execution
                 EXISTS_POST_FILE=$f'.post'
@@ -241,6 +236,12 @@ if [[ $EXITCODE == 0 ]]; then
                 printf "    Bypassing  ${RED}$CURRENT_DELTA${NC}, num version = $CURRENT_DELTA_NUM_VERSION_FULL\n"
             fi
         done
+
+        # recreate views
+        echo "Reloading views and functions from last commit"
+        export PGSERVICE=$DEMODB
+        SRID=$SRID ./ordinary_data/views/insert_views.sh
+
         LAST_VERSION=$CURRENT_DELTA_NUM_VERSION_FULL
 
         # Checking version
