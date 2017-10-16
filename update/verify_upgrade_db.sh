@@ -61,9 +61,9 @@ cd $DIR
 LATEST_TAG=$(git describe)
 #PROPER_LATEST_TAG=$(echo $LATEST_TAG| cut -d'-' -f 1)
 # SHORT_LATEST_TAG=$(echo $LATEST_TAG| cut -c 1)
-if [[ ${LATEST_TAG:0:1} == "v" ]] ; then 
+if [[ ${LATEST_TAG:0:1} == "v" ]] ; then
     SHORT_LATEST_TAG=$(echo $LATEST_TAG| cut -c2-2)
-else 
+else
     SHORT_LATEST_TAG=$(echo $LATEST_TAG| cut -c 1)
 fi
 printf "    Latest tag = ${GREEN}$SHORT_LATEST_TAG ($LATEST_TAG) ${NC}\n"
@@ -104,7 +104,17 @@ do
     CURRENT_DELTA_NUM_VERSION_FULL=$(echo $CURRENT_DELTA_WITHOUT_EXT| cut -d'_' -f 2)
     if [[ $CURRENT_DELTA_NUM_VERSION > $SHORT_LATEST_TAG || $CURRENT_DELTA_NUM_VERSION == $SHORT_LATEST_TAG || $SHORT_LATEST_TAG == '' ]]; then
         printf "    Processing ${GREEN}$CURRENT_DELTA${NC}, num version = $CURRENT_DELTA_NUM_VERSION ($CURRENT_DELTA_NUM_VERSION_FULL)\n"
+        # drop views
+        echo $DIR
+        /usr/bin/psql --host $HOST --port 5432 --username "$USER" --no-password -q -d "$TESTCONFORMDB" -f ../ordinary_data/views/drop_views.sql
+
+        # apply update
         /usr/bin/psql -v ON_ERROR_STOP=1 --host $HOST --port 5432 --username "$USER" --no-password -q -d "$TESTCONFORMDB" -f $f
+
+        # recreate views
+        echo "Reloading views and functions from last commit"
+        export PGSERVICE=$QWATSERVICETESTCONFORM
+        SRID=$SRID ../ordinary_data/views/insert_views.sh
 
         # Check if there is a POST file associated to the delta, if so, store it in the array for later execution
         EXISTS_POST_FILE=$f'.post'
@@ -208,7 +218,18 @@ if [[ $EXITCODE == 0 ]]; then
             #if [[ $CURRENT_DELTA_NUM_VERSION_FULL > $SAMPLE_VERSION || $CURRENT_DELTA_NUM_VERSION == $SAMPLE_VERSION || $SAMPLE_VERSION == '' ]]; then
             if [[ ($CURRENT_DELTA_NUM_VERSION_FULL > $SAMPLE_VERSION || $SAMPLE_VERSION == '') && $CURRENT_DELTA_NUM_VERSION_FULL != $SAMPLE_VERSION  ]]; then
                 printf "    Processing ${GREEN}$CURRENT_DELTA${NC}, num version = $CURRENT_DELTA_NUM_VERSION_FULL\n"
+
+                # drop views
+                echo $DIR
+                /usr/bin/psql --host $HOST --port 5432 --username "$USER" --no-password -q -d "$DEMODB" -f ../ordinary_data/views/drop_views.sql
+
+                # apply update
                 /usr/bin/psql -v ON_ERROR_STOP=1 --host $HOST --port 5432 --username "$USER" --no-password -q -d "$DEMODB" -f $f
+
+                # recreate views
+                echo "Reloading views and functions from last commit"
+                export PGSERVICE=$DEMODB
+                SRID=$SRID ../ordinary_data/views/insert_views.sh
 
                 # Check if there is a POST file associated to the delta, if so, store it in the array for later execution
                 EXISTS_POST_FILE=$f'.post'
@@ -227,12 +248,7 @@ if [[ $EXITCODE == 0 ]]; then
             LAST_VERSION=$SAMPLE_VERSION
         fi
 
-        # 3 - re-create views & triggers
-        printf "\n${YELLOW}Reloading views and functions${NC}\n"
-
-        export PGSERVICE=$DEMODB
-        SRID=$SRID ./ordinary_data/views/rewrite_views.sh
-        SRID=$SRID ./ordinary_data/functions/rewrite_functions.sh
+        
         # 4 - Execute post delta files if there are
         printf "\n"
         for i in "${TAB_FILES_POST[@]}"
