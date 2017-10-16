@@ -106,7 +106,7 @@ do
         printf "    Processing ${GREEN}$CURRENT_DELTA${NC}, num version = $CURRENT_DELTA_NUM_VERSION ($CURRENT_DELTA_NUM_VERSION_FULL)\n"
         # drop views
         echo $DIR
-        /usr/bin/psql --host $HOST --port 5432 --username "$USER" --no-password -q -d "$TESTCONFORMDB" -f ../../ordinary_data/views/drop_views.sql
+        /usr/bin/psql --host $HOST --port 5432 --username "$USER" --no-password -q -d "$TESTCONFORMDB" -f ./ordinary_data/views/drop_views.sql
 
         # apply update
         /usr/bin/psql -v ON_ERROR_STOP=1 --host $HOST --port 5432 --username "$USER" --no-password -q -d "$TESTCONFORMDB" -f $f
@@ -114,7 +114,7 @@ do
         # recreate views
         echo "Reloading views and functions from last commit"
         export PGSERVICE=$QWATSERVICETESTCONFORM
-        SRID=$SRID ../../ordinary_data/views/insert_views.sh
+        SRID=$SRID ./ordinary_data/views/insert_views.sh
 
         # Check if there is a POST file associated to the delta, if so, store it in the array for later execution
         EXISTS_POST_FILE=$f'.post'
@@ -221,7 +221,7 @@ if [[ $EXITCODE == 0 ]]; then
 
                 # drop views
                 echo $DIR
-                /usr/bin/psql --host $HOST --port 5432 --username "$USER" --no-password -q -d "$DEMODB" -f ../../ordinary_data/views/drop_views.sql
+                /usr/bin/psql --host $HOST --port 5432 --username "$USER" --no-password -q -d "$DEMODB" -f ./ordinary_data/views/drop_views.sql
 
                 # apply update
                 /usr/bin/psql -v ON_ERROR_STOP=1 --host $HOST --port 5432 --username "$USER" --no-password -q -d "$DEMODB" -f $f
@@ -229,7 +229,7 @@ if [[ $EXITCODE == 0 ]]; then
                 # recreate views
                 echo "Reloading views and functions from last commit"
                 export PGSERVICE=$DEMODB
-                SRID=$SRID ../../ordinary_data/views/insert_views.sh
+                SRID=$SRID ./ordinary_data/views/insert_views.sh
 
                 # Check if there is a POST file associated to the delta, if so, store it in the array for later execution
                 EXISTS_POST_FILE=$f'.post'
