@@ -19,7 +19,7 @@ $BODY$
 			NEW.geometry := ST_MakePoint( ST_X(NEW.geometry), ST_Y(NEW.geometry), altitude );
 		END IF;
 	ELSIF TG_OP = 'UPDATE' THEN
-		IF NEW.altitue <> OLD.altitude THEN
+		IF NEW.altitude <> OLD.altitude THEN
 			NEW.geometry := ST_MakePoint( ST_X(NEW.geometry), ST_Y(NEW.geometry), altitude );
 		ELSIF ST_Z(NEW.geometry) <> ST_Z(OLD.geometry) THEN
 			NEW.altitude := ST_Z(NEW.geometry);
