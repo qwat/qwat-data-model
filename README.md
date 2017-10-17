@@ -7,6 +7,11 @@ This repository contains the definition of the data model used by [QWAT](https:/
 A full web data model documentation with diagrams and relations is available [here](https://rawgit.com/qwat/qwat-data-model/master/diagram/index.html).
 
 # Model changelog
+
+- v1.3.0 : Switch from custom version control to generic Postgres Update Manager
+- v1.2.9 : fix z computation logic for valves
+- v1.2.8 : add hardcoded schema_visible field to pipes and valves for enhanced performance on QGIS
+- v1.2.7 : AutoPrint Mapview
 - v1.2.6 : Fixes issue 177. Pipes where not audited by audit log system.
 - V1.2.5 : Adds a scale field to print maps
 - v1.2.4 : Fixes bugs when deleting objects https://github.com/qwat/QWAT/issues/174
