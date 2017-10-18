@@ -17,8 +17,7 @@ addons:
     - postgresql-9.6-postgis-2.3
 
 install:
-  - pip install psycopg2 --quiet
-  - pip install pyyaml --quiet
+  - pip install -r requirements.txt
 
 before_script:
   # Write into pg_service.conf
@@ -39,22 +38,22 @@ script:
   - cd $TRAVIS_BUILD_DIR/
 
   # Create a qwat 1.0.0 db from a dump file. This simulate the prod db
-  - python pum/pum.py restore -p qwat_prod $TRAVIS_BUILD_DIR/update/delta/qwat_1_0_0_dump.dump
-  - python pum/pum.py baseline -p qwat_prod -t qwat_sys.info -d $TRAVIS_BUILD_DIR/update/delta/ -b 1.0.0
+  - pum restore -p qwat_prod $TRAVIS_BUILD_DIR/update/delta/qwat_1_0_0_dump.dump
+  - pum baseline -p qwat_prod -t qwat_sys.info -d $TRAVIS_BUILD_DIR/update/delta/ -b 1.0.0
 
   # Run init_qwat.sh to create the last version of qwat db used as comp db
   - printf "travis_fold:start:init_qwat\nInitialize database"
   - $TRAVIS_BUILD_DIR/init_qwat.sh -p qwat_comp -s 21781 -r
   - echo "travis_fold:end:init_qwat"
-  - python pum/pum.py baseline -p qwat_comp -t qwat_sys.info -d $TRAVIS_BUILD_DIR/update/delta/ -b 1.3.0
+  - pum baseline -p qwat_comp -t qwat_sys.info -d $TRAVIS_BUILD_DIR/update/delta/ -b 1.3.0
 
   # Run pum's test and upgrade
   - printf "travis_fold:start:test-and-upgrade\nRun test and upgrade"
-  - yes | python pum/pum.py test-and-upgrade -pp qwat_prod -pt qwat_test -pc qwat_comp -t qwat_sys.info -d $TRAVIS_BUILD_DIR/update/delta/ -f /tmp/qwat_dump -i columns constraints views sequences indexes triggers functions rules
+  - yes | pum test-and-upgrade -pp qwat_prod -pt qwat_test -pc qwat_comp -t qwat_sys.info -d $TRAVIS_BUILD_DIR/update/delta/ -f /tmp/qwat_dump -i columns constraints views sequences indexes triggers functions rules
   - echo "travis_fold:end:test-and-upgrade"
 
   # Run a last check between qwat_prod and qwat_comp
-  - python pum/pum.py check -p1 qwat_prod -p2 qwat_comp -i columns constraints views sequences indexes triggers functions rules
+  - pum check -p1 qwat_prod -p2 qwat_comp -i columns constraints views sequences indexes triggers functions rules
 
 env:
   global:
