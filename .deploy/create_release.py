@@ -113,6 +113,10 @@ def create_dumps():
 
 
 def main():
+    if 'TRAVIS_TAG' not in os.environ:
+        print('No git tag: not deploying anything')
+        return
+
     release_files=create_dumps()
 
     conn=http.client.HTTPSConnection('api.github.com')
