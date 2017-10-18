@@ -19,4 +19,4 @@ CREATE TABLE IF NOT EXISTS qwat_sys.upgrades
 
 -- finishes with upgrading qwat version
 
-UPDATE qwat_sys.versions SET version = '1.2.9';
+UPDATE qwat_sys.versions SET version = '1.3.0';
