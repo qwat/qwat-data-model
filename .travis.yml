@@ -20,6 +20,7 @@ install:
   - pip install -r requirements.txt
 
 before_script:
+  - echo "SET client_min_messages TO WARNING;" > ~/.psqlrc
   # Write into pg_service.conf
   - printf "[qwat_prod]\nhost=localhost\ndbname=qwat_prod\nuser=postgres\n\n[qwat_test]\nhost=localhost\ndbname=qwat_test\nuser=postgres\n\n[qwat_comp]\nhost=localhost\ndbname=qwat_comp\nuser=postgres\n\n[qwat_demo]\nhost=localhost\ndbname=qwat_demo\nuser=postgres\n\n" > ~/.pg_service.conf
   # Create the 3 used databases
