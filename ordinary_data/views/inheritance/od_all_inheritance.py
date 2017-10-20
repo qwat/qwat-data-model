@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 
+from __future__ import print_function
 import imp
 import os
 import sys
@@ -191,5 +192,7 @@ view: qwat_od.vw_element_part
 
 
 """
+# fix_print_with_import
 
-print pgiv.PGInheritanceViewRecursive(pg_service, qwat_node_element).sql_all()
+# fix_print_with_import
+print(pgiv.PGInheritanceViewRecursive(pg_service, qwat_node_element).sql_all())

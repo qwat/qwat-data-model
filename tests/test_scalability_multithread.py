@@ -7,6 +7,9 @@ Stress the DB by inserting, updating and deleting elements
 USAGE
     python test_scalability.py --pg_service qwat_test
 """
+from __future__ import print_function
+from builtins import str
+from builtins import range
 import threading
 import os
 import argparse
@@ -145,9 +148,11 @@ class ScalabilityThread (threading.Thread):
         self.cur = self.conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
 
     def run(self):
-        print "Starting " + self.name
+        # fix_print_with_import
+        print("Starting " + self.name)
         _execute_statements(self.cur, self.conn, self.name, self.threadID, self.origin, self.nbIterations)
-        print "Exiting " + self.name
+        # fix_print_with_import
+        print("Exiting " + self.name)
         endTime = datetime.datetime.now().time()
         fileStats = open(OUTPUT_STAT, 'a')
         fileStats.write("Process {p} ended at {t}\n".format(t=endTime.isoformat(), p=self.threadID))
@@ -175,7 +180,8 @@ def _execute_statements(cur, conn, threadName, threadId, origin, nbIterations):
     count = 1
     p = sqlParams.copy()
     while count < nbIterations:
-        print "{tname} - Iteration {nb}".format(tname=threadName, nb=count)
+        # fix_print_with_import
+        print("{tname} - Iteration {nb}".format(tname=threadName, nb=count))
 
         # Modify values (coords, IDs)
         sav_x2 = origin['x'] + p['cp_x2']
@@ -239,8 +245,10 @@ def _execute_statements(cur, conn, threadName, threadId, origin, nbIterations):
                     cur.execute(statement)
                     conn.commit()
                 except:
-                    print statement
-                    print "FAILED ### {tname} - Iteration {nb}".format(tname=threadName, nb=count)
+                    # fix_print_with_import
+                    print(statement)
+                    # fix_print_with_import
+                    print("FAILED ### {tname} - Iteration {nb}".format(tname=threadName, nb=count))
 
         # Don't forget to reset origin
         origin['x'] = 0

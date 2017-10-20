@@ -7,6 +7,9 @@ Stress the DB by inserting, updating and deleting elements
 USAGE
     python test_scalability.py --pg_service qwat_test
 """
+from __future__ import print_function
+from builtins import str
+from builtins import range
 import os
 import argparse
 import string
@@ -130,7 +133,8 @@ def _execute_statements(cur, conn, fileName, nb_iteration):
     ]
 
     for i in range(int(nb_iteration)):
-        print "Iteration {nb}".format(nb=i)
+        # fix_print_with_import
+        print("Iteration {nb}".format(nb=i))
 
         # Modify values (coords, IDs)
         sav_x2 = p['cp_x2']

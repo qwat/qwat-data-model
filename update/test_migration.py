@@ -7,6 +7,7 @@ Ensure the model is conform after an upgrade
 USAGE
     test_migration.py --pg_service qwat
 """
+from __future__ import print_function
 import os
 import argparse
 import string
@@ -54,16 +55,19 @@ def _execute_statements(cur, fileName, diff_exe):
 
     # Compare result to expected result
     if buffer == buffer_expected:
-        print 'DataModel is OK'
+        # fix_print_with_import
+        print('DataModel is OK')
     else:
-        print 'DataModel is NOT conform'
+        # fix_print_with_import
+        print('DataModel is NOT conform')
         # For debug purposes
         #print "=========================================================================="
         #print buffer_expected.replace('%','')
         #print "--------------------------------------------------------------------------"
         #print buffer.replace('%','')
         #print ".........................................................................."
-        print 'Diff:'
+        # fix_print_with_import
+        print('Diff:')
         os.system('{diff} -U 0 --ignore-all-space --ignore-blank-lines test_migration.expected.sql output.sql'.format(diff=diff_exe))
 
 if __name__ == "__main__":

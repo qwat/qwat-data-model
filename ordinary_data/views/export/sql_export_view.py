@@ -1,3 +1,4 @@
+from builtins import object
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
@@ -5,7 +6,7 @@ import sys
 import psycopg2, psycopg2.extras
 
 
-class SqlExportView():
+class SqlExportView(object):
 	def __init__(self, pg_service, definition):
 		self.conn = psycopg2.connect("service={0}".format(pg_service))
 		self.cur = self.conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
