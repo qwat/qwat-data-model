@@ -1,10 +1,14 @@
 
 
-CREATE SCHEMA IF NOT EXISTS qwat_ch_vd_sire ; 
+
+
+-- create dedicated schema
+
+CREATE SCHEMA IF NOT EXISTS qwat_ch_vd_sire ;
 
 
 CREATE OR REPLACE VIEW qwat_ch_vd_sire.conduite AS
-	SELECT 	
+	SELECT
 		pipe.id AS id -- postgreql n'accepte pas des "-" (pour ID-Num)
 		, remark AS remarque
 		, NULL AS Date_de_saisie -- TODO
@@ -20,11 +24,11 @@ CREATE OR REPLACE VIEW qwat_ch_vd_sire.conduite AS
 		, pipe_function.code_sire AS Fonction
 		, pipe_material.code_sire AS Materiau
 		, pipe_material.diameter_external AS Diametre_Externe
-		, CASE 
+		, CASE
 			WHEN status.code_sire = 2 THEN  pipe_material.diameter_internal
 			ELSE NULL::int
 		END AS Diam_int_PDDE
-		, CASE 
+		, CASE
 			WHEN status.code_sire != 2 THEN  pipe_material.diameter_internal
 			ELSE NULL::int
 		END AS Diametre_Interne
@@ -34,14 +38,34 @@ CREATE OR REPLACE VIEW qwat_ch_vd_sire.conduite AS
 		, ST_Length(geometry) AS Longueur_reelle --TODO a changer pour ST_Length3D dès que c'est prêt
 		, 1 AS Calcul_Hydraulique
 		, 0 AS A_Desafecter_PDDE
-		, ST_Force2D(geometry) AS geometry	
-	FROM qwat_od.pipe 
+		, ST_Force2D(geometry) AS geometry
+	FROM qwat_od.pipe
 		INNER JOIN qwat_vl.status ON pipe.fk_status = status.id
 		INNER JOIN qwat_vl.pipe_function ON pipe.fk_function = pipe_function.id
 		INNER JOIN qwat_vl.pipe_material ON pipe.fk_material = pipe_material.id
 		INNER JOIN qwat_vl.precision ON pipe.fk_precision = precision.id
 		INNER JOIN qwat_vl.watertype ON pipe.fk_watertype = watertype.id
 		LEFT JOIN qwat_od.folder ON pipe.fk_folder = folder.id
-	WHERE 
+	WHERE
 		pipe_function.major IS TRUE
 		AND status.code_sire IS NOT NULL;
+
+
+
+
+
+-- add extra fields to qwat_od tables
+
+
+		ALTER TABLE qwat_od.pipe ADD COLUMN qwat_ext_ch_vd_sire_etat_exploitation smallint;
+		ALTER TABLE qwat_od.pipe ADD COLUMN qwat_ext_ch_vd_sire_adesafecter smallint;
+		ALTER TABLE qwat_od.pipe ADD COLUMN qwat_ext_ch_vd_sire_diametre double precision;
+		ALTER TABLE qwat_od.pipe ADD COLUMN qwat_ext_ch_vd_sire_remarque text;
+
+		ALTER TABLE qwat_od.network_element ADD COLUMN qwat_ext_ch_vd_sire_etat_exploitation smallint;
+		ALTER TABLE qwat_od.network_element ADD COLUMN qwat_ext_ch_vd_sire_adesafecter smallint;
+		ALTER TABLE qwat_od.network_element ADD COLUMN qwat_ext_ch_vd_sire_remarque text;
+
+		ALTER TABLE qwat_od.valve ADD COLUMN qwat_ext_ch_vd_sire_etat_exploitation smallint;
+		ALTER TABLE qwat_od.valve ADD COLUMN qwat_ext_ch_vd_sire_adesafecter smallint;
+		ALTER TABLE qwat_od.valve ADD COLUMN qwat_ext_ch_vd_sire_remarque text;
