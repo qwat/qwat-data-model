@@ -1,5 +1,8 @@
 language: python
 
+python:
+  - 3.6
+
 # run on Travis container-based infrastructure
 dist: trusty
 sudo: false
@@ -14,10 +17,10 @@ addons:
     - postgresql-9.6-postgis-2.3
 
 install:
-  - pip install psycopg2 --quiet
-  - pip install pyyaml --quiet
+  - pip install -r requirements.txt
 
 before_script:
+  - echo "SET client_min_messages TO WARNING;" > ~/.psqlrc
   # Write into pg_service.conf
   - printf "[qwat_prod]\nhost=localhost\ndbname=qwat_prod\nuser=postgres\n\n[qwat_test]\nhost=localhost\ndbname=qwat_test\nuser=postgres\n\n[qwat_comp]\nhost=localhost\ndbname=qwat_comp\nuser=postgres\n\n[qwat_demo]\nhost=localhost\ndbname=qwat_demo\nuser=postgres\n\n" > ~/.pg_service.conf
   # Create the 3 used databases
@@ -36,20 +39,26 @@ script:
   - cd $TRAVIS_BUILD_DIR/
 
   # Create a qwat 1.0.0 db from a dump file. This simulate the prod db
-  - python pum/pum.py restore -p qwat_prod $TRAVIS_BUILD_DIR/update/delta/qwat_1_0_0_dump.dump
-  - python pum/pum.py baseline -p qwat_prod -t qwat_sys.info -d $TRAVIS_BUILD_DIR/update/delta/ -b 1.0.0
+  - pum restore -p qwat_prod $TRAVIS_BUILD_DIR/update/delta/qwat_1_0_0_dump.dump
+  - pum baseline -p qwat_prod -t qwat_sys.info -d $TRAVIS_BUILD_DIR/update/delta/ -b 1.0.0
 
   # Run init_qwat.sh to create the last version of qwat db used as comp db
+  - printf "travis_fold:start:init_qwat\nInitialize database"
   - $TRAVIS_BUILD_DIR/init_qwat.sh -p qwat_comp -s 21781 -r
-  - python pum/pum.py baseline -p qwat_comp -t qwat_sys.info -d $TRAVIS_BUILD_DIR/update/delta/ -b 1.3.0
+  - if [ $? -eq 0 ]; then echo "travis_fold:end:init-qwat"; fi 
+  - pum baseline -p qwat_comp -t qwat_sys.info -d $TRAVIS_BUILD_DIR/update/delta/ -b 1.3.0
 
   # Run pum's test and upgrade
-  - yes | python pum/pum.py test-and-upgrade -pp qwat_prod -pt qwat_test -pc qwat_comp -t qwat_sys.info -d $TRAVIS_BUILD_DIR/update/delta/ -f /tmp/qwat_dump -i columns constraints views sequences indexes triggers functions rules
+  - printf "travis_fold:start:test-and-upgrade\nRun test and upgrade"
+  - yes | pum test-and-upgrade -pp qwat_prod -pt qwat_test -pc qwat_comp -t qwat_sys.info -d $TRAVIS_BUILD_DIR/update/delta/ -f /tmp/qwat_dump -i columns constraints views sequences indexes triggers functions rules
+  - if [ $? -eq 0 ]; then echo "travis_fold:end:test-and-upgrade"; fi 
 
   # Run a last check between qwat_prod and qwat_comp
-  - python pum/pum.py check -p1 qwat_prod -p2 qwat_comp -i columns constraints views sequences indexes triggers functions rules
+  - pum check -p1 qwat_prod -p2 qwat_comp -i columns constraints views sequences indexes triggers functions rules
 
 env:
   global:
     - secure: FVQ8V8yMT4kdA4OqHJML1LVka+0jW8a12fb6AB98/e7QpuV8216BWU7Hps3aTo4uPH/sYzh2oP0sBedHk3imS3Ep4LJ4VugFGZufPsj2w4GqOR8xaUZjw3v0HeZVq6u1X2j9pYFSklNwHUMBd9TS93HhFkultM8N40I6UAgRtEmPKp35gnSSR/4OhRhBLvi+VMy3HWmBFzm9GAD0XtL8uvg9osA8tL7PWK4EmvR9AcoqgXo1MINXbYx2YHFBnG2j8w4CdRJA97aLeg0Lw2moMizQmhmU+w1FgmDU22A/HSAQZngKCW+/7LBTZ8d4lAoB6KXvNs2oeff27U64SRwUseiY6DQEE8lPVJWClQ5bnUWJlkQpBoNJy24ykFoBx2qBZ205CwjpnTVAPEiGN11Xsw4mFvfpjyslpmI2cCYuOWneqr7ZL7c/2Rrgx/HwuFDsi57Q6QAQFn3kmbSOuOSOIMwZ7f7uZ7eUbea2lGPmT+demegO+WgWuM4Q0HAblgjYmUIj0OMj+t+CbBiF3sUr+kuUgPIdTm3uaQGJhqSDcKIBimMlHIajAJ7dTz/2aia1gQy4zBbev7JpwbgMY/cVkZBSRnhYYXU5ZW9oWjG+x7Ft5UlQ0ORsfO5Pq4GCtTIUuqgD8lUZYlzYKshpWiAeVbHX5xCM6DtvNcdNpZuE9Wc=
 
+after_success:
+  - ./.deploy/create_release.py

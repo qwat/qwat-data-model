@@ -1,5 +1,7 @@
 #!/usr/bin/env python
 
+from __future__ import print_function
+from __future__ import absolute_import
 import yaml
 import sys
 from sql_export_view import SqlExportView
@@ -79,5 +81,7 @@ joins:
     table: qwat_vl.pressurecontrol_type
     fkey: fk_pressurecontrol_type
 """)
+# fix_print_with_import
 
-print SqlExportView(pg_service, definition).sql()
+# fix_print_with_import
+print(SqlExportView(pg_service, definition).sql())

@@ -1,6 +1,3 @@
 [submodule "metaproject"]
 	path = metaproject
 	url = https://github.com/opengisch/metaproject.git
-[submodule "pum"]
-	path = pum
-	url = https://github.com/opengisch/pum.git
