@@ -13,7 +13,6 @@ class DropViews(DeltaPy):
         drop_sql = "{}../../ordinary_data/views/drop_views.sql".format(self.delta_dir)
         pg = self.pg_service
 
-        print()
         self.write_message("Dropping views")
 
         # Compose command
