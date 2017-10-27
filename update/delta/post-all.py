@@ -13,8 +13,8 @@ class RecreateViewsAndFunctions(DeltaPy):
         """
         self.write_message("Reloading views and functions")
 
-        views_sh = "{}../../ordinary_data/views/rewrite_views.sh".format(self.delta_dir)
-        functions_sh = "{}../../ordinary_data/functions/rewrite_functions.sh".format(self.delta_dir)
+        views_sh = "SRID=21781 {}../../ordinary_data/views/rewrite_views.sh".format(self.delta_dir)
+        functions_sh = "SRID=21781 {}../../ordinary_data/functions/rewrite_functions.sh".format(self.delta_dir)
 
         # Execute commands
         os.system(views_sh)
