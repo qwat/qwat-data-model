@@ -18,6 +18,5 @@ class RecreateViewsAndFunctions(DeltaPy):
         functions_sh = "PGSERVICE=qwat_test SRID=21781 {}../../ordinary_data/functions/rewrite_functions.sh".format(self.delta_dir)
 
         # Execute commands
-        os.system(export_db)
         os.system(views_sh)
         os.system(functions_sh)
