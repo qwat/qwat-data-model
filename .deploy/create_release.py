@@ -137,6 +137,13 @@ def main():
     response=conn.getresponse()
     release=json.loads(response.read().decode())
 
+    if 'upload_url' not in release:
+        print('Failed to create release!')
+        print('Github API replied:')
+        print('{} {}'.format(response.status, response.reason))
+        print(repr(release))
+        exit(-1)
+
     conn=http.client.HTTPSConnection('uploads.github.com')
     for release_file in release_files:
         _, filename=os.path.split(release_file)
