@@ -116,6 +116,8 @@ def main():
     if 'TRAVIS_TAG' not in os.environ:
         print('No git tag: not deploying anything')
         return
+    else:
+        print('Creating release from tag {}'.format(os.environ['TRAVIS_TAG']))
 
     release_files=create_dumps()
 
