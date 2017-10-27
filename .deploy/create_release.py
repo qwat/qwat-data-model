@@ -125,7 +125,7 @@ def main():
 
     headers={
         'User-Agent': 'Deploy-Script',
-        'Authorization': 'token {}'.format(os.environ['OAUTH_TOKEN'])
+        'Authorization': 'token {}'.format(os.environ['GH_TOKEN'])
     }
 
     raw_data={
