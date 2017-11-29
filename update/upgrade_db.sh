@@ -57,6 +57,15 @@ esac
 shift
 done
 
+# Check if pum is installed
+PUM_VERSION=$(pum -v)
+if [[ PUM_VERSION -eq '' ]]; then
+    printf "\t${RED}PUM is not installed${NC}\n"
+    echo "Please install PUM compatible with Python 3 (pip install pum)"
+    echo
+    exit 0
+fi
+
 # Get current version in ../system/CURRENT_VERSION.txt
 # (git tag forbidden)
 VERSION_FILE="../system/CURRENT_VERSION.txt"
@@ -70,10 +79,12 @@ VERSION=$(sed 'r' $VERSION_FILE)
 
 # set -- "${POSITIONAL[@]}" # restore positional parameters
 echo "Parameters:"
-printf "\t${GREEN}CLEAN    = ${CLEAN}${NC}\n"
-printf "\t${GREEN}LOCALDIR = ${LOCALDIR}${NC}\n"
-printf "\t${GREEN}TMPFILEDUMP   = ${TMPFILEDUMP}${NC}\n"
-printf "\t${GREEN}UPGRADE  = ${UPGRADE}${NC}\n"
+printf "\t${GREEN}CLEAN       = ${CLEAN}${NC}\n"
+printf "\t${GREEN}LOCALDIR    = ${LOCALDIR}${NC}\n"
+printf "\t${GREEN}TMPFILEDUMP = ${TMPFILEDUMP}${NC}\n"
+printf "\t${GREEN}UPGRADE     = ${UPGRADE}${NC}\n"
+echo
+printf "\t${GREEN}PUM_VERSION = $PUM_VERSION${NC}\n"
 echo
 printf "\t${GREEN}Current version = ${VERSION}${NC}\n"
 echo
