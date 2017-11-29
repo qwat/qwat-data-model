@@ -59,7 +59,7 @@ done
 
 # Check if pum is installed
 PUM_VERSION=$(pum -v)
-if [[ PUM_VERSION -eq '' ]]; then
+if [[ $PUM_VERSION == '' ]]; then
     printf "\t${RED}PUM is not installed${NC}\n"
     echo "Please install PUM compatible with Python 3 (pip install pum)"
     echo
@@ -86,7 +86,7 @@ printf "\t${GREEN}UPGRADE     = ${UPGRADE}${NC}\n"
 echo
 printf "\t${GREEN}PUM_VERSION = $PUM_VERSION${NC}\n"
 echo
-printf "\t${GREEN}Current version = ${VERSION}${NC}\n"
+printf "\t${GREEN}Current QWAT model version = ${VERSION}${NC}\n"
 echo
 
 # clean existing db
