@@ -122,8 +122,8 @@ psql -v ON_ERROR_STOP=1 -c "CREATE EXTENSION IF NOT EXISTS postgis;"
 # System
 psql -v ON_ERROR_STOP=1 -c "CREATE SCHEMA qwat_sys;"
 psql -v ON_ERROR_STOP=1 -f ${DIR}/system/settings.sql
-psql -v ON_ERROR_STOP=1 -f ${DIR}/system/versions.sql
-psql -v ON_ERROR_STOP=1 -f ${DIR}/system/versions_insert.sql
+# psql -v ON_ERROR_STOP=1 -f ${DIR}/system/versions.sql
+# psql -v ON_ERROR_STOP=1 -f ${DIR}/system/versions_insert.sql
 psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f ${DIR}/system/settings_insert.sql
 psql -v ON_ERROR_STOP=1 -f ${DIR}/system/audit.sql
 psql -v ON_ERROR_STOP=1 -f ${DIR}/system/fn_enable_schemavisible.sql
@@ -246,9 +246,14 @@ SRID=$SRID ${DIR}/ordinary_data/views/insert_views.sh
 
 
 # Finalize System
-psql -v ON_ERROR_STOP=1 -f system/audit_tables.sql
-psql -v ON_ERROR_STOP=1 -f system/audit_views.sql
-psql -v ON_ERROR_STOP=1 -f system/update_sequences.sql
+psql -v ON_ERROR_STOP=1 -f ${DIR}/system/audit_tables.sql
+psql -v ON_ERROR_STOP=1 -f ${DIR}/system/audit_views.sql
+psql -v ON_ERROR_STOP=1 -f ${DIR}/system/update_sequences.sql
+
+# Baseline PUM
+
+pum baseline -p qwat_prod -t qwat_sys.info -d ${DIR}/update/delta -b 1.3.0
+
 
 # Demo data
 if [[ "$DEMO" -eq 1 ]]; then
