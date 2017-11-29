@@ -12,7 +12,7 @@ SRID=21781
 CLEAN=0
 LOCALDIRGIVEN=1
 LOCALDIR=/home/regis/OSLANDIA/projets_locaux/QWAT/local_update_dir_test/
-TMPDIR=/tmp/qwat_dump
+TMPFILEDUMP=/tmp/qwat_dump
 UPGRADE=0
 
 RED='\033[0;31m'
@@ -29,11 +29,11 @@ case $key in
         echo -e "\t-c|--clean\t\tCleans comp and test DB before starting"
         echo -e "\t-d|--localdirpath\tRuns a second update cycle with local customization delta files"
         echo -e "\t-h|--help\t\tShow this help screen"
-        echo -e "\t-t|--tmppath\t\tTemporary path for QWAT dump"
+        echo -e "\t-t|--tmppath\t\tTemporary file for QWAT dump"
         echo -e "\t-u|--upgrade\t\tUpgrade your real DB (perform all deltas on it)"
         echo
         echo -e "Usage example: "
-        echo -e "\t./upgrade_db.sh -c -d /path/to/local/deltas/ -t /tmp/ -u"
+        echo -e "\t./upgrade_db.sh -c -d /path/to/local/deltas/ -t /tmp/qwat_tmp.dmp -u"
         echo
         exit 0
     ;;
@@ -46,7 +46,7 @@ case $key in
         shift # past argument
     ;;
     -t|--tmppath)
-        TMPDIR="$2"
+        TMPFILEDUMP="$2"
         shift # past argument
     ;;
     -u|--upgrade)
@@ -72,7 +72,7 @@ VERSION=$(sed 'r' $VERSION_FILE)
 echo "Parameters:"
 printf "\t${GREEN}CLEAN    = ${CLEAN}${NC}\n"
 printf "\t${GREEN}LOCALDIR = ${LOCALDIR}${NC}\n"
-printf "\t${GREEN}TMPDIR   = ${TMPDIR}${NC}\n"
+printf "\t${GREEN}TMPFILEDUMP   = ${TMPFILEDUMP}${NC}\n"
 printf "\t${GREEN}UPGRADE  = ${UPGRADE}${NC}\n"
 echo
 printf "\t${GREEN}Current version = ${VERSION}${NC}\n"
@@ -80,7 +80,7 @@ echo
 
 # clean existing db
 if [[ $CLEAN -eq 1 ]]; then
-    printf "${BLUE}Cleaning  Option set:${NC}\n"
+    printf "\n${BLUE}Cleaning  Option set:${NC}\n\n"
 
     sleep 1s
 
@@ -105,33 +105,33 @@ if [[ $CLEAN -eq 1 ]]; then
 fi
 
 # initialize qwat db comparison db
-printf "${BLUE}Initializing qwat comparison db${NC}\n"
+printf "\n${BLUE}Initializing qwat comparison db${NC}\n\n"
 
 sleep 1s
 ../init_qwat.sh -p qwat_comp -s $SRID -r
 
 # add pum metadata to DB using current version
-printf "${BLUE}PUM baseline on qwat_comp${NC}\n"
+printf "\n${BLUE}PUM baseline on qwat_comp${NC}\n\n"
 sleep 1s
 
 pum baseline -p qwat_comp -t qwat_sys.info -d delta/ -b $VERSION
 
 # checks delta files from 1.0 lead to the same version as current version, if yes upgrades
-printf "${BLUE}Test and upgrade qwat core${NC}\n"
+printf "\n${BLUE}Test and upgrade qwat core${NC}\n\n"
 sleep 1s
 
-pum test-and-upgrade -pp qwat_prod -pt qwat_test -pc qwat_comp -t qwat_sys.info -d delta/ -f $TMPDIR -i columns constraints views sequences indexes triggers functions rules
+pum test-and-upgrade -pp qwat_prod -pt qwat_test -pc qwat_comp -t qwat_sys.info -d delta/ -f $TMPFILEDUMP -i columns constraints views sequences indexes triggers functions rules
 
 # applies local script to test
 
 if [[ "$LOCALDIRGIVEN" -eq 1 ]]; then
-  printf "${BLUE}Upgrade qwat_comp with local directory${NC}\n"
+  printf "\n${BLUE}Upgrade qwat_comp with local directory${NC}\n\n"
   sleep 1s
 
   pum upgrade -p qwat_comp -t qwat_sys.info -d $LOCALDIR
 
   #   # display changes
-  printf "${BLUE}Check differences between prod and test + local delta${NC}\n"
+  printf "\n${BLUE}Check differences between prod and test + local delta${NC}\n\n"
   sleep 1s
 
   pum check -p1 qwat_prod -p2 qwat_comp -i columns constraints views sequences indexes triggers functions rules
@@ -141,7 +141,7 @@ if [[ "$LOCALDIRGIVEN" -eq 1 ]]; then
     echo    # (optional) move to a new line
     if [[ $REPLY =~ ^[Yy]$ ]]
     then
-        printf "${BLUE}Do the local upgrade${NC}\n"
+        printf "\n${BLUE}Do the local upgrade${NC}\n\n"
         sleep 1s
 
         # applies local scripts to qwat_prod
