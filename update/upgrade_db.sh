@@ -13,15 +13,12 @@ CLEAN=0
 LOCALDIRGIVEN=1
 LOCALDIR=/home/regis/OSLANDIA/projets_locaux/QWAT/local_update_dir_test/
 TMPDIR=/tmp/qwat_dump
-VERSION=1.3.0
 UPGRADE=0
 
 RED='\033[0;31m'
 GREEN='\033[0;32m'
 BLUE='\033[0;34m'
 NC='\033[0m' # No Color
-
-# TODO: get version from a file tag in qwat sources (git tag forbidden) /system/"current_version" file should do.
 
 # Menu
 while [[ $# > 0 ]]; do
@@ -60,12 +57,25 @@ esac
 shift
 done
 
+# Get current version in ../system/CURRENT_VERSION.txt
+# (git tag forbidden)
+VERSION_FILE="../system/CURRENT_VERSION.txt"
+if [ ! -f $VERSION_FILE ]; then
+    echo
+    printf "${RED}$VERSION_FILE file not found! Aborting${NC}\n"
+    echo
+    exit 0
+fi
+VERSION=$(sed 'r' $VERSION_FILE)
+
 # set -- "${POSITIONAL[@]}" # restore positional parameters
 echo "Parameters:"
 printf "\t${GREEN}CLEAN    = ${CLEAN}${NC}\n"
 printf "\t${GREEN}LOCALDIR = ${LOCALDIR}${NC}\n"
 printf "\t${GREEN}TMPDIR   = ${TMPDIR}${NC}\n"
 printf "\t${GREEN}UPGRADE  = ${UPGRADE}${NC}\n"
+echo
+printf "\t${GREEN}Current version = ${VERSION}${NC}\n"
 echo
 
 
