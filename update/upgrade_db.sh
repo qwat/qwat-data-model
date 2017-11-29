@@ -27,24 +27,25 @@ case $key in
     -h|--help)
         echo "Arguments:"
         echo -e "\t-c|--clean\t\tCleans comp and test DB before starting"
-        echo -e "\t-d|--localdirpath\tRuns a second update cycle with local customization delta files"
+        # echo -e "\t-d|--localdirpath\tRuns a second update cycle with local customization delta files"
         echo -e "\t-h|--help\t\tShow this help screen"
         echo -e "\t-t|--tmppath\t\tTemporary file for QWAT dump"
         echo -e "\t-u|--upgrade\t\tUpgrade your real DB (perform all deltas on it)"
         echo
         echo -e "Usage example: "
-        echo -e "\t./upgrade_db.sh -c -d /path/to/local/deltas/ -t /tmp/qwat_tmp.dmp -u"
+        # echo -e "\t./upgrade_db.sh -c -d /path/to/local/deltas/ -t /tmp/qwat_tmp.dmp -u"
+        echo -e "\t./upgrade_db.sh -c -t /tmp/qwat_tmp.dmp -u"
         echo
         exit 0
     ;;
     -c|--clean)
         CLEAN=1
     ;;
-    -d|--localdirpath)
-        LOCALDIR="$2"
-        LOCALDIRGIVEN=1
-        shift # past argument
-    ;;
+    # -d|--localdirpath)
+    #     LOCALDIR="$2"
+    #     LOCALDIRGIVEN=1
+    #     shift # past argument
+    # ;;
     -t|--tmppath)
         TMPFILEDUMP="$2"
         shift # past argument
@@ -138,15 +139,15 @@ pum test-and-upgrade -pp qwat_prod -pt qwat_test -pc qwat_comp -t qwat_sys.info 
 # if [[ "$LOCALDIRGIVEN" -eq 1 ]]; then
 #   printf "\n${BLUE}Upgrade qwat_comp with local directory${NC}\n\n"
 #   sleep 1s
-# 
+#
 #   pum upgrade -p qwat_comp -t qwat_sys.info -d $LOCALDIR
-# 
+#
 #   # display changes
 #   printf "\n${BLUE}Check differences between prod and test + local delta${NC}\n\n"
 #   sleep 1s
-# 
+#
 #   pum check -p1 qwat_prod -p2 qwat_comp -i columns constraints views sequences indexes triggers functions rules
-# 
+#
 #   # ASK user if he wants to apply changes
 #   read -p "Are you sure you want to upgrade your database with local changes (y/n) ? " -n 1 -r
 #     echo    # (optional) move to a new line
@@ -154,9 +155,9 @@ pum test-and-upgrade -pp qwat_prod -pt qwat_test -pc qwat_comp -t qwat_sys.info 
 #     then
 #         printf "\n${BLUE}Do the local upgrade${NC}\n\n"
 #         sleep 1s
-# 
+#
 #         # applies local scripts to qwat_prod
 #         pum upgrade -p qwat_prod -t qwat_sys.info -d $LOCALDIR
 #     fi
-# 
+#
 # fi
