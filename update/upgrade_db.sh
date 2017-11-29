@@ -135,28 +135,28 @@ pum test-and-upgrade -pp qwat_prod -pt qwat_test -pc qwat_comp -t qwat_sys.info 
 
 # applies local script to test
 
-if [[ "$LOCALDIRGIVEN" -eq 1 ]]; then
-  printf "\n${BLUE}Upgrade qwat_comp with local directory${NC}\n\n"
-  sleep 1s
-
-  pum upgrade -p qwat_comp -t qwat_sys.info -d $LOCALDIR
-
-  # display changes
-  printf "\n${BLUE}Check differences between prod and test + local delta${NC}\n\n"
-  sleep 1s
-
-  pum check -p1 qwat_prod -p2 qwat_comp -i columns constraints views sequences indexes triggers functions rules
-
-  # ASK user if he wants to apply changes
-  read -p "Are you sure you want to upgrade your database with local changes (y/n) ? " -n 1 -r
-    echo    # (optional) move to a new line
-    if [[ $REPLY =~ ^[Yy]$ ]]
-    then
-        printf "\n${BLUE}Do the local upgrade${NC}\n\n"
-        sleep 1s
-
-        # applies local scripts to qwat_prod
-        pum upgrade -p qwat_prod -t qwat_sys.info -d $LOCALDIR
-    fi
-
-fi
+# if [[ "$LOCALDIRGIVEN" -eq 1 ]]; then
+#   printf "\n${BLUE}Upgrade qwat_comp with local directory${NC}\n\n"
+#   sleep 1s
+# 
+#   pum upgrade -p qwat_comp -t qwat_sys.info -d $LOCALDIR
+# 
+#   # display changes
+#   printf "\n${BLUE}Check differences between prod and test + local delta${NC}\n\n"
+#   sleep 1s
+# 
+#   pum check -p1 qwat_prod -p2 qwat_comp -i columns constraints views sequences indexes triggers functions rules
+# 
+#   # ASK user if he wants to apply changes
+#   read -p "Are you sure you want to upgrade your database with local changes (y/n) ? " -n 1 -r
+#     echo    # (optional) move to a new line
+#     if [[ $REPLY =~ ^[Yy]$ ]]
+#     then
+#         printf "\n${BLUE}Do the local upgrade${NC}\n\n"
+#         sleep 1s
+# 
+#         # applies local scripts to qwat_prod
+#         pum upgrade -p qwat_prod -t qwat_sys.info -d $LOCALDIR
+#     fi
+# 
+# fi
