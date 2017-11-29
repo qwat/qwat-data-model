@@ -10,7 +10,7 @@
 # Default values
 SRID=21781
 CLEAN=0
-LOCALDIRGIVEN=1
+LOCALDIRGIVEN=0
 LOCALDIR=/home/regis/OSLANDIA/projets_locaux/QWAT/local_update_dir_test/
 TMPFILEDUMP=/tmp/qwat_dump
 UPGRADE=0
@@ -141,7 +141,7 @@ if [[ "$LOCALDIRGIVEN" -eq 1 ]]; then
 
   pum upgrade -p qwat_comp -t qwat_sys.info -d $LOCALDIR
 
-  #   # display changes
+  # display changes
   printf "\n${BLUE}Check differences between prod and test + local delta${NC}\n\n"
   sleep 1s
 
