@@ -17,6 +17,7 @@ CREATE TABLE IF NOT EXISTS qwat_sys.upgrades
                 );
 
 
--- finishes with upgrading qwat version
+-- get rid of old version system
 
--- UPDATE qwat_sys.versions SET version = '1.3.0';
+DROP FUNCTION qwat_sys.version_dump(character varying);
+DROP TABLE qwat_sys.versions ;
