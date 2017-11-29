@@ -130,11 +130,16 @@ if [[ "$LOCALDIRGIVEN" -eq 1 ]]; then
 
   pum check -p1 qwat_prod -p2 qwat_comp -i columns constraints views sequences indexes triggers functions rules
 
-  # TODO ASK user if he wants to apply changes
-  printf "${BLUE}Do the local upgrade${NC}\n"
-  sleep 1s
+  # ASK user if he wants to apply changes
+  read -p "Are you sure you want to upgrade your database with local changes (y/n) ? " -n 1 -r
+    echo    # (optional) move to a new line
+    if [[ $REPLY =~ ^[Yy]$ ]]
+    then
+        printf "${BLUE}Do the local upgrade${NC}\n"
+        sleep 1s
 
-  #   # applies local scripts to qwat_prod
-  pum upgrade -p qwat_prod -t qwat_sys.info -d $LOCALDIR
-  #
+        # applies local scripts to qwat_prod
+        pum upgrade -p qwat_prod -t qwat_sys.info -d $LOCALDIR
+    fi
+
 fi
