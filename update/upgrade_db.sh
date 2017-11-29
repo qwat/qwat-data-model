@@ -78,7 +78,6 @@ echo
 printf "\t${GREEN}Current version = ${VERSION}${NC}\n"
 echo
 
-
 # clean existing db
 if [[ $CLEAN -eq 1 ]]; then
     printf "${BLUE}Cleaning  Option set:${NC}\n"
@@ -105,7 +104,6 @@ if [[ $CLEAN -eq 1 ]]; then
     printf "\t${GREEN}DB $DBTEST_NAME created${NC}\n"
 fi
 
-
 # initialize qwat db comparison db
 printf "${BLUE}Initializing qwat comparison db${NC}\n"
 
@@ -118,11 +116,9 @@ sleep 1s
 
 pum baseline -p qwat_comp -t qwat_sys.info -d delta/ -b $VERSION
 
-
 # checks delta files from 1.0 lead to the same version as current version, if yes upgrades
 printf "${BLUE}Test and upgrade qwat core${NC}\n"
 sleep 1s
-
 
 pum test-and-upgrade -pp qwat_prod -pt qwat_test -pc qwat_comp -t qwat_sys.info -d delta/ -f $TMPDIR -i columns constraints views sequences indexes triggers functions rules
 
