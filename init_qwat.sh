@@ -22,12 +22,12 @@ Usage: $0 [options]
 --demo               load some demo data (not complete yet)
 -r|--create-roles    create roles in the database
 -v|--verbose         be verbose
--n|-no-baseline      If this param is given, then the 1.0.0 baseline is applied instead of current version
+-n|--no-baseline     If this param is given, then the 1.0.0 baseline is applied instead of current version
 EOF
 
 }
 
-ARGS=$(getopt -o p:s:drv -l "pgservice:,srid:,drop-schema,create-roles,verbose,demo" -- "$@");
+ARGS=$(getopt -o p:s:drvn -l "pgservice:,srid:,drop-schema,create-roles,verbose,demo,no-baseline" -- "$@");
 if [ $? -ne 0 ];
 then
   usage
