@@ -45,6 +45,4 @@ CREATE TRIGGER valve_main_altitude_insert_trigger
 COMMENT ON TRIGGER valve_main_altitude_insert_trigger ON qwat_od.valve IS 'Trigger: when updating, check if altitude or Z value of geometry changed and synchronize them.';
 
 
-UPDATE qwat_sys.versions SET version = '1.2.9';
-
 COMMIT;
