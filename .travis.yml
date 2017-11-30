@@ -39,7 +39,7 @@ script:
   - cd $TRAVIS_BUILD_DIR/
 
   # Get current version
-  - export VERSION=$(sed 'r' "../system/CURRENT_VERSION.txt")
+  - export VERSION=$(sed 'r' "$TRAVIS_BUILD_DIR/system/CURRENT_VERSION.txt")
   - echo $VERSION
 
   # Create a qwat 1.0.0 db from a dump file. This simulate the prod db
