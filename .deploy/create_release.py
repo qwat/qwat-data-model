@@ -150,13 +150,20 @@ def main():
     for release_file in release_files:
         _, filename=os.path.split(release_file)
         headers['Content-Type']='text/plain'
+#        headers['Transfer-Encoding']='gzip'
         url='{release_url}?name={filename}'.format(release_url=release['upload_url'][:-13], filename=filename)
         print('Upload to {}'.format(url))
 
         with open(release_file, 'rb') as f:
             conn.request('POST', url, f, headers)
 
-        conn.getresponse().read()
+        response = conn.getresponse()
+        result = response.read()
+        if response.status != 201:
+            print('Failed to upload filename {filename}'.format(filename=filename))
+            print('Github API replied:')
+            print('{} {}'.format(response.status, response.reason))
+            print(repr(json.loads(result.decode())))
 
 
 if __name__ == "__main__":
