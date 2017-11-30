@@ -49,13 +49,14 @@ script:
   # Run init_qwat.sh to create the last version of qwat db used as comp db
   - printf "travis_fold:start:init_qwat\nInitialize database"
   - $TRAVIS_BUILD_DIR/init_qwat.sh -p qwat_comp -s 21781 -r
-  - if [ $? -eq 0 ]; then echo "travis_fold:end:init-qwat"; fi 
-  - pum baseline -p qwat_comp -t qwat_sys.info -d $TRAVIS_BUILD_DIR/update/delta/ -b $VERSION
+  - if [ $? -eq 0 ]; then echo "travis_fold:end:init-qwat"; fi
+  - pum baseline -p qwat_comp -t qwat_sys.info -d $TRAVIS_BUILD_DIR/update/delta/ -b 1.3.1
+  #- pum baseline -p qwat_comp -t qwat_sys.info -d $TRAVIS_BUILD_DIR/update/delta/ -b $VERSION
 
   # Run pum's test and upgrade
   - printf "travis_fold:start:test-and-upgrade\nRun test and upgrade"
   - yes | pum test-and-upgrade -pp qwat_prod -pt qwat_test -pc qwat_comp -t qwat_sys.info -d $TRAVIS_BUILD_DIR/update/delta/ -f /tmp/qwat_dump -i columns constraints views sequences indexes triggers functions rules
-  - if [ $? -eq 0 ]; then echo "travis_fold:end:test-and-upgrade"; fi 
+  - if [ $? -eq 0 ]; then echo "travis_fold:end:test-and-upgrade"; fi
 
   # Run a last check between qwat_prod and qwat_comp
   - pum check -p1 qwat_prod -p2 qwat_comp -i columns constraints views sequences indexes triggers functions rules
