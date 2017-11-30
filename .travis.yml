@@ -46,7 +46,7 @@ script:
   - printf "travis_fold:start:init_qwat\nInitialize database"
   - $TRAVIS_BUILD_DIR/init_qwat.sh -p qwat_comp -s 21781 -r
   - if [ $? -eq 0 ]; then echo "travis_fold:end:init-qwat"; fi 
-  - pum baseline -p qwat_comp -t qwat_sys.info -d $TRAVIS_BUILD_DIR/update/delta/ -b 1.3.0
+  - pum baseline -p qwat_comp -t qwat_sys.info -d $TRAVIS_BUILD_DIR/update/delta/ -b $VERSION
 
   # Run pum's test and upgrade
   - printf "travis_fold:start:test-and-upgrade\nRun test and upgrade"
@@ -59,6 +59,7 @@ script:
 env:
   global:
     - secure: FVQ8V8yMT4kdA4OqHJML1LVka+0jW8a12fb6AB98/e7QpuV8216BWU7Hps3aTo4uPH/sYzh2oP0sBedHk3imS3Ep4LJ4VugFGZufPsj2w4GqOR8xaUZjw3v0HeZVq6u1X2j9pYFSklNwHUMBd9TS93HhFkultM8N40I6UAgRtEmPKp35gnSSR/4OhRhBLvi+VMy3HWmBFzm9GAD0XtL8uvg9osA8tL7PWK4EmvR9AcoqgXo1MINXbYx2YHFBnG2j8w4CdRJA97aLeg0Lw2moMizQmhmU+w1FgmDU22A/HSAQZngKCW+/7LBTZ8d4lAoB6KXvNs2oeff27U64SRwUseiY6DQEE8lPVJWClQ5bnUWJlkQpBoNJy24ykFoBx2qBZ205CwjpnTVAPEiGN11Xsw4mFvfpjyslpmI2cCYuOWneqr7ZL7c/2Rrgx/HwuFDsi57Q6QAQFn3kmbSOuOSOIMwZ7f7uZ7eUbea2lGPmT+demegO+WgWuM4Q0HAblgjYmUIj0OMj+t+CbBiF3sUr+kuUgPIdTm3uaQGJhqSDcKIBimMlHIajAJ7dTz/2aia1gQy4zBbev7JpwbgMY/cVkZBSRnhYYXU5ZW9oWjG+x7Ft5UlQ0ORsfO5Pq4GCtTIUuqgD8lUZYlzYKshpWiAeVbHX5xCM6DtvNcdNpZuE9Wc=
+    - VERSION=$(sed 'r' "../system/CURRENT_VERSION.txt")
 
 after_success:
   - ./.deploy/create_release.py
