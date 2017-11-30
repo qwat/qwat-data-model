@@ -34,10 +34,12 @@ before_script:
   - psql -c 'CREATE ROLE qwat_sysadmin NOSUPERUSER INHERIT NOCREATEDB NOCREATEROLE NOREPLICATION;' -U postgres
   - pg_dump -V
   - pg_restore -V
-  - VERSION=$(sed 'r' "../system/CURRENT_VERSION.txt")
 
 script:
   - cd $TRAVIS_BUILD_DIR/
+
+  # Get current version
+  - export VERSION=$(sed 'r' "../system/CURRENT_VERSION.txt")
 
   # Create a qwat 1.0.0 db from a dump file. This simulate the prod db
   - pum restore -p qwat_prod $TRAVIS_BUILD_DIR/update/delta/qwat_1_0_0_dump.dump
