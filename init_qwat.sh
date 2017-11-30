@@ -252,7 +252,7 @@ psql -v ON_ERROR_STOP=1 -f ${DIR}/system/update_sequences.sql
 
 # Baseline PUM
 
-pum baseline -p qwat_prod -t qwat_sys.info -d ${DIR}/update/delta -b 1.3.0
+# pum baseline -p qwat_prod -t qwat_sys.info -d ${DIR}/update/delta -b 1.3.0
 
 
 # Demo data
