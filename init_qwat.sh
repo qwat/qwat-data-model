@@ -84,6 +84,12 @@ while true; do
   esac
 done
 
+
+# Check if pum is installed (will fail and stop the script in case of error)
+PUM_VERSION=$(pum -v)
+echo "PUM version: $PUM_VERSION"
+echo
+
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 if [[ "$PGSERVICEGIVEN" -eq 0 ]] && [[ "$DROPSCHEMA" -eq 1 ]]; then
