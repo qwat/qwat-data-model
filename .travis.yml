@@ -40,7 +40,6 @@ script:
 
   # Get current version
   - export VERSION=$(sed 'r' "$TRAVIS_BUILD_DIR/system/CURRENT_VERSION.txt")
-  - echo $VERSION
 
   # Create a qwat 1.0.0 db from a dump file. This simulate the prod db
   - pum restore -p qwat_prod $TRAVIS_BUILD_DIR/update/delta/qwat_1_0_0_dump.dump
@@ -48,7 +47,7 @@ script:
 
   # Run init_qwat.sh to create the last version of qwat db used as comp db
   - printf "travis_fold:start:init_qwat\nInitialize database"
-  - $TRAVIS_BUILD_DIR/init_qwat.sh -p qwat_comp -s 21781 -r
+  - $TRAVIS_BUILD_DIR/init_qwat.sh -p qwat_comp -s 21781 -r -n
   - if [ $? -eq 0 ]; then echo "travis_fold:end:init-qwat"; fi 
   - pum baseline -p qwat_comp -t qwat_sys.info -d $TRAVIS_BUILD_DIR/update/delta/ -b $VERSION
 

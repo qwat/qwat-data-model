@@ -22,6 +22,7 @@ Usage: $0 [options]
 --demo               load some demo data (not complete yet)
 -r|--create-roles    create roles in the database
 -v|--verbose         be verbose
+-n|-no-baseline      If this param is given, then the 1.0.0 baseline is applied instead of current version
 EOF
 
 }
@@ -41,6 +42,8 @@ DROPSCHEMA=0
 CREATEROLES=0
 VERBOSE=0
 DEMO=0
+NOBASELINE=0
+NUMVERSION="1.3.1"
 
 PGSERVICEGIVEN=0
 
@@ -75,6 +78,10 @@ while true; do
       ;;
     -v|--verbose)
       VERBOSE=1
+      shift;
+      ;;
+    -n|--no-baseline)
+      NOBASELINE=1
       shift;
       ;;
     --)
@@ -251,9 +258,10 @@ psql -v ON_ERROR_STOP=1 -f ${DIR}/system/audit_views.sql
 psql -v ON_ERROR_STOP=1 -f ${DIR}/system/update_sequences.sql
 
 # Baseline PUM
-
-pum baseline -p qwat_prod -t qwat_sys.info -d ${DIR}/update/delta -b 1.3.0
-
+if [[ "$NOBASELINE" -eq 1 ]]; then
+    NUMVERSION="1.0.0"
+fi
+pum baseline -p qwat_prod -t qwat_sys.info -d ${DIR}/update/delta -b $NUMVERSION
 
 # Demo data
 if [[ "$DEMO" -eq 1 ]]; then
