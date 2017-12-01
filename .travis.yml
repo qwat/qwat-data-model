@@ -38,20 +38,23 @@ before_script:
 script:
   - cd $TRAVIS_BUILD_DIR/
 
+  # Get current version
+  - export VERSION=$(sed 'r' "$TRAVIS_BUILD_DIR/system/CURRENT_VERSION.txt")
+
   # Create a qwat 1.0.0 db from a dump file. This simulate the prod db
   - pum restore -p qwat_prod $TRAVIS_BUILD_DIR/update/delta/qwat_1_0_0_dump.dump
   - pum baseline -p qwat_prod -t qwat_sys.info -d $TRAVIS_BUILD_DIR/update/delta/ -b 1.0.0
 
   # Run init_qwat.sh to create the last version of qwat db used as comp db
   - printf "travis_fold:start:init_qwat\nInitialize database"
-  - $TRAVIS_BUILD_DIR/init_qwat.sh -p qwat_comp -s 21781 -r
+  - $TRAVIS_BUILD_DIR/init_qwat.sh -p qwat_comp -s 21781 -r -n
   - if [ $? -eq 0 ]; then echo "travis_fold:end:init-qwat"; fi 
-  - pum baseline -p qwat_comp -t qwat_sys.info -d $TRAVIS_BUILD_DIR/update/delta/ -b 1.3.0
+  - pum baseline -p qwat_comp -t qwat_sys.info -d $TRAVIS_BUILD_DIR/update/delta/ -b $VERSION
 
   # Run pum's test and upgrade
   - printf "travis_fold:start:test-and-upgrade\nRun test and upgrade"
   - yes | pum test-and-upgrade -pp qwat_prod -pt qwat_test -pc qwat_comp -t qwat_sys.info -d $TRAVIS_BUILD_DIR/update/delta/ -f /tmp/qwat_dump -i columns constraints views sequences indexes triggers functions rules
-  - if [ $? -eq 0 ]; then echo "travis_fold:end:test-and-upgrade"; fi 
+  - if [ $? -eq 0 ]; then echo "travis_fold:end:test-and-upgrade"; fi
 
   # Run a last check between qwat_prod and qwat_comp
   - pum check -p1 qwat_prod -p2 qwat_comp -i columns constraints views sequences indexes triggers functions rules
