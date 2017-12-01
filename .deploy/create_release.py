@@ -113,8 +113,11 @@ def create_dumps():
 
 
 def main():
-    if 'TRAVIS_TAG' not in os.environ:
+    if 'TRAVIS_TAG' not in os.environ or not os.environ['TRAVIS_TAG']:
         print('No git tag: not deploying anything')
+        return
+    elif os.environ['TRAVIS_SECURE_ENV_VARS'] != 'true':
+        print('No secure environment variables: not deploying anything')
         return
     else:
         print('Creating release from tag {}'.format(os.environ['TRAVIS_TAG']))
