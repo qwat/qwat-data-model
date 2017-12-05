@@ -267,7 +267,7 @@ psql -v ON_ERROR_STOP=1 -f ${DIR}/system/update_sequences.sql
 if [[ "$NOBASELINE" -eq 1 ]]; then
     NUMVERSION="1.0.0"
 fi
-pum baseline -p qwat_prod -t qwat_sys.info -d ${DIR}/update/delta -b $NUMVERSION
+pum baseline -p $PGSERVICE -t qwat_sys.info -d ${DIR}/update/delta -b $NUMVERSION
 
 
 # Demo data
