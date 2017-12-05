@@ -43,8 +43,8 @@ script:
 
   # Create a qwat 1.2.1 db from a dump file. This simulate the prod db
   # Download demo data only dump from 1.2.1
-  - wget -q -O qwat_dump.backup https://github.com/qwat/qwat-data-sample/blob/master/qwat_v1.2.1_data_and_structure_sample.backup
-  
+  - wget -q -O qwat_dump.backup https://github.com/qwat/qwat-data-sample/raw/master/qwat_v1.2.1_data_and_structure_sample.backup
+
   # Restoring
   - pum restore -p qwat_prod qwat_dump.backup
   - pum baseline -p qwat_prod -t qwat_sys.info -d $TRAVIS_BUILD_DIR/update/delta/ -b 1.2.1
