@@ -1,7 +1,7 @@
-from builtins import object
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+from builtins import object
 import sys
 import psycopg2, psycopg2.extras
 
