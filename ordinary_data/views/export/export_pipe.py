@@ -59,6 +59,9 @@ joins:
   protection:
     table: qwat_vl.pipe_protection
     fkey: fk_protection
+  watertype:
+    table: qwat_vl.watertype
+    fkey: fk_watertype
   node_a:
     table: qwat_od.node
     fkey: fk_node_a
