@@ -45,7 +45,7 @@ joins:
   folder:
     table: qwat_od.folder
     fkey: fk_folder
-    
+
   valve_type:
     table: qwat_vl.valve_type
     fkey: fk_valve_type
@@ -55,7 +55,7 @@ joins:
   valve_actuation:
     table: qwat_vl.valve_actuation
     fkey: fk_valve_actuation
-   
+
 
 """)
 # fix_print_with_import
