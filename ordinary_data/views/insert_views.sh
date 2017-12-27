@@ -30,8 +30,6 @@ psql -v ON_ERROR_STOP=1 -c "$(${DIR}/export/export_remote.py ${PGSERVICE})"
 psql -v ON_ERROR_STOP=1 -c "$(${DIR}/export/export_subscriber.py ${PGSERVICE})"
 psql -v ON_ERROR_STOP=1 -c "$(${DIR}/export/export_leak.py ${PGSERVICE})"  # depends on export_pipe
 
-psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f ${DIR}/export/search_view.sql
-
 
 # draw lines
 psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f ${DIR}/draw_lines/vw_subscriber_pipe_relation.sql

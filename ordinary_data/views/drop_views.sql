@@ -12,7 +12,7 @@ drop view if exists qwat_od.vw_valve_lines;
 drop view if exists qwat_od.vw_pipe_child_parent;
 
 /* export views */
-drop view if exists qwat_od.vw_search_view;
+drop view if exists qwat_od.vw_search_view;  -- deprecated, this could be removed in a next release
 
 drop view if exists qwat_od.vw_export_hydrant;
 drop view if exists qwat_od.vw_export_installation;
