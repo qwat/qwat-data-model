@@ -29,8 +29,6 @@ CREATE VIEW qwat_ch_vd_sire.regulation_pression AS
 		, ST_Force2D(geometry) AS geometry
 	FROM qwat_od.vw_export_installation
 	WHERE
-		installation_type = 'pump'
-		OR
 		fk_pressurecontrol_type IN (2801,2802) -- réducteur, coupe-pression
 
 	UNION
