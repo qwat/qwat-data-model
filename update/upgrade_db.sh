@@ -133,7 +133,7 @@ printf "\n${BLUE}Test and upgrade qwat core${NC}\n\n"
 sleep 1s
 
 #pum test-and-upgrade -pp qwat_prod -pt qwat_test -pc qwat_comp -t qwat_sys.info -d delta/ -f $TMPFILEDUMP -i columns constraints views sequences indexes triggers functions rules
-pum test-and-upgrade -pp qwat_prod -pt qwat_test -pc qwat_comp -t qwat_sys.info -d delta/ -f $TMPFILEDUMP
+pum test-and-upgrade -x -pp qwat_prod -pt qwat_test -pc qwat_comp -t qwat_sys.info -d delta/ -f $TMPFILEDUMP -i views rules
 
 # applies local script to test
 
