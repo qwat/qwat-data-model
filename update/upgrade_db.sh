@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # ##########
 #
 # QWAT local test and upgrade  script
