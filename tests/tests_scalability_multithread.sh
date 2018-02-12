@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 INIT_DB=1
@@ -41,7 +41,7 @@ echo "OK"
 
 
 echo "Launching requests..."
-python test_scalability_multithread.py --pg_service qwat_test --nb_iterations ${NB_ITERATIONS}
+python3 test_scalability_multithread.py --pg_service qwat_test --nb_iterations ${NB_ITERATIONS}
 
 EXITCODE=0
 
