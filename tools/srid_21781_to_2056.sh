@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # This script aims at transforming QWAT data from EPSG:21781 to EPSG:2056 (MN03 to MN95)
 # It should be used with caution and is not given with any warranty, backup your data prior to any usage
