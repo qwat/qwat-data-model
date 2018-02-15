@@ -6,9 +6,9 @@ import sys
 from sql_export_view import SqlExportView
 
 if len(sys.argv) > 1:
-  pg_service = sys.argv[1]
+    pg_service = sys.argv[1]
 else:
-  pg_service = "qwat_test"
+    pg_service = "qwat_test"
 
 definition = yaml.load("""
 
