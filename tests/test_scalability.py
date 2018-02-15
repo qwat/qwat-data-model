@@ -81,7 +81,7 @@ def _execute_statements(cur, conn, fileName, nb_iteration):
         'id_node_b': 2,
 
         'valve_id': 1
-        }
+    }
 
     # Var list to replace in SQL
     vars_to_replace = [
