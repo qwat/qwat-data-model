@@ -1,4 +1,4 @@
-﻿/* Audit views only for those having explicit triggers handling data editing*/
+/* Audit views only for those having explicit triggers handling data editing*/
 DO $$
 BEGIN
 PERFORM qwat_sys.audit_view('qwat_od.vw_consumptionzone', 'true'::boolean, '{}'::text[], '{id}'::text[]);
