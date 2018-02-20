@@ -36,6 +36,7 @@ fi
 
 eval set -- "$ARGS";
 
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 # Default values
 SRID=21781
 DROPSCHEMA=0
@@ -43,8 +44,7 @@ CREATEROLES=0
 VERBOSE=0
 DEMO=0
 NOBASELINE=0
-NUMVERSION="1.3.1"
-
+NUMVERSION=$(cat $DIR/system/CURRENT_VERSION.txt)
 PGSERVICEGIVEN=0
 
 while true; do
@@ -97,7 +97,6 @@ PUM_VERSION=$(pum -v)
 echo "PUM version: $PUM_VERSION"
 echo
 
-DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 if [[ "$PGSERVICEGIVEN" -eq 0 ]] && [[ "$DROPSCHEMA" -eq 1 ]]; then
     if [[ -z "$PGSERVICE" ]]; then
