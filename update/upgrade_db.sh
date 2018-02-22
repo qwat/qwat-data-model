@@ -76,7 +76,7 @@ if [ ! -f $VERSION_FILE ]; then
     echo
     exit 0
 fi
-VERSION=$(sed 'r' $VERSION_FILE)
+VERSION=$(cat $VERSION_FILE)
 
 # set -- "${POSITIONAL[@]}" # restore positional parameters
 echo "Parameters:"
@@ -94,7 +94,7 @@ echo
 if [[ $CLEAN -eq 1 ]]; then
     printf "\n${BLUE}Cleaning  Option set:${NC}\n\n"
 
-    sleep 1s
+    sleep 1
 
     # Read DB info from pg_service.conf file
     DBCOMP_NAME=$(sed -n -e "/^\[qwat_comp]/,/^\[/ p" ~/.pg_service.conf | grep "^dbname" | cut -d"=" -f2)
@@ -119,18 +119,18 @@ fi
 # initialize qwat db comparison db
 printf "\n${BLUE}Initializing qwat comparison db${NC}\n\n"
 
-sleep 1s
+sleep 1
 ../init_qwat.sh -p qwat_comp -s $SRID -r
 
 # add pum metadata to DB using current version
 printf "\n${BLUE}PUM baseline on qwat_comp${NC}\n\n"
-sleep 1s
+sleep 1
 
 pum baseline -p qwat_comp -t qwat_sys.info -d delta/ -b $VERSION
 
 # checks delta files from 1.0 lead to the same version as current version, if yes upgrades
 printf "\n${BLUE}Test and upgrade qwat core${NC}\n\n"
-sleep 1s
+sleep 1
 
 #pum test-and-upgrade -pp qwat_prod -pt qwat_test -pc qwat_comp -t qwat_sys.info -d delta/ -f $TMPFILEDUMP -i columns constraints views sequences indexes triggers functions rules
 pum test-and-upgrade -x -pp qwat_prod -pt qwat_test -pc qwat_comp -t qwat_sys.info -d delta/ -f $TMPFILEDUMP -i views rules
@@ -139,13 +139,13 @@ pum test-and-upgrade -x -pp qwat_prod -pt qwat_test -pc qwat_comp -t qwat_sys.in
 
 # if [[ "$LOCALDIRGIVEN" -eq 1 ]]; then
 #   printf "\n${BLUE}Upgrade qwat_comp with local directory${NC}\n\n"
-#   sleep 1s
+#   sleep 1
 #
 #   pum upgrade -p qwat_comp -t qwat_sys.info -d $LOCALDIR
 #
 #   # display changes
 #   printf "\n${BLUE}Check differences between prod and test + local delta${NC}\n\n"
-#   sleep 1s
+#   sleep 1
 #
 #   pum check -p1 qwat_prod -p2 qwat_comp -i columns constraints views sequences indexes triggers functions rules
 #
@@ -155,7 +155,7 @@ pum test-and-upgrade -x -pp qwat_prod -pt qwat_test -pc qwat_comp -t qwat_sys.in
 #     if [[ $REPLY =~ ^[Yy]$ ]]
 #     then
 #         printf "\n${BLUE}Do the local upgrade${NC}\n\n"
-#         sleep 1s
+#         sleep 1
 #
 #         # applies local scripts to qwat_prod
 #         pum upgrade -p qwat_prod -t qwat_sys.info -d $LOCALDIR
