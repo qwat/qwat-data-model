@@ -7,6 +7,13 @@
 #
 # ##########
 
+GNUGETOPT="getopt"
+if [[ "$OSTYPE" =~ freebsd* ]] || [[ "$OSTYPE" =~ darwin* ]]; then
+	GNUGETOPT="/usr/local/bin/getopt"
+elif [[ "$OSTYPE" =~ openbsd* ]]; then
+	GNUGETOPT="gnugetopt"
+fi
+
 # Exit on error
 set -e
 
@@ -27,7 +34,7 @@ EOF
 
 }
 
-ARGS=$(getopt -o p:s:drvn -l "pgservice:,srid:,drop-schema,create-roles,verbose,demo,no-baseline" -- "$@");
+ARGS=$(${GNUGETOPT} -o p:s:drvn -l "pgservice:,srid:,drop-schema,create-roles,verbose,demo,no-baseline" -- "$@");
 if [ $? -ne 0 ];
 then
   usage
