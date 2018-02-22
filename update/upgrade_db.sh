@@ -14,6 +14,7 @@ LOCALDIRGIVEN=0
 LOCALDIR=/home/regis/OSLANDIA/projets_locaux/QWAT/local_update_dir_test/
 TMPFILEDUMP=/tmp/qwat_dump
 UPGRADE=0
+SCRIPTDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 RED='\033[0;31m'
 GREEN='\033[0;32m'
@@ -69,7 +70,7 @@ fi
 
 # Get current version in ../system/CURRENT_VERSION.txt
 # (git tag forbidden)
-VERSION_FILE="../system/CURRENT_VERSION.txt"
+VERSION_FILE="${SCRIPTDIR}/../system/CURRENT_VERSION.txt"
 if [ ! -f $VERSION_FILE ]; then
     echo
     printf "${RED}$VERSION_FILE file not found! Aborting${NC}\n"
@@ -99,20 +100,36 @@ if [[ $CLEAN -eq 1 ]]; then
     # Read DB info from pg_service.conf file
     DBCOMP_NAME=$(sed -n -e "/^\[qwat_comp]/,/^\[/ p" ~/.pg_service.conf | grep "^dbname" | cut -d"=" -f2)
     DBCOMP_USER=$(sed -n -e "/^\[qwat_comp]/,/^\[/ p" ~/.pg_service.conf | grep "^user" | cut -d"=" -f2)
+    DBCOMP_HOST=$(sed -n -e "/^\[qwat_test]/,/^\[/ p" ~/.pg_service.conf | grep "^host" | cut -d"=" -f2)
+    DBCOMP_PORT=$(sed -n -e "/^\[qwat_test]/,/^\[/ p" ~/.pg_service.conf | grep "^port" | cut -d"=" -f2)
     DBTEST_NAME=$(sed -n -e "/^\[qwat_test]/,/^\[/ p" ~/.pg_service.conf | grep "^dbname" | cut -d"=" -f2)
     DBTEST_USER=$(sed -n -e "/^\[qwat_test]/,/^\[/ p" ~/.pg_service.conf | grep "^user" | cut -d"=" -f2)
-    # TODO get also password, port and host
+    DBTEST_HOST=$(sed -n -e "/^\[qwat_test]/,/^\[/ p" ~/.pg_service.conf | grep "^host" | cut -d"=" -f2)
+    DBTEST_PORT=$(sed -n -e "/^\[qwat_test]/,/^\[/ p" ~/.pg_service.conf | grep "^port" | cut -d"=" -f2)
+
+    if [ ! -z "$DBCOMP_HOST" ]; then
+	    COMPHOST="-h $DBCOMP_HOST"
+    fi
+    if [ ! -z "$DBCOMP_PORT" ]; then
+	    COMPPORT="-p $DBCOMP_PORT"
+    fi
+    if [ ! -z "$DBTEST_HOST" ]; then
+	    TESTHOST="-h $DBTEST_HOST"
+    fi
+    if [ ! -z "$DBTEST_PORT" ]; then
+	    TESTPORT="-p $DBTEST_PORT"
+    fi
 
     # Drop test & comp DB
-    dropdb $DBCOMP_NAME -U $DBCOMP_USER
+    dropdb $DBCOMP_NAME -U $DBCOMP_USER ${COMPHOST} ${COMPPORT}
     printf "\t${GREEN}DB $DBCOMP_NAME dropped${NC}\n"
-    dropdb $DBTEST_NAME -U $DBTEST_USER
+    dropdb $DBTEST_NAME -U $DBTEST_USER ${TESTHOST} ${TESTPORT}
     printf "\t${GREEN}DB $DBTEST_NAME dropped${NC}\n"
 
     # Create test & comp DB
-    createdb $DBCOMP_NAME -U $DBCOMP_USER
+    createdb $DBCOMP_NAME -U $DBCOMP_USER ${COMPHOST} ${COMPPORT}
     printf "\t${GREEN}DB $DBCOMP_NAME created${NC}\n"
-    createdb $DBTEST_NAME -U $DBTEST_USER
+    createdb $DBTEST_NAME -U $DBTEST_USER ${TESTHOST} ${TESTPORT}
     printf "\t${GREEN}DB $DBTEST_NAME created${NC}\n"
 fi
 
@@ -120,7 +137,7 @@ fi
 printf "\n${BLUE}Initializing qwat comparison db${NC}\n\n"
 
 sleep 1
-../init_qwat.sh -p qwat_comp -s $SRID -r
+${SCRIPTDIR}/../init_qwat.sh -p qwat_comp -s $SRID -r
 
 # add pum metadata to DB using current version
 printf "\n${BLUE}PUM baseline on qwat_comp${NC}\n\n"
