@@ -1,64 +1,86 @@
 /* Audit */
+CREATE OR REPLACE FUNCTION qwat_sys._list_audit_tables() RETURNS text[] AS $body$
+DECLARE
+    tables_to_audit text[];
+BEGIN
+    tables_to_audit := ARRAY[
+        --qwat_dr
+        'qwat_dr.annotationline',
+        'qwat_dr.annotationpoint',
+        'qwat_dr.constructionpoint',
+        'qwat_dr.dimension_distance',
+        'qwat_dr.dimension_orientation',
+        --qwat_od
+        'qwat_od.distributor',
+        'qwat_od.district',
+        'qwat_od.folder',
+        'qwat_od.leak',
+        'qwat_od.pipe',
+        'qwat_od.printmap',
+        'qwat_od.protectionzone',
+        'qwat_od.remote',
+        'qwat_od.surveypoint',
+        'qwat_od.valve',
+        -- qwat_vl
+        'qwat_vl.cistern',
+        'qwat_vl.hydrant_provider',
+        'qwat_vl.hydrant_material',
+        'qwat_vl.leak_cause',
+        'qwat_vl.overflow',
+        'qwat_vl.pipe_function',
+        'qwat_vl.pipe_installmethod',
+        'qwat_vl.pipe_material',
+        'qwat_vl.pipe_protection',
+        'qwat_vl.precision',
+        'qwat_vl.pressurecontrol_type',
+        'qwat_vl.protectionzone_type',
+        'qwat_vl.pump_type',
+        'qwat_vl.remote_type',
+        'qwat_vl.source_quality',
+        'qwat_vl.source_type',
+        'qwat_vl.status',
+        'qwat_vl.subscriber_type',
+        'qwat_vl.survey_type',
+        'qwat_vl.tank_firestorage',
+        'qwat_vl.valve_function',
+        'qwat_vl.valve_maintenance',
+        'qwat_vl.valve_actuation',
+        'qwat_vl.valve_type',
+        'qwat_vl.visible'];
+    return tables_to_audit;
+END
+$body$
+LANGUAGE plpgsql;
+
+COMMENT ON FUNCTION qwat_sys._list_audit_tables() IS $body$
+Return the tables to be audited.
+$body$;
+
+CREATE OR REPLACE FUNCTION qwat_sys.activate_audit_tables() RETURNS void AS $body$
+BEGIN
+    PERFORM qwat_sys.audit_table(t) FROM unnest(qwat_sys._list_audit_tables()) t;
+END
+$body$
+LANGUAGE plpgsql;
+
+COMMENT ON FUNCTION qwat_sys.activate_audit_tables() IS $body$
+Activate auditing of tables.
+$body$;
+
+CREATE OR REPLACE FUNCTION qwat_sys.deactivate_audit_tables() RETURNS void AS $body$
+BEGIN
+    PERFORM qwat_sys.unaudit_table(t) FROM unnest(qwat_sys._list_audit_tables()) t;
+END
+$body$
+LANGUAGE plpgsql;
+
+COMMENT ON FUNCTION qwat_sys.deactivate_audit_tables() IS $body$
+Deactivate auditing of tables.
+$body$;
+
+
 DO $$
 BEGIN
---qwat_dr
-PERFORM qwat_sys.audit_table('qwat_dr.annotationline');
-PERFORM qwat_sys.audit_table('qwat_dr.annotationpoint');
-PERFORM qwat_sys.audit_table('qwat_dr.constructionpoint');
-PERFORM qwat_sys.audit_table('qwat_dr.dimension_distance');
-PERFORM qwat_sys.audit_table('qwat_dr.dimension_orientation');
-
---qwat_od
-
-PERFORM qwat_sys.audit_table('qwat_od.distributor');
-PERFORM qwat_sys.audit_table('qwat_od.district');
-PERFORM qwat_sys.audit_table('qwat_od.folder');
--- PERFORM qwat_sys.audit_table('qwat_od.hydrant');
--- PERFORM qwat_sys.audit_table('qwat_od.installation');
--- PERFORM qwat_sys.audit_table('qwat_od.pressurecontrol');
--- PERFORM qwat_sys.audit_table('qwat_od.pump');
--- PERFORM qwat_sys.audit_table('qwat_od.source');
--- PERFORM qwat_sys.audit_table('qwat_od.treatment');
--- PERFORM qwat_sys.audit_table('qwat_od.tank');
--- PERFORM qwat_sys.audit_table('qwat_od.chamber');
-PERFORM qwat_sys.audit_table('qwat_od.leak');
--- PERFORM qwat_sys.audit_table('qwat_od.meter');
-PERFORM qwat_sys.audit_table('qwat_od.pipe');
--- PERFORM qwat_sys.audit_table('qwat_od.pressurezone');
-PERFORM qwat_sys.audit_table('qwat_od.printmap');
-PERFORM qwat_sys.audit_table('qwat_od.protectionzone');
-PERFORM qwat_sys.audit_table('qwat_od.remote');
--- PERFORM qwat_sys.audit_table('qwat_od.samplingpoint');
--- PERFORM qwat_sys.audit_table('qwat_od.subscriber');
--- PERFORM qwat_sys.audit_table('qwat_od.subscriber_reference');
-PERFORM qwat_sys.audit_table('qwat_od.surveypoint');
-PERFORM qwat_sys.audit_table('qwat_od.valve');
-
--- qwat_vl
-PERFORM qwat_sys.audit_table('qwat_vl.cistern');
-PERFORM qwat_sys.audit_table('qwat_vl.hydrant_provider');
-PERFORM qwat_sys.audit_table('qwat_vl.hydrant_material');
-PERFORM qwat_sys.audit_table('qwat_vl.leak_cause');
-PERFORM qwat_sys.audit_table('qwat_vl.overflow');
-PERFORM qwat_sys.audit_table('qwat_vl.pipe_function');
-PERFORM qwat_sys.audit_table('qwat_vl.pipe_installmethod');
-PERFORM qwat_sys.audit_table('qwat_vl.pipe_material');
-PERFORM qwat_sys.audit_table('qwat_vl.pipe_protection');
-PERFORM qwat_sys.audit_table('qwat_vl.precision');
-PERFORM qwat_sys.audit_table('qwat_vl.pressurecontrol_type');
-PERFORM qwat_sys.audit_table('qwat_vl.protectionzone_type');
-PERFORM qwat_sys.audit_table('qwat_vl.pump_type');
-PERFORM qwat_sys.audit_table('qwat_vl.remote_type');
-PERFORM qwat_sys.audit_table('qwat_vl.source_quality');
-PERFORM qwat_sys.audit_table('qwat_vl.source_type');
-PERFORM qwat_sys.audit_table('qwat_vl.status');
-PERFORM qwat_sys.audit_table('qwat_vl.subscriber_type');
-PERFORM qwat_sys.audit_table('qwat_vl.survey_type');
-PERFORM qwat_sys.audit_table('qwat_vl.tank_firestorage');
-PERFORM qwat_sys.audit_table('qwat_vl.valve_function');
-PERFORM qwat_sys.audit_table('qwat_vl.valve_maintenance');
-PERFORM qwat_sys.audit_table('qwat_vl.valve_actuation');
-PERFORM qwat_sys.audit_table('qwat_vl.valve_type');
-PERFORM qwat_sys.audit_table('qwat_vl.visible');
+    PERFORM qwat_sys.activate_audit_tables();
 END
 $$;

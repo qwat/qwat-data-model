@@ -1,27 +1,55 @@
 /* Audit views only for those having explicit triggers handling data editing*/
+CREATE OR REPLACE FUNCTION qwat_sys._list_audit_views() RETURNS text[] AS $body$
+DECLARE
+    views_to_audit text[];
+BEGIN
+    views_to_audit := ARRAY[
+        'qwat_od.vw_consumptionzone',
+        'qwat_od.vw_element_hydrant',
+        'qwat_od.vw_element_installation',
+        'qwat_od.vw_element_meter',
+        'qwat_od.vw_element_part',
+        'qwat_od.vw_element_samplingpoint',
+        'qwat_od.vw_element_subscriber',
+        'qwat_od.vw_protectionzone',
+        'qwat_od.vw_qwat_installation',
+        'qwat_od.vw_qwat_network_element',
+        'qwat_od.vw_qwat_node'];
+    return views_to_audit;
+END
+$body$
+LANGUAGE plpgsql;
+
+COMMENT ON FUNCTION qwat_sys._list_audit_views() IS $body$
+Return the views to be audited.
+$body$;
+
+CREATE OR REPLACE FUNCTION qwat_sys.activate_audit_views() RETURNS void AS $body$
+BEGIN
+    PERFORM qwat_sys.audit_view(t, 'true'::boolean, '{}'::text[], '{id}'::text[])
+            FROM unnest(qwat_sys._list_audit_views()) t;
+END
+$body$
+LANGUAGE plpgsql;
+
+COMMENT ON FUNCTION qwat_sys.activate_audit_views() IS $body$
+Activate auditing of views.
+$body$;
+
+CREATE OR REPLACE FUNCTION qwat_sys.deactivate_audit_views() RETURNS void AS $body$
+BEGIN
+    PERFORM qwat_sys.unaudit_view(t) FROM unnest(qwat_sys._list_audit_views()) t;
+END
+$body$
+LANGUAGE plpgsql;
+
+COMMENT ON FUNCTION qwat_sys.deactivate_audit_views() IS $body$
+Deactivate auditing of views.
+$body$;
+
+
 DO $$
 BEGIN
-PERFORM qwat_sys.audit_view('qwat_od.vw_consumptionzone', 'true'::boolean, '{}'::text[], '{id}'::text[]);
-PERFORM qwat_sys.audit_view('qwat_od.vw_element_hydrant', 'true'::boolean, '{}'::text[], '{id}'::text[]);
-PERFORM qwat_sys.audit_view('qwat_od.vw_element_installation', 'true'::boolean, '{}'::text[], '{id}'::text[]);
-PERFORM qwat_sys.audit_view('qwat_od.vw_element_meter', 'true'::boolean, '{}'::text[], '{id}'::text[]);
-PERFORM qwat_sys.audit_view('qwat_od.vw_element_part', 'true'::boolean, '{}'::text[], '{id}'::text[]);
-PERFORM qwat_sys.audit_view('qwat_od.vw_element_samplingpoint', 'true'::boolean, '{}'::text[], '{id}'::text[]);
-PERFORM qwat_sys.audit_view('qwat_od.vw_element_subscriber', 'true'::boolean, '{}'::text[], '{id}'::text[]);
--- PERFORM qwat_sys.audit_view('qwat_od.vw_node_element', 'true'::boolean, '{}'::text[], '{id}'::text[]);
--- PERFORM qwat_sys.audit_view('qwat_od.vw_pipe_child_parent', 'true'::boolean, '{}'::text[], '{id}'::text[]);
--- PERFORM qwat_sys.audit_view('qwat_od.vw_pipe_schema_merged', 'true'::boolean, '{}'::text[], '{id}'::text[]);
--- PERFORM qwat_sys.audit_view('qwat_od.vw_pipe_schema', 'true'::boolean, '{}'::text[], '{id}'::text[]);
--- PERFORM qwat_sys.audit_view('qwat_od.vw_pipe_schema_error', 'true'::boolean, '{}'::text[], '{id}'::text[]);
--- PERFORM qwat_sys.audit_view('qwat_od.vw_pipe_schema_visibleitems', 'true'::boolean, '{}'::text[], '{id}'::text[]);
--- PERFORM qwat_sys.audit_view('qwat_od.vw_printmap', 'true'::boolean, '{}'::text[], '{id}'::text[]);
-PERFORM qwat_sys.audit_view('qwat_od.vw_protectionzone', 'true'::boolean, '{}'::text[], '{id}'::text[]);
-PERFORM qwat_sys.audit_view('qwat_od.vw_qwat_installation', 'true'::boolean, '{}'::text[], '{id}'::text[]);
-PERFORM qwat_sys.audit_view('qwat_od.vw_qwat_network_element', 'true'::boolean, '{}'::text[], '{id}'::text[]);
-PERFORM qwat_sys.audit_view('qwat_od.vw_qwat_node', 'true'::boolean, '{}'::text[], '{id}'::text[]);
--- PERFORM qwat_sys.audit_view('qwat_od.vw_remote', 'true'::boolean, '{}'::text[], '{id}'::text[]);
--- PERFORM qwat_sys.audit_view('qwat_od.vw_search_view', 'true'::boolean, '{}'::text[], '{id}'::text[]);
--- PERFORM qwat_sys.audit_view('qwat_od.vw_subscriber_pipe_relation', 'true'::boolean, '{}'::text[], '{id}'::text[]);
--- PERFORM qwat_sys.audit_view('qwat_od.vw_valve_lines', 'true'::boolean, '{}'::text[], '{id}'::text[]);
+    PERFORM qwat_sys.activate_audit_views();
 END
 $$;
