@@ -228,11 +228,11 @@ BEGIN
                               and a.attnum = any(i.indkey)
           where i.indrelid = target_table::regclass
             and i.indisprimary
-            ;
+          on conflict do nothing;
 END;
 $body$
 LANGUAGE plpgsql;
- 
+
 COMMENT ON FUNCTION qwat_sys.audit_table(regclass, BOOLEAN, BOOLEAN, text[]) IS $body$
 ADD auditing support TO a TABLE.
  
@@ -258,6 +258,14 @@ $body$ LANGUAGE 'sql';
 COMMENT ON FUNCTION qwat_sys.audit_table(regclass) IS $body$
 Add auditing support to the given table. Row-level changes will be logged with full client query text. No cols are ignored.
 $body$;
+
+CREATE OR REPLACE FUNCTION qwat_sys.unaudit_table(target_table regclass) RETURNS void AS $body$
+BEGIN
+    EXECUTE 'DROP TRIGGER IF EXISTS audit_trigger_row ON ' || target_table::text;
+    EXECUTE 'DROP TRIGGER IF EXISTS audit_trigger_stm ON ' || target_table::text;
+END;
+$body$
+LANGUAGE plpgsql;
 
 
 CREATE OR REPLACE FUNCTION qwat_sys.replay_event(pevent_id int) RETURNS void AS $body$
@@ -347,3 +355,10 @@ Example:
   SELECT qwat_sys.audit_view('qwat_od.vw_element_installation', 'true'::BOOLEAN, '{field_to_ignore}'::text[], '{key_field1, keyfield2}'::text[]) 
 $body$;
  
+CREATE OR REPLACE FUNCTION qwat_sys.unaudit_view(target_view regclass) RETURNS void AS $body$
+BEGIN
+    EXECUTE 'DROP TRIGGER IF EXISTS audit_trigger_row ON ' || target_view::text;
+    EXECUTE 'DROP TRIGGER IF EXISTS audit_trigger_stm ON ' || target_view::text;
+END;
+$body$
+LANGUAGE plpgsql;
