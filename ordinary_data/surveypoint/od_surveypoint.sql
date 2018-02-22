@@ -17,7 +17,11 @@ ALTER TABLE qwat_od.surveypoint ADD COLUMN description      text;
 ALTER TABLE qwat_od.surveypoint ADD COLUMN date             date;
 ALTER TABLE qwat_od.surveypoint ADD COLUMN fk_folder        integer ;
 ALTER TABLE qwat_od.surveypoint ADD COLUMN altitude         decimal(10,3) default null;
+
+/* GEOMETRY */
 ALTER TABLE qwat_od.surveypoint ADD COLUMN geometry         geometry(POINTZ,:SRID);
+CREATE INDEX surveypoint_geoidx ON qwat_od.surveypoint USING GIST ( geometry );
+
 -- TODO add fk_object_reference
 
 /* constraints */

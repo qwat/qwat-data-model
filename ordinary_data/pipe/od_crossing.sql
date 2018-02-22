@@ -21,6 +21,7 @@ WITH (
 );
 
 ALTER TABLE qwat_od.crossing ADD COLUMN geometry geometry('POINT',:SRID) NOT NULL;
+CREATE INDEX crossing_geoidx ON qwat_od.crossing USING GIST ( geometry );
 
 CREATE OR REPLACE FUNCTION qwat_od.ft_controled_crossing()
 RETURNS trigger AS

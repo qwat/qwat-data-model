@@ -20,8 +20,12 @@ ALTER TABLE qwat_od.cover ADD COLUMN altitude        numeric(8,3);
 ALTER TABLE qwat_od.cover ADD COLUMN circular        boolean default true;
 ALTER TABLE qwat_od.cover ADD COLUMN form_dimension  decimal(10,3)       ; COMMENT ON COLUMN qwat_od.cover.form_dimension  IS 'depending on the cover form, it represents either the diameter of circle or the length of a square side';
 ALTER TABLE qwat_od.cover ADD COLUMN remark          text                ;
+
+/* GEOMETRY */
 ALTER TABLE qwat_od.cover ADD COLUMN geometry         geometry('PointZ', :SRID) NOT NULL;
 ALTER TABLE qwat_od.cover ADD COLUMN geometry_polygon geometry('Polygon', :SRID);
+CREATE INDEX cover_geoidx ON qwat_od.cover USING GIST ( geometry );
+CREATE INDEX cover_geoidx_polygon ON qwat_od.cover USING GIST ( geometry_polygon );
 
 
 /* LABELS */

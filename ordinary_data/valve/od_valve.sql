@@ -76,7 +76,6 @@ ALTER TABLE qwat_od.valve ADD COLUMN geometry_alt2 geometry('POINTZ',:SRID);
 ALTER TABLE qwat_od.valve ADD COLUMN update_geometry_alt1 boolean default null; -- used to determine if alternative geometries should be updated when main geometry is updated
 ALTER TABLE qwat_od.valve ADD COLUMN update_geometry_alt2 boolean default null; -- used to determine if alternative geometries should be updated when main geometry is updated
 
-
 /* Schema view */
 DO $$ BEGIN PERFORM qwat_sys.fn_enable_schemavisible('valve', 'valve_function', 'fk_valve_function'); END $$;
 
@@ -87,6 +86,7 @@ DO $$ BEGIN PERFORM qwat_sys.fn_label_create_fields('valve'); END $$;
 CREATE INDEX valve_geoidx ON qwat_od.valve USING GIST ( geometry );
 CREATE INDEX valve_geoidx_alt1 ON qwat_od.valve USING GIST ( geometry_alt1 );
 CREATE INDEX valve_geoidx_alt2 ON qwat_od.valve USING GIST ( geometry_alt2 );
+CREATE INDEX valve_geoidx_handle ON qwat_od.valve USING GIST ( handle_geometry );
 
 /* NODE TRIGGER */
 /*

@@ -20,8 +20,10 @@ ALTER TABLE qwat_od.leak ADD COLUMN address           text ;
 ALTER TABLE qwat_od.leak ADD COLUMN pipe_replaced     boolean;
 ALTER TABLE qwat_od.leak ADD COLUMN description       text ;
 ALTER TABLE qwat_od.leak ADD COLUMN repair            text ;
-ALTER TABLE qwat_od.leak ADD COLUMN geometry          geometry(Point,:SRID);
 
+/* GEOMETRY */
+ALTER TABLE qwat_od.leak ADD COLUMN geometry          geometry(Point,:SRID);
+CREATE INDEX leak_geoidx ON qwat_od.leak USING GIST ( geometry );
 
 /* LABELS */
 DO $$ BEGIN PERFORM qwat_sys.fn_label_create_fields('leak'); END $$;
