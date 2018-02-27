@@ -9,6 +9,26 @@ export VERSION=$(sed 'r' "$TRAVIS_BUILD_DIR/system/CURRENT_VERSION.txt")
 # Get the 1.2.1 data_and_structure dump
 wget -q -O qwat_dump.backup https://github.com/qwat/qwat-data-sample/raw/master/qwat_v1.2.1_data_and_structure_sample.backup
 
+# Create a PostgreSQL service file and export the PGSERVICEFILE environment variable
+PGSERVICEFILE="/tmp/pg_service.conf"
+cat > $PGSERVICEFILE << EOF
+[qwat_prod]
+host=localhost
+dbname=qwat_prod
+user=postgres
+
+[qwat_test]
+host=localhost
+dbname=qwat_test
+user=postgres
+
+[qwat_comp]
+host=localhost
+dbname=qwat_comp
+user=postgres
+EOF
+export PGSERVICEFILE
+
 # Restore the 1.2.1 dump in the prod database
 pum restore -p qwat_prod qwat_dump.backup
 

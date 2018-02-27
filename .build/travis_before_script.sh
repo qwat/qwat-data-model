@@ -4,23 +4,6 @@ set -e
 
 echo "SET client_min_messages TO WARNING;" > ~/.psqlrc
 
-cat > ~/.pg_service.conf << EOF
-[qwat_prod]
-host=localhost
-dbname=qwat_prod
-user=postgres
-
-[qwat_test]
-host=localhost
-dbname=qwat_test
-user=postgres
-
-[qwat_comp]
-host=localhost
-dbname=qwat_comp
-user=postgres
-EOF
-
 psql -U postgres -c 'CREATE DATABASE qwat_prod'
 psql -U postgres -c 'CREATE DATABASE qwat_test'
 psql -U postgres -c 'CREATE DATABASE qwat_comp'
