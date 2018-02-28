@@ -2,8 +2,8 @@ CREATE VIEW qwat_ch_vd_sire.captage AS
 	SELECT
 		id AS ID_Num
 		, qwat_ext_ch_vd_sire_remarque|| remark AS remarque
-		, NULL AS Date_de_saisie -- TODO
-		, NULL AS Dern_M_a_J -- TODO
+		, NULL::date AS Date_de_saisie -- TODO
+		, NULL::date AS Dern_M_a_J -- TODO
 		, precision_code_sire AS Precision_Geo
 		, fk_distributor AS id_distributeur
 		, qwat_ext_ch_vd_sire_etat_exploitation AS Etat_Exploitation
@@ -19,7 +19,7 @@ CREATE VIEW qwat_ch_vd_sire.captage AS
 		, flow_concession AS Q_concession
 		, contract_end AS Date_fin_Concession
 		, gathering_chamber AS Chambre_de_Rassemblement
-		, NULL AS ID_Qualite -- TODO
+		, NULL::int AS ID_Qualite -- TODO
 		, altitude AS Altitude
 		, qwat_ext_ch_vd_sire_adesafecter AS A_Desafecter_PDDE
 		, ST_Force2D(geometry) AS geometry
