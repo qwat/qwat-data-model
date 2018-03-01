@@ -8,7 +8,7 @@
 # ##########
 
 GNUGETOPT="getopt"
-if [[ "$OSTYPE" =~ freebsd* ]] || [[ "$OSTYPE" =~ darwin* ]]; then
+if [[ "$OSTYPE" =~ FreeBSD* ]] || [[ "$OSTYPE" =~ darwin* ]]; then
 	GNUGETOPT="/usr/local/bin/getopt"
 elif [[ "$OSTYPE" =~ openbsd* ]]; then
 	GNUGETOPT="gnugetopt"
