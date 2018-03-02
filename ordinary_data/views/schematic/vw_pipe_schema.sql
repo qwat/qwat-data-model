@@ -188,7 +188,7 @@ UNION ALL
 		FROM
 		( SELECT
 				groupid, 
-				ST_Multi(ST_LineMerge(ST_Union(geometry))) AS geometry,
+				ST_Multi(ST_LineMerge(ST_Union(geometry)))::geometry(MultiLineStringZ,:SRID) AS geometry,
 				'lines cannot be joined'::varchar AS error_desc
 			FROM pipe_find_parent_error
 			GROUP BY groupid
@@ -197,7 +197,7 @@ UNION ALL
 	UNION 
 	SELECT 
 		groupid,
-		geometry,
+		geometry::geometry(MultiLineStringZ,:SRID),
 		'circular referencing loop'::varchar AS error_desc
 	FROM pipe_find_parent_error
 	WHERE depth_level > 19;
