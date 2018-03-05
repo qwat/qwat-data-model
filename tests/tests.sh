@@ -20,14 +20,14 @@ esac
 shift
 done
 
+PGSERVICE=qwat_test
+PGOPTIONS="-c lc_messages=C -c client_min_messages=ERROR"
+
 if [ "$INIT_DB" = "1" ]; then
     cd ${DIR}/..
-    ./init_qwat.sh -p qwat_test -d
+    ./init_qwat.sh -p ${PGSERVICE} -d
     cd -
 fi
-
-export PGSERVICE=qwat_test
-export PGOPTIONS="-c lc_messages=C -c client_min_messages=ERROR"
 
 TESTS="test_add_node.sql \
        test_node_orientation.sql \
@@ -42,7 +42,7 @@ EXITCODE=0
 for f in ${TESTS}; do
     echo -n "Running $f ... "
     fo="/tmp/${f}.txt"
-    psql -tA -f ${DIR}/$f >$fo 2>&1
+    psql service=${PGSERVICE} ${PGOPTIONS} -tA -f ${DIR}/$f >$fo 2>&1
     diff -u $fo ${DIR}/${f/.sql/.expected.sql} >/dev/null
     if [ "$?" = "1" ]; then
 		EXITCODE=1
