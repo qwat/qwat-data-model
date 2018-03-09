@@ -19,7 +19,8 @@ import psycopg2
 import psycopg2.extras
 from subprocess import call
 
-TEST_SCRIPT = 'test_scenarii_scalability.model'
+dir_path = os.path.dirname(os.path.realpath(__file__))
+TEST_SCRIPT = os.path.join(dir_path, 'test_scenarii_scalability.model')
 OUTPUT_STAT = 'scalability_stats.txt'
 OFFSET = 10  # offset in meter to create new objects
 OFFSET_ORIGIN = 2000
