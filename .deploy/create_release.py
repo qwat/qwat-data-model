@@ -107,6 +107,40 @@ def create_dumps():
     files.append(dumpfile)
     print('travis_fold:end:{}'.format(dump))
 
+    dump='qwat_v{version}_structure_only.backup'.format(
+        version=os.environ['TRAVIS_TAG'])
+    print('travis_fold:start:{}'.format(dump))
+    print('Creating dump {}'.format(dump))
+    dumpfile='/tmp/{dump}'.format(dump=dump)
+
+    subprocess.call(['pg_dump',
+                     '--format', 'custom',
+                     '--schema-only',
+                     '--verbose',
+                     '--file', dumpfile,
+                     '-N', 'public',
+                     'qwat_prod']
+                    )
+    files.append(dumpfile)
+    print('travis_fold:end:{}'.format(dump))
+
+    dump='qwat_v{version}_structure_only.sql'.format(
+        version=os.environ['TRAVIS_TAG'])
+    print('travis_fold:start:{}'.format(dump))
+    print('Creating dump {}'.format(dump))
+    dumpfile='/tmp/{dump}'.format(dump=dump)
+
+    subprocess.call(['pg_dump',
+                     '--format', 'plain',
+                     '--schema-only',
+                     '--verbose',
+                     '--file', dumpfile,
+                     '-N', 'public',
+                     'qwat_prod']
+                    )
+    files.append(dumpfile)
+    print('travis_fold:end:{}'.format(dump))
+
     return files
 
 
