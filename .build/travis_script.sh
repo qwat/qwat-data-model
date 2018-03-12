@@ -49,7 +49,7 @@ pum restore -p qwat_prod qwat_dump.backup
 pum baseline -p qwat_prod -t qwat_sys.info -d $DELTA_DIRS -b 1.2.1
 
 # Run init_qwat.sh to create the last version of qwat db used as the comp database
-printf "travis_fold:start:init_qwat\nInitialize database"
+printf "travis_fold:start:init-qwat\nInitialize database"
 $TRAVIS_BUILD_DIR/init_qwat.sh -p qwat_comp -s 21781 -r -n
 psql service=qwat_comp -f $EXTRA_DELTA_FILE
 echo "travis_fold:end:init-qwat"
