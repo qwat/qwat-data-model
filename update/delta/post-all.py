@@ -8,10 +8,10 @@ class RecreateViewsAndFunctions(DeltaPy):
 
         views_sh = os.path.join(self.delta_dir, '..', '..', 'ordinary_data', 'views',
                                 'rewrite_views.sh')
-        views_cmd = 'PGSERVICE=qwat_test SRID=21781 {}'.format(views_sh)
+        views_cmd = 'PGSERVICE={} SRID=21781 {}'.format(self.pg_service, views_sh)
         functions_sh = os.path.join(self.delta_dir, '..', '..', 'ordinary_data', 'functions',
                                     'rewrite_functions.sh')
-        functions_cmd = 'PGSERVICE=qwat_test SRID=21781 {}'.format(functions_sh)
+        functions_cmd = 'PGSERVICE={} SRID=21781 {}'.format(self.pg_service, functions_sh)
         os.system(views_cmd)
         os.system(functions_cmd)
 
