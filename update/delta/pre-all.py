@@ -15,15 +15,12 @@ class DropViews(DeltaPy):
             self.drop_views()
 
     def drop_views(self):
-        drop_sql = "{}../../ordinary_data/views/drop_views.sql".format(self.delta_dir)
-        pg = self.pg_service
-
         self.write_message("Dropping views")
 
-        # Compose command
-        cmd = 'psql "service = {pg}" -f {drop_sql}'.format(pg=pg, drop_sql=drop_sql)
+        drop_sql = os.path.join(self.delta_dir, '..', '..', 'ordinary_data', 'views',
+                                'drop_views.sql')
+        cmd = 'psql service={} -f {}'.format(self.pg_service, drop_sql)
         self.write_message(cmd)
-
-        # Execute command
         os.system(cmd)
+
         self.write_message("Dropping views: done")
