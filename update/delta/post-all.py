@@ -4,14 +4,15 @@ import os
 class RecreateViewsAndFunctions(DeltaPy):
 
     def run(self):
-
-        delta_dir = self.delta_dir
-
         self.write_message("Reloading views and functions")
 
-        views_sh = "PGSERVICE=qwat_test SRID=21781 {}../../ordinary_data/views/rewrite_views.sh".format(self.delta_dir)
-        functions_sh = "PGSERVICE=qwat_test SRID=21781 {}../../ordinary_data/functions/rewrite_functions.sh".format(self.delta_dir)
+        views_sh = os.path.join(self.delta_dir, '..', '..', 'ordinary_data', 'views',
+                                'rewrite_views.sh')
+        views_cmd = 'PGSERVICE={} SRID=21781 {}'.format(self.pg_service, views_sh)
+        functions_sh = os.path.join(self.delta_dir, '..', '..', 'ordinary_data', 'functions',
+                                    'rewrite_functions.sh')
+        functions_cmd = 'PGSERVICE={} SRID=21781 {}'.format(self.pg_service, functions_sh)
+        os.system(views_cmd)
+        os.system(functions_cmd)
 
-        # Execute commands
-        os.system(views_sh)
-        os.system(functions_sh)
+        self.write_message("Reloading views and functions: done")
