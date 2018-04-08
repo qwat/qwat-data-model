@@ -97,7 +97,7 @@ done
 
 
 # Check if pum is installed (will fail and stop the script in case of error)
-PUM_VERSION=$(pum -V)
+PUM_VERSION=$(pum -v)
 echo "PUM version: $PUM_VERSION"
 echo
 
