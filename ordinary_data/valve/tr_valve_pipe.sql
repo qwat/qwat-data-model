@@ -21,7 +21,7 @@ THEN
 				_valve_closed = valve_group.vclosed
 			FROM qwat_od.pipe pipe_dupp
 			INNER JOIN (
-			SELECT fk_pipe, count(id) - 1 AS vcount, false AS vclosed
+			SELECT fk_pipe, count(id) - 1 AS vcount, bool_or(closed) AS vclosed
 				FROM qwat_od.valve
 				WHERE fk_pipe = (
 					SELECT fk_pipe
@@ -38,7 +38,11 @@ ELSE
 			UPDATE qwat_od.pipe 
 			SET
 				_valve_count  = _valve_count - 1,
-				_valve_closed = false;
+				_valve_closed = false
+			WHERE pipe.id = (
+				SELECT fk_pipe
+				FROM qwat_od.valve
+				WHERE id = _valve_id);
 
 END IF;
 
