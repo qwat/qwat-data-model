@@ -60,7 +60,7 @@ shift
 done
 
 # Check if pum is installed
-PUM_VERSION=$(pum -v)
+PUM_VERSION=$(pum -V)
 if [[ $PUM_VERSION == '' ]]; then
     printf "\t${RED}PUM is not installed${NC}\n"
     echo "Please install PUM compatible with Python 3 (pip install pum)"
