@@ -16,6 +16,6 @@ INSERT INTO qwat_vl.worker_type (id, value_en, value_fr, value_ro ) VALUES (101,
 INSERT INTO qwat_vl.worker_type (id, value_en, value_fr, value_ro ) VALUES (102, 'unknown', 'inconnu', 'necunoscută');
 INSERT INTO qwat_vl.worker_type (id, value_en, value_fr, value_ro ) VALUES (103, 'to be determined', 'à déterminer', 'de determinat');
 
-INSERT INTO qwat_vl.worker_type (id,value_en,value_fr,value_ro) VALUES (8001,'leaks repairing','','rezolvare avarii');
-INSERT INTO qwat_vl.worker_type (id,value_en,value_fr,value_ro) VALUES (8002,'valves checking','','verificare vane');
-INSERT INTO qwat_vl.worker_type (id,value_en,value_fr,value_ro) VALUES (8003,'hydrants checking','','verificare hidranti');
+INSERT INTO qwat_vl.worker_type (id,value_en,value_fr,value_ro) VALUES (8001,'leaks repairing','réparation de fuites','rezolvare avarii');
+INSERT INTO qwat_vl.worker_type (id,value_en,value_fr,value_ro) VALUES (8002,'valves checking','vérification des vannes','verificare vane');
+INSERT INTO qwat_vl.worker_type (id,value_en,value_fr,value_ro) VALUES (8003,'hydrants checking','vérification des hydrants','verificare hidranti');
