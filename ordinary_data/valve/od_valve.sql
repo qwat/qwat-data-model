@@ -162,15 +162,14 @@ $BODY$
 	BEGIN
 	-- altitude is prioritary on Z value of the geometry (if both changed, only altitude is taken into account)
 	IF TG_OP = 'INSERT' THEN
-		IF NEW.altitude IS NULL THEN
+		IF NEW.altitude IS NOT NULL THEN
+			NEW.geometry := ST_SetSRID(ST_MakePoint( ST_X(NEW.geometry), ST_Y(NEW.geometry), NEW.altitude ), ST_SRID(NEW.geometry));
+		ELSIF ST_Z(NEW.geometry) IS NOT NULL THEN
 			NEW.altitude := ST_Z(NEW.geometry);
-		END IF;
-		IF ST_Z(NEW.geometry) IS NULL THEN
-			NEW.geometry := ST_MakePoint( ST_X(NEW.geometry), ST_Y(NEW.geometry), altitude );
 		END IF;
 	ELSIF TG_OP = 'UPDATE' THEN
 		IF NEW.altitude <> OLD.altitude THEN
-			NEW.geometry := ST_MakePoint( ST_X(NEW.geometry), ST_Y(NEW.geometry), altitude );
+			NEW.geometry := ST_SetSRID(ST_MakePoint( ST_X(NEW.geometry), ST_Y(NEW.geometry), NEW.altitude ), ST_SRID(NEW.geometry));
 		ELSIF ST_Z(NEW.geometry) <> ST_Z(OLD.geometry) THEN
 			NEW.altitude := ST_Z(NEW.geometry);
 		END IF;
@@ -179,6 +178,7 @@ $BODY$
 	END;
 $BODY$
 LANGUAGE plpgsql;
+
 COMMENT ON FUNCTION qwat_od.ft_valve_main_altitude() IS 'Trigger: when updating, check if altitude or Z value of geometry changed and synchronize them.';
 
 CREATE TRIGGER valve_main_altitude_update_trigger
