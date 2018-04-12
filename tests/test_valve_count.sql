@@ -50,6 +50,14 @@ INSERT INTO qwat_od.valve (id, fk_district, fk_pressurezone, fk_distributor,
        2016, True, '{1,2}', 9.5, True,
        st_setsrid('point(560010 150010 0)'::geometry,21781));
 
+
+-- The CALCULATED
+SELECT id, _valve_count FROM qwat_od.pipe order by id;
+
+UPDATE qwat_od.valve SET geometry =  st_setsrid('point(559990 150010 0)'::geometry,21781) WHERE id = 2;
+
+SELECT id, _valve_count FROM qwat_od.pipe order by id;
+
 INSERT INTO qwat_od.valve (id, fk_district, fk_pressurezone, fk_distributor,
        fk_precision, fk_precisionalti, fk_status, fk_valve_type, fk_valve_function, fk_valve_actuation, fk_object_reference,
        year, closed, fk_maintenance,altitude,schema_force_visible,
@@ -57,22 +65,14 @@ INSERT INTO qwat_od.valve (id, fk_district, fk_pressurezone, fk_distributor,
     VALUES (3, 1, 1, 1,
        101, 101, 101, 101, 6108, 101, 101,
        2016, True, '{1,2}', 9.5, True,
-       st_setsrid('point(559990 150010 0)'::geometry,21781));
+       st_setsrid('point(560010 150010 0)'::geometry,21781));
 
-INSERT INTO qwat_od.valve (id, fk_district, fk_pressurezone, fk_distributor,
-       fk_precision, fk_precisionalti, fk_status, fk_valve_type, fk_valve_function, fk_valve_actuation, fk_object_reference,
-       year, closed, fk_maintenance,altitude,schema_force_visible,
-       geometry)
-    VALUES (4, 1, 1, 1,
-       101, 101, 101, 101, 6108, 101, 101,
-       2016, True, '{1,2}', 9.5, True,
-       st_setsrid('point(559990 150010 0)'::geometry,21781));
-
--- The CALCULATED
 SELECT id, _valve_count FROM qwat_od.pipe order by id;
 
-DELETE FROM qwat_od.valve WHERE id = 4;
+DELETE FROM qwat_od.valve WHERE id = 2;
+
 SELECT id, _valve_count FROM qwat_od.pipe order by id;
+
 
 -- restore the initial state
 DELETE FROM qwat_od.valve;

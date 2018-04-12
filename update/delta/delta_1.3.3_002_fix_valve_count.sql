@@ -87,7 +87,7 @@ LANGUAGE plpgsql;
 COMMENT ON FUNCTION qwat_od.ft_valve() IS 'Trigger: when updating a valve, reevaluate old and new pipes for number of valves on them.';
 
 CREATE TRIGGER tr_valve_trigger
-	AFTER INSERT
+	AFTER INSERT OR UPDATE
 	ON qwat_od.valve
 	FOR EACH ROW
 		EXECUTE PROCEDURE qwat_od.ft_valve();
@@ -118,3 +118,18 @@ CREATE TRIGGER tr_valve_delete_trigger
 
 COMMENT ON TRIGGER tr_valve_trigger ON qwat_od.valve 
 IS 'Trigger: when deleting a valve, reevaluate old pipes for number of valves on them.';
+
+CREATE OR REPLACE FUNCTION qwat_od.ft_valve_geom() RETURNS TRIGGER AS
+$BODY$
+    BEGIN
+        NEW.fk_pipe             := qwat_od.fn_pipe_get_id(NEW.geometry);
+        NEW.fk_district         := qwat_od.fn_get_district(NEW.geometry);
+        NEW.fk_pressurezone     := qwat_od.fn_get_pressurezone(NEW.geometry);
+	IF TG_OP = 'UPDATE' THEN
+		PERFORM qwat_od.fn_pipe_delete_valve(OLD.id);
+	END IF;
+
+        RETURN NEW;
+    END;
+$BODY$
+LANGUAGE plpgsql;
