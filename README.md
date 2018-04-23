@@ -6,8 +6,9 @@ This repository contains the definition of the data model used by [QWAT](https:/
 
 A full web data model documentation with diagrams and relations is available [here](https://rawgit.com/qwat/qwat-data-model/master/diagram/index.html).
 
-# Model changelog
+# Model changelog ([Detailed](https://github.com/qwat/qwat-data-model/releases/))
 
+- v1.3.2 : SIRE extension and infrastructure enhancements
 - v1.3.1 : fix z computation logic for valves
 - v1.3.0 : Switch from custom version control to generic Postgres Update Manager
 - v1.2.8 : add hardcoded schema_visible field to pipes and valves for enhanced performance on QGIS
