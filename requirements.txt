@@ -1,3 +1,3 @@
-pum==0.5.13
+pum==0.6.7
 psycopg2-binary
 pyyaml
