@@ -76,4 +76,15 @@ printf "travis_fold:start:upgrade\nRun upgrade"
 pum upgrade -p qwat_prod -t qwat_sys.info -d $DELTA_DIRS
 echo "travis_fold:end:upgrade"
 
+# Extend qwat_prod with a customization
+printf "travis_fold:start:init-sire\nExtend database with a customization"
+$TRAVIS_BUILD_DIR/.build/customizations/sigip/init_sigip.sh -p qwat_prod -s 21781
+echo "travis_fold:end:init-sire"
+
+# Run upgrade with customizations/sigip/delta as an extra delta dir
+DELTA_DIRS="$DELTA_DIRS $TRAVIS_BUILD_DIR/.build/customizations/sigip/delta"
+printf "travis_fold:start:upgrade\nRun upgrade"
+pum upgrade -p qwat_prod -t qwat_sys.info -d $DELTA_DIRS
+echo "travis_fold:end:upgrade"
+
 exit 0
