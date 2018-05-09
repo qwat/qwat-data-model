@@ -7,6 +7,13 @@
 # Régis Haubourg
 # ##########
 
+GNUGETOPT="getopt"
+if [[ "$OSTYPE" =~ FreeBSD* ]] || [[ "$OSTYPE" =~ darwin* ]]; then
+	GNUGETOPT="/usr/local/bin/getopt"
+elif [[ "$OSTYPE" =~ openbsd* ]]; then
+	GNUGETOPT="gnugetopt"
+fi
+
 # Default values
 PGSERVICE=~/.pg_service.conf
 SRID=21781

@@ -87,10 +87,7 @@ printf "travis_fold:start:upgrade\nRun upgrade"
 pum upgrade -p qwat_prod -t qwat_sys.info -d $DELTA_DIRS
 echo "travis_fold:end:upgrade"
 
-
 # New test for upgrade
 psql service=qwat_prod -c "DROP TABLE qwat_table_test_"
-
 yes | $TRAVIS_BUILD_DIR/update/upgrade_db.sh -p $PGSERVICEFILE -c -d  $TRAVIS_BUILD_DIR/extensions/ch_vd_sire/init_sire.sh -d $TRAVIS_BUILD_DIR/.build/customizations/sigip/init_sigip.sh -t /tmp/qwat.dmp -u
-
 exit 0

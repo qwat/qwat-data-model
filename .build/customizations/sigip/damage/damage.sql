@@ -1,4 +1,4 @@
-CREATE TABLE IF NOT EXISTS qwat_od.damage
+CREATE TABLE qwat_od.damage
 (
   id serial NOT NULL,
   fk_cause integer NOT NULL,
