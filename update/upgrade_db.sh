@@ -21,6 +21,7 @@ CLEAN=0
 TMPFILEDUMP=/tmp/qwat_dump
 UPGRADE=0
 SCRIPTDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+EXTDIRS=()
 DELTADIRS=()
 INITFILES=()
 
@@ -36,14 +37,14 @@ case $key in
     -h|--help)
         echo "Arguments:"
         echo -e "\t-c|--clean\t\tCleans comp and test DB before starting"
-        echo -e "\t-d|--initdirs\tAdds local customization init files"
+        echo -e "\t-e|--extdirs\tAdds local customization directories"
         echo -e "\t-h|--help\t\tShow this help screen"
         echo -e "\t-t|--tmppath\t\tTemporary file for QWAT dump"
         echo -e "\t-u|--upgrade\t\tUpgrade your real DB (perform all deltas on it)"
-	echo -e "\t-p|--pgservicefile\t\tUse this pgservicefile"
+        echo -e "\t-p|--pgservicefile\t\tUse this pgservicefile"
         echo
         echo -e "Usage example: "
-        echo -e "\t./upgrade_db.sh -c -d /path/to/local/deltas/ -t /tmp/qwat_tmp.dmp -u"
+        echo -e "\t./upgrade_db.sh -c -e /path/to/local/deltas/ -t /tmp/qwat_tmp.dmp -u"
         echo -e "\t./upgrade_db.sh -c -t /tmp/qwat_tmp.dmp -u"
         echo
         exit 0
@@ -52,8 +53,8 @@ case $key in
         CLEAN=1
     ;;
     # TODO: Add arguments
-    -d|--initdirs)
-        INITFILES+=("$2")
+    -e|--extdirs)
+        EXTDIRS+=("$2")
         shift # past argument
     ;;
     -t|--tmppath)
@@ -91,17 +92,11 @@ if [ ! -f $VERSION_FILE ]; then
 fi
 VERSION=$(cat $VERSION_FILE)
 
-# Get delta dirs from INITFILES
-# A delta dir must be in the same folder like the initfiles:
-# - foo
-# |	init.sh
-# |	delta
-# |	|	pre-all.py
-# |	|	post-all.py
-# ...
-for i in "${INITFILES[@]}"
+for i in "${EXTDIRS[@]}"
 do
-	DELTADIRS+=("`dirname $i`/delta")
+	DELTADIRS+=("$i/delta")
+	INITFILES+=("$i/init.sh")
+	echo ${INITFILES[*]}
 done
 
 if [[ -z "$PGSERVICEFILE" ]] || [[ ! -f "$PGSERVICEFILE" ]]; then
@@ -174,6 +169,7 @@ ${SCRIPTDIR}/../init_qwat.sh -p qwat_comp -s $SRID -r
 # Initialize qwat db with extensions/customizations
 for i in "${INITFILES[@]}"
 do
+	echo $i
 	$i -p qwat_comp -s $SRID
 done
 
