@@ -37,14 +37,14 @@ case $key in
     -h|--help)
         echo "Arguments:"
         echo -e "\t-c|--clean\t\tCleans comp and test DB before starting"
-        echo -e "\t-e|--extdirs\tAdds local customization directories"
+        echo -e "\t-e|--extdirs\tAdds local customization or extension directories"
         echo -e "\t-h|--help\t\tShow this help screen"
         echo -e "\t-t|--tmppath\t\tTemporary file for QWAT dump"
         echo -e "\t-u|--upgrade\t\tUpgrade your real DB (perform all deltas on it)"
         echo -e "\t-p|--pgservicefile\t\tUse this pgservicefile"
         echo
         echo -e "Usage example: "
-        echo -e "\t./upgrade_db.sh -c -e /path/to/local/deltas/ -t /tmp/qwat_tmp.dmp -u"
+        echo -e "\t./upgrade_db.sh -c -e /path/to/local/extension_or_customization -t /tmp/qwat_tmp.dmp -u"
         echo -e "\t./upgrade_db.sh -c -t /tmp/qwat_tmp.dmp -u"
         echo
         exit 0
