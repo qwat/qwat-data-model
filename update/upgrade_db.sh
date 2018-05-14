@@ -15,13 +15,15 @@ elif [[ "$OSTYPE" =~ openbsd* ]]; then
 fi
 
 # Default values
+PGSERVICEFILE=~/.pg_service.conf
 SRID=21781
 CLEAN=0
-LOCALDIRGIVEN=0
 TMPFILEDUMP=/tmp/qwat_dump
 UPGRADE=0
 SCRIPTDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-DELTADIR="$( cd "$( "${SCRIPTDIR}/delta" )" && pwd)"
+EXTDIRS=()
+DELTADIRS=()
+INITFILES=()
 
 RED='\033[0;31m'
 GREEN='\033[0;32m'
@@ -35,13 +37,14 @@ case $key in
     -h|--help)
         echo "Arguments:"
         echo -e "\t-c|--clean\t\tCleans comp and test DB before starting"
-        echo -e "\t-d|--localdirpath\tAdds local customization delta files"
+        echo -e "\t-e|--extdirs\tAdds local customization or extension directories"
         echo -e "\t-h|--help\t\tShow this help screen"
         echo -e "\t-t|--tmppath\t\tTemporary file for QWAT dump"
         echo -e "\t-u|--upgrade\t\tUpgrade your real DB (perform all deltas on it)"
+        echo -e "\t-p|--pgservicefile\t\tUse this pgservicefile"
         echo
         echo -e "Usage example: "
-        echo -e "\t./upgrade_db.sh -c -d /path/to/local/deltas/ -t /tmp/qwat_tmp.dmp -u"
+        echo -e "\t./upgrade_db.sh -c -e /path/to/local/extension_or_customization -t /tmp/qwat_tmp.dmp -u"
         echo -e "\t./upgrade_db.sh -c -t /tmp/qwat_tmp.dmp -u"
         echo
         exit 0
@@ -49,9 +52,9 @@ case $key in
     -c|--clean)
         CLEAN=1
     ;;
-    -d|--localdirpath)
-        LOCALDIR="$2"
-        LOCALDIRGIVEN=1
+    # TODO: Add arguments
+    -e|--extdirs)
+        EXTDIRS+=("$2")
         shift # past argument
     ;;
     -t|--tmppath)
@@ -62,6 +65,9 @@ case $key in
         UPGRADE=1
         shift # past argument
     ;;
+    -p|--pgservicefile)
+	PGSERVICEFILE="$2"
+	shift # past argument
 esac
 shift
 done
@@ -86,14 +92,28 @@ if [ ! -f $VERSION_FILE ]; then
 fi
 VERSION=$(cat $VERSION_FILE)
 
+for i in "${EXTDIRS[@]}"
+do
+	DELTADIRS+=("$i/delta")
+	INITFILES+=("$i/init.sh")
+	echo ${INITFILES[*]}
+done
+
+if [[ -z "$PGSERVICEFILE" ]] || [[ ! -f "$PGSERVICEFILE" ]]; then
+    echo "No valid PG service file given."
+    exit 0
+fi
+
 # set -- "${POSITIONAL[@]}" # restore positional parameters
 echo "Parameters:"
-printf "\t${GREEN}CLEAN       = ${CLEAN}${NC}\n"
-printf "\t${GREEN}LOCALDIR    = ${LOCALDIR}${NC}\n"
-printf "\t${GREEN}TMPFILEDUMP = ${TMPFILEDUMP}${NC}\n"
-printf "\t${GREEN}UPGRADE     = ${UPGRADE}${NC}\n"
+printf "\t${GREEN}PGSERVICEFILE = ${PGSERVICEFILE}${NC}\n"
+printf "\t${GREEN}CLEAN         = ${CLEAN}${NC}\n"
+printf "\t${GREEN}INITFILES     = ${INITFILES[*]}${NC}\n"
+printf "\t${GREEN}DELTADIRS     = ${DELTADIRS[*]}${NC}\n"
+printf "\t${GREEN}TMPFILEDUMP   = ${TMPFILEDUMP}${NC}\n"
+printf "\t${GREEN}UPGRADE       = ${UPGRADE}${NC}\n"
 echo
-printf "\t${GREEN}PUM_VERSION = $PUM_VERSION${NC}\n"
+printf "\t${GREEN}PUM_VERSION   = $PUM_VERSION${NC}\n"
 echo
 printf "\t${GREEN}Current QWAT model version = ${VERSION}${NC}\n"
 echo
@@ -105,14 +125,14 @@ if [[ $CLEAN -eq 1 ]]; then
     sleep 1
 
     # Read DB info from pg_service.conf file
-    DBCOMP_NAME=$(sed -n -e "/^\[qwat_comp]/,/^\[/ p" ~/.pg_service.conf | grep "^dbname" | cut -d"=" -f2)
-    DBCOMP_USER=$(sed -n -e "/^\[qwat_comp]/,/^\[/ p" ~/.pg_service.conf | grep "^user" | cut -d"=" -f2)
-    DBCOMP_HOST=$(sed -n -e "/^\[qwat_test]/,/^\[/ p" ~/.pg_service.conf | grep "^host" | cut -d"=" -f2)
-    DBCOMP_PORT=$(sed -n -e "/^\[qwat_test]/,/^\[/ p" ~/.pg_service.conf | grep "^port" | cut -d"=" -f2)
-    DBTEST_NAME=$(sed -n -e "/^\[qwat_test]/,/^\[/ p" ~/.pg_service.conf | grep "^dbname" | cut -d"=" -f2)
-    DBTEST_USER=$(sed -n -e "/^\[qwat_test]/,/^\[/ p" ~/.pg_service.conf | grep "^user" | cut -d"=" -f2)
-    DBTEST_HOST=$(sed -n -e "/^\[qwat_test]/,/^\[/ p" ~/.pg_service.conf | grep "^host" | cut -d"=" -f2)
-    DBTEST_PORT=$(sed -n -e "/^\[qwat_test]/,/^\[/ p" ~/.pg_service.conf | grep "^port" | cut -d"=" -f2)
+    DBCOMP_NAME=$(sed -n -e "/^\[qwat_comp]/,/^\[/ p" $PGSERVICEFILE | grep "^dbname" | cut -d"=" -f2)
+    DBCOMP_USER=$(sed -n -e "/^\[qwat_comp]/,/^\[/ p" $PGSERVICEFILE | grep "^user" | cut -d"=" -f2)
+    DBCOMP_HOST=$(sed -n -e "/^\[qwat_test]/,/^\[/ p" $PGSERVICEFILE | grep "^host" | cut -d"=" -f2)
+    DBCOMP_PORT=$(sed -n -e "/^\[qwat_test]/,/^\[/ p" $PGSERVICEFILE | grep "^port" | cut -d"=" -f2)
+    DBTEST_NAME=$(sed -n -e "/^\[qwat_test]/,/^\[/ p" $PGSERVICEFILE | grep "^dbname" | cut -d"=" -f2)
+    DBTEST_USER=$(sed -n -e "/^\[qwat_test]/,/^\[/ p" $PGSERVICEFILE | grep "^user" | cut -d"=" -f2)
+    DBTEST_HOST=$(sed -n -e "/^\[qwat_test]/,/^\[/ p" $PGSERVICEFILE | grep "^host" | cut -d"=" -f2)
+    DBTEST_PORT=$(sed -n -e "/^\[qwat_test]/,/^\[/ p" $PGSERVICEFILE | grep "^port" | cut -d"=" -f2)
 
     if [ ! -z "$DBCOMP_HOST" ]; then
 	    COMPHOST="-h $DBCOMP_HOST"
@@ -146,15 +166,22 @@ printf "\n${BLUE}Initializing qwat comparison db${NC}\n\n"
 sleep 1
 ${SCRIPTDIR}/../init_qwat.sh -p qwat_comp -s $SRID -r
 
+# Initialize qwat db with extensions/customizations
+for i in "${INITFILES[@]}"
+do
+	echo $i
+	$i -p qwat_comp -s $SRID
+done
+
 # add pum metadata to DB using current version
 printf "\n${BLUE}PUM baseline on qwat_comp${NC}\n\n"
 sleep 1
 
-pum baseline -p qwat_comp -t qwat_sys.info -d $DELTADIR $LOCALDIR -b $VERSION
+pum baseline -p qwat_comp -t qwat_sys.info -d ${DELTADIRS[*]} -b $VERSION
 
 # checks delta files from 1.0 lead to the same version as current version, if yes upgrades
 printf "\n${BLUE}Test and upgrade qwat core${NC}\n\n"
 sleep 1
 
 #pum test-and-upgrade -pp qwat_prod -pt qwat_test -pc qwat_comp -t qwat_sys.info -d delta/ -f $TMPFILEDUMP -i columns constraints views sequences indexes triggers functions rules
-pum test-and-upgrade -x -pp qwat_prod -pt qwat_test -pc qwat_comp -t qwat_sys.info -d $DELTADIR $LOCALDIR -f $TMPFILEDUMP -i views rules
+pum test-and-upgrade -x -pp qwat_prod -pt qwat_test -pc qwat_comp -t qwat_sys.info -d ${DELTADIRS[*]} -f $TMPFILEDUMP -i views rules
