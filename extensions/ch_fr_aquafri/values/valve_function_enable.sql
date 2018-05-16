@@ -1,0 +1,1 @@
+INSERT INTO qwat_vl.valve_function (id, vl_active, short_fr, value_fr, schema_visible) VALUES (10001,true,'RO','robinet de prélèvement',true) ON CONFLICT (id) DO UPDATE  SET vl_active = 'TRUE';

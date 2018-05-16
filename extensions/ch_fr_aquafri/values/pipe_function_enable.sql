@@ -1,0 +1,1 @@
+INSERT INTO qwat_vl.pipe_function (id, vl_active, short_fr, value_fr, schema_visible, major) VALUES (10001,true,'SP','conduite sprinkler',true,false) ON CONFLICT (id) DO UPDATE  SET vl_active = 'TRUE';

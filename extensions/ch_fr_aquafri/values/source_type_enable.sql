@@ -1,0 +1,1 @@
+INSERT INTO qwat_vl.source_type (id, vl_active, short_fr, value_fr) VALUES (10001,true,'PH','captage eau nappe avec drains horizontaux') ON CONFLICT (id) DO UPDATE  SET vl_active = 'TRUE';

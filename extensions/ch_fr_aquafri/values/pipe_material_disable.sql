@@ -1,0 +1,1 @@
+UPDATE qwat_vl.pipe_material SET vl_active = 'FALSE' WHERE id >= 10001 AND id <= 10048;

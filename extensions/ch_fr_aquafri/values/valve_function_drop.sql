@@ -1,0 +1,1 @@
+DELETE FROM qwat_vl.valve_function WHERE id = 10001; --IN(10001,10002) or  id >= 10001 AND id <= 100XX;

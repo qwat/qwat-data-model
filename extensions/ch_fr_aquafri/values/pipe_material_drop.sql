@@ -1,0 +1,1 @@
+DELETE FROM qwat_vl.pipe_material WHERE id >= 10001 AND id <= 10048;
