@@ -1,0 +1,1 @@
+UPDATE qwat_vl.valve_function SET vl_active = 'FALSE' WHERE id = 10001; --IN(10001,10002) or  id >= 10001 AND id <= 100XX;
