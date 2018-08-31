@@ -1,4 +1,3 @@
-﻿
 DROP TRIGGER IF EXISTS tr_fancy_value ON qwat_vl.pipe_material;
 
 CREATE TRIGGER tr_fancy_value
