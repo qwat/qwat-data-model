@@ -1,4 +1,4 @@
-/*
+﻿/*
 	qWat - QGIS Water Module
 
 	SQL file :: pipe_material table
@@ -91,7 +91,7 @@ $BODY$ LANGUAGE plpgsql;
 COMMENT ON FUNCTION qwat_vl.pipe_material_displayname() IS 'Fcn/Trigger: updates the fancy value_fr, value_ro and value_en in the material table.';
 
 CREATE TRIGGER tr_fancy_value
-	BEFORE INSERT OR UPDATE OF short_fr, short_ro, short_en, diameter ON qwat_vl.pipe_material
+	BEFORE INSERT OR UPDATE OF short_fr, short_ro, short_en, diameter, pressure_nominal ON qwat_vl.pipe_material
 	FOR EACH ROW
 	EXECUTE PROCEDURE qwat_vl.pipe_material_displayname();
 COMMENT ON TRIGGER tr_fancy_value ON qwat_vl.pipe_material IS 'Trigger: updates the fancy value_fr, value_ro and value_en in the material table.';
