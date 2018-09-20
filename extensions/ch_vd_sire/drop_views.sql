@@ -6,4 +6,3 @@ DROP VIEW IF EXISTS qwat_ch_vd_sire.station_pompage;
 DROP VIEW IF EXISTS qwat_ch_vd_sire.station_traitement;
 DROP VIEW IF EXISTS qwat_ch_vd_sire.reservoir;
 DROP VIEW IF EXISTS qwat_ch_vd_sire.captage;
-DROP VIEW IF EXISTS qwat_ch_vd_sire.hydrante;
