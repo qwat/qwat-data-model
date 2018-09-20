@@ -25,8 +25,8 @@ CREATE VIEW qwat_ch_vd_sire.vanne_clapet AS
 				ELSE 1
 			END AS Etat_Connexion
 		, altitude AS Altitude
-		, NULL AS ID_Distributeur_2
-		, NULL AS ID_Zone_Pression_2
+		, NULL::text AS ID_Distributeur_2
+		, NULL::text AS ID_Zone_Pression_2
 		, CASE
 		    WHEN fk_valve_function = 6107 AND fk_valve_actuation = 6404 THEN 1
 				ELSE 0
