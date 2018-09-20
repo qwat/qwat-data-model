@@ -1,20 +1,17 @@
-
-
-
 CREATE VIEW qwat_ch_vd_sire.vanne_clapet AS
 	SELECT
 		id AS ID_Num
-		, qwat_ext_ch_vd_sire_remarque|| remark AS remarque
-		, NULL AS Date_de_saisie -- TODO
-		, NULL AS Dern_M_a_J -- TODO
+		, qwat_ext_ch_vd_sire_remarque|| remark AS Remarque
 		, precision_code_sire AS Precision_Geo
-		, fk_distributor AS id_distributeur
+		, distributor_name AS Nom_Distributeur
+		, fk_distributor AS ID_Distributeur
 		, qwat_ext_ch_vd_sire_etat_exploitation AS Etat_Exploitation
 		, year AS Annee_Construction
 		, NULL::text AS Nom_Descriptif
-		, folder_identification AS Numero_dossier
-		, fk_pressurezone AS ID_Zone_pression
-		, 1 AS Type_eau
+		, folder_identification AS Numero_Dossier
+		, pressurezone_name AS Nom_Zone_Pression
+		, fk_pressurezone AS ID_Zone_Pression
+		, 1 AS Type_Eau
 		, CASE
 		    WHEN fk_valve_function = 6107 THEN 0 -- incendie
 				WHEN fk_valve_type = 6307 THEN 3 -- clapet
@@ -26,16 +23,15 @@ CREATE VIEW qwat_ch_vd_sire.vanne_clapet AS
 				WHEN fk_valve_type = 6307 THEN 0
 				WHEN closed IS FALSE THEN 2
 				ELSE 1
-			END AS Etat_de_la_Connexion
+			END AS Etat_Connexion
 		, altitude AS Altitude
 		, NULL AS ID_Distributeur_2
-		, NULL AS ID_Zone_pression_2
+		, NULL AS ID_Zone_Pression_2
 		, CASE
 		    WHEN fk_valve_function = 6107 AND fk_valve_actuation = 6404 THEN 1
 				ELSE 0
-			END AS Telecommande_incendie
-		, NULL AS ID_Centrale_exploitation
-		, 6 AS Type_transmission
+			END AS Telecommande_Incendie
+		, 6 AS Type_Transmission
     , ST_Force2D(geometry) AS geometry
 	FROM qwat_od.vw_export_valve
 	WHERE
