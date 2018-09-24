@@ -161,10 +161,12 @@ if [[ $CLEAN -eq 1 ]]; then
 fi
 
 # initialize qwat db comparison db
+# do not use -r to avoid re-creating the roles, as the roles should already
+# be there for the main qwat_prod database
 printf "\n${BLUE}Initializing qwat comparison db${NC}\n\n"
 
 sleep 1
-${SCRIPTDIR}/../init_qwat.sh -p qwat_comp -s $SRID -r
+${SCRIPTDIR}/../init_qwat.sh -p qwat_comp -s $SRID
 
 # Initialize qwat db with extensions/customizations
 for i in "${INITFILES[@]}"
