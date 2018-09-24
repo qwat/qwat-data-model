@@ -73,4 +73,13 @@ if [[ "$DROPSCHEMA" -eq 1 ]]; then
          -c "DROP SCHEMA IF EXISTS qwat_sigip CASCADE"
 fi
 
-PGSERVICE=${PGSERVICE} SRID=${SRID} ${DIR}/inserts.sh
+# create the qwat_sigip schema
+psql service=${PGSERVICE} -c "CREATE SCHEMA IF NOT EXISTS qwat_sigip;"
+
+# add the qwat_od.damage table
+psql service=${PGSERVICE} -v ON_ERROR_STOP=1 -v SRID=$SRID -f ${DIR}/damage/damage.sql
+
+# create the sigip views
+PGSERVICE=${PGSERVICE} SRID=${SRID} ${DIR}/insert_views.sh
+
+exit 0

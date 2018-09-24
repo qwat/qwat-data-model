@@ -5,10 +5,6 @@ set -e
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-psql service=${PGSERVICE} -c "CREATE SCHEMA IF NOT EXISTS qwat_sigip;"
-
-psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f ${DIR}/damage/damage.sql
-
 psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f ${DIR}/views/damage.sql
 psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f ${DIR}/views/hydrant.sql
 psql -v ON_ERROR_STOP=1 -v SRID=$SRID -f ${DIR}/views/installation.sql
