@@ -1,17 +1,15 @@
 CREATE VIEW qwat_ch_vd_sire.regulation_pression AS
 	SELECT
 		id AS ID_Num
-		, qwat_ext_ch_vd_sire_remarque|| remark AS remarque
-		, NULL AS Date_de_saisie -- TODO
-		, NULL AS Dern_M_a_J -- TODO
+		, qwat_ext_ch_vd_sire_remarque || remark AS Remarque
 		, precision_code_sire AS Precision_Geo
-		, fk_distributor AS id_distributeur
+		, fk_distributor AS ID_Distributeur
 		, qwat_ext_ch_vd_sire_etat_exploitation AS Etat_Exploitation
 		, year AS Annee_Construction
 		, NULL::text AS Nom_Descriptif
-		, folder_identification AS Numero_dossier
-		, fk_pressurezone AS ID_Zone_pression
-		, watertype_code_sire AS Type_eau
+		, folder_identification AS Numero_Dossier
+		, fk_pressurezone AS ID_Zone_Pression
+		, watertype_code_sire AS Type_Eau
 		, CASE
 		    WHEN installation_type = 'pump' THEN 2
 				ELSE 0
@@ -19,13 +17,12 @@ CREATE VIEW qwat_ch_vd_sire.regulation_pression AS
 		, altitude as Altitude
 		, 1 as Etat_Connexion
 		, NULL AS ID_Distributeur_2
-		, NULL AS ID_Zone_pression_2
+		, NULL AS ID_Zone_Pression_2
 		, 0 AS Type_Regulation
-		, NULL AS Valeur_Consigne_reg
-		, 2 AS Telecommande_incendie
-		, NULL AS ID_Centrale_exploitation
-		, remote_code_sire AS Type_transmission
-		, qwat_ext_ch_vd_sire_adesafecter AS A_Desafecter_PDDE
+		, NULL AS Valeur_Consigne_Reg
+		, 2 AS Telecommande_Incendie
+		, 0 AS Centrale_Telecommande
+		, qwat_ext_ch_vd_sire_adesafecter AS A_Desaffecter_PDDE
 		, ST_Force2D(geometry) AS geometry
 	FROM qwat_od.vw_export_installation
 	WHERE
@@ -35,31 +32,25 @@ CREATE VIEW qwat_ch_vd_sire.regulation_pression AS
 
 	SELECT
 		id AS ID_Num
-		, qwat_ext_ch_vd_sire_remarque|| remark AS remarque
-		, NULL AS Date_de_saisie -- TODO
-		, NULL AS Dern_M_a_J -- TODO
+		, qwat_ext_ch_vd_sire_remarque || remark AS Remarque
 		, precision_code_sire AS Precision_Geo
-		, fk_distributor AS id_distributeur
+		, fk_distributor AS ID_Distributeur
 		, qwat_ext_ch_vd_sire_etat_exploitation AS Etat_Exploitation
 		, year AS Annee_Construction
 		, NULL::text AS Nom_Descriptif
-		, folder_identification AS Numero_dossier
-		, fk_pressurezone AS ID_Zone_pression
-		, 1 AS Type_eau
+		, folder_identification AS Numero_Dossier
+		, fk_pressurezone AS ID_Zone_Pression
+		, 1 AS Type_Eau
 		, 1 AS Genre
 		, altitude as Altitude
 		, 1 as Etat_Connexion
 		, NULL AS ID_Distributeur_2
 		, NULL AS ID_Zone_pression_2
 		, 0 AS Type_Regulation
-		, NULL AS Valeur_Consigne_reg
-		, 2 AS Telecommande_incendie
-		, NULL AS ID_Centrale_exploitation
-		, CASE
-				WHEN fk_valve_actuation = 6404 THEN 6
-				ELSE 0
-			END AS Type_transmission
-		, qwat_ext_ch_vd_sire_adesafecter AS A_Desafecter_PDDE
+		, NULL AS Valeur_Consigne_Reg
+		, 2 AS Telecommande_Incendie
+		, 0 AS Centrale_Telecommande
+		, qwat_ext_ch_vd_sire_adesafecter AS A_Desaffecter_PDDE
     , ST_Force2D(geometry) AS geometry
 	FROM qwat_od.vw_export_valve
 	WHERE fk_valve_function = 6101  -- vanne régulation
