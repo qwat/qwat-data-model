@@ -13,12 +13,12 @@ INSERT INTO qwat_vl.hydrant_output (id, value_en, value_fr, value_ro ) VALUES (1
 INSERT INTO qwat_vl.hydrant_output (id, value_en, value_fr, value_ro ) VALUES (102, 'unknown', 'inconnu', 'necunoscută');
 INSERT INTO qwat_vl.hydrant_output (id, value_en, value_fr, value_ro ) VALUES (103, 'to be determined', 'à déterminer', 'de determinat');
 
-INSERT INTO qwat_vl.hydrant_output (id,value_fr) VALUES (7401,'1x75');
-INSERT INTO qwat_vl.hydrant_output (id,value_fr) VALUES (7402,'2x75');
-INSERT INTO qwat_vl.hydrant_output (id,value_fr) VALUES (7403,'3x75');
-INSERT INTO qwat_vl.hydrant_output (id,value_fr) VALUES (7404,'2x55');
-INSERT INTO qwat_vl.hydrant_output (id,value_fr) VALUES (7405,'1x55_1x75');
-INSERT INTO qwat_vl.hydrant_output (id,value_fr) VALUES (7406,'2x55_1x75');
-INSERT INTO qwat_vl.hydrant_output (id,value_fr) VALUES (7407,'2x55_1x100');
+INSERT INTO qwat_vl.hydrant_output (id,value_fr,value_ro) VALUES (7401,'1x75','1x75');
+INSERT INTO qwat_vl.hydrant_output (id,value_fr,value_ro) VALUES (7402,'2x75','2x75');
+INSERT INTO qwat_vl.hydrant_output (id,value_fr,value_ro) VALUES (7403,'3x75','3x75');
+INSERT INTO qwat_vl.hydrant_output (id,value_fr,value_ro) VALUES (7404,'2x55','2x55');
+INSERT INTO qwat_vl.hydrant_output (id,value_fr,value_ro) VALUES (7405,'1x55_1x75','1x55_1x75');
+INSERT INTO qwat_vl.hydrant_output (id,value_fr,value_ro) VALUES (7406,'2x55_1x75','2x55_1x75');
+INSERT INTO qwat_vl.hydrant_output (id,value_fr,value_ro) VALUES (7407,'2x55_1x100','2x55_1x100');
 
 
