@@ -29,6 +29,7 @@ psql -v ON_ERROR_STOP=1 -c "$(${DIR}/export/export_printmap.py ${PGSERVICE})"
 psql -v ON_ERROR_STOP=1 -c "$(${DIR}/export/export_remote.py ${PGSERVICE})"
 psql -v ON_ERROR_STOP=1 -c "$(${DIR}/export/export_subscriber.py ${PGSERVICE})"
 psql -v ON_ERROR_STOP=1 -c "$(${DIR}/export/export_leak.py ${PGSERVICE})"  # depends on export_pipe
+psql service=${PGSERVICE} -v ON_ERROR_STOP=1 -v SRID=$SRID -f ${DIR}/export/ft_hydrant.sql
 
 
 # draw lines
