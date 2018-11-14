@@ -25,25 +25,25 @@ CREATE TABLE qwat_sys.settings
 ALTER TABLE qwat_sys.settings
   ADD CONSTRAINT check_value
   CHECK (
-		case when type in ('integer'::regtype,'double precision'::regtype) then
-			case when v_max is not null and v_min is not null then
-				value::double precision <= v_max and value::double precision >= v_min
-			when v_max is not null then
+		CASE WHEN type IN ('integer'::regtype,'double precision'::regtype) THEN
+			CASE WHEN v_max IS NOT NULL AND v_min IS NOT NULL THEN
+				value::double precision <= v_max AND value::double precision >= v_min
+			WHEN v_max IS NOT NULL THEN
 				value::double precision <= v_max 
-			when v_min is not null then
+			WHEN v_min IS NOT NULL THEN
 				value::double precision >= v_min
-			else
+			ELSE
 				true
-			end
-		else
+			END
+		ELSE
 			true
-		end
-	and
-		case when v_not_null then
-			value is not null
-		else
+		END
+	AND
+		CASE WHEN v_not_null THEN
+			value IS NOT NULL
+		ELSE
 			true
-		end
+		END
 	);
 
 /* trigger to create get function for quick access to the setting */
