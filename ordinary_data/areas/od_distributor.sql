@@ -5,7 +5,7 @@
 */
 
 
-CREATE TABLE qwat_od.distributor ( id SERIAL, CONSTRAINT distributor_pk PRIMARY KEY (id) );
+CREATE TABLE qwat_od.distributor ( id serial PRIMARY KEY);
 COMMENT ON TABLE qwat_od.distributor IS 'Companies and distributors list.';
 
 /* Columns */

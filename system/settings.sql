@@ -8,7 +8,7 @@
 
 CREATE TABLE qwat_sys.settings
 (
-   id serial,
+   id serial PRIMARY KEY,
    name varchar(30),
    type regtype,
    value text,
@@ -16,9 +16,8 @@ CREATE TABLE qwat_sys.settings
    v_max double precision,
    v_not_null boolean default true,
    description text,
-   constraint settings_pkey primary key(id),
-   constraint setting_unique unique(name),
-   constraint setting_type check (type in ('boolean'::regtype, 'integer'::regtype, 'double precision'::regtype, 'text'::regtype))
+   CONSTRAINT setting_unique UNIQUE(name),
+   CONSTRAINT setting_type CHECK (type IN ('boolean'::regtype, 'integer'::regtype, 'double precision'::regtype, 'text'::regtype))
 );
 
 /* constraint to check value */

@@ -7,7 +7,7 @@
 
 
 /* CREATE TABLE */
-CREATE TABLE qwat_od.protectionzone (id serial, CONSTRAINT "protectionzone_pk" PRIMARY KEY (id) );
+CREATE TABLE qwat_od.protectionzone (id serial PRIMARY KEY);
 COMMENT ON TABLE qwat_od.protectionzone IS 'protectionzones.';
 
 /* columns */
