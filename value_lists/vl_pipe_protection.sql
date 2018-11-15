@@ -16,9 +16,10 @@ INSERT INTO qwat_vl.pipe_protection (id, value_en, value_fr, value_ro ) VALUES (
 INSERT INTO qwat_vl.pipe_protection (id, value_en, value_fr, value_ro ) VALUES (102, 'unknown', 'inconnu', 'necunoscută');
 INSERT INTO qwat_vl.pipe_protection (id, value_en, value_fr, value_ro ) VALUES (103, 'to be determined', 'à déterminer', 'de determinat');
 
-INSERT INTO qwat_vl.pipe_protection (id,value_fr,value_ro) VALUES (4302,'SOMO PVC','SOMO PVC');                                 /* TB_id: 2  */
-INSERT INTO qwat_vl.pipe_protection (id,value_fr,value_ro) VALUES (4304,'SOMO autre','SOMO de alt tip');                        /* TB_id: 4  */
-INSERT INTO qwat_vl.pipe_protection (id,value_fr,value_ro) VALUES (4310,'SOMO PE','SOMO PE');                                   /* TB_id: 11 */
+INSERT INTO qwat_vl.pipe_protection (id,value_fr,value_ro, description_ro) VALUES (4302,'SOMO PVC','SOMO PVC', 'SOMO este o marcă dispărută a grupului Bouygues, nefolosită în Ro');                                 /* TB_id: 2  */
+INSERT INTO qwat_vl.pipe_protection (id,value_fr,value_ro,description_ro) VALUES (4304,'SOMO autre','SOMO de alt tip', 'SOMO este o marcă dispărută a grupului Bouygues, nefolosită în Ro');                        /* TB_id: 4  */
+INSERT INTO qwat_vl.pipe_protection (id,value_fr,value_ro, description_fr, description_ro) VALUES (4310,'SOMO PE','SOMO PE', 'SOMO est une ancienne marque disparue du groupe Bouygues qui ne caractérisait pas vraiment un type de tuyau, même si, dans la mémoire collective des années 80-90, cela voulait plutôt désigner, à tort, les tuyaux PE-câbles… ', 'SOMO este o marcă dispărută a grupului Bouygues, nefolosită în Ro'
+);                                   /* TB_id: 11 */
 INSERT INTO qwat_vl.pipe_protection (id,value_fr,value_ro) VALUES (4301,'ancienne conduite AGG','conductă veche de OLG');       /* TB_id: 10 */
 INSERT INTO qwat_vl.pipe_protection (id,value_fr,value_ro) VALUES (4303,'ancienne conduite F','conductă veche Fontă');          /* TB_id: 3  */
 INSERT INTO qwat_vl.pipe_protection (id,value_fr,value_ro) VALUES (4305,'ancienne conduite TAC','conductă veche Azbociment');   /* TB_id: 6  */
