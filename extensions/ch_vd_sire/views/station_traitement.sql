@@ -14,7 +14,7 @@ CREATE VIEW qwat_ch_vd_sire.station_traitement AS
 		, watertype_code_sire AS Type_Eau
 		, CASE WHEN sanitization_uv IS TRUE THEN 1 ELSE 0 END AS UV_Rayon_Desinfection
 		, CASE WHEN sanitization_chlorine_liquid IS TRUE THEN 1 ELSE 0 END AS Chlore_Liquide_Desinfection
-		, CASE WHEN sanitization_chlorine_gazeous IS TRUE THEN 1 ELSE 0 END AS Chlore_Gazeux_Desinfection
+		, CASE WHEN sanitization_chlorine_gas IS TRUE THEN 1 ELSE 0 END AS Chlore_Gazeux_Desinfection
 		, CASE WHEN sanitization_ozone IS TRUE THEN 1 ELSE 0 END AS Ozone_Desinfection
 		, CASE WHEN filtration_membrane IS TRUE THEN 1 ELSE 0 END AS Membrane_Filtration
 		, CASE WHEN filtration_sandorgravel IS TRUE THEN 1 ELSE 0 END AS Sable_ou_Gravier_Filtration

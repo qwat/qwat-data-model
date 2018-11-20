@@ -80,7 +80,7 @@ UNION ALL
 	SELECT 
 		groupid AS id,
 		ST_LineMerge(ST_Union(geometry))::geometry(LineStringZ,:SRID) AS geometry,
-		COUNT(groupid) AS number_of_pipe,
+		COUNT(groupid) AS number_of_pipes,
 		SUM(_length2d) AS _length2d,
 		SUM(_length3d) AS _length3d,
 		bool_or(tunnel_or_bridge) AS tunnel_or_bridge,
@@ -115,7 +115,7 @@ CREATE OR REPLACE VIEW qwat_od.vw_pipe_schema AS
 			pipe.label_2_text                  ,
 			vw_pipe_schema_merged._length2d       ,
 			vw_pipe_schema_merged._length3d       ,
-			vw_pipe_schema_merged.number_of_pipe  ,
+			vw_pipe_schema_merged.number_of_pipes  ,
 			vw_pipe_schema_merged.tunnel_or_bridge,
 			vw_pipe_schema_merged._valve_count    ,
 			vw_pipe_schema_merged._valve_closed   ,
