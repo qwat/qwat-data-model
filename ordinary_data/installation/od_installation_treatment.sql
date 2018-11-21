@@ -11,7 +11,7 @@ CREATE TABLE qwat_od.treatment ();
 ALTER TABLE qwat_od.treatment ADD COLUMN id integer NOT NULL REFERENCES qwat_od.installation(id) PRIMARY KEY ;
 ALTER TABLE qwat_od.treatment ADD COLUMN sanitization_uv               boolean      ;
 ALTER TABLE qwat_od.treatment ADD COLUMN sanitization_chlorine_liquid  boolean      ;
-ALTER TABLE qwat_od.treatment ADD COLUMN sanitization_chlorine_gazeous boolean      ;
+ALTER TABLE qwat_od.treatment ADD COLUMN sanitization_chlorine_gas     boolean      ;
 ALTER TABLE qwat_od.treatment ADD COLUMN sanitization_ozone            boolean      ;
 ALTER TABLE qwat_od.treatment ADD COLUMN filtration_membrane           boolean      ;
 ALTER TABLE qwat_od.treatment ADD COLUMN filtration_sandorgravel       boolean      ;
