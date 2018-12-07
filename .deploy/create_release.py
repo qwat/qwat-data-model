@@ -41,7 +41,7 @@ def create_dumps():
     print('travis_fold:start:{}'.format(dump))
     print('Creating dump {}'.format(dump))
     dumpfile = '/tmp/{dump}'.format(dump=dump)
-    subprocess.call(['pg_dump',
+    subprocess.check_output(['pg_dump',
                      '--format', 'custom',
                      '--blobs',
                      '--section', 'data',
@@ -61,7 +61,7 @@ def create_dumps():
     print('Creating dump {}'.format(dump))
     dumpfile='/tmp/{dump}'.format(dump=dump)
 
-    subprocess.call(['pg_dump',
+    subprocess.check_output(['pg_dump',
                      '--format', 'plain',
                      '--blobs',
                      '--section', 'data',
@@ -82,7 +82,7 @@ def create_dumps():
     print('Creating dump {}'.format(dump))
     dumpfile='/tmp/{dump}'.format(dump=dump)
 
-    subprocess.call(['pg_dump',
+    subprocess.check_output(['pg_dump',
                      '--format', 'custom',
                      '--blobs',
                      '--compress', '5',
@@ -100,7 +100,7 @@ def create_dumps():
     print('Creating dump {}'.format(dump))
     dumpfile='/tmp/{dump}'.format(dump=dump)
 
-    subprocess.call(['pg_dump',
+    subprocess.check_output(['pg_dump',
                      '--format', 'plain',
                      '--blobs',
                      '--verbose',
@@ -119,7 +119,7 @@ def create_dumps():
     print('Creating dump {}'.format(dump))
     dumpfile='/tmp/{dump}'.format(dump=dump)
 
-    subprocess.call(['pg_dump',
+    subprocess.check_output(['pg_dump',
                      '--format', 'custom',
                      '--schema-only',
                      '--verbose',
@@ -136,7 +136,7 @@ def create_dumps():
     print('Creating dump {}'.format(dump))
     dumpfile='/tmp/{dump}'.format(dump=dump)
 
-    subprocess.call(['pg_dump',
+    subprocess.check_output(['pg_dump',
                      '--format', 'plain',
                      '--schema-only',
                      '--verbose',
@@ -154,7 +154,7 @@ def create_dumps():
     print('travis_fold:start:{}'.format(dump))
     print('Creating dump {}'.format(dump))
     dumpfile = '/tmp/{dump}'.format(dump=dump)
-    subprocess.call(['pg_dump',
+    subprocess.check_output(['pg_dump',
                      '--format', 'custom',
                      '--blobs',
                      '--compress', '5',
@@ -173,7 +173,7 @@ def create_dumps():
     print('Creating dump {}'.format(dump))
     dumpfile='/tmp/{dump}'.format(dump=dump)
 
-    subprocess.call(['pg_dump',
+    subprocess.check_output(['pg_dump',
                      '--format', 'plain',
                      '--blobs',
                      '--data-only',
