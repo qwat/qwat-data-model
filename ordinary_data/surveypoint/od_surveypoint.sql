@@ -16,6 +16,7 @@ ALTER TABLE qwat_od.surveypoint ADD COLUMN description      text;
 ALTER TABLE qwat_od.surveypoint ADD COLUMN date             date;
 ALTER TABLE qwat_od.surveypoint ADD COLUMN fk_folder        integer ;
 ALTER TABLE qwat_od.surveypoint ADD COLUMN altitude         decimal(10,3) default null;
+ALTER TABLE qwat_od.surveypoint ADD COLUMN depth            decimal(10,3) default null;
 ALTER TABLE qwat_od.surveypoint ADD COLUMN fk_object_reference integer;
 
 
