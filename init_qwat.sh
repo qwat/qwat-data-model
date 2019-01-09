@@ -264,7 +264,6 @@ if [[ "$NOBASELINE" -eq 1 ]]; then
 fi
 pum baseline -p $PGSERVICE -t qwat_sys.info -d ${DIR}/update/delta -b $NUMVERSION
 
-
 # Demo data
 if [[ "$DEMO" -eq 1 ]]; then
 	psql service=${PGSERVICE} -v ON_ERROR_STOP=1 -f ${DIR}/demo/minimal.sql

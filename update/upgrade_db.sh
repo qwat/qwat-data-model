@@ -175,12 +175,6 @@ do
 	$i -p qwat_comp -s $SRID
 done
 
-# add pum metadata to DB using current version
-printf "\n${BLUE}PUM baseline on qwat_comp${NC}\n\n"
-sleep 1
-
-pum baseline -p qwat_comp -t qwat_sys.info -d ${DELTADIRS[*]} -b $VERSION
-
 # checks delta files from 1.0 lead to the same version as current version, if yes upgrades
 printf "\n${BLUE}Test and upgrade qwat core${NC}\n\n"
 sleep 1
