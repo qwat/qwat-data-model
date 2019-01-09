@@ -1,4 +1,4 @@
-﻿/*
+/*
 	qWat - QGIS Water Module
 
 	SQL file :: pipe_material table
