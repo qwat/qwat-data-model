@@ -258,13 +258,6 @@ psql service=${PGSERVICE} -v ON_ERROR_STOP=1 -f ${DIR}/system/audit_tables.sql
 psql service=${PGSERVICE} -v ON_ERROR_STOP=1 -f ${DIR}/system/audit_views.sql
 psql service=${PGSERVICE} -v ON_ERROR_STOP=1 -f ${DIR}/system/update_sequences.sql
 
-# Baseline PUM
-if [[ "$NOBASELINE" -eq 1 ]]; then
-    NUMVERSION="1.0.0"
-fi
-pum baseline -p $PGSERVICE -t qwat_sys.info -d ${DIR}/update/delta -b $NUMVERSION
-
-
 # Demo data
 if [[ "$DEMO" -eq 1 ]]; then
 	psql service=${PGSERVICE} -v ON_ERROR_STOP=1 -f ${DIR}/demo/minimal.sql
