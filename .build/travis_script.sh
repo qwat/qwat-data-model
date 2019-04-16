@@ -59,7 +59,7 @@ pum baseline -p qwat_comp -t qwat_sys.info -d $DELTA_DIRS -b $VERSION
 
 # Run test_and_upgrade
 printf "travis_fold:start:test-and-upgrade\nRun test and upgrade"
-yes | pum test-and-upgrade -pp qwat_prod -pt qwat_test -pc qwat_comp -t qwat_sys.info -d $DELTA_DIRS -f /tmp/qwat_dump -i views rules tables columns constraints sequences indexes triggers functions 
+yes | pum test-and-upgrade -pp qwat_prod -pt qwat_test -pc qwat_comp -t qwat_sys.info -d $DELTA_DIRS -f /tmp/qwat_dump -i views rules
 echo "travis_fold:end:test-and-upgrade"
 
 # Run a last check between qwat_prod and qwat_comp
