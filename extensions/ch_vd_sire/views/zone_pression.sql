@@ -1,4 +1,4 @@
-CREATE VIEW qwat_ch_vd_sire.zone_pression AS
+CREATE OR REPLACE VIEW qwat_ch_vd_sire.zone_pression AS
 	SELECT
 		pressurezone.id AS "ID_Num",
 		NULL::text AS "Remarque",

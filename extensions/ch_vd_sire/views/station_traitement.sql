@@ -1,7 +1,7 @@
-CREATE VIEW qwat_ch_vd_sire.station_traitement AS
+CREATE OR REPLACE VIEW qwat_ch_vd_sire.station_traitement AS
 	SELECT
 		id AS "ID_Num",
-		qwat_ext_ch_vd_sire_remarque || remark AS "Remarque",
+		qwat_ext_ch_vd_sire_remarque AS "Remarque",
 		distributor_name AS "Nom_Distributeur",
 		pressurezone_name AS "Nom_Zone_Pression",
 		precision_code_sire AS "Precision_Geo",
