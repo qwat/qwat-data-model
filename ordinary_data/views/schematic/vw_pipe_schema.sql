@@ -79,7 +79,7 @@ UNION ALL
 ) 
 	SELECT 
 		groupid AS id,
-		ST_LineMerge(ST_Union(geometry))::geometry(LineStringZ,:SRID) AS geometry,
+		St_Multi(ST_LineMerge(ST_Union(geometry))::geometry(MultiLineStringZ,:SRID)) AS geometry,
 		COUNT(groupid) AS number_of_pipes,
 		SUM(_length2d) AS _length2d,
 		SUM(_length3d) AS _length3d,
@@ -121,7 +121,7 @@ CREATE OR REPLACE VIEW qwat_od.vw_pipe_schema AS
 			vw_pipe_schema_merged._valve_closed   ,
 			pressurezone.name AS _pressurezone ,
 			pressurezone.colorcode AS _pressurezone_colorcode,
-			vw_pipe_schema_merged.geometry::geometry(LineStringZ,:SRID) AS geometry
+			vw_pipe_schema_merged.geometry::geometry(MultiLineStringZ,:SRID) AS geometry
 	FROM qwat_od.vw_pipe_schema_merged
 	INNER JOIN qwat_od.pipe         ON pipe.id = vw_pipe_schema_merged.id
 	LEFT JOIN qwat_od.pressurezone ON pipe.fk_pressurezone = pressurezone.id;
@@ -201,7 +201,7 @@ UNION ALL
 		'circular referencing loop'::varchar AS error_desc
 	FROM pipe_find_parent_error
 	WHERE depth_level > 19;
-COMMENT ON VIEW qwat_od.vw_pipe_schema_error IS 'Report IDs of parent pipe where pipe concatenation leads to a MultiLineString and not to a LineString or if an infinite referencing loop has been detected.';
+COMMENT ON VIEW qwat_od.vw_pipe_schema_error IS 'Report IDs of parent pipe where pipe concatenation leads to a MultiLineString and not to a LineString or if an infinite referencing loop has been detected, or total SQL failure in some PGIS versions';
 
 
 
