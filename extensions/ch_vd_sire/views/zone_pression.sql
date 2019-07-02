@@ -10,3 +10,6 @@ CREATE OR REPLACE VIEW qwat_ch_vd_sire.zone_pression AS
 		JOIN qwat_od.distributor ON pressurezone.fk_distributor = distributor.id
 		JOIN qwat_od.consumptionzone ON pressurezone.fk_consumptionzone = consumptionzone.id
 	WHERE pressurezone.fk_distributor = 1;
+GRANT SELECT, REFERENCES, TRIGGER ON TABLE qwat_ch_vd_sire.zone_pression TO qwat_viewer;
+GRANT ALL ON TABLE qwat_ch_vd_sire.zone_pression TO qwat_user;
+GRANT ALL ON TABLE qwat_ch_vd_sire.zone_pression TO qwat_manager;

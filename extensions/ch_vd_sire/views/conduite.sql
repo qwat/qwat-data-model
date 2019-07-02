@@ -36,3 +36,6 @@ CREATE OR REPLACE VIEW qwat_ch_vd_sire.conduite AS
 		st_force2d(geometry) AS geometry
 	FROM qwat_od.vw_export_pipe
 	WHERE pipe_function_major IS TRUE AND (status_functional IS TRUE OR fk_status = 1306) AND fk_distributor = 1 AND NOT (pipe_function_code_sire = 0 AND st_length(geometry) < 10::double precision);
+GRANT SELECT, REFERENCES, TRIGGER ON TABLE qwat_ch_vd_sire.conduite TO qwat_viewer;
+GRANT ALL ON TABLE qwat_ch_vd_sire.conduite TO qwat_user;
+GRANT ALL ON TABLE qwat_ch_vd_sire.conduite TO qwat_manager;

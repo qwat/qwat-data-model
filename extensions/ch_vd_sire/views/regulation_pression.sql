@@ -28,3 +28,6 @@ CREATE OR REPLACE VIEW qwat_ch_vd_sire.regulation_pression AS
 		st_force2d(geometry) AS geometry
 	FROM qwat_od.vw_export_installation
 	WHERE (fk_pressurecontrol_type = ANY (ARRAY[2801, 2802])) AND (status_functional IS TRUE OR fk_status = 1306) AND fk_distributor = 1;
+GRANT SELECT, REFERENCES, TRIGGER ON TABLE qwat_ch_vd_sire.regulation_pression TO qwat_viewer;
+GRANT ALL ON TABLE qwat_ch_vd_sire.regulation_pression TO qwat_user;
+GRANT ALL ON TABLE qwat_ch_vd_sire.regulation_pression TO qwat_manager;

@@ -16,7 +16,6 @@ CREATE OR REPLACE VIEW qwat_ch_vd_sire.vanne_clapet AS
 			WHEN fk_valve_function = 6107 THEN 0 -- incendie
 			WHEN fk_valve_type = 6307 THEN 3 -- clapet
 			ELSE 1
-		-- TODO disconnecteurs???
 		END AS "Genre",
 		CASE
 			WHEN closed IS TRUE THEN 3
@@ -35,3 +34,6 @@ CREATE OR REPLACE VIEW qwat_ch_vd_sire.vanne_clapet AS
 		st_force2d(geometry) AS geometry
 	FROM qwat_od.vw_export_valve
 	WHERE networkseparation IS TRUE OR fk_valve_function = 6107 OR fk_valve_type = 6307 AND (status_functional IS TRUE OR fk_status = 1306) AND fk_distributor = 1;
+GRANT SELECT, REFERENCES, TRIGGER ON TABLE qwat_ch_vd_sire.vanne_clapet TO qwat_viewer;
+GRANT ALL ON TABLE qwat_ch_vd_sire.vanne_clapet TO qwat_user;
+GRANT ALL ON TABLE qwat_ch_vd_sire.vanne_clapet TO qwat_manager;

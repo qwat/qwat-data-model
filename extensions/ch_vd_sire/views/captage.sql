@@ -28,3 +28,6 @@ CREATE OR REPLACE VIEW qwat_ch_vd_sire.captage AS
 		st_force2d(geometry) AS geometry
 	FROM qwat_od.vw_export_installation
 	WHERE installation_type = 'source'::qwat_od.installation_type AND (status_active IS TRUE OR fk_status = 1306) AND fk_distributor = 1;
+GRANT SELECT, REFERENCES, TRIGGER ON TABLE qwat_ch_vd_sire.captage TO qwat_viewer;
+GRANT ALL ON TABLE qwat_ch_vd_sire.captage TO qwat_user;
+GRANT ALL ON TABLE qwat_ch_vd_sire.captage TO qwat_manager;
