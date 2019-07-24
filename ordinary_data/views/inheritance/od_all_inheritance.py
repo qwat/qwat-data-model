@@ -5,8 +5,10 @@ import imp
 import os
 import sys
 
-pgiv = imp.load_source('PGInheritanceViewRecursive', os.path.join(os.path.dirname(
-    __file__), '../../../metaproject/postgresql/pg_inheritance_view/pg_inheritance_view_recursive.py'))
+pgiv = imp.load_source(
+    'PGInheritanceViewRecursive',
+    os.path.join(os.path.dirname(__file__), 'pg_inheritance_view_recursive.py')
+)
 
 if len(sys.argv) > 1:
     pg_service = sys.argv[1]
