@@ -1,5 +1,7 @@
 #!/usr/bin/env python
 
+# Taken from: https://github.com/opengisch/metaproject/blob/6ce7afa1ccd7c5fb03874318a4f10ce3d063cffe/postgresql/pg_inheritance_view/pg_inheritance_view_recursive.py
+
 
 import psycopg2
 import psycopg2.extras
