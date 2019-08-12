@@ -11,10 +11,10 @@ git:
   depth: 99999  # needs all commits to fetch all tags, could not find better solution
 
 addons:
-  postgresql: "9.6"
+  postgresql: "10"
   apt:
     packages:
-    - postgresql-9.6-postgis-2.4
+    - postgresql-10-postgis-2.3
 
 install:
   - pip install -r requirements.txt
