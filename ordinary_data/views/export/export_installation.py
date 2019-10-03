@@ -9,7 +9,7 @@ if len(sys.argv) > 1:
 else:
     pg_service = "qwat_test"
 
-definition = yaml.load("""
+definition = yaml.safe_load("""
 
 name: qwat_od.vw_export_installation
 

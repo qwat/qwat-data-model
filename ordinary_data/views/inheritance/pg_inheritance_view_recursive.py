@@ -16,7 +16,7 @@ class PGInheritanceViewRecursive():
         self.cur = self.conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
 
         # Read configuration
-        self.definition = yaml.load(definition)
+        self.definition = yaml.safe_load(definition)
 
         # Recursive process of definition
         self.nbExecution = 0  # Number of executions
