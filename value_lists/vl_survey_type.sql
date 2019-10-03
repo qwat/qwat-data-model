@@ -9,9 +9,6 @@ CREATE TABLE qwat_vl.survey_type () INHERITS (qwat_vl.value_list_base);
 ALTER TABLE qwat_vl.survey_type ADD CONSTRAINT vl_survey_type_pk PRIMARY KEY (id);
 COMMENT ON TABLE qwat_vl.survey_type IS 'Water type table, with SIRE code.';
 
-/* COLUMNS */
-ALTER TABLE qwat_vl.survey_type ADD COLUMN code_sire smallint;
-
 /* VALUES */
 INSERT INTO qwat_vl.survey_type (id, value_en, value_fr, value_ro ) VALUES (101, 'other', 'autre', 'alta');
 INSERT INTO qwat_vl.survey_type (id, value_en, value_fr, value_ro ) VALUES (102, 'unknown', 'inconnu', 'necunoscută');
