@@ -1,0 +1,3 @@
+INSERT INTO qwat_vl.status (id, active, functional, value_en, value_fr, value_ro, description_en, description_fr, description_ro) VALUES (1308, false, false, 'project in execution',        'projet en execution',       'Proiect în execuție',      '', 'L''objet est un projet validé en cours de réalisation', 'Obiectul face parte dintr-un proiect care este în curs de execuție');
+
+UPDATE qwat_vl.status SET value_fr = 'projet planifie', value_en = 'project planned', value_ro = 'Proiect planificat', description_fr = 'L''objet est un projet validé en attente', description_ro = 'Obiectul face parte dintr-un proiect care se va face' WHERE id = 1306;
