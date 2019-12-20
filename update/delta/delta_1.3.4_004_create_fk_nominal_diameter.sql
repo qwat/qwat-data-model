@@ -11,6 +11,7 @@ WHEN diameter_nominal = '160-63' THEN 7008
 WHEN diameter_nominal = '1 1/4"' THEN 7005
 WHEN diameter_nominal = '160/63' THEN 7008
 WHEN diameter_nominal = '1/2''' THEN 7002
+WHEN diameter_nominal = '1/2"' THEN 7002
 WHEN diameter_nominal = '1"' THEN 7004
 WHEN diameter_nominal = '1.5"' THEN 7006
 WHEN diameter_nominal = '200/2"' THEN 7013
