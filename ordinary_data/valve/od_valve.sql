@@ -16,7 +16,7 @@ ALTER TABLE qwat_od.valve ADD COLUMN fk_pipe                 integer ;
 ALTER TABLE qwat_od.valve ADD COLUMN fk_handle_precision     integer;
 ALTER TABLE qwat_od.valve ADD COLUMN fk_handle_precisionalti integer;
 ALTER TABLE qwat_od.valve ADD COLUMN fk_maintenance    		 integer[]; --TODO should use n:m relations!
-ALTER TABLE qwat_od.valve ADD COLUMN diameter_nominal        varchar(10);
+ALTER TABLE qwat_od.valve ADD COLUMN fk_nominal_diameter    integer;
 ALTER TABLE qwat_od.valve ADD COLUMN closed                  boolean default false;
 ALTER TABLE qwat_od.valve ADD COLUMN networkseparation       boolean default false;
 ALTER TABLE qwat_od.valve ADD COLUMN handle_altitude         decimal(10,3);
@@ -60,6 +60,7 @@ ALTER TABLE qwat_od.valve ADD CONSTRAINT valve_fk_status         FOREIGN KEY (fk
 ALTER TABLE qwat_od.valve ADD CONSTRAINT valve_fk_object_reference FOREIGN KEY (fk_object_reference) REFERENCES qwat_vl.object_reference(id) MATCH FULL; CREATE INDEX fki_valve_fk_object_reference ON qwat_od.valve(fk_object_reference);
 ALTER TABLE qwat_od.valve ADD CONSTRAINT valve_fk_folder           FOREIGN KEY (fk_folder)           REFERENCES qwat_od.folder(id)           MATCH FULL; CREATE INDEX fki_valve_fk_folder           ON qwat_od.valve(fk_folder);
 ALTER TABLE qwat_od.valve ADD CONSTRAINT valve_fk_precisionalti    FOREIGN KEY (fk_precisionalti)    REFERENCES qwat_vl.precisionalti(id)    MATCH FULL; CREATE INDEX fki_valve_fk_precisionalti    ON qwat_od.valve(fk_precisionalti);
+ALTER TABLE qwat_od.valve ADD CONSTRAINT valve_fk_nominal_diameter FOREIGN KEY (fk_nominal_diameter) REFERENCES qwat_vl.nominal_diameter(id) MATCH FULL; CREATE INDEX fki_valve_fk_nominal_diameter ON qwat_od.valve(fk_nominal_diameter);
 
 /* cannot create constraint on arrays yet
 ALTER TABLE qwat_od.valve ADD CONSTRAINT valve_fk_maintenance FOREIGN KEY (fk_maintenance) REFERENCES qwat_vl.valve_maintenance(id) MATCH FULL; CREATE INDEX fki_valve_fk_maintenance ON qwat_od.valve(fk_maintenance);
