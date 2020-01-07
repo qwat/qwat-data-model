@@ -8,6 +8,7 @@ A full web data model documentation with diagrams and relations is available [he
 
 # Model changelog ([Detailed](https://github.com/qwat/qwat-data-model/releases/))
 
+- v1.3.4 : Remove SIRE from core, add value list for nominal diameter
 - v1.3.3 : Support for customizations
 - v1.3.2 : SIRE extension and infrastructure enhancements
 - v1.3.1 : fix z computation logic for valves
