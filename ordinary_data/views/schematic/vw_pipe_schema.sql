@@ -79,7 +79,7 @@ UNION ALL
 ) 
 	SELECT 
 		groupid AS id,
-		St_Multi(ST_LineMerge(ST_Union(geometry))::geometry(MultiLineStringZ,:SRID)) AS geometry,
+		St_Multi(ST_LineMerge(ST_Union(geometry)))::geometry(MultiLineStringZ,:SRID) AS geometry,
 		COUNT(groupid) AS number_of_pipes,
 		SUM(_length2d) AS _length2d,
 		SUM(_length3d) AS _length3d,
