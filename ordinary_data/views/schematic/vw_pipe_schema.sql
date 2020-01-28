@@ -21,7 +21,7 @@ CREATE OR REPLACE VIEW qwat_od.vw_pipe_schema_visibleitems AS
 		pipe._length3d,
 		pipe.tunnel_or_bridge,
 		pipe.schema_force_visible,
-		pipe.geometry_alt2::geometry(LineStringZ,:SRID) AS geometry,
+		st_force2D(pipe.geometry_alt2)::geometry(LineString,:SRID) AS geometry,
 		pipe._valve_count,
 		pipe._valve_closed
 	FROM qwat_od.pipe
@@ -54,7 +54,7 @@ WITH RECURSIVE pipe_find_parent(/*path,*/ depth_level, id, groupid, geometry, _l
 		1 AS depth_level,
 		pipe.id,
 		pipe.id,
-		pipe.geometry::geometry(LineStringZ,:SRID),
+		st_force2D(pipe.geometry)::geometry(LineString,:SRID),
 		pipe._length2d,
 		pipe._length3d,
 		pipe.tunnel_or_bridge,
@@ -67,7 +67,7 @@ UNION ALL
 		fp.depth_level + 1 AS depth_level,
 		pipe.id,
 		fp.groupid,
-		pipe.geometry::geometry(LineStringZ,:SRID),
+		st_force2D(pipe.geometry)::geometry(LineString,:SRID),
 		pipe._length2d,
 		pipe._length3d,
 		pipe.tunnel_or_bridge,
@@ -79,7 +79,7 @@ UNION ALL
 ) 
 	SELECT 
 		groupid AS id,
-		St_Multi(ST_LineMerge(ST_Union(geometry))::geometry(MultiLineStringZ,:SRID)) AS geometry,
+		St_Multi(ST_LineMerge(ST_Union(st_force2D(geometry))))::geometry(MultiLineString,:SRID) AS geometry,
 		COUNT(groupid) AS number_of_pipes,
 		SUM(_length2d) AS _length2d,
 		SUM(_length3d) AS _length3d,
@@ -121,7 +121,7 @@ CREATE OR REPLACE VIEW qwat_od.vw_pipe_schema AS
 			vw_pipe_schema_merged._valve_closed   ,
 			pressurezone.name AS _pressurezone ,
 			pressurezone.colorcode AS _pressurezone_colorcode,
-			vw_pipe_schema_merged.geometry::geometry(MultiLineStringZ,:SRID) AS geometry
+			vw_pipe_schema_merged.geometry::geometry(MultiLineString,:SRID) AS geometry
 	FROM qwat_od.vw_pipe_schema_merged
 	INNER JOIN qwat_od.pipe         ON pipe.id = vw_pipe_schema_merged.id
 	LEFT JOIN qwat_od.pressurezone ON pipe.fk_pressurezone = pressurezone.id;
@@ -171,7 +171,7 @@ WITH RECURSIVE pipe_find_parent_error(PATH, depth_level, id, groupid, geometry) 
 		1 AS depth_level,
 		pipe.id,
 		pipe.id,
-		pipe.geometry::geometry(LineStringZ,:SRID)
+		st_force2D(pipe.geometry)::geometry(LineString,:SRID)
 		FROM qwat_od.vw_pipe_schema_visibleitems pipe WHERE pipe.fk_parent IS NULL
 UNION ALL
     SELECT 
@@ -179,7 +179,7 @@ UNION ALL
 		fp.depth_level + 1 AS depth_level,
 		pipe.id,
 		fp.groupid,
-		pipe.geometry::geometry(LineStringZ,:SRID)
+		st_force2D(pipe.geometry)::geometry(LineString,:SRID)
     FROM pipe_find_parent_error AS fp
     INNER JOIN qwat_od.vw_pipe_schema_visibleitems pipe on fp.id = pipe.fk_parent
     AND fp.depth_level < 20
@@ -188,7 +188,7 @@ UNION ALL
 		FROM
 		( SELECT
 				groupid, 
-				ST_Multi(ST_LineMerge(ST_Union(geometry)))::geometry(MultiLineStringZ,:SRID) AS geometry,
+				ST_Multi(ST_LineMerge(ST_Union(st_force2D(geometry))))::geometry(MultiLineString,:SRID) AS geometry,
 				'lines cannot be joined'::varchar AS error_desc
 			FROM pipe_find_parent_error
 			GROUP BY groupid
@@ -197,7 +197,7 @@ UNION ALL
 	UNION 
 	SELECT 
 		groupid,
-		geometry::geometry(MultiLineStringZ,:SRID),
+		geometry::geometry(MultiLineString,:SRID),
 		'circular referencing loop'::varchar AS error_desc
 	FROM pipe_find_parent_error
 	WHERE depth_level > 19;
