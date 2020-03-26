@@ -1,4 +1,5 @@
 from pum.core.deltapy import DeltaPy
+import pkg_resources
 import os
 
 class DropViews(DeltaPy):
@@ -11,7 +12,7 @@ class DropViews(DeltaPy):
         # If you have to do or NOT to do some specific work, you must do it there
         # For example, the 1.2.8 version delta contain some specific actions wich require to drop the views before playing them;
         # But we have to drop them only if the current version is 1.2.8 or superior
-        if version > '1.2.8':
+        if version > pkg_resources.parse_version('1.2.8'):
             self.drop_views()
 
     def drop_views(self):
