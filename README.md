@@ -15,7 +15,7 @@ A full web data model documentation with diagrams and relations is available [he
 - v1.3.0 : Switch from custom version control to generic Postgres Update Manager
 - v1.2.8 : add hardcoded schema_visible field to pipes and valves for enhanced performance on QGIS
 - v1.2.7 : AutoPrint Mapview
-- v1.2.6 : Fixes issue 177. Pipes where not audited by audit log system.
+- v1.2.6 : Fixes issue 177. Pipes were not audited by audit log system.
 - V1.2.5 : Adds a scale field to print maps
 - v1.2.4 : Fixes bugs when deleting objects https://github.com/qwat/QWAT/issues/174
 - v1.2.2 : Integrates the new audit history system. Fixes an issue with multiple primary keys in conformity check procedure
