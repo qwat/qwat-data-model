@@ -1,4 +1,4 @@
-CREATE OR REPLACE FUNCTION qwat_od.ft_search_network_and_subscribers(start_pipe integer, max_depth integer DEFAULT 20)
+CREATE OR REPLACE FUNCTION qwat_network.ft_search_network_and_subscribers(start_pipe integer, max_depth integer DEFAULT 20)
  RETURNS TABLE(id integer, geometry geometry)
  LANGUAGE plpgsql
 AS $function$
@@ -9,7 +9,7 @@ declare
     rec record;
     pipe integer;
 begin	
-    select n.source, n.target into start_node, start_node2 from qwat_od.network n where n.id = start_pipe;
+    select n.source, n.target into start_node, start_node2 from qwat_network.network n where n.id = start_pipe;
     
     for rec in 
     with recursive search_graph(id, source, target, cost, depth, path) as (
@@ -32,7 +32,7 @@ begin
                 else ARRAY[g.source, g.target]
             end as path
         from 
-            qwat_od.network as g 
+            qwat_network.network as g 
         where 
             g.source = start_node or g.target = start_node
          or g.source = start_node2 or g.target = start_node2
@@ -63,7 +63,7 @@ begin
                 sg.depth,
                 sg.path
             from 
-                qwat_od.network as g,
+                qwat_network.network as g,
                 search_graph as sg				
             where
                 (sg.target = g.source or
@@ -73,7 +73,7 @@ begin
 
         where
             -- Continue while there's no closed valve
-            (not qwat_od.ft_check_node_is_closed_valve(ng.source))
+            (not qwat_network.ft_check_node_is_closed_valve(ng.source))
             -- Be carreful not to cross a node twice
             and not ng.target = any(ng.path)
             -- Stop if number of recursion is too important
@@ -81,7 +81,7 @@ begin
     )
     select distinct sg.id, n.geometry, depth, path
     from search_graph as sg
-    join qwat_od.network n on (n.source = sg.source and n.target = sg.target) or (n.target = sg.source and n.source = sg.target)
+    join qwat_network.network n on (n.source = sg.source and n.target = sg.target) or (n.target = sg.source and n.source = sg.target)
     loop
         -- Unique list of pipes
         if not rec.id = any(pipe_list) then

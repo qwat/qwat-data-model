@@ -1,6 +1,6 @@
-alter table qwat_od.network add network_id serial;
+alter table qwat_network.network add network_id serial;
 
-CREATE OR REPLACE FUNCTION qwat_od.ft_check_node_is_valve(_id integer)
+CREATE OR REPLACE FUNCTION qwat_network.ft_check_node_is_valve(_id integer)
  RETURNS boolean
  LANGUAGE plpgsql
 AS $function$
@@ -17,7 +17,7 @@ end
 $function$
 ;
 
-CREATE OR REPLACE FUNCTION qwat_od.ft_search_opened_valves(start_pipe integer, max_depth integer DEFAULT 20)
+CREATE OR REPLACE FUNCTION qwat_network.ft_search_opened_valves(start_pipe integer, max_depth integer DEFAULT 20)
  RETURNS TABLE(id integer, geometry geometry)
  LANGUAGE plpgsql
 AS $function$
@@ -57,7 +57,7 @@ begin
             sg.depth + 1 as depth, -- increase recusion depth
             sg.path || g.network_id -- we store each pipe traveled
         from
-        qwat_od.network as g
+        qwat_network.network as g
         join search_graph as sg on g.target = sg.source or g.source = sg.target or g.target = sg.target or g.source = sg.source
         left outer join qwat_od.valve v1 on v1.id = g.source -- join on valve to see if the node is a valve
         left outer join qwat_od.valve v2 on v2.id = g.target -- join on valve to see if the node is a valve
@@ -67,7 +67,7 @@ begin
             -- security: maximum depth of recusion
             and sg.depth < max_depth
             -- if a node is a valve, then we stop (valves are the goal)
-            and ( not qwat_od.ft_check_node_is_valve(sg.source) and not qwat_od.ft_check_node_is_valve(sg.target))
+            and ( not qwat_network.ft_check_node_is_valve(sg.source) and not qwat_network.ft_check_node_is_valve(sg.target))
     )
     select *
         from search_graph sg

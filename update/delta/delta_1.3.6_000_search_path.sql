@@ -1,6 +1,8 @@
--- Table: qwat_od.pipe_reference : contains each pipe section with source node and end node
+-- Table: qwat_network.pipe_reference : contains each pipe section with source node and end node
 
-CREATE TABLE qwat_od.pipe_reference
+CREATE SCHEMA IF NOT EXISTS qwat_network;
+
+CREATE TABLE qwat_network.pipe_reference
 (
     id serial,
     fk_pipe integer,
@@ -21,13 +23,13 @@ TABLESPACE pg_default;
 -- Index: pipe_reference_fk_pipe_idx
 
 CREATE INDEX pipe_reference_fk_pipe_idx
-    ON qwat_od.pipe_reference USING btree
+    ON qwat_network.pipe_reference USING btree
     (fk_pipe)
     TABLESPACE pg_default; 
 
 -- Function: ft_pipe_ : splits each pipe according to the nodes present on its geometry and insert in pipe_reference table
 
-CREATE OR REPLACE FUNCTION qwat_od.ft_pipe_(var_pipe_id integer)
+CREATE OR REPLACE FUNCTION qwat_network.ft_pipe_(var_pipe_id integer)
  RETURNS integer
  LANGUAGE plpgsql
 AS $function$DECLARE r record;
@@ -35,7 +37,7 @@ DECLARE fk integer;
 DECLARE g1 geometry;
 DECLARE ml record;
 BEGIN
-DELETE FROM qwat_od.pipe_reference WHERE fk_pipe=var_pipe_id;
+DELETE FROM qwat_network.pipe_reference WHERE fk_pipe=var_pipe_id;
 FOR r IN (
 	SELECT *,CASE WHEN ST_LineLocatePoint(tblpipe.pg, tblpipe.fk_ag)<ST_LineLocatePoint(tblpipe.pg, tblpipe_nodes.ng) THEN ST_Length(ST_LineSubstring(tblpipe.pg, ST_LineLocatePoint(tblpipe.pg, tblpipe.fk_ag), ST_LineLocatePoint(tblpipe.pg, tblpipe_nodes.ng))) ELSE 99999 END as distance
 	FROM (
@@ -78,7 +80,7 @@ $function$
 
 -- Function: ft_all_pipes : populates the pipe_reference table
 
-CREATE OR REPLACE FUNCTION qwat_od.ft_all_pipes()
+CREATE OR REPLACE FUNCTION qwat_network.ft_all_pipes()
  RETURNS void
  LANGUAGE plpgsql
 AS $function$
@@ -94,23 +96,26 @@ BEGIN
 	select count(*) into nb from qwat_od.pipe;
 	
 	FOR rec IN select * from qwat_od.pipe LOOP
-		select qwat_od.ft_pipe_(rec.id) into res;
-		raise notice 'Id troncon: % (%/%)', rec.id, c, nb;
+		select qwat_network.ft_pipe_(rec.id) into res;
+		
+		if c % 10 = 0 then 
+            raise notice 'Id troncon: % (%/%)', rec.id, c, nb;
+        end if;
 		c := c + 1;
 	END LOOP;
 END
 $function$
 ;
 
--- View: qwat_od.vw_pipe_reference : contains pipes which are not in pipe_reference table
+-- View: qwat_network.vw_pipe_reference : contains pipes which are not in pipe_reference table
 
-CREATE OR REPLACE VIEW qwat_od.vw_pipe_reference AS
+CREATE OR REPLACE VIEW qwat_network.vw_pipe_reference AS
  SELECT sp.id,
     sp.fk_node_a,
     sp.fk_node_b,
     sp.geometry,
     sp.fk_pipe
-   FROM qwat_od.pipe_reference sp
+   FROM qwat_network.pipe_reference sp
 UNION
  SELECT p.id,
     p.fk_node_a,
@@ -119,16 +124,16 @@ UNION
     p.id AS fk_pipe
    FROM qwat_od.pipe p
   WHERE NOT (p.id IN ( SELECT pipe_reference.fk_pipe
-           FROM qwat_od.pipe_reference));
+           FROM qwat_network.pipe_reference));
 
 -- Function: ft_create_network : create table with each pipe section (node to node)
 
-CREATE OR REPLACE FUNCTION qwat_od.ft_create_network()
+CREATE OR REPLACE FUNCTION qwat_network.ft_create_network()
  RETURNS void
  LANGUAGE plpgsql
 AS $function$
 	BEGIN
-		CREATE TABLE qwat_od.network as 
+		CREATE TABLE qwat_network.network as 
 		SELECT id,
 	            fk_node_a as source,
 	            fk_node_b as target,
@@ -143,7 +148,7 @@ AS $function$
 	            geometry as geometry
 	        FROM qwat_od.pipe p
 	        WHERE NOT (p.id IN (SELECT pipe_reference.fk_pipe
-				FROM qwat_od.pipe_reference))
+				FROM qwat_network.pipe_reference))
 	    UNION
         SELECT 
         	sp.fk_pipe as id,
@@ -166,14 +171,14 @@ AS $function$
             ELSE 0.1 
             end as reverse_cost,
             sp.geometry as geometry
-        FROM qwat_od.pipe_reference as sp;
+        FROM qwat_network.pipe_reference as sp;
 	END;
 $function$
 ;
 
--- Function: ft_search_path : returns network path from a start node to an end node by using qwat_od.network table
+-- Function: ft_search_path : returns network path from a start node to an end node by using qwat_network.network table
 
-CREATE OR REPLACE FUNCTION qwat_od.ft_search_path(start_node integer, end_node integer, max_depth integer DEFAULT 20)
+CREATE OR REPLACE FUNCTION qwat_network.ft_search_path(start_node integer, end_node integer, max_depth integer DEFAULT 20)
  RETURNS TABLE(id integer, source integer, target integer, geometry geometry)
  LANGUAGE plpgsql
 AS $function$
@@ -204,7 +209,7 @@ begin
 				else ARRAY[g.source, g.target]
 			end as path
         from 
-            qwat_od.network as g 
+            qwat_network.network as g 
         where 
             g.source = start_node or g.target = start_node            
         union all
@@ -238,7 +243,7 @@ begin
 				sg.path
 			from 
             -- la table qu'on jointure : c'est le graphe (au format pgrouting)
-				qwat_od.network as g,
+				qwat_network.network as g,
 			--join
             -- la CTE
 				search_graph as sg				
@@ -275,7 +280,7 @@ begin
 		-- on part ensuite du deuxième noeud pour construire chaque géométrie
 	    foreach node in array path[2:]
 		loop
-			select n.id, n.source, n.target, n.geometry into id, source, target, geometry from qwat_od.network n
+			select n.id, n.source, n.target, n.geometry into id, source, target, geometry from qwat_network.network n
 			-- on cherche le tronçon avec source et target égales au noeud n et noeud n + 1
 			-- (ou l'inverse si les tronçons n'ont pas été saisis correctement)
 	    	where (n.source = node_0 and n.target = node) or (n.target = node_0 and n.source = node);
@@ -291,20 +296,20 @@ end
 $function$
 ;
 
-select qwat_od.ft_all_pipes();
+select qwat_network.ft_all_pipes();
 
-select qwat_od.ft_create_network();
+select qwat_network.ft_create_network();
 
-CREATE OR REPLACE FUNCTION qwat_od.ft_network_cutoff(valves integer[], pipe integer,  max_depth integer DEFAULT 20)
+CREATE OR REPLACE FUNCTION qwat_network.ft_network_cutoff(valves integer[], pipe integer,  max_depth integer DEFAULT 20)
  RETURNS TABLE(id integer, source integer, target integer, geometry geometry)
  LANGUAGE plpgsql
 AS $function$
 declare
 	start_node integer;
 begin	
-	select n.source into start_node from qwat_od.network n where n.network_id = pipe;
+	select n.source into start_node from qwat_network.network n where n.network_id = pipe;
 	if start_node = any(valves) then 
-		select n.target into start_node from qwat_od.network n where n.network_id = pipe;
+		select n.target into start_node from qwat_network.network n where n.network_id = pipe;
 	end if;
 --	select p.fk_node_a into start_node from qwat_od.pipe p where p.id = pipe;
 	return query
@@ -330,7 +335,7 @@ begin
 				else ARRAY[g.source, g.target]
 			end as path
         from 
-            qwat_od.network as g 
+            qwat_network.network as g 
         where 
             g.source = start_node or g.target = start_node           
         union all
@@ -364,7 +369,7 @@ begin
 				sg.path
 			from 
             -- la table qu'on jointure : c'est le graphe (au format pgrouting)
-				qwat_od.network as g,
+				qwat_network.network as g,
 			--join
             -- la CTE
 				search_graph as sg				
@@ -380,7 +385,7 @@ begin
 
         where
         	-- on continue tant qu'on n'est pas à une vanne fermée
-			(not qwat_od.ft_check_node_is_closed_valve(ng.source))
+			(not qwat_network.ft_check_node_is_closed_valve(ng.source))
 			-- ou qu'on soit sur une des vannes en entrée
 			and not ng.source = any(valves)
 			-- on ne repasse pas par un noeud déjà dans le chemin à parcourir (on ne revient pas en arrière)
@@ -392,12 +397,12 @@ begin
 	)
 	select distinct sg.id, sg.source, sg.target, n.geometry
 	from search_graph as sg
-	join qwat_od.network n on (n.source = sg.source and n.target = sg.target) or (n.target = sg.source and n.source = sg.target);
+	join qwat_network.network n on (n.source = sg.source and n.target = sg.target) or (n.target = sg.source and n.source = sg.target);
 end
 $function$
 ;
 
-CREATE OR REPLACE FUNCTION qwat_od.ft_check_node_is_hydrant(_id integer)
+CREATE OR REPLACE FUNCTION qwat_network.ft_check_node_is_hydrant(_id integer)
  RETURNS boolean
  LANGUAGE plpgsql
 AS $function$
@@ -413,7 +418,7 @@ end
 $function$
 ;
 
-CREATE OR REPLACE FUNCTION qwat_od.ft_check_node_is_closed_valve(_id integer)
+CREATE OR REPLACE FUNCTION qwat_network.ft_check_node_is_closed_valve(_id integer)
  RETURNS boolean
  LANGUAGE plpgsql
 AS $function$
