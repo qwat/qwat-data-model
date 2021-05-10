@@ -64,13 +64,13 @@ LOOP
 	ST_GeometryN(ST_CollectionExtract(ST_Split(ST_Snap(g1,r.ng,0.003),r.ng),2),1) as l1,
 	ST_GeometryN(ST_CollectionExtract(ST_Split(ST_Snap(g1,r.ng,0.003),r.ng),2),2) as l2 INTO ml;
 	-- insert line into pipe_reference
-	INSERT INTO qwat_od.pipe_reference(fk_pipe,fk_node_a,fk_node_b,geometry) 
+	INSERT INTO qwat_network.pipe_reference(fk_pipe,fk_node_a,fk_node_b,geometry) 
 	SELECT r.pid,fk,r.n,ST_Force2D(ml.l1);
 	fk = r.n;
 	g1 = ml.l2;
 END LOOP;
 IF (r IS NOT NULL) THEN
-	INSERT INTO qwat_od.pipe_reference(fk_pipe,fk_node_a,fk_node_b,geometry) 
+	INSERT INTO qwat_network.pipe_reference(fk_pipe,fk_node_a,fk_node_b,geometry) 
 	SELECT r.pid,fk,r.fk_b,ST_Force2D(g1);
 END IF;
 RETURN 0;

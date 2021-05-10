@@ -78,6 +78,11 @@ begin
             and not ng.target = any(ng.path)
             -- Stop if number of recursion is too important
             and ng.depth < max_depth
+            
+            
+            -- vanne réseau : fk_valve_function != 6105 AND fk_valve_function != 6108
+            -- vanne abonné : fk_valve_function = 6105 OR fk_valve_function = 6108
+            
     )
     select distinct sg.id, n.geometry, depth, path
     from search_graph as sg
