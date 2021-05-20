@@ -12,6 +12,7 @@ COMMENT ON TABLE qwat_od.leak IS 'pipe leaks';
 /* columns */
 ALTER TABLE qwat_od.leak ADD COLUMN fk_cause          integer not null;
 ALTER TABLE qwat_od.leak ADD COLUMN fk_pipe           integer;
+ALTER TABLE qwat_od.leak ADD COLUMN fk_type           integer;
 ALTER TABLE qwat_od.leak ADD COLUMN widespread_damage boolean not null;
 ALTER TABLE qwat_od.leak ADD COLUMN detection_date    date;
 ALTER TABLE qwat_od.leak ADD COLUMN repair_date       date;
