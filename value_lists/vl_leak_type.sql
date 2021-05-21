@@ -14,12 +14,10 @@ INSERT INTO qwat_vl.leak_type (id, value_en, value_fr, value_ro ) VALUES (101, '
 INSERT INTO qwat_vl.leak_type (id, value_en, value_fr, value_ro ) VALUES (102, 'unknown', 'inconnu', 'necunoscută');
 INSERT INTO qwat_vl.leak_type (id, value_en, value_fr, value_ro ) VALUES (103, 'to be determined', 'à déterminer', 'de determinat');
 
-INSERT INTO qwat_vl.leak_type (id, value_en, value_fr, value_ro) VALUES (9201,'break', 'cassure ','spărtură');
-INSERT INTO qwat_vl.leak_type (id, value_en, value_fr, value_ro) VALUES (9202,'breakage', 'bris','rupere');
-INSERT INTO qwat_vl.leak_type (id, value_en, value_fr, value_ro) VALUES (9203,'crack', 'fissure','fisură');
-INSERT INTO qwat_vl.leak_type (id, value_en, value_fr, value_ro) VALUES (9204,'hole', 'trou','gaură');
-INSERT INTO qwat_vl.leak_type (id, value_en, value_fr, value_ro) VALUES (9205,'default', 'défaut','defect');
-INSERT INTO qwat_vl.leak_type (id, value_en, value_fr, value_ro) VALUES (9206,'leak', 'fuite','scurgere');
+INSERT INTO qwat_vl.leak_type (id, value_en, value_fr, value_ro) VALUES (9201,'rupture (break, breakage)', 'rupture (cassure, bris)','ruptură (spargere, rupere)');
+INSERT INTO qwat_vl.leak_type (id, value_en, value_fr, value_ro) VALUES (9202,'crack', 'fissure','fisură');
+INSERT INTO qwat_vl.leak_type (id, value_en, value_fr, value_ro) VALUES (9203,'hole', 'trou','gaură');
+INSERT INTO qwat_vl.leak_type (id, value_en, value_fr, value_ro) VALUES (9204,'default', 'défaut','defect');
 
 
 
