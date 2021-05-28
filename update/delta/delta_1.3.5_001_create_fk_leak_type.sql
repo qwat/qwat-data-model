@@ -1,19 +1,5 @@
 ALTER TABLE qwat_od.leak ADD column fk_type integer;
 
-UPDATE qwat_od.leak
-SET fk_type = (
-CASE
-  -- NPS and others from the demo
-WHEN type = 'other' THEN 101
-WHEN type = 'inconnu' THEN 102
-WHEN type = 'to be determined' THEN 103
-WHEN type = 'rupture (break, breakage)' THEN 9201
-WHEN type = 'crack' THEN 9202
-WHEN type = 'hole' THEN 9203
-WHEN type = 'default' THEN 9204
-END );
-
-
 /*
  qWat - QGIS Water Module
 
