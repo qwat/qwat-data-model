@@ -13,7 +13,6 @@ WHEN type = 'hole' THEN 9203
 WHEN type = 'default' THEN 9204
 END );
 
-ALTER TABLE qwat_od.leak DROP COLUMN type;
 
 /*
  qWat - QGIS Water Module
