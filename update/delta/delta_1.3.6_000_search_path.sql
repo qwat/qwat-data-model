@@ -126,6 +126,22 @@ UNION
   WHERE NOT (p.id IN ( SELECT pipe_reference.fk_pipe
            FROM qwat_network.pipe_reference));
 
+-- Function: ft_element_valve_status :
+
+CREATE OR REPLACE FUNCTION qwat_network.ft_element_valve_status(var_pipe_id integer)
+RETURNS boolean
+LANGUAGE 'sql'
+AS $BODY$
+	SELECT
+		bool_or(closed) as closed
+	FROM
+		qwat_od.valve
+    WHERE
+		fk_pipe=var_pipe_id
+    GROUP BY
+		fk_pipe
+$BODY$;
+
 -- Function: ft_create_network : create table with each pipe section (node to node)
 
 CREATE OR REPLACE FUNCTION qwat_network.ft_create_network()
@@ -138,11 +154,11 @@ AS $function$
 	            fk_node_a as source,
 	            fk_node_b as target,
 	            CASE 
-	                WHEN qwat_od.fn_element_valve_status(id) THEN -1
+	                WHEN qwat_network.ft_element_valve_status(id) THEN -1
 	                ELSE ST_length(p.geometry) 
 	            END as cost,
 	            CASE 
-	                WHEN qwat_od.fn_element_valve_status(id) THEN -1
+	                WHEN qwat_network.ft_element_valve_status(id) THEN -1
 	                ELSE ST_length(p.geometry) 
 	            END as reverse_cost,
 	            geometry as geometry
@@ -157,7 +173,7 @@ AS $function$
             CASE 
                 WHEN sp.geometry is not null THEN 
                 CASE 
-                    WHEN qwat_od.fn_element_valve_status(sp.fk_pipe) THEN -1 
+                    WHEN qwat_network.ft_element_valve_status(sp.fk_pipe) THEN -1 
                     ELSE ST_length(sp.geometry) 
                 END
                 ELSE 0.1
@@ -165,7 +181,7 @@ AS $function$
             CASE 
                 WHEN sp.geometry is not null THEN 
                 CASE 
-                    WHEN qwat_od.fn_element_valve_status(sp.fk_pipe) THEN -1
+                    WHEN qwat_network.ft_element_valve_status(sp.fk_pipe) THEN -1
                     ELSE ST_length(sp.geometry) 
                 END 
             ELSE 0.1 
@@ -300,7 +316,7 @@ select qwat_network.ft_all_pipes();
 
 select qwat_network.ft_create_network();
 
-CREATE OR REPLACE FUNCTION qwat_network.ft_network_cutoff(valves integer[], pipe integer,  max_depth integer DEFAULT 20)
+CREATE OR REPLACE FUNCTION qwat_network.ft_network_cutoff(valves integer[], pipe integer,  max_km integer DEFAULT 20)
  RETURNS TABLE(id integer, source integer, target integer, geometry geometry)
  LANGUAGE plpgsql
 AS $function$
@@ -315,7 +331,7 @@ begin
 	return query
 	with recursive 
     -- la CTE
-    search_graph(id, source, target, cost, depth, path) as (
+    search_graph(id, source, target, cost, meters, path) as (
         -- Initialisation
         -- on part d'un troncon specifique
         select 
@@ -329,7 +345,7 @@ begin
 				else g.target
 			end as target,
             g.cost, 
-            1 as depth, 
+			st_length(g.geometry) as meters,
             case 
 				when start_node=g.target then ARRAY[g.target, g.source]
 				else ARRAY[g.source, g.target]
@@ -346,7 +362,7 @@ begin
 			ng.target,
 			ng.cost,
 			-- on incremente la profondeur a chaque iteration			
-			ng.depth + 1 as depth,
+			ng.meters + st_length(ng.geometry) as meters,
 			-- on met la target dans le tableau représentant le chemin à parcourir
 			ng.path || ng.target
         from
@@ -365,8 +381,9 @@ begin
 					else g.target
 				end as target,
 				g.cost,
-				sg.depth,
-				sg.path
+				sg.meters,
+				sg.path,
+				g.geometry
 			from 
             -- la table qu'on jointure : c'est le graphe (au format pgrouting)
 				qwat_network.network as g,
@@ -391,7 +408,8 @@ begin
 			-- on ne repasse pas par un noeud déjà dans le chemin à parcourir (on ne revient pas en arrière)
 			and not ng.target = any(ng.path)
 			-- on s'arrête à une profondeur pour ne pas parcourir le réseau entier
-			and ng.depth < max_depth
+			-- Stop if number of meters is too important
+			and ng.meters / 1000 < $3
             -- et on ne passe pas par les vannes fermées
             --and sg.cost != -1            
 	)
