@@ -56,7 +56,7 @@ $function$
 ;
 
 
-CREATE OR REPLACE FUNCTION qwat_network.ft_search_opened_valves(start_pipe integer, max_depth integer DEFAULT 20, stop_on_network_valves boolean DEFAULT true)
+CREATE OR REPLACE FUNCTION qwat_network.ft_search_opened_valves(start_pipe integer, max_km integer DEFAULT 20, stop_on_network_valves boolean DEFAULT true)
  RETURNS TABLE(id integer, geometry geometry)
  LANGUAGE plpgsql
 AS $function$
@@ -70,13 +70,13 @@ begin
     for rec in 
     with recursive
     -- la CTE
-    search_graph(id, source, target, depth, path) as (
+    search_graph(id, source, target, meters, path) as (
         -- Init, we start from a specific pipe
         select
             g.id,
             fk_node_a as source,
             fk_node_b as target,
-            1 as depth,
+            st_length(g.geometry) as meters,
             ARRAY[g.id] as path
         from 
             qwat_od.pipe as g  -- start on a pipe (not on the network)
@@ -90,7 +90,7 @@ begin
             g.network_id,
             g.source,
             g.target,
-            sg.depth + 1 as depth, -- increase recusion depth
+            sg.meters + st_length(g.geometry) as meters, -- increase meters
             sg.path || g.network_id -- we store each pipe traveled
         from
         qwat_network.network as g
@@ -98,8 +98,8 @@ begin
         where
             -- if the pipe has already been travel, do not take it again
             not g.network_id = any(sg.path)
-            -- security: maximum depth of recusion
-            and sg.depth < max_depth
+            -- security: maximum km
+            and sg.meters / 1000 < max_km
             -- if a node is a valve, then we stop (valves are the goal)
             -- unless stop_on_network_valves is true. In that case, we only stop on network valves
             and not qwat_network.ft_check_node_is_valve(sg.source, stop_on_network_valves) 

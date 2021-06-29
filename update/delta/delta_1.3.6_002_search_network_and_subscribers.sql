@@ -61,9 +61,6 @@ begin
         condition_network_valve = ' and not qwat_network.ft_check_valve_is_network(ng.source) ';
     end if;
 
-    
-    
-    
     --for rec in 
     sql = format('
         with recursive search_graph(id, network_id, source, target, cost, meters, path) as (
