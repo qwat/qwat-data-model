@@ -20,23 +20,33 @@ $function$
 ;
 
 
-CREATE OR REPLACE FUNCTION qwat_network.ft_search_network_and_subscribers(start_pipe integer, max_km integer DEFAULT 20, stop_on_network_valves boolean DEFAULT false, stop_on_subscriber_valves boolean DEFAULT false, stop_on_current_pressure_zone boolean DEFAULT false)
+CREATE OR REPLACE FUNCTION qwat_network.ft_search_network_and_subscribers(start_pipe integer, _x float, _y float, max_km integer DEFAULT 20, stop_on_network_valves boolean DEFAULT false, stop_on_subscriber_valves boolean DEFAULT false, stop_on_current_pressure_zone boolean DEFAULT false)
  RETURNS TABLE(id integer, geometry geometry)
  LANGUAGE plpgsql
 AS $function$
 declare
     start_node integer;
     start_node2 integer;
-    pipe_list integer[]='{0}';
+    network_list integer[]='{0}';
     rec record;
-    pipe integer;
+    nid integer;
+    network_id integer;
     pressure_zone integer;
     sql text;
     condition_pressure_zone text := '';
     condition_subscriber_valve text := '';
     condition_network_valve text := '';
 begin
-    select n.source, n.target into start_node, start_node2 from qwat_network.network n where n.id = start_pipe;
+    -- Select a network object from the pipe id and point clicked
+    sql = format('
+        with point_clicked as ( 
+            select st_setsrid(st_makepoint($1,$2),21781) as geom
+        )
+        select n.network_id, n.source, n.target
+        from qwat_network.network n, point_clicked 
+        where n.id = $3
+        and st_dwithin(point_clicked.geom, n.geometry, 1);'); -- TODO 1m suffisant ?
+    execute sql into network_id, start_node, start_node2 using _x, _y, start_pipe;
     
     if stop_on_current_pressure_zone then 
         pressure_zone = (select fk_pressurezone from qwat_od.pipe p where p.id = start_pipe);
@@ -44,45 +54,56 @@ begin
     end if;
     
     if stop_on_subscriber_valves then
-        condition_subscriber_valve = ' and not qwat_network.ft_check_valve_is_subscriber(ng.source) and not qwat_network.ft_check_valve_is_subscriber(ng.target) ';
+        condition_subscriber_valve = ' and not qwat_network.ft_check_valve_is_subscriber(ng.source) ';
     end if;
     
     if stop_on_network_valves then
-        condition_subscriber_valve = ' and not qwat_network.ft_check_valve_is_network(ng.source) and not qwat_network.ft_check_valve_is_network(ng.target) ';
+        condition_network_valve = ' and not qwat_network.ft_check_valve_is_network(ng.source) ';
     end if;
 
+    
+    
+    
     --for rec in 
     sql = format('
-        with recursive search_graph(id, source, target, cost, meters, path) as (
+        with recursive search_graph(id, network_id, source, target, cost, meters, path) as (
             -- Init
-            -- We start from a specific pipe
-            select 
-                g.id, 
-                case 
-                    when g.target = $1 then g.target
-                    else g.source
-                end as source,
-                case 
-                    when g.target = $1 then g.source
-                    else g.target
-                end as target,
-                g.cost, 
-                st_length(g.geometry) as meters, 
-                case 
-                    when g.target = $1 then ARRAY[g.target, g.source]
-                    else ARRAY[g.source, g.target]
-                end as path
-            from 
-                qwat_network.network as g 
-            where 
-                g.source = $1 or g.target = $1
-            or g.source = $2 or g.target = $2
+            -- We start from a specific pipe, on each node (source and target)
+            with start_nodes as ( 
+                select 
+                    g.id,
+                    g.network_id, 
+                    $2 as source,
+                    $3 as target,
+                    g.cost, 
+                    st_length(g.geometry) as meters,
+                    ARRAY[$2, $3] as path
+                from 
+                    qwat_network.network as g
+                where 
+                    g.network_id = $1
+                UNION 
+                select 
+                    g.id,
+                    g.network_id, 
+                    $3 as source,
+                    $2 as target,
+                    g.cost, 
+                    st_length(g.geometry) as meters,
+                    ARRAY[$3, $2] as path
+                from 
+                    qwat_network.network as g
+                where 
+                    g.network_id = $1
+            )
+            select * from start_nodes
 
             union all
 
             -- Recursive part
             select
                 ng.id,
+                ng.network_id,
                 ng.source,
                 ng.target,
                 ng.cost,
@@ -91,7 +112,8 @@ begin
             from
                 (select 
                     g.id,
-                    -- case to see witch node is the source or the target
+                    g.network_id,
+                    -- case to see which node is the source or the target
                     case 
                         when sg.target=g.target then g.target
                         else g.source
@@ -108,14 +130,15 @@ begin
                     qwat_network.network as g,
                     search_graph as sg
                 where
-                    (sg.target = g.source or
-                    sg.target = g.target
-                    and sg.source <> g.source)
+                    (
+                        sg.target = g.source or sg.target = g.target
+                        and sg.source <> g.source
+                    )
                 ) as ng
                 join qwat_od.pipe p on p.id = ng.id
 
             where
-                -- Continue while there s no closed valve
+                -- Continue while there is no closed valve
                 (not qwat_network.ft_check_node_is_closed_valve(ng.source))
                 
                 -- Be carreful not to cross a node twice
@@ -131,24 +154,25 @@ begin
                 %s
                 
                 -- network valves
-                %s
+                %s 
         )
-        select distinct sg.id, n.geometry, meters, path
+        select distinct sg.network_id, n.geometry, meters, path
         from search_graph as sg
-        join qwat_network.network n on (n.source = sg.source and n.target = sg.target) or (n.target = sg.source and n.source = sg.target)
-        ', condition_pressure_zone, condition_subscriber_valve, condition_subscriber_valve);
-    for rec in execute sql using start_node, start_node2, max_km
+        join qwat_network.network n on n.network_id = sg.network_id;
+        ', condition_pressure_zone, condition_subscriber_valve, condition_network_valve);
+    RAISE NOTICE '%', sql;
+    for rec in execute sql using network_id, start_node, start_node2, max_km
     loop
-        -- Unique list of pipes
-        if not rec.id = any(pipe_list) then
-            pipe_list := pipe_list || rec.id;
+        -- Unique list of network pipes
+        if not rec.network_id = any(network_list) then
+            network_list := network_list || rec.network_id;
         end if;
     end loop;
     
-    -- Last step: get pipes geometries
-    foreach pipe in ARRAY pipe_list
+    -- Last step: get network geometries
+    foreach nid in ARRAY network_list
     loop
-        select p.id, p.geometry into id, geometry from qwat_od.pipe p where p.id = pipe;
+        select n.network_id, n.geometry into id, geometry from qwat_network.network n where n.network_id = nid;
         if id is not null then
             return next;
         end if;
