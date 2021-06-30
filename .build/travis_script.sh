@@ -4,7 +4,7 @@ set -e
 
 cd $TRAVIS_BUILD_DIR
 
-export VERSION=$(sed 'r' "$TRAVIS_BUILD_DIR/system/CURRENT_VERSION.txt")
+export VERSION=$(cat "$TRAVIS_BUILD_DIR/system/CURRENT_VERSION.txt")
 
 # Get the 1.2.1 data_and_structure dump
 wget -q -O qwat_dump.backup https://github.com/qwat/qwat-data-sample/raw/master/qwat_v1.2.1_data_and_structure_sample.backup
