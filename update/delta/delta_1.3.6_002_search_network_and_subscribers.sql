@@ -45,7 +45,7 @@ begin
         select n.network_id, n.source, n.target
         from qwat_network.network n, point_clicked 
         where n.id = $3
-        and st_dwithin(point_clicked.geom, n.geometry, 1);'); -- TODO 1m suffisant ?
+        and st_dwithin(point_clicked.geom, n.geometry, 1);'); -- 1m is enough ?
     execute sql into network_id, start_node, start_node2 using _x, _y, start_pipe;
     
     if stop_on_current_pressure_zone then 
@@ -61,7 +61,6 @@ begin
         condition_network_valve = ' and not qwat_network.ft_check_valve_is_network(ng.source) ';
     end if;
 
-    --for rec in 
     sql = format('
         with recursive search_graph(id, network_id, source, target, cost, meters, path) as (
             -- Init
@@ -142,7 +141,7 @@ begin
                 and not ng.target = any(ng.path)
                 
                 -- Stop if number of meters is too important
-                and ng.meters / 1000 < $3
+                and ng.meters / 1000 < $4
                 
                 -- pressure zone
                 %s
@@ -157,7 +156,7 @@ begin
         from search_graph as sg
         join qwat_network.network n on n.network_id = sg.network_id;
         ', condition_pressure_zone, condition_subscriber_valve, condition_network_valve);
-    RAISE NOTICE '%', sql;
+
     for rec in execute sql using network_id, start_node, start_node2, max_km
     loop
         -- Unique list of network pipes
