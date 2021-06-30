@@ -19,5 +19,6 @@ ALTER TABLE qwat_vl.value_list_base ADD COLUMN value_ro varchar(50) ;
 ALTER TABLE qwat_vl.value_list_base ADD COLUMN description_fr text ;
 ALTER TABLE qwat_vl.value_list_base ADD COLUMN description_en text ;
 ALTER TABLE qwat_vl.value_list_base ADD COLUMN description_ro text ;
+ALTER TABLE qwat_vl.value_list_base ADD COLUMN sia405_de text NOT NULL DEFAULT 'unbekannt';
 
 
