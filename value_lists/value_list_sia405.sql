@@ -5,8 +5,8 @@
 -- TODO : sync this with delta_1.3.6_add_vl_for_SIA_export.sql
 
 UPDATE qwat_vl.pipe_material SET sia405_de = CASE
-    WHEN short_fr = 'AC' THEN 'Stahl'
-    WHEN short_fr = 'PE' THEN 'Polyethylen'
+    WHEN short_fr = 'AC' THEN 'Stahl.unbekannt'
+    WHEN short_fr = 'PE' THEN 'Kunststoff.Polyethylen.unbekannt'
     ELSE 'unbekannt'
 END;
 

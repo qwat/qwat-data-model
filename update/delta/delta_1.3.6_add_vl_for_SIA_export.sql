@@ -51,8 +51,8 @@ ALTER TABLE qwat_vl.worker_type ADD COLUMN sia405_de TEXT NOT NULL DEFAULT 'unbe
 -- TODO : sync this with value_list_sia405.sql
 
 UPDATE qwat_vl.pipe_material SET sia405_de = CASE
-    WHEN short_fr = 'AC' THEN 'Stahl'
-    WHEN short_fr = 'PE' THEN 'Polyethylen'
+    WHEN short_fr = 'AC' THEN 'Stahl.unbekannt'
+    WHEN short_fr = 'PE' THEN 'Kunststoff.Polyethylen.unbekannt'
     ELSE 'unbekannt'
 END;
 
