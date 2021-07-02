@@ -4,6 +4,7 @@ Currently, we do it here until the matching stabilizes, so it can be pasted
 from delta_1.3.6_add_vl_for_SIA_export.sql
 */
 
+
 -- Populate columns
 
 -- TODO : complete mapping
@@ -61,8 +62,14 @@ UPDATE qwat_vl.pipe_material SET sia405code = 'Kunststoff.Polyethylen.unbekannt'
 -- TODO : complete mapping
 -- UPDATE qwat_vl.pipe_protection SET sia405code = 'unbekannt' WHERE ???;
 
--- TODO : complete mapping
--- UPDATE qwat_vl.precision SET sia405code = 'unbekannt' WHERE ???;
+-- TODO : check mapping
+UPDATE qwat_vl.precision SET sia405code = 'unbekannt' WHERE value_fr = 'Autre';
+UPDATE qwat_vl.precision SET sia405code = 'unbekannt' WHERE value_fr = 'Inconnu';
+UPDATE qwat_vl.precision SET sia405code = 'unbekannt' WHERE value_fr = 'À déterminer';
+UPDATE qwat_vl.precision SET sia405code = 'ungenau' WHERE value_fr = 'Imprécis';
+UPDATE qwat_vl.precision SET sia405code = 'genau' WHERE value_fr = 'Précis';
+UPDATE qwat_vl.precision SET sia405code = 'unbekannt' WHERE value_fr = 'Localisé';
+UPDATE qwat_vl.precision SET sia405code = 'unbekannt' WHERE value_fr = 'Digitalisé';
 
 -- TODO : complete mapping
 -- UPDATE qwat_vl.precisionalti SET sia405code = 'unbekannt' WHERE ???;
@@ -88,15 +95,23 @@ UPDATE qwat_vl.pressurecontrol_type SET sia405code = 'Schacht.unbekannt' WHERE v
 -- UPDATE qwat_vl.source_quality SET sia405code = 'unbekannt' WHERE ???;
 
 -- TODO : complete mapping
-
 UPDATE qwat_vl.source_type SET sia405code = 'Fassungsanlage.Fluss_Seewasserfassung' WHERE value_fr = 'captage eau lac';
 UPDATE qwat_vl.source_type SET sia405code = 'Fassungsanlage.Grundwasserfassung' WHERE value_fr = 'captage eau nappe';
 UPDATE qwat_vl.source_type SET sia405code = 'Fassungsanlage.Quellfassung' WHERE value_fr = 'captage eau source';
 UPDATE qwat_vl.source_type SET sia405code = 'Fassungsanlage.Fluss_Seewasserfassung' WHERE value_fr = 'captage eau rivière';
 
--- TODO : complete mapping
-UPDATE qwat_vl.status SET sia405code = 'in_Betrieb' WHERE value_en = 'in use';
-UPDATE qwat_vl.status SET sia405code = 'ausser_Betrieb' WHERE value_en = 'out of service';
+-- TODO : check mapping
+UPDATE qwat_vl.status SET sia405code = 'unbekannt' WHERE value_fr = 'à déterminer';
+UPDATE qwat_vl.status SET sia405code = 'weitere' WHERE value_fr = 'fictif';
+UPDATE qwat_vl.status SET sia405code = 'ausser_Betrieb' WHERE value_fr = 'désaffecté';
+UPDATE qwat_vl.status SET sia405code = 'ausser_Betrieb' WHERE value_fr = 'abandonné';
+UPDATE qwat_vl.status SET sia405code = 'ausser_Betrieb' WHERE value_fr = 'hors service';
+UPDATE qwat_vl.status SET sia405code = 'in_Betrieb' WHERE value_fr = 'en service';
+UPDATE qwat_vl.status SET sia405code = 'tot' WHERE value_fr = 'détruit';
+UPDATE qwat_vl.status SET sia405code = 'unbekannt' WHERE value_fr = 'inconnu';
+UPDATE qwat_vl.status SET sia405code = 'weitere' WHERE value_fr = 'autre';
+UPDATE qwat_vl.status SET sia405code = 'weitere.geplant' WHERE value_fr = 'projet planifie';
+UPDATE qwat_vl.status SET sia405code = 'weitere.Projekt' WHERE value_fr = 'projet en execution';
 
 -- TODO : complete mapping
 -- UPDATE qwat_vl.subscriber_type SET sia405code = 'unbekannt' WHERE ???;
