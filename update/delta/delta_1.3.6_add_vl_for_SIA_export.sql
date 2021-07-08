@@ -185,8 +185,22 @@ UPDATE qwat_vl.status SET sia405code = 'weitere.Projekt' WHERE value_fr = 'proje
 -- TODO : complete mapping
 -- UPDATE qwat_vl.valve_actuation SET sia405code = 'unbekannt' WHERE ???;
 
--- TODO : complete mapping
--- UPDATE qwat_vl.valve_function SET sia405code = 'unbekannt' WHERE ???;
+-- TODO : valve function mapping complete [X] to check [ ]
+UPDATE qwat_vl.valve_function SET sia405code = 'Schieber.unbekannt' WHERE value_fr = 'autre';
+UPDATE qwat_vl.valve_function SET sia405code = 'Schieber.unbekannt' WHERE value_fr = 'inconnu';
+UPDATE qwat_vl.valve_function SET sia405code = 'Schieber.unbekannt' WHERE value_fr = 'à déterminer';
+UPDATE qwat_vl.valve_function SET sia405code = 'Schieber.Zonenschieber' WHERE value_fr = 'vanne de régulation';
+UPDATE qwat_vl.valve_function SET sia405code = 'Schieber.unbekannt' WHERE value_fr = 'ventouse';
+UPDATE qwat_vl.valve_function SET sia405code = 'Schieber.unbekannt' WHERE value_fr = 'vanne bypass';
+UPDATE qwat_vl.valve_function SET sia405code = 'Schieber.Anschlussschieber' WHERE value_fr = 'vanne branchement';
+UPDATE qwat_vl.valve_function SET sia405code = 'Schieber.unbekannt' WHERE value_fr = 'vanne incendie';
+UPDATE qwat_vl.valve_function SET sia405code = 'Schieber.Hydrantenschieber' WHERE value_fr = 'vanne d''hydrant';
+UPDATE qwat_vl.valve_function SET sia405code = 'Schieber.Entleerungsschieber' WHERE value_fr = 'vidange';
+UPDATE qwat_vl.valve_function SET sia405code = 'Schieber.Trennschieber' WHERE value_fr = 'vanne réseau';
+UPDATE qwat_vl.valve_function SET sia405code = 'Schieber.Entleerungsschieber' WHERE value_fr = 'vidange-ventouse';
+UPDATE qwat_vl.valve_function SET sia405code = 'Schieber.unbekannt' WHERE value_fr = 'antiretour';
+UPDATE qwat_vl.valve_function SET sia405code = 'Schieber.unbekannt' WHERE value_fr = 'vanne sprinkler';
+UPDATE qwat_vl.valve_function SET sia405code = 'Schieber.unbekannt' WHERE value_fr = 'jauge';
 
 -- TODO : complete mapping
 -- UPDATE qwat_vl.valve_maintenance SET sia405code = 'unbekannt' WHERE ???;
