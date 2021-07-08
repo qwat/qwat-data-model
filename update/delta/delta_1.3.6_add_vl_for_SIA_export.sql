@@ -63,7 +63,22 @@ UPDATE qwat_vl.hydrant_material SET sia405code = 'unbekannt' WHERE value_fr = '�
 -- UPDATE qwat_vl.part_type SET sia405code = 'unbekannt' WHERE ???;
 
 -- TODO : complete mapping
--- UPDATE qwat_vl.pipe_function SET sia405code = 'unbekannt' WHERE ???;
+-- Pipe function mapping to complete [ ] to check [ ]
+UPDATE qwat_vl.pipe_function SET sia405code = 'unbekannt' WHERE value_fr = 'autre';
+UPDATE qwat_vl.pipe_function SET sia405code = 'unbekannt' WHERE value_fr = 'inconnu';
+UPDATE qwat_vl.pipe_function SET sia405code = 'unbekannt' WHERE value_fr = 'à déterminer';
+UPDATE qwat_vl.pipe_function SET sia405code = 'Fernwasserleitung' WHERE value_fr = 'Conduite de transport';
+UPDATE qwat_vl.pipe_function SET sia405code = 'Hydrantenanschlussleitung' WHERE value_fr = 'Conduite d''hydrant';
+UPDATE qwat_vl.pipe_function SET sia405code = 'Entleerungsleitung' WHERE value_fr = 'Conduite de vidange';
+UPDATE qwat_vl.pipe_function SET sia405code = 'Zubringerleitung' WHERE value_fr = 'Conduite d''adduction';
+UPDATE qwat_vl.pipe_function SET sia405code = 'unbekannt' WHERE value_fr = 'Conduite de distribution';
+UPDATE qwat_vl.pipe_function SET sia405code = 'Anschlussleitung.gemeinsam' WHERE value_fr = 'Branchement commun';
+UPDATE qwat_vl.pipe_function SET sia405code = 'unbekannt' WHERE value_fr = 'By-pass';
+UPDATE qwat_vl.pipe_function SET sia405code = 'Bau_Wasseranschluss' WHERE value_fr = 'Branchement privé';
+UPDATE qwat_vl.pipe_function SET sia405code = 'unbekannt' WHERE value_fr = 'Conduite de haute pression';
+UPDATE qwat_vl.pipe_function SET sia405code = 'Quellleitung' WHERE value_fr = 'Drain captant';
+UPDATE qwat_vl.pipe_function SET sia405code = 'unbekannt' WHERE value_fr = 'Trop plein';
+UPDATE qwat_vl.pipe_function SET sia405code = 'Entlueftungsleitung' WHERE value_fr = 'Ventilation';
 
 -- TODO : complete mapping
 -- UPDATE qwat_vl.pipe_installmethod SET sia405code = 'unbekannt' WHERE ???;
