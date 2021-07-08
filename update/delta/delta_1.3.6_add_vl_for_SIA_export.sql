@@ -20,6 +20,9 @@ ALTER TABLE qwat_vl.value_list_base ADD COLUMN sia405code TEXT;
 
 -- TODO : complete mapping
 UPDATE qwat_vl.hydrant_material SET sia405code = 'Metall' WHERE short_fr LIKE 'F %';
+UPDATE qwat_vl.hydrant_material SET sia405code = 'unbekannt' WHERE value_fr = 'autre';
+UPDATE qwat_vl.hydrant_material SET sia405code = 'unbekannt' WHERE value_fr = 'inconnu';
+UPDATE qwat_vl.hydrant_material SET sia405code = 'unbekannt' WHERE value_fr = 'à déterminer';
 
 -- TODO : complete mapping
 -- UPDATE qwat_vl.hydrant_model_inf SET sia405code = 'unbekannt' WHERE ???;
