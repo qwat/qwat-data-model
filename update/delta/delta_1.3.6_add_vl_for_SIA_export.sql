@@ -62,8 +62,7 @@ UPDATE qwat_vl.hydrant_material SET sia405code = 'unbekannt' WHERE value_fr = '�
 -- TODO : complete mapping
 -- UPDATE qwat_vl.part_type SET sia405code = 'unbekannt' WHERE ???;
 
--- TODO : complete mapping
--- Pipe function mapping to complete [ ] to check [ ]
+-- TODO : Pipe function mapping to complete [X] to check [ ]
 UPDATE qwat_vl.pipe_function SET sia405code = 'unbekannt' WHERE value_fr = 'autre';
 UPDATE qwat_vl.pipe_function SET sia405code = 'unbekannt' WHERE value_fr = 'inconnu';
 UPDATE qwat_vl.pipe_function SET sia405code = 'unbekannt' WHERE value_fr = 'à déterminer';
@@ -80,10 +79,19 @@ UPDATE qwat_vl.pipe_function SET sia405code = 'Quellleitung' WHERE value_fr = 'D
 UPDATE qwat_vl.pipe_function SET sia405code = 'unbekannt' WHERE value_fr = 'Trop plein';
 UPDATE qwat_vl.pipe_function SET sia405code = 'Entlueftungsleitung' WHERE value_fr = 'Ventilation';
 
--- TODO : complete mapping
--- UPDATE qwat_vl.pipe_installmethod SET sia405code = 'unbekannt' WHERE ???;
+-- TODO : pipe installation method mapping to complete [X] to check [ ]
+UPDATE qwat_vl.pipe_installmethod SET sia405code = 'unbekannt' WHERE value_fr = 'autre';
+UPDATE qwat_vl.pipe_installmethod SET sia405code = 'unbekannt' WHERE value_fr = 'inconnu';
+UPDATE qwat_vl.pipe_installmethod SET sia405code = 'unbekannt' WHERE value_fr = 'à déterminer';
+UPDATE qwat_vl.pipe_installmethod SET sia405code = 'offener_Graben' WHERE value_fr = 'En fouille';
+UPDATE qwat_vl.pipe_installmethod SET sia405code = 'unbekannt' WHERE value_fr = 'Chemisé';
+UPDATE qwat_vl.pipe_installmethod SET sia405code = 'freiliegend' WHERE value_fr = 'Air libre';
+UPDATE qwat_vl.pipe_installmethod SET sia405code = 'grabenlos' WHERE value_fr = 'Sous pont';
+UPDATE qwat_vl.pipe_installmethod SET sia405code = 'unbekannt' WHERE value_fr = 'Protégé';
+UPDATE qwat_vl.pipe_installmethod SET sia405code = 'unbekannt' WHERE value_fr = 'Bétoné';
+UPDATE qwat_vl.pipe_installmethod SET sia405code = 'grabenlos' WHERE value_fr = 'Galerie';
 
--- TODO : complete and check mapping
+-- TODO : pipe material mapping to complete [ ] to check [ ]
 -- Missing CU
 UPDATE qwat_vl.pipe_material SET sia405code = 'unbekannt' WHERE value_fr = 'Autre';
 UPDATE qwat_vl.pipe_material SET sia405code = 'unbekannt' WHERE value_fr = 'Inconnu';
@@ -107,7 +115,7 @@ UPDATE qwat_vl.pipe_material SET sia405code = 'Kunststoff' WHERE short_fr = 'PL'
 -- TODO : complete mapping
 -- UPDATE qwat_vl.pipe_protection SET sia405code = 'unbekannt' WHERE ???;
 
--- TODO : Planimetric precision mapping complete [X] to check [ ]
+-- TODO : Planimetric precision mapping to complete [X] to check [ ]
 UPDATE qwat_vl.precision SET sia405code = 'unbekannt' WHERE value_fr = 'Autre';
 UPDATE qwat_vl.precision SET sia405code = 'unbekannt' WHERE value_fr = 'Inconnu';
 UPDATE qwat_vl.precision SET sia405code = 'unbekannt' WHERE value_fr = 'À déterminer';
@@ -116,7 +124,7 @@ UPDATE qwat_vl.precision SET sia405code = 'genau' WHERE value_fr = 'Précis';
 UPDATE qwat_vl.precision SET sia405code = 'unbekannt' WHERE value_fr = 'Localisé';
 UPDATE qwat_vl.precision SET sia405code = 'unbekannt' WHERE value_fr = 'Digitalisé';
 
--- TODO : Altimetric precision mapping complete [X] to check [ ]
+-- TODO : Altimetric precision mapping to complete [X] to check [ ]
 UPDATE qwat_vl.precisionalti SET sia405code = 'unbekannt' WHERE value_fr = 'Autre';
 UPDATE qwat_vl.precisionalti SET sia405code = 'unbekannt' WHERE value_fr = 'Inconnu';
 UPDATE qwat_vl.precisionalti SET sia405code = 'unbekannt' WHERE value_fr = 'À déterminer';
@@ -188,8 +196,9 @@ UPDATE qwat_vl.status SET sia405code = 'weitere.Projekt' WHERE value_fr = 'proje
 
 -- TODO : complete mapping
 -- UPDATE qwat_vl.visible SET sia405code = 'unbekannt' WHERE ???;
+-- This is a QWAT attribute to enable/disable some attributes, no mapping required here.
 
--- Water Quality : mapping complete [X] to check [ ]
+-- TODO : Water Quality : mapping complete [X] to check [ ]
 UPDATE qwat_vl.watertype SET sia405code = 'unbekannt' WHERE value_fr = 'autre';
 UPDATE qwat_vl.watertype SET sia405code = 'unbekannt' WHERE value_fr = 'inconnu';
 UPDATE qwat_vl.watertype SET sia405code = 'unbekannt' WHERE value_fr = 'à déterminer';
