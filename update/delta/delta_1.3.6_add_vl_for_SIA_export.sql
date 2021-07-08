@@ -66,7 +66,7 @@ UPDATE qwat_vl.pipe_material SET sia405code = 'unbekannt' WHERE value_fr = 'Autr
 UPDATE qwat_vl.pipe_material SET sia405code = 'unbekannt' WHERE value_fr = 'Inconnu';
 UPDATE qwat_vl.pipe_material SET sia405code = 'unbekannt' WHERE value_fr = 'à déterminer';
 UPDATE qwat_vl.pipe_material SET sia405code = 'Stahl.unbekannt' WHERE short_fr = 'AC';
-UPDATE qwat_vl.pipe_material SET sia405code = 'Stahl.unbekannt' WHERE short_fr = 'ACG';
+UPDATE qwat_vl.pipe_material SET sia405code = 'Stahl.verzinkt' WHERE short_fr = 'ACG';
 UPDATE qwat_vl.pipe_material SET sia405code = 'Stahl.unbekannt' WHERE short_fr = 'ACPR';
 UPDATE qwat_vl.pipe_material SET sia405code = 'Stahl.rostbestaendig' WHERE short_fr = 'ACI';
 UPDATE qwat_vl.pipe_material SET sia405code = 'Guss.unbekannt' WHERE short_fr = 'F';
@@ -159,8 +159,13 @@ UPDATE qwat_vl.status SET sia405code = 'weitere.Projekt' WHERE value_fr = 'proje
 -- TODO : complete mapping
 -- UPDATE qwat_vl.visible SET sia405code = 'unbekannt' WHERE ???;
 
--- TODO : complete mapping
--- UPDATE qwat_vl.watertype SET sia405code = 'unbekannt' WHERE ???;
+-- Water Quality : mapping complete [X]
+UPDATE qwat_vl.watertype SET sia405code = 'unbekannt' WHERE value_fr = 'autre';
+UPDATE qwat_vl.watertype SET sia405code = 'unbekannt' WHERE value_fr = 'inconnu';
+UPDATE qwat_vl.watertype SET sia405code = 'unbekannt' WHERE value_fr = 'à déterminer';
+UPDATE qwat_vl.watertype SET sia405code = 'Rohwasser' WHERE value_fr = 'brute';
+UPDATE qwat_vl.watertype SET sia405code = 'Trinkwasser' WHERE value_fr = 'potable';
+UPDATE qwat_vl.watertype SET sia405code = 'Industriebrauchwasser' WHERE value_fr = 'industrielle';
 
 -- TODO : complete mapping
 -- UPDATE qwat_vl.worker_type SET sia405code = 'unbekannt' WHERE ???;
