@@ -18,7 +18,7 @@ ALTER TABLE qwat_vl.value_list_base ADD COLUMN sia405code TEXT;
 -- TODO : complete mapping
 -- UPDATE qwat_vl.cover_type SET sia405code = 'unbekannt' WHERE ???;
 
--- TODO : complete mapping
+-- Hydrant material : mapping complete [X]
 UPDATE qwat_vl.hydrant_material SET sia405code = 'Metall' WHERE short_fr LIKE 'F %';
 UPDATE qwat_vl.hydrant_material SET sia405code = 'unbekannt' WHERE value_fr = 'autre';
 UPDATE qwat_vl.hydrant_material SET sia405code = 'unbekannt' WHERE value_fr = 'inconnu';
@@ -60,9 +60,26 @@ UPDATE qwat_vl.hydrant_material SET sia405code = 'unbekannt' WHERE value_fr = '�
 -- TODO : complete mapping
 -- UPDATE qwat_vl.pipe_installmethod SET sia405code = 'unbekannt' WHERE ???;
 
--- TODO : complete mapping
+-- TODO : complete and check mapping
+-- Missing CU
+UPDATE qwat_vl.pipe_material SET sia405code = 'unbekannt' WHERE value_fr = 'Autre';
+UPDATE qwat_vl.pipe_material SET sia405code = 'unbekannt' WHERE value_fr = 'Inconnu';
+UPDATE qwat_vl.pipe_material SET sia405code = 'unbekannt' WHERE value_fr = 'à déterminer';
 UPDATE qwat_vl.pipe_material SET sia405code = 'Stahl.unbekannt' WHERE short_fr = 'AC';
+UPDATE qwat_vl.pipe_material SET sia405code = 'Stahl.unbekannt' WHERE short_fr = 'ACG';
+UPDATE qwat_vl.pipe_material SET sia405code = 'Stahl.unbekannt' WHERE short_fr = 'ACPR';
+UPDATE qwat_vl.pipe_material SET sia405code = 'Stahl.rostbestaendig' WHERE short_fr = 'ACI';
+UPDATE qwat_vl.pipe_material SET sia405code = 'Guss.unbekannt' WHERE short_fr = 'F';
+UPDATE qwat_vl.pipe_material SET sia405code = 'Guss.unbekannt' WHERE short_fr = 'FAE';
 UPDATE qwat_vl.pipe_material SET sia405code = 'Kunststoff.Polyethylen.unbekannt' WHERE short_fr = 'PE';
+UPDATE qwat_vl.pipe_material SET sia405code = 'Kunststoff.Polyethylen.unbekannt' WHERE short_fr = 'PE80';
+UPDATE qwat_vl.pipe_material SET sia405code = 'Kunststoff.Polyethylen.unbekannt' WHERE short_fr = 'PEX';
+UPDATE qwat_vl.pipe_material SET sia405code = 'Kunststoff.Polyvinylchlorid.unbekannt' WHERE short_fr = 'PVC';
+UPDATE qwat_vl.pipe_material SET sia405code = 'Zementrohr_Beton.unbekannt' WHERE short_fr = 'TC';
+UPDATE qwat_vl.pipe_material SET sia405code = 'Zementrohr_Beton.unbekannt' WHERE short_fr = 'TAC';
+UPDATE qwat_vl.pipe_material SET sia405code = 'Zementrohr_Beton.unbekannt' WHERE value_fr = 'Béton précontraint';
+UPDATE qwat_vl.pipe_material SET sia405code = 'Kunststoff.Glasfaserverstaerkter_Epoxiharz' WHERE short_fr = 'GRP';
+UPDATE qwat_vl.pipe_material SET sia405code = 'unbekannt' WHERE short_fr = 'PL';
 
 -- TODO : complete mapping
 -- UPDATE qwat_vl.pipe_protection SET sia405code = 'unbekannt' WHERE ???;
