@@ -9,8 +9,16 @@ ALTER TABLE qwat_vl.value_list_base ADD COLUMN sia405code TEXT;
 
 -- Populate columns
 
--- TODO : complete mapping
--- UPDATE qwat_vl.bedding SET sia405code = 'unbekannt' WHERE ???;
+-- TODO : Bedding material mapping complete [X] to check [ ]
+UPDATE qwat_vl.bedding SET sia405code = 'unbekannt' WHERE value_fr = 'autre';
+UPDATE qwat_vl.bedding SET sia405code = 'unbekannt' WHERE value_fr = 'inconnu';
+UPDATE qwat_vl.bedding SET sia405code = 'unbekannt' WHERE value_fr = 'à déterminer';
+UPDATE qwat_vl.bedding SET sia405code = 'unbekannt' WHERE value_fr = 'aucun';
+UPDATE qwat_vl.bedding SET sia405code = 'Beton' WHERE value_fr = 'béton';
+UPDATE qwat_vl.bedding SET sia405code = 'Fliess' WHERE value_fr = 'géotextile';
+UPDATE qwat_vl.bedding SET sia405code = 'Betonkies' WHERE value_fr = 'gravier';
+UPDATE qwat_vl.bedding SET sia405code = 'Sand' WHERE value_fr = 'sable';
+UPDATE qwat_vl.bedding SET sia405code = 'unbekannt' WHERE value_fr = 'terre';
 
 -- TODO : complete mapping
 -- UPDATE qwat_vl.cistern SET sia405code = 'unbekannt' WHERE ???;
