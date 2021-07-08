@@ -18,7 +18,7 @@ ALTER TABLE qwat_vl.value_list_base ADD COLUMN sia405code TEXT;
 -- TODO : complete mapping
 -- UPDATE qwat_vl.cover_type SET sia405code = 'unbekannt' WHERE ???;
 
--- Hydrant material : mapping complete [X]
+-- Hydrant material : mapping complete [X] to check [ ]
 UPDATE qwat_vl.hydrant_material SET sia405code = 'Metall' WHERE short_fr LIKE 'F %';
 UPDATE qwat_vl.hydrant_material SET sia405code = 'unbekannt' WHERE value_fr = 'autre';
 UPDATE qwat_vl.hydrant_material SET sia405code = 'unbekannt' WHERE value_fr = 'inconnu';
@@ -79,12 +79,12 @@ UPDATE qwat_vl.pipe_material SET sia405code = 'Zementrohr_Beton.unbekannt' WHERE
 UPDATE qwat_vl.pipe_material SET sia405code = 'Zementrohr_Beton.unbekannt' WHERE short_fr = 'TAC';
 UPDATE qwat_vl.pipe_material SET sia405code = 'Zementrohr_Beton.unbekannt' WHERE value_fr = 'Béton précontraint';
 UPDATE qwat_vl.pipe_material SET sia405code = 'Kunststoff.Glasfaserverstaerkter_Epoxiharz' WHERE short_fr = 'GRP';
-UPDATE qwat_vl.pipe_material SET sia405code = 'unbekannt' WHERE short_fr = 'PL';
+UPDATE qwat_vl.pipe_material SET sia405code = 'Kunststoff' WHERE short_fr = 'PL';
 
 -- TODO : complete mapping
 -- UPDATE qwat_vl.pipe_protection SET sia405code = 'unbekannt' WHERE ???;
 
--- TODO : check mapping
+-- TODO : Planimetric precision mapping complete [X] to check [ ]
 UPDATE qwat_vl.precision SET sia405code = 'unbekannt' WHERE value_fr = 'Autre';
 UPDATE qwat_vl.precision SET sia405code = 'unbekannt' WHERE value_fr = 'Inconnu';
 UPDATE qwat_vl.precision SET sia405code = 'unbekannt' WHERE value_fr = 'À déterminer';
@@ -93,8 +93,15 @@ UPDATE qwat_vl.precision SET sia405code = 'genau' WHERE value_fr = 'Précis';
 UPDATE qwat_vl.precision SET sia405code = 'unbekannt' WHERE value_fr = 'Localisé';
 UPDATE qwat_vl.precision SET sia405code = 'unbekannt' WHERE value_fr = 'Digitalisé';
 
--- TODO : complete mapping
--- UPDATE qwat_vl.precisionalti SET sia405code = 'unbekannt' WHERE ???;
+-- TODO : Altimetric precision mapping complete [X] to check [ ]
+UPDATE qwat_vl.precisionalti SET sia405code = 'unbekannt' WHERE value_fr = 'Autre';
+UPDATE qwat_vl.precisionalti SET sia405code = 'unbekannt' WHERE value_fr = 'Inconnu';
+UPDATE qwat_vl.precisionalti SET sia405code = 'unbekannt' WHERE value_fr = 'À déterminer';
+UPDATE qwat_vl.precisionalti SET sia405code = 'ungenau' WHERE value_fr = 'Imprécis';
+UPDATE qwat_vl.precisionalti SET sia405code = 'ungenau' WHERE value_fr = 'Inférieure à 100 cm';
+UPDATE qwat_vl.precisionalti SET sia405code = 'ungenau' WHERE value_fr = 'Inférieure à 50 cm';
+UPDATE qwat_vl.precisionalti SET sia405code = 'genau' WHERE value_fr = 'Inférieure à 10 cm';
+UPDATE qwat_vl.precisionalti SET sia405code = 'genau' WHERE value_fr = 'Inférieure à 5 cm';
 
 -- TODO : complete mapping
 UPDATE qwat_vl.pressurecontrol_type SET sia405code = 'Schacht.Druckbrecher' WHERE value_en = 'reducer';
@@ -122,7 +129,7 @@ UPDATE qwat_vl.source_type SET sia405code = 'Fassungsanlage.Grundwasserfassung' 
 UPDATE qwat_vl.source_type SET sia405code = 'Fassungsanlage.Quellfassung' WHERE value_fr = 'captage eau source';
 UPDATE qwat_vl.source_type SET sia405code = 'Fassungsanlage.Fluss_Seewasserfassung' WHERE value_fr = 'captage eau rivière';
 
--- TODO : check mapping
+-- TODO : status mapping complete [X] to check [ ]
 UPDATE qwat_vl.status SET sia405code = 'unbekannt' WHERE value_fr = 'à déterminer';
 UPDATE qwat_vl.status SET sia405code = 'weitere' WHERE value_fr = 'fictif';
 UPDATE qwat_vl.status SET sia405code = 'ausser_Betrieb' WHERE value_fr = 'désaffecté';
@@ -159,7 +166,7 @@ UPDATE qwat_vl.status SET sia405code = 'weitere.Projekt' WHERE value_fr = 'proje
 -- TODO : complete mapping
 -- UPDATE qwat_vl.visible SET sia405code = 'unbekannt' WHERE ???;
 
--- Water Quality : mapping complete [X]
+-- Water Quality : mapping complete [X] to check [ ]
 UPDATE qwat_vl.watertype SET sia405code = 'unbekannt' WHERE value_fr = 'autre';
 UPDATE qwat_vl.watertype SET sia405code = 'unbekannt' WHERE value_fr = 'inconnu';
 UPDATE qwat_vl.watertype SET sia405code = 'unbekannt' WHERE value_fr = 'à déterminer';
