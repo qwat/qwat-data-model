@@ -135,6 +135,9 @@ UPDATE qwat_vl.precisionalti SET sia405code = 'genau' WHERE value_fr = 'Inférie
 UPDATE qwat_vl.precisionalti SET sia405code = 'genau' WHERE value_fr = 'Inférieure à 5 cm';
 
 -- TODO : complete mapping
+UPDATE qwat_vl.pressurecontrol_type SET sia405code = 'Schacht.unbekannt' WHERE value_fr = 'autre';
+UPDATE qwat_vl.pressurecontrol_type SET sia405code = 'Schacht.unbekannt' WHERE value_fr = 'inconnu';
+UPDATE qwat_vl.pressurecontrol_type SET sia405code = 'Schacht.unbekannt' WHERE value_fr = 'à déterminer';
 UPDATE qwat_vl.pressurecontrol_type SET sia405code = 'Schacht.Druckbrecher' WHERE value_en = 'reducer';
 UPDATE qwat_vl.pressurecontrol_type SET sia405code = 'Schacht.Druckbrecher' WHERE value_en = 'pressure cut';
 UPDATE qwat_vl.pressurecontrol_type SET sia405code = 'Schacht.unbekannt' WHERE value_en = 'gathering';
@@ -155,6 +158,9 @@ UPDATE qwat_vl.pressurecontrol_type SET sia405code = 'Schacht.unbekannt' WHERE v
 -- UPDATE qwat_vl.source_quality SET sia405code = 'unbekannt' WHERE ???;
 
 -- TODO : complete mapping
+UPDATE qwat_vl.source_type SET sia405code = 'Fassungsanlage.unbekannt' WHERE value_fr = 'autre';
+UPDATE qwat_vl.source_type SET sia405code = 'Fassungsanlage.unbekannt' WHERE value_fr = 'inconnu';
+UPDATE qwat_vl.source_type SET sia405code = 'Fassungsanlage.unbekannt' WHERE value_fr = 'à déterminer';
 UPDATE qwat_vl.source_type SET sia405code = 'Fassungsanlage.Fluss_Seewasserfassung' WHERE value_fr = 'captage eau lac';
 UPDATE qwat_vl.source_type SET sia405code = 'Fassungsanlage.Grundwasserfassung' WHERE value_fr = 'captage eau nappe';
 UPDATE qwat_vl.source_type SET sia405code = 'Fassungsanlage.Quellfassung' WHERE value_fr = 'captage eau source';
@@ -182,8 +188,15 @@ UPDATE qwat_vl.status SET sia405code = 'weitere.Projekt' WHERE value_fr = 'proje
 -- TODO : complete mapping
 -- UPDATE qwat_vl.tank_firestorage SET sia405code = 'unbekannt' WHERE ???;
 
--- TODO : complete mapping
--- UPDATE qwat_vl.valve_actuation SET sia405code = 'unbekannt' WHERE ???;
+-- TODO : valve function actuation complete [X] to check [ ]
+UPDATE qwat_vl.valve_actuation SET sia405code = 'unbekannt' WHERE value_fr = 'autre';
+UPDATE qwat_vl.valve_actuation SET sia405code = 'unbekannt' WHERE value_fr = 'inconnu';
+UPDATE qwat_vl.valve_actuation SET sia405code = 'unbekannt' WHERE value_fr = 'à déterminer';
+UPDATE qwat_vl.valve_actuation SET sia405code = 'mechanisch' WHERE value_fr = 'manuel';
+UPDATE qwat_vl.valve_actuation SET sia405code = 'mechanisch' WHERE value_fr = 'manuel à gauche';
+UPDATE qwat_vl.valve_actuation SET sia405code = 'motorisch.unbekannt' WHERE value_fr = 'électrique';
+UPDATE qwat_vl.valve_actuation SET sia405code = 'motorisch.mit_Fernsteuerung' WHERE value_fr = 'télécommandée';
+UPDATE qwat_vl.valve_actuation SET sia405code = 'motorisch.unbekannt' WHERE value_fr = 'automatique';
 
 -- TODO : valve function mapping complete [X] to check [ ]
 UPDATE qwat_vl.valve_function SET sia405code = 'Schieber.unbekannt' WHERE value_fr = 'autre';
