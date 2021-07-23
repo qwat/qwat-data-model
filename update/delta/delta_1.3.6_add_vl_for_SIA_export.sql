@@ -68,7 +68,7 @@ UPDATE qwat_vl.leak_cause SET sia405code = 'Mangel' WHERE value_fr = 'pièce non
 -- TODO : complete mapping
 -- UPDATE qwat_vl.nominal_diameter SET sia405code = 'unbekannt' WHERE ???;
 
--- TODO : complete mapping
+-- No mapping needed
 -- UPDATE qwat_vl.object_reference SET sia405code = 'unbekannt' WHERE ???;
 
 -- TODO : complete mapping
