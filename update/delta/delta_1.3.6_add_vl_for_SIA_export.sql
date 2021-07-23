@@ -45,7 +45,22 @@ UPDATE qwat_vl.hydrant_material SET sia405code = 'unbekannt' WHERE value_fr = '�
 -- UPDATE qwat_vl.hydrant_provider SET sia405code = 'unbekannt' WHERE ???;
 
 -- TODO : complete mapping
--- UPDATE qwat_vl.leak_cause SET sia405code = 'unbekannt' WHERE ???;
+-- Matching to Schadenstelle.Art (and maybe also Ursache):
+UPDATE qwat_vl.leak_cause SET sia405code = 'unbekannt' WHERE value_fr = 'inconnu';
+UPDATE qwat_vl.leak_cause SET sia405code = 'unbekannt' WHERE value_fr = 'à déterminer';
+UPDATE qwat_vl.leak_cause SET sia405code = 'Bruch.Querbruch' WHERE value_fr = 'cassure franche';
+-- UPDATE qwat_vl.leak_cause SET sia405code = 'Bruch.Scherbe' WHERE value_fr = 'xxx';
+UPDATE qwat_vl.leak_cause SET sia405code = 'Bruch.Riss' WHERE value_fr = 'cassure longitudinale';
+UPDATE qwat_vl.leak_cause SET sia405code = 'Loch' WHERE value_fr = 'pièce non étanche';
+UPDATE qwat_vl.leak_cause SET sia405code = 'Mangel' WHERE value_fr = 'pièce non étanche';
+-- not sure about the next one - could also be Bruch.Scherbe or Loch or weitere
+UPDATE qwat_vl.leak_cause SET sia405code = 'Mangel' WHERE value_fr = 'conduite arrachée';
+UPDATE qwat_vl.leak_cause SET sia405code = 'Mangel' WHERE value_fr = 'corrosion';
+-- in addition Schadenstelle.Ursache has to be set to 'Korrosion'
+UPDATE qwat_vl.leak_cause SET sia405code = 'Mangel' WHERE value_fr = 'raccordement non étanche';
+-- in addition Schadenstelle.Ursache has to be set to 'Verbindungen'
+UPDATE qwat_vl.leak_cause SET sia405code = 'Mangel' WHERE value_fr = 'pièce non étanche';
+-- in addition Schadenstelle.Ursache has to be set to 'bauliche_Maengel'
 
 -- TODO : complete mapping
 -- UPDATE qwat_vl.locationtype SET sia405code = 'unbekannt' WHERE ???;
