@@ -155,7 +155,7 @@ UPDATE qwat_vl.pressurecontrol_type SET sia405code = 'Schacht.unbekannt' WHERE v
 UPDATE qwat_vl.pressurecontrol_type SET sia405code = 'Schacht.unbekannt' WHERE value_fr = 'à déterminer';
 UPDATE qwat_vl.pressurecontrol_type SET sia405code = 'Schacht.Druckbrecher' WHERE value_en = 'reducer';
 UPDATE qwat_vl.pressurecontrol_type SET sia405code = 'Schacht.Druckbrecher' WHERE value_en = 'pressure cut';
-UPDATE qwat_vl.pressurecontrol_type SET sia405code = 'Schacht.unbekannt' WHERE value_en = 'gathering';
+UPDATE qwat_vl.pressurecontrol_type SET sia405code = 'Schacht.Sammel_Spezialschacht' WHERE value_en = 'gathering';
 
 -- TODO : complete mapping
 -- UPDATE qwat_vl.protectionzone_type SET sia405code = 'unbekannt' WHERE ???;
