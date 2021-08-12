@@ -1,0 +1,50 @@
+name: Make release
+
+on:
+  release:
+    types: ['prereleased', 'released']
+
+jobs:
+  make-release:
+    name: Make release
+    runs-on: ubuntu-18.04
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Assert CURRENT_VERSION.txt is up to date
+        run: |
+          LAST_VERSION=$(ls update/delta | sort -r | sed '/^delta_/!d' | head -n 1 | cut -d_ -f2)
+          CUR_VERSION=$(cat system/CURRENT_VERSION.txt)
+          [[ "${LAST_VERSION}" == "${CUR_VERSION}" ]] || (echo "Version mismatch ${LAST_VERSION} != ${CUR_VERSION}" && exit 1)
+
+      - name: Setup Postgis
+        uses: huaxk/postgis-action@v1
+        with:
+            postgresql version: '9.6'
+            postgresql password: 'postgres'
+            postgresql user: 'postgres'
+            postgresql db: 'postgres'
+
+      - name: Install requirements
+        run: pip install -r requirements.txt
+
+      - name: Before script
+        run: ./.build/travis_before_script.sh
+
+      - name: Script
+        run: ./.build/travis_script.sh
+        env:
+          TRAVIS_BUILD_DIR: '.'
+
+      - name: Create dumps
+        run: ./.deploy/create_release.py
+        env:
+          TRAVIS_TAG: ${{ github.event.release.tag_name }}
+          TRAVIS_SECURE_ENV_VARS: 'true'
+
+      - name: Upload assets
+        uses: AButler/upload-release-assets@v2.0
+        with:
+          files: 'artifacts/*'
+          repo-token: ${{ secrets.GITHUB_TOKEN }}

@@ -26,3 +26,7 @@ A full web data model documentation with diagrams and relations is available [he
 - v1.0.1 : Add functionnal to vl status (meaning the object is ready to be used). This is useful to allow finer printing (print inactive but functional objects)
 - v1.0.0 : First version (3 june 2016)
 - v0.1 : Proof of concept model
+
+## Release
+
+Realeases are made using github actions when a new release is created. The tag must be of format `x.y.z`.
