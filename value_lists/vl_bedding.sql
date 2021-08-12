@@ -20,5 +20,13 @@ INSERT INTO qwat_vl.bedding (id, value_en, value_fr, value_ro ) VALUES (9704,'gr
 INSERT INTO qwat_vl.bedding (id, value_en, value_fr, value_ro ) VALUES (9706,'sand','sable','nisip');
 INSERT INTO qwat_vl.bedding (id, value_en, value_fr, value_ro ) VALUES (9707,'soil','terre','pământ');
 
-
-
+/* SIA405 codes */
+UPDATE qwat_vl.bedding SET sia405code = 'unbekannt' WHERE value_fr = 'autre';
+UPDATE qwat_vl.bedding SET sia405code = 'unbekannt' WHERE value_fr = 'inconnu';
+UPDATE qwat_vl.bedding SET sia405code = 'unbekannt' WHERE value_fr = 'à déterminer';
+UPDATE qwat_vl.bedding SET sia405code = 'unbekannt' WHERE value_fr = 'aucun';
+UPDATE qwat_vl.bedding SET sia405code = 'Beton' WHERE value_fr = 'béton';
+UPDATE qwat_vl.bedding SET sia405code = 'Fliess' WHERE value_fr = 'géotextile';
+UPDATE qwat_vl.bedding SET sia405code = 'Betonkies' WHERE value_fr = 'gravier';
+UPDATE qwat_vl.bedding SET sia405code = 'Sand' WHERE value_fr = 'sable';
+UPDATE qwat_vl.bedding SET sia405code = 'unbekannt' WHERE value_fr = 'terre';

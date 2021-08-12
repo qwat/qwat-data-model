@@ -1,13 +1,13 @@
 /*
     qWat - QGIS Water Module
-    
+
     SQL file :: valve_function table
 */
 
 
 /* CREATE */
 CREATE TABLE qwat_vl.valve_function () INHERITS ( qwat_vl.value_list_base);
-ALTER TABLE qwat_vl.valve_function ADD CONSTRAINT vl_valve_function_pk PRIMARY KEY (id);                    
+ALTER TABLE qwat_vl.valve_function ADD CONSTRAINT vl_valve_function_pk PRIMARY KEY (id);
 COMMENT ON TABLE qwat_vl.valve_function IS 'Functions for valves';
 
 /* COLUMNS*/
@@ -31,3 +31,19 @@ INSERT INTO qwat_vl.valve_function (id, value_en, value_fr, value_ro)           
 INSERT INTO qwat_vl.valve_function (id, value_en, value_fr, value_ro)                  VALUES (6114, 'sprinkler',          'vanne sprinkler',        'sprinkler?');
 INSERT INTO qwat_vl.valve_function (id, value_en, value_fr, value_ro, short_fr )                 VALUES (6115, 'vent valve',         'jauge',                  'aerisire', 'J');
 
+/* SIA405 codes */
+UPDATE qwat_vl.valve_function SET sia405code = 'Schieber.unbekannt' WHERE value_fr = 'autre';
+UPDATE qwat_vl.valve_function SET sia405code = 'Schieber.unbekannt' WHERE value_fr = 'inconnu';
+UPDATE qwat_vl.valve_function SET sia405code = 'Schieber.unbekannt' WHERE value_fr = 'à déterminer';
+UPDATE qwat_vl.valve_function SET sia405code = 'Schieber.Zonenschieber' WHERE value_fr = 'vanne de régulation';
+UPDATE qwat_vl.valve_function SET sia405code = 'Schieber.unbekannt' WHERE value_fr = 'ventouse';
+UPDATE qwat_vl.valve_function SET sia405code = 'Schieber.unbekannt' WHERE value_fr = 'vanne bypass';
+UPDATE qwat_vl.valve_function SET sia405code = 'Schieber.Anschlussschieber' WHERE value_fr = 'vanne branchement';
+UPDATE qwat_vl.valve_function SET sia405code = 'Schieber.unbekannt' WHERE value_fr = 'vanne incendie';
+UPDATE qwat_vl.valve_function SET sia405code = 'Schieber.Hydrantenschieber' WHERE value_fr = 'vanne d''hydrant';
+UPDATE qwat_vl.valve_function SET sia405code = 'Schieber.Entleerungsschieber' WHERE value_fr = 'vidange';
+UPDATE qwat_vl.valve_function SET sia405code = 'Schieber.Trennschieber' WHERE value_fr = 'vanne réseau';
+UPDATE qwat_vl.valve_function SET sia405code = 'Schieber.Entleerungsschieber' WHERE value_fr = 'vidange-ventouse';
+UPDATE qwat_vl.valve_function SET sia405code = 'Schieber.unbekannt' WHERE value_fr = 'antiretour';
+UPDATE qwat_vl.valve_function SET sia405code = 'Schieber.unbekannt' WHERE value_fr = 'vanne sprinkler';
+UPDATE qwat_vl.valve_function SET sia405code = 'Schieber.unbekannt' WHERE value_fr = 'jauge';

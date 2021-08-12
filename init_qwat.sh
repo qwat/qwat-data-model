@@ -178,8 +178,6 @@ psql service=${PGSERVICE} -v ON_ERROR_STOP=1 -f ${DIR}/value_lists/vl_valve_type
 psql service=${PGSERVICE} -v ON_ERROR_STOP=1 -f ${DIR}/value_lists/vl_visible.sql
 psql service=${PGSERVICE} -v ON_ERROR_STOP=1 -f ${DIR}/value_lists/vl_watertype.sql
 psql service=${PGSERVICE} -v ON_ERROR_STOP=1 -f ${DIR}/value_lists/vl_worker_type.sql
-# TODO : remove this once we have merged it's contents in corresponding vl_*.sql files
-psql service=${PGSERVICE} -v ON_ERROR_STOP=1 -f ${DIR}/value_lists/value_list_sia405.sql
 
 # Drawings
 psql service=${PGSERVICE} -v ON_ERROR_STOP=1 -c "CREATE SCHEMA qwat_dr;"

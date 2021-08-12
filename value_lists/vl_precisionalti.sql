@@ -20,3 +20,12 @@ INSERT INTO qwat_vl.precisionalti (id,value_en,value_fr,value_ro) VALUES (1123, 
 INSERT INTO qwat_vl.precisionalti (id,value_en,value_fr,value_ro) VALUES (1124, 'Better than 10 cm' ,'Inférieure à 10 cm'   ,'Mai bună de 10 cm');
 INSERT INTO qwat_vl.precisionalti (id,value_en,value_fr,value_ro) VALUES (1125, 'Better than 5 cm'  ,'Inférieure à 5 cm'    ,'Mai bună de 5 cm');
 
+/* SIA405 codes */
+UPDATE qwat_vl.precisionalti SET sia405code = 'unbekannt' WHERE value_fr = 'Autre';
+UPDATE qwat_vl.precisionalti SET sia405code = 'unbekannt' WHERE value_fr = 'Inconnu';
+UPDATE qwat_vl.precisionalti SET sia405code = 'unbekannt' WHERE value_fr = 'À déterminer';
+UPDATE qwat_vl.precisionalti SET sia405code = 'ungenau' WHERE value_fr = 'Imprécis';
+UPDATE qwat_vl.precisionalti SET sia405code = 'ungenau' WHERE value_fr = 'Inférieure à 100 cm';
+UPDATE qwat_vl.precisionalti SET sia405code = 'ungenau' WHERE value_fr = 'Inférieure à 50 cm';
+UPDATE qwat_vl.precisionalti SET sia405code = 'genau' WHERE value_fr = 'Inférieure à 10 cm';
+UPDATE qwat_vl.precisionalti SET sia405code = 'genau' WHERE value_fr = 'Inférieure à 5 cm';

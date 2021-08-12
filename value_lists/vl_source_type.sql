@@ -18,6 +18,11 @@ INSERT INTO qwat_vl.source_type (id,value_fr,value_ro) VALUES (2702, 'captage ea
 INSERT INTO qwat_vl.source_type (id,value_fr,value_ro) VALUES (2703, 'captage eau source','captare sursă subterană');
 INSERT INTO qwat_vl.source_type (id,value_fr,value_ro) VALUES (2704, 'captage eau rivière','captare râu');
 
-
-
-
+/* SIA405 codes */
+UPDATE qwat_vl.source_type SET sia405code = 'Fassungsanlage.unbekannt' WHERE value_fr = 'autre';
+UPDATE qwat_vl.source_type SET sia405code = 'Fassungsanlage.unbekannt' WHERE value_fr = 'inconnu';
+UPDATE qwat_vl.source_type SET sia405code = 'Fassungsanlage.unbekannt' WHERE value_fr = 'à déterminer';
+UPDATE qwat_vl.source_type SET sia405code = 'Fassungsanlage.Fluss_Seewasserfassung' WHERE value_fr = 'captage eau lac';
+UPDATE qwat_vl.source_type SET sia405code = 'Fassungsanlage.Grundwasserfassung' WHERE value_fr = 'captage eau nappe';
+UPDATE qwat_vl.source_type SET sia405code = 'Fassungsanlage.Quellfassung' WHERE value_fr = 'captage eau source';
+UPDATE qwat_vl.source_type SET sia405code = 'Fassungsanlage.Fluss_Seewasserfassung' WHERE value_fr = 'captage eau rivière';

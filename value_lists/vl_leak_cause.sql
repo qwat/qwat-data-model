@@ -21,6 +21,20 @@ INSERT INTO qwat_vl.leak_cause (id, value_en, value_fr, value_ro) VALUES (9104,'
 INSERT INTO qwat_vl.leak_cause (id, value_en, value_fr, value_ro) VALUES (9105,'leaking connection', 'raccordement non étanche','racordare neetanșă');
 INSERT INTO qwat_vl.leak_cause (id, value_en, value_fr, value_ro) VALUES (9106,'leaking part', 'pièce non étanche','piesă neetanșă');
 
-
-
-
+/* SIA405 codes */
+-- Matching to Schadenstelle.Art (and maybe also Ursache):
+UPDATE qwat_vl.leak_cause SET sia405code = 'unbekannt' WHERE value_fr = 'inconnu';
+UPDATE qwat_vl.leak_cause SET sia405code = 'unbekannt' WHERE value_fr = 'à déterminer';
+UPDATE qwat_vl.leak_cause SET sia405code = 'Bruch.Querbruch' WHERE value_fr = 'cassure franche';
+-- UPDATE qwat_vl.leak_cause SET sia405code = 'Bruch.Scherbe' WHERE value_fr = 'xxx';
+UPDATE qwat_vl.leak_cause SET sia405code = 'Riss' WHERE value_fr = 'cassure longitudinale';
+UPDATE qwat_vl.leak_cause SET sia405code = 'Loch' WHERE value_fr = 'pièce non étanche';
+UPDATE qwat_vl.leak_cause SET sia405code = 'Mangel' WHERE value_fr = 'pièce non étanche';
+-- not sure about the next one - could also be Bruch.Scherbe or Loch or weitere
+UPDATE qwat_vl.leak_cause SET sia405code = 'Mangel' WHERE value_fr = 'conduite arrachée';
+UPDATE qwat_vl.leak_cause SET sia405code = 'Mangel' WHERE value_fr = 'corrosion';
+-- in addition Schadenstelle.Ursache has to be set to 'Korrosion'
+UPDATE qwat_vl.leak_cause SET sia405code = 'Mangel' WHERE value_fr = 'raccordement non étanche';
+-- in addition Schadenstelle.Ursache has to be set to 'Verbindungen'
+UPDATE qwat_vl.leak_cause SET sia405code = 'Mangel' WHERE value_fr = 'pièce non étanche';
+-- in addition Schadenstelle.Ursache has to be set to 'bauliche_Maengel'

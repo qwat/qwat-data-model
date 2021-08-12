@@ -17,6 +17,10 @@ INSERT INTO qwat_vl.pressurecontrol_type (id,value_en,value_fr,value_ro) VALUES 
 INSERT INTO qwat_vl.pressurecontrol_type (id,value_en,value_fr,value_ro) VALUES (2802,'pressure cut','coupe-pression','tăiere presiune');
 INSERT INTO qwat_vl.pressurecontrol_type (id,value_en,value_fr,value_ro) VALUES (2803,'gathering'   ,'rassemblement'    ,'colectare/captare');
 
-
-
- 
+/* SIA405 codes */
+UPDATE qwat_vl.pressurecontrol_type SET sia405code = 'Schacht.unbekannt' WHERE value_fr = 'autre';
+UPDATE qwat_vl.pressurecontrol_type SET sia405code = 'Schacht.unbekannt' WHERE value_fr = 'inconnu';
+UPDATE qwat_vl.pressurecontrol_type SET sia405code = 'Schacht.unbekannt' WHERE value_fr = 'à déterminer';
+UPDATE qwat_vl.pressurecontrol_type SET sia405code = 'Schacht.Druckbrecher' WHERE value_en = 'reducer';
+UPDATE qwat_vl.pressurecontrol_type SET sia405code = 'Schacht.Druckbrecher' WHERE value_en = 'pressure cut';
+UPDATE qwat_vl.pressurecontrol_type SET sia405code = 'Schacht.Sammel_Spezialschacht' WHERE value_en = 'gathering';
