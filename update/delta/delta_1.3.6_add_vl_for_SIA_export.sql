@@ -50,7 +50,7 @@ UPDATE qwat_vl.leak_cause SET sia405code = 'unbekannt' WHERE value_fr = 'inconnu
 UPDATE qwat_vl.leak_cause SET sia405code = 'unbekannt' WHERE value_fr = 'à déterminer';
 UPDATE qwat_vl.leak_cause SET sia405code = 'Bruch.Querbruch' WHERE value_fr = 'cassure franche';
 -- UPDATE qwat_vl.leak_cause SET sia405code = 'Bruch.Scherbe' WHERE value_fr = 'xxx';
-UPDATE qwat_vl.leak_cause SET sia405code = 'Bruch.Riss' WHERE value_fr = 'cassure longitudinale';
+UPDATE qwat_vl.leak_cause SET sia405code = 'Riss' WHERE value_fr = 'cassure longitudinale';
 UPDATE qwat_vl.leak_cause SET sia405code = 'Loch' WHERE value_fr = 'pièce non étanche';
 UPDATE qwat_vl.leak_cause SET sia405code = 'Mangel' WHERE value_fr = 'pièce non étanche';
 -- not sure about the next one - could also be Bruch.Scherbe or Loch or weitere
@@ -125,7 +125,7 @@ UPDATE qwat_vl.pipe_material SET sia405code = 'Zementrohr_Beton.unbekannt' WHERE
 UPDATE qwat_vl.pipe_material SET sia405code = 'Zementrohr_Beton.unbekannt' WHERE short_fr = 'TAC';
 UPDATE qwat_vl.pipe_material SET sia405code = 'Zementrohr_Beton.unbekannt' WHERE value_fr = 'Béton précontraint';
 UPDATE qwat_vl.pipe_material SET sia405code = 'Kunststoff.Glasfaserverstaerkter_Epoxiharz' WHERE short_fr = 'GRP';
-UPDATE qwat_vl.pipe_material SET sia405code = 'Kunststoff' WHERE short_fr = 'PL';
+UPDATE qwat_vl.pipe_material SET sia405code = 'unbekannt' WHERE short_fr = 'PL';
 
 -- NO mapping needed (No SIA Equivalent) -> Schutzrohr SIA 405 2.11
 -- UPDATE qwat_vl.pipe_protection SET sia405code = 'unbekannt' WHERE ???;
@@ -237,7 +237,7 @@ UPDATE qwat_vl.valve_function SET sia405code = 'Schieber.unbekannt' WHERE value_
 UPDATE qwat_vl.valve_function SET sia405code = 'Schieber.unbekannt' WHERE value_fr = 'vanne sprinkler';
 UPDATE qwat_vl.valve_function SET sia405code = 'Schieber.unbekannt' WHERE value_fr = 'jauge';
 
--- Mapping to Schadenstelle / dégats 
+-- Mapping to Schadenstelle / dégats
 -- UPDATE qwat_vl.valve_maintenance SET sia405code = 'unbekannt' WHERE ???;
 
 -- TODO : complete mapping
