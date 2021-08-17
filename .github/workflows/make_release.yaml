@@ -27,7 +27,9 @@ jobs:
             postgresql db: 'postgres'
 
       - name: Install requirements
-        run: pip3 install -r requirements.txt
+        run: |
+          pip3 install --upgrade setuptools
+          pip3 install -r requirements.txt
 
       - name: Before script
         run: ./.build/travis_before_script.sh
