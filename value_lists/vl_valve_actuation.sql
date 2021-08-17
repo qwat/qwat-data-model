@@ -1,13 +1,13 @@
 /*
 	qWat - QGIS Water Module
-	
+
 	SQL file :: valve_actuation table
 */
 
 
 /* CREATE */
 CREATE TABLE qwat_vl.valve_actuation () INHERITS ( qwat_vl.value_list_base);
-ALTER TABLE qwat_vl.valve_actuation ADD CONSTRAINT vl_valve_actuation_pk PRIMARY KEY (id);                    
+ALTER TABLE qwat_vl.valve_actuation ADD CONSTRAINT vl_valve_actuation_pk PRIMARY KEY (id);
 COMMENT ON TABLE qwat_vl.valve_actuation IS 'valve actuation/actionnement/acţionare';
 
 /* COLUMNS*/
@@ -24,6 +24,12 @@ INSERT INTO qwat_vl.valve_actuation (id, value_en, value_fr, value_ro )       	V
 INSERT INTO qwat_vl.valve_actuation (id, value_en, value_fr, value_ro )       	VALUES (6404, 'remote controlled', 'télécommandée', 'telecomandată');
 INSERT INTO qwat_vl.valve_actuation (id, value_en, value_fr, value_ro )         VALUES (6405, 'automatic', 'automatique', 'automată');
 
-
-
-
+/* SIA405 codes */
+UPDATE qwat_vl.valve_actuation SET sia405code = 'unbekannt' WHERE value_fr = 'autre';
+UPDATE qwat_vl.valve_actuation SET sia405code = 'unbekannt' WHERE value_fr = 'inconnu';
+UPDATE qwat_vl.valve_actuation SET sia405code = 'unbekannt' WHERE value_fr = 'à déterminer';
+UPDATE qwat_vl.valve_actuation SET sia405code = 'mechanisch' WHERE value_fr = 'manuel';
+UPDATE qwat_vl.valve_actuation SET sia405code = 'mechanisch' WHERE value_fr = 'manuel à gauche';
+UPDATE qwat_vl.valve_actuation SET sia405code = 'motorisch.unbekannt' WHERE value_fr = 'électrique';
+UPDATE qwat_vl.valve_actuation SET sia405code = 'motorisch.mit_Fernsteuerung' WHERE value_fr = 'télécommandée';
+UPDATE qwat_vl.valve_actuation SET sia405code = 'motorisch.unbekannt' WHERE value_fr = 'automatique';

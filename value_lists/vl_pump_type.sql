@@ -17,6 +17,12 @@ INSERT INTO qwat_vl.pump_type (id,value_en,value_fr,value_ro) VALUES (2501,'','s
 INSERT INTO qwat_vl.pump_type (id,value_en,value_fr,value_ro) VALUES (2502,'','normal','normal');
 INSERT INTO qwat_vl.pump_type (id,value_en,value_fr,value_ro) VALUES (2503,'','accélération','periferică');
 
-
-
-
+/* SIA405 codes */
+-- UPDATE qwat_vl.pump_type SET sia405code = 'unbekannt' WHERE ???;
+UPDATE qwat_vl.pump_type SET sia405code = 'andere' WHERE value_fr = 'autre';
+UPDATE qwat_vl.pump_type SET sia405code = 'unbekannt' WHERE value_fr = 'inconnu';
+UPDATE qwat_vl.pump_type SET sia405code = 'unbekannt' WHERE value_fr = 'à déterminer';
+UPDATE qwat_vl.pump_type SET sia405code = 'Pumpwerk.Druckerhoehungsanlage' WHERE value_fr = 'surpresseur';
+UPDATE qwat_vl.pump_type SET sia405code = 'Pumpwerk.Hauptpumpwerk' WHERE value_fr = 'normal';
+-- not sure about this matching
+UPDATE qwat_vl.pump_type SET sia405code = 'Pumpwerk.Zwischenpumpwerk' WHERE value_fr = 'accélération';

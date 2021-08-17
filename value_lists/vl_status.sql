@@ -1,6 +1,6 @@
 /*
 	qWat - QGIS Water Module
-	
+
 	SQL file :: status table
 */
 
@@ -28,6 +28,15 @@ INSERT INTO qwat_vl.status (id, active, functional, value_en, value_fr, value_ro
 INSERT INTO qwat_vl.status (id, active, functional, value_en, value_fr, value_ro, description_en, description_fr, description_ro) VALUES (1306, true, false, 'Project planned',        'Projet planifie',       'Proiect planificat',      '', 'L''objet est un projet validé en attente', 'Obiectul face parte dintr-un proiect planificat');    /*  */
 INSERT INTO qwat_vl.status (id, active, functional, value_en, value_fr, value_ro, description_en, description_fr, description_ro) VALUES (1308, true, false, 'Project in execution',        'Projet en execution',       'Proiect în execuție',      'The object is part of a project that''s already in execution', 'L''objet est un projet validé en cours de réalisation', 'Obiectul face parte dintr-un proiect care este în curs de execuție');    /*  */
 
-
-
-
+/* SIA405 codes */
+UPDATE qwat_vl.status SET sia405code = 'unbekannt' WHERE value_fr = 'à déterminer';
+UPDATE qwat_vl.status SET sia405code = 'weitere' WHERE value_fr = 'fictif';
+UPDATE qwat_vl.status SET sia405code = 'ausser_Betrieb' WHERE value_fr = 'désaffecté';
+UPDATE qwat_vl.status SET sia405code = 'ausser_Betrieb' WHERE value_fr = 'abandonné';
+UPDATE qwat_vl.status SET sia405code = 'ausser_Betrieb' WHERE value_fr = 'hors service';
+UPDATE qwat_vl.status SET sia405code = 'in_Betrieb' WHERE value_fr = 'en service';
+UPDATE qwat_vl.status SET sia405code = 'tot' WHERE value_fr = 'détruit';
+UPDATE qwat_vl.status SET sia405code = 'unbekannt' WHERE value_fr = 'inconnu';
+UPDATE qwat_vl.status SET sia405code = 'weitere' WHERE value_fr = 'autre';
+UPDATE qwat_vl.status SET sia405code = 'weitere.geplant' WHERE value_fr = 'projet planifie';
+UPDATE qwat_vl.status SET sia405code = 'weitere.Projekt' WHERE value_fr = 'projet en execution';

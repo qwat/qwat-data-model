@@ -700,3 +700,24 @@ INSERT INTO qwat_vl.pipe_material (id, vl_active, short_en, value_en, short_fr, 
 INSERT INTO qwat_vl.pipe_material (id, vl_active, short_en, value_en, short_fr, value_fr, short_ro, value_ro, diameter, diameter_nominal, diameter_internal, diameter_external, pressure_nominal, sdr, wall_thickness, sn) VALUES (7838, true, 'GRP', 'Glass-fibre-reinforced polyester', 'PRV', 'Polyester renforcé de fibres de verre', 'GRP', 'Rășini armate cu fibră de sticlă (GRP)', '1500', 1500, 1429.000, 1499.000, NULL,  NULL, 35.0, 10000);
 INSERT INTO qwat_vl.pipe_material (id, vl_active, short_en, value_en, short_fr, value_fr, short_ro, value_ro, diameter, diameter_nominal, diameter_internal, diameter_external, pressure_nominal, sdr, wall_thickness, sn) VALUES (7839, true, 'GRP', 'Glass-fibre-reinforced polyester', 'PRV', 'Polyester renforcé de fibres de verre', 'GRP', 'Rășini armate cu fibră de sticlă (GRP)', '1535', 1535, 1463.000, 1535.000, NULL,  NULL, 36.0, 10000);
 INSERT INTO qwat_vl.pipe_material (id, vl_active, short_en, value_en, short_fr, value_fr, short_ro, value_ro, diameter, diameter_nominal, diameter_internal, diameter_external, pressure_nominal, sdr, wall_thickness, sn) VALUES (7840, true, 'GRP', 'Glass-fibre-reinforced polyester', 'PRV', 'Polyester renforcé de fibres de verre', 'GRP', 'Rășini armate cu fibră de sticlă (GRP)', '1600', 1600, 1560.000, 1638.000, NULL, NULL, 39.0, 10000);
+
+/* SIA405 codes */
+UPDATE qwat_vl.pipe_material SET sia405code = 'unbekannt' WHERE value_fr = 'Autre';
+UPDATE qwat_vl.pipe_material SET sia405code = 'unbekannt' WHERE value_fr = 'Inconnu';
+UPDATE qwat_vl.pipe_material SET sia405code = 'unbekannt' WHERE value_fr = 'à déterminer';
+UPDATE qwat_vl.pipe_material SET sia405code = 'unbekannt' WHERE short_fr = 'CU';
+UPDATE qwat_vl.pipe_material SET sia405code = 'Stahl.unbekannt' WHERE short_fr = 'AC';
+UPDATE qwat_vl.pipe_material SET sia405code = 'Stahl.verzinkt' WHERE short_fr = 'ACG';
+UPDATE qwat_vl.pipe_material SET sia405code = 'Stahl.unbekannt' WHERE short_fr = 'ACPR';
+UPDATE qwat_vl.pipe_material SET sia405code = 'Stahl.rostbestaendig' WHERE short_fr = 'ACI';
+UPDATE qwat_vl.pipe_material SET sia405code = 'Guss.unbekannt' WHERE short_fr = 'F';
+UPDATE qwat_vl.pipe_material SET sia405code = 'Guss.unbekannt' WHERE short_fr = 'FAE';
+UPDATE qwat_vl.pipe_material SET sia405code = 'Kunststoff.Polyethylen.unbekannt' WHERE short_fr = 'PE';
+UPDATE qwat_vl.pipe_material SET sia405code = 'Kunststoff.Polyethylen.unbekannt' WHERE short_fr = 'PE80';
+UPDATE qwat_vl.pipe_material SET sia405code = 'Kunststoff.Polyethylen.unbekannt' WHERE short_fr = 'PEX';
+UPDATE qwat_vl.pipe_material SET sia405code = 'Kunststoff.Polyvinylchlorid.unbekannt' WHERE short_fr = 'PVC';
+UPDATE qwat_vl.pipe_material SET sia405code = 'Zementrohr_Beton.unbekannt' WHERE short_fr = 'TC';
+UPDATE qwat_vl.pipe_material SET sia405code = 'Zementrohr_Beton.unbekannt' WHERE short_fr = 'TAC';
+UPDATE qwat_vl.pipe_material SET sia405code = 'Zementrohr_Beton.unbekannt' WHERE value_fr = 'Béton précontraint';
+UPDATE qwat_vl.pipe_material SET sia405code = 'Kunststoff.Glasfaserverstaerkter_Epoxiharz' WHERE short_fr = 'GRP';
+UPDATE qwat_vl.pipe_material SET sia405code = 'unbekannt' WHERE short_fr = 'PL';

@@ -18,3 +18,12 @@ INSERT INTO qwat_vl.precision (id,value_en,value_fr,value_ro) VALUES (1101, 'Unp
 INSERT INTO qwat_vl.precision (id,value_en,value_fr,value_ro) VALUES (1102, 'Precise',      'Précis',       'Precisă');     /*TB: P  => 2 */
 INSERT INTO qwat_vl.precision (id,value_en,value_fr,value_ro) VALUES (1103, 'Localized',    'Localisé',     'Localizată');  /*TB: L  => 3 */
 INSERT INTO qwat_vl.precision (id,value_en,value_fr,value_ro) VALUES (1104, 'Digitalized',  'Digitalisé',   'Digitizată');  /*TB: D  => 4 */
+
+/* SIA405 codes */
+UPDATE qwat_vl.precision SET sia405code = 'unbekannt' WHERE value_fr = 'Autre';
+UPDATE qwat_vl.precision SET sia405code = 'unbekannt' WHERE value_fr = 'Inconnu';
+UPDATE qwat_vl.precision SET sia405code = 'unbekannt' WHERE value_fr = 'À déterminer';
+UPDATE qwat_vl.precision SET sia405code = 'ungenau' WHERE value_fr = 'Imprécis';
+UPDATE qwat_vl.precision SET sia405code = 'genau' WHERE value_fr = 'Précis';
+UPDATE qwat_vl.precision SET sia405code = 'geortet' WHERE value_fr = 'Localisé';
+UPDATE qwat_vl.precision SET sia405code = 'unbekannt' WHERE value_fr = 'Digitalisé';
