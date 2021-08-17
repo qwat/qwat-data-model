@@ -9,6 +9,9 @@ jobs:
     name: Make release
     runs-on: ubuntu-18.04
 
+    env:
+        PGSERVICEFILE: /tmp/pg_service.conf
+
     steps:
       - uses: actions/checkout@v2
 

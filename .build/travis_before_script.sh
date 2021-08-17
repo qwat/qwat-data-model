@@ -2,8 +2,7 @@
 
 set -e
 
-# Create a PostgreSQL service file and export the PGSERVICEFILE environment variable
-PGSERVICEFILE="/tmp/pg_service.conf"
+# Create a PostgreSQL service file
 cat > $PGSERVICEFILE << EOF
 [postgres]
 host=localhost
@@ -29,7 +28,6 @@ dbname=qwat_comp
 user=postgres
 password=postgres
 EOF
-export PGSERVICEFILE
 
 echo "SET client_min_messages TO WARNING;" > ~/.psqlrc
 
