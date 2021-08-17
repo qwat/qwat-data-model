@@ -16,16 +16,19 @@ cat > $PGSERVICEFILE << EOF
 host=localhost
 dbname=qwat_prod
 user=postgres
+password=postgres
 
 [qwat_test]
 host=localhost
 dbname=qwat_test
 user=postgres
+password=postgres
 
 [qwat_comp]
 host=localhost
 dbname=qwat_comp
 user=postgres
+password=postgres
 EOF
 export PGSERVICEFILE
 
