@@ -9,29 +9,6 @@ export VERSION=$(cat "$TRAVIS_BUILD_DIR/system/CURRENT_VERSION.txt")
 # Get the 1.2.1 data_and_structure dump
 wget -q -O qwat_dump.backup https://github.com/qwat/qwat-data-sample/raw/master/qwat_v1.2.1_data_and_structure_sample.backup
 
-# Create a PostgreSQL service file and export the PGSERVICEFILE environment variable
-PGSERVICEFILE="/tmp/pg_service.conf"
-cat > $PGSERVICEFILE << EOF
-[qwat_prod]
-host=localhost
-dbname=qwat_prod
-user=postgres
-password=postgres
-
-[qwat_test]
-host=localhost
-dbname=qwat_test
-user=postgres
-password=postgres
-
-[qwat_comp]
-host=localhost
-dbname=qwat_comp
-user=postgres
-password=postgres
-EOF
-export PGSERVICEFILE
-
 # Use an extra delta directory with an extra delta file to exercise Pum's
 # multi delta dir feature
 EXTRA_DELTA_DIR="/tmp/delta/"
