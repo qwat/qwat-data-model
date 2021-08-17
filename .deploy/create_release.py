@@ -52,7 +52,7 @@ def create_dumps():
                      '--file', dumpfile,
                      '--schema', 'qwat_dr',
                      '--schema', 'qwat_od',
-                     'qwat_prod']
+                     'service=qwat_prod']
                     )
     files.append(dumpfile)
     print('travis_fold:end:{}'.format(dump))
@@ -71,7 +71,7 @@ def create_dumps():
                      '--file', dumpfile,
                      '--schema', 'qwat_dr',
                      '--schema', 'qwat_od',
-                     'qwat_prod']
+                     'service=qwat_prod']
                     )
     files.append(dumpfile)
     print('travis_fold:end:{}'.format(dump))
@@ -91,7 +91,7 @@ def create_dumps():
                      '--verbose',
                      '--file', dumpfile,
                      '-N', 'public',
-                     'qwat_prod']
+                     'service=qwat_prod']
                     )
     files.append(dumpfile)
     print('travis_fold:end:{}'.format(dump))
@@ -108,7 +108,7 @@ def create_dumps():
                      '--verbose',
                      '--file', dumpfile,
                      '-N', 'public',
-                     'qwat_prod']
+                     'service=qwat_prod']
                     )
     files.append(dumpfile)
     print('travis_fold:end:{}'.format(dump))
@@ -127,7 +127,7 @@ def create_dumps():
                      '--verbose',
                      '--file', dumpfile,
                      '-N', 'public',
-                     'qwat_prod']
+                     'service=qwat_prod']
                     )
     files.append(dumpfile)
     print('travis_fold:end:{}'.format(dump))
@@ -144,7 +144,7 @@ def create_dumps():
                      '--verbose',
                      '--file', dumpfile,
                      '-N', 'public',
-                     'qwat_prod']
+                     'service=qwat_prod']
                     )
     files.append(dumpfile)
     print('travis_fold:end:{}'.format(dump))
@@ -164,7 +164,7 @@ def create_dumps():
                      '--verbose',
                      '--file', dumpfile,
                      '--schema', 'qwat_vl',
-                     'qwat_prod']
+                     'service=qwat_prod']
                     )
     files.append(dumpfile)
     print('travis_fold:end:{}'.format(dump))
@@ -182,7 +182,7 @@ def create_dumps():
                      '--verbose',
                      '--file', dumpfile,
                      '--schema', 'qwat_vl',
-                     'qwat_prod']
+                     'service=qwat_prod']
                     )
     files.append(dumpfile)
     print('travis_fold:end:{}'.format(dump))
