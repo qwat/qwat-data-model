@@ -13,12 +13,15 @@ ALTER TABLE qwat_vl.value_list_base ADD COLUMN vl_active boolean default true;
 ALTER TABLE qwat_vl.value_list_base ADD COLUMN short_fr varchar(10) ;
 ALTER TABLE qwat_vl.value_list_base ADD COLUMN short_en varchar(10) ;
 ALTER TABLE qwat_vl.value_list_base ADD COLUMN short_ro varchar(10) ;
+ALTER TABLE qwat_vl.value_list_base ADD COLUMN short_de varchar(10) ;
 ALTER TABLE qwat_vl.value_list_base ADD COLUMN value_fr varchar(50) ;
 ALTER TABLE qwat_vl.value_list_base ADD COLUMN value_en varchar(50) ;
 ALTER TABLE qwat_vl.value_list_base ADD COLUMN value_ro varchar(50) ;
+ALTER TABLE qwat_vl.value_list_base ADD COLUMN value_de varchar(50) ;
 ALTER TABLE qwat_vl.value_list_base ADD COLUMN description_fr text ;
 ALTER TABLE qwat_vl.value_list_base ADD COLUMN description_en text ;
 ALTER TABLE qwat_vl.value_list_base ADD COLUMN description_ro text ;
+ALTER TABLE qwat_vl.value_list_base ADD COLUMN description_de text ;
 ALTER TABLE qwat_vl.value_list_base ADD COLUMN sia405code text;
 
 
