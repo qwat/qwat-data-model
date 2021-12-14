@@ -71,7 +71,7 @@ COMMENT ON TRIGGER tr_pipe_geom_insert ON qwat_od.pipe IS 'Trigger: updates auto
 CREATE TRIGGER tr_pipe_geom_update
 	BEFORE UPDATE OF geometry ON qwat_od.pipe
 	FOR EACH ROW
-	WHEN  ( ST_Equals(ST_Force2d(NEW.geometry), ST_Force2d(OLD.geometry)) IS FALSE )
+	WHEN  ( ST_OrderingEquals(ST_Force2d(NEW.geometry), ST_Force2d(OLD.geometry)) IS FALSE )
 	EXECUTE PROCEDURE qwat_od.ft_pipe_geom();
 COMMENT ON TRIGGER tr_pipe_geom_update ON qwat_od.pipe IS 'Trigger: updates auto fields of the pipe after geom update.';
 
