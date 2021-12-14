@@ -126,6 +126,7 @@ fi
 # Create extenstions
 psql service=${PGSERVICE} -v ON_ERROR_STOP=1 -c "CREATE EXTENSION IF NOT EXISTS hstore;"
 psql service=${PGSERVICE} -v ON_ERROR_STOP=1 -c "CREATE EXTENSION IF NOT EXISTS postgis;"
+psql service=${PGSERVICE} -v ON_ERROR_STOP=1 -c 'CREATE EXTENSION IF NOT EXISTS "pgcrypto";'
 
 # System
 psql service=${PGSERVICE} -v ON_ERROR_STOP=1 -c "CREATE SCHEMA qwat_sys;"
