@@ -1,3 +1,5 @@
+CREATE EXTENSION IF NOT EXISTS "pgcrypto";
+
 CREATE TABLE qwat_od.document(
   id uuid DEFAULT gen_random_uuid() NOT NULL,
   identification text NOT NULL,
