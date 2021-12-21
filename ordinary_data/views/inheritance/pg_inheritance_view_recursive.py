@@ -596,6 +596,14 @@ class PGInheritanceViewRecursive():
                 sql += "\n\t\tWHERE {0} = OLD.{0};\n".format(element['pkey'])
             i += 1
 
+        # if generateChild:
+        #     if "custom_update" in definition['children'][child]:
+        #         sql += "\n\t\t{0};".format(definition['children']
+        #                                     [child]['custom_update'])
+        # if generateParent:
+        #     if "custom_update" in definition:
+        #         sql += "\n\t\t{0};".format(definition['custom_update'])
+
         sqlFooter = ''
         sqlFooter += "\t\tRETURN NEW;\n"
         sqlFooter += "\tEND;\n"
