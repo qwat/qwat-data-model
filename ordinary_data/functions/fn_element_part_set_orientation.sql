@@ -31,7 +31,7 @@ AS $function$
                 AND status.active IS TRUE;
 
                
-        raise notice 'Pipes associés à %, %', _element_id, _grouped;
+        raise notice 'Number of pipes associated with node %, %', _element_id, _grouped.count;
         -- if not connected to any pipe, do nothing
         IF _grouped.count <= 2 THEN
             /* loop over them, and take the 2 first/last vertices
