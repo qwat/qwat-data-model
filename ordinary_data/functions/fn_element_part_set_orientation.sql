@@ -5,6 +5,7 @@ AS $function$
     DECLARE
         _pipeitem     record;
         _pipe_id      integer;
+        _node_id	  integer;
         _grouped      record;
         _diameter     smallint;
         _looppos      integer          := 0;
@@ -13,7 +14,10 @@ AS $function$
         _node_geom    geometry;
         _pipe_geom    geometry;
         _sub_geom     geometry;
+        _start_geom   geometry;
+        _end_geom     geometry;
         _lin_ref      float;
+        _type         qwat_od.pipe_connection;
     BEGIN
 
         -- get the geometry
@@ -32,8 +36,36 @@ AS $function$
 
                
         raise notice 'Number of pipes associated with node %, %', _element_id, _grouped.count;
-        -- if not connected to any pipe, do nothing
-        IF _grouped.count <= 2 THEN
+        -- if not connected to any pipe, set type to NULL
+        IF _grouped.count = 0 THEN
+            _type := NULL::qwat_od.pipe_connection;
+        -- if 1 or 2 pipes associated
+        ELSEIF _grouped.count <= 2 THEN
+            -- search for node on pipe that will be replaced by element part
+            SELECT id FROM qwat_od.node WHERE ST_Equals(ST_Force2d(_node_geom), ST_Force2d(node.geometry)) IS true and id<>_element_id LIMIT 1 INTO _node_id;
+            IF _node_id IS not NULL then
+				SELECT ST_StartPoint(geometry) into _start_geom FROM qwat_od.pipe WHERE fk_node_a = _node_id;
+				SELECT ST_EndPoint(geometry) into _end_geom FROM qwat_od.pipe WHERE fk_node_b = _node_id;
+				IF _start_geom IS NOT NULL then
+					RAISE NOTICE 'Delete node % at the start of pipe and replace with element part %', _node_id, _element_id;
+				    -- update fk_node_a with new node (element_part)
+				    UPDATE qwat_od.pipe SET fk_node_a = _element_id WHERE fk_node_a = _node_id;
+				END IF;
+				IF _end_geom IS NOT NULL then
+					RAISE NOTICE 'Delete node % at the end of pipe and replace with element part %', _node_id, _element_id;
+				    -- update fk_node_b with new node (element part)
+				    UPDATE qwat_od.pipe SET fk_node_b = _element_id WHERE fk_node_b = _node_id;
+				END IF;
+                -- then delete node that is not used anymore
+	            IF _node_id NOT IN (SELECT fk_node_a FROM qwat_od.pipe UNION SELECT fk_node_b FROM qwat_od.pipe) THEN
+	                -- if it is not something else
+	                IF ( SELECT node_type = 'node'::qwat_od.node_type FROM qwat_od.vw_qwat_node WHERE id = _node_id) THEN
+	                    -- delete it
+	                    RAISE NOTICE 'Delete node %' , _node_id;
+	                    DELETE FROM qwat_od.node WHERE id = _node_id; -- delete on table level for safety (do not delete on the merge view)
+	                END IF;
+	            END IF;
+	        END IF;
             /* loop over them, and take the 2 first/last vertices
              of the pipe to determine orientation (used for symbology) */
             FOR _pipeitem IN (
@@ -75,6 +107,7 @@ AS $function$
             ) LOOP
                 IF _looppos=0 THEN
                     -- first pipe
+                    _type := 'pipe_end'::qwat_od.pipe_connection;
                     _diameter := _pipeitem.diameter;
                     _pipe_id   := _pipeitem.id;
                     _looppos   := 1;
@@ -82,6 +115,17 @@ AS $function$
                     -- RAISE NOTICE 'pipe %, orientation : %', _pipe_id, degrees( _orientation );
                 ELSE
                     -- second pipe if exists
+                    IF _material = _pipeitem.material AND _diameter = _pipeitem.diameter AND _year = _pipeitem.year THEN
+                        _type := 'couple_same'::qwat_od.pipe_connection;
+                    ELSIF _material = _pipeitem.material AND _diameter = _pipeitem.diameter THEN
+                        _type := 'couple_year'::qwat_od.pipe_connection;
+                    ELSIF _material = _pipeitem.material THEN
+                        _type := 'couple_diameter'::qwat_od.pipe_connection;
+                    ELSIF _diameter = _pipeitem.diameter THEN
+                        _type := 'couple_material'::qwat_od.pipe_connection;
+                    ELSE
+                        _type := 'couple_other';
+                    END IF;
                     _orientation2 := pi()/2 - ST_Azimuth(_pipeitem.point_2,_pipeitem.point_1);
                     _orientation2 := pi() + _orientation2; -- reverse angle
                     -- RAISE NOTICE 'pipe % %', _pipeitem.id, degrees( _orientation2 );
@@ -101,6 +145,7 @@ AS $function$
             --_pipe_schema_visible = _grouped.schema_visible
             WHERE id = _element_id;
 		UPDATE qwat_od.node SET
+                _pipe_node_type = _type,
 				_pipe_orientation = degrees(_orientation)
 			WHERE id = _element_id;
 	END;
