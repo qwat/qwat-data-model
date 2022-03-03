@@ -5,11 +5,12 @@ import yaml
 import sys
 from sql_export_view import SqlExportView
 
-SRID = 21781
 
-if len(sys.argv) == 1:
+if len(sys.argv) >=2:
     SRID = sys.argv[1]
-if len(sys.argv) > 2:
+else:
+    SRID = 2056
+if len(sys.argv) >= 3:
     pg_service = sys.argv[2]
 else:
     pg_service = "qwat_test"
