@@ -20,6 +20,7 @@ $function$
 ;
 
 
+CREATE OR REPLACE FUNCTION qwat_network.ft_search_network_and_subscribers(start_pipe integer, _x float, _y float, max_km real DEFAULT 20, stop_on_network_valves boolean DEFAULT false, stop_on_subscriber_valves boolean DEFAULT false, stop_on_current_pressure_zone boolean DEFAULT false)
  RETURNS TABLE(id integer, id_pipe integer, geometry geometry)
  LANGUAGE plpgsql
 AS $function$

@@ -317,7 +317,7 @@ select qwat_network.ft_all_pipes();
 
 select qwat_network.ft_create_network();
 
-CREATE OR REPLACE FUNCTION qwat_network.ft_network_cutoff(valves integer[], pipe integer,  max_km integer DEFAULT 20)
+CREATE OR REPLACE FUNCTION qwat_network.ft_network_cutoff(valves integer[], pipe integer,  max_km real DEFAULT 20)
  RETURNS TABLE(id integer, source integer, target integer, geometry geometry)
  LANGUAGE plpgsql
 AS $function$
