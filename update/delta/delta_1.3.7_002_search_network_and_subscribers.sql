@@ -20,8 +20,7 @@ $function$
 ;
 
 
-CREATE OR REPLACE FUNCTION qwat_network.ft_search_network_and_subscribers(start_pipe integer, _x float, _y float, max_km integer DEFAULT 20, stop_on_network_valves boolean DEFAULT false, stop_on_subscriber_valves boolean DEFAULT false, stop_on_current_pressure_zone boolean DEFAULT false)
- RETURNS TABLE(id integer, geometry geometry)
+ RETURNS TABLE(id integer, id_pipe integer, geometry geometry)
  LANGUAGE plpgsql
 AS $function$
 declare
@@ -172,7 +171,7 @@ begin
     -- Last step: get network geometries
     foreach nid in ARRAY network_list
     loop
-        select n.network_id, n.geometry into id, geometry from qwat_network.network n where n.network_id = nid;
+        select n.network_id, n.id, n.geometry into id, id_pipe, geometry from qwat_network.network n where n.network_id = nid;
         if id is not null then
             return next;
         end if;
