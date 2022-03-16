@@ -98,9 +98,12 @@ begin
                     $3 as target,
                     g.cost, 
                     st_length(g.geometry) as meters,
-                    ARRAY[$2, $3] as path
+                    ARRAY[$2, $3] as path,
+                    s.active
                 from 
                     qwat_network.network as g
+			        join qwat_od.pipe p on g.id = p.id
+			        join qwat_vl.status s on p.fk_status = s.id
                 where 
                     g.network_id = $1
                 UNION 
@@ -111,11 +114,14 @@ begin
                     $2 as target,
                     g.cost, 
                     st_length(g.geometry) as meters,
-                    ARRAY[$3, $2] as path
+                    ARRAY[$3, $2] as path,
+                    s.active
                 from 
                     qwat_network.network as g
+			        join qwat_od.pipe p on g.id = p.id
+			        join qwat_vl.status s on p.fk_status = s.id
                 where 
-                    g.network_id = $1
+                    (g.network_id = $1)  and (s.active = true)
             )
             select * from start_nodes
 
@@ -129,7 +135,8 @@ begin
                 ng.target,
                 ng.cost,
                 ng.meters + st_length(ng.geometry) as meters,
-                ng.path || ng.target
+                ng.path || ng.target,
+                ng.active
             from
                 (select 
                     g.id,
@@ -146,15 +153,19 @@ begin
                     g.cost,
                     sg.meters,
                     sg.path,
+                    s.active,
                     g.geometry
                 from 
-                    qwat_network.network as g,
+                    qwat_network.network as g
+					join qwat_od.pipe p on g.id = p.id
+		        	join qwat_vl.status s on p.fk_status = s.id,
                     search_graph as sg
                 where
                     (
                         sg.target = g.source or sg.target = g.target
                         and sg.source <> g.source
                     )
+                    and (s.active = true)
                 ) as ng
                 join qwat_od.pipe p on p.id = ng.id
 
@@ -166,7 +177,10 @@ begin
                 and ng.meters / 1000 < $4
                 
                 -- Stop only on network valves ?
-                and not qwat_network.ft_check_node_is_valve(ng.source, $5) 
+                and not qwat_network.ft_check_node_is_valve(ng.source, $5)
+
+				-- Stop if pipe has not active status to true
+				and ng.active = true
         )
         select distinct sg.network_id, sg.source, sg.target, n.geometry, meters, path
         from search_graph as sg

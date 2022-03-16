@@ -350,11 +350,14 @@ begin
             case 
 				when start_node=g.target then ARRAY[g.target, g.source]
 				else ARRAY[g.source, g.target]
-			end as path
+			end as path,
+			s.active
         from 
-            qwat_network.network as g 
+            qwat_network.network as g
+        	join qwat_od.pipe p on g.id = p.id
+        	join qwat_vl.status s on p.fk_status = s.id
         where 
-            g.source = start_node or g.target = start_node           
+            (g.source = start_node or g.target = start_node) and (s.active = true)
         union all
         -- Partie récursive
         select
@@ -365,7 +368,8 @@ begin
 			-- on incremente la profondeur a chaque iteration			
 			ng.meters + st_length(ng.geometry) as meters,
 			-- on met la target dans le tableau représentant le chemin à parcourir
-			ng.path || ng.target
+			ng.path || ng.target,
+			ng.active
         from
 			(select 
 				g.id,
@@ -384,10 +388,13 @@ begin
 				g.cost,
 				sg.meters,
 				sg.path,
+				s.active,
 				g.geometry
 			from 
             -- la table qu'on jointure : c'est le graphe (au format pgrouting)
-				qwat_network.network as g,
+				qwat_network.network as g
+				join qwat_od.pipe p on g.id = p.id
+	        	join qwat_vl.status s on p.fk_status = s.id,
 			--join
             -- la CTE
 				search_graph as sg				
@@ -399,6 +406,7 @@ begin
 				(sg.target = g.source or
 				sg.target = g.target
 				and sg.source <> g.source)
+				and (s.active = true)
 			) as ng
 
         where
@@ -412,7 +420,8 @@ begin
 			-- Stop if number of meters is too important
 			and ng.meters / 1000 < $3
             -- et on ne passe pas par les vannes fermées
-            --and sg.cost != -1            
+            --and sg.cost != -1
+			and ng.active = true			
 	)
 	select distinct sg.id, sg.source, sg.target, n.geometry
 	from search_graph as sg
