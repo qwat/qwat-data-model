@@ -88,7 +88,10 @@ begin
         select n.network_id, n.source, n.target
         from qwat_network.network n, point_clicked 
         where n.id = $3
-        and st_dwithin(point_clicked.geom, n.geometry, 1);'); -- 1m is enough ?
+        and st_dwithin(point_clicked.geom, n.geometry, 1)
+		order by st_distance(point_clicked.geom, n.geometry)
+        limit 1
+    ;'); -- 1m is enough ? order by distance point_clicked<-->line as there could be 2 pipes in result. The closest is the start pipe.
     execute sql into network_id, start_node, start_node2 using _x, _y, start_pipe, crs;
 
     sql = format('
