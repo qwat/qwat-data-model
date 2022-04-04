@@ -20,6 +20,11 @@ begin
 
     select count(*) into count from qwat_od.valve where id = _id;
     if count > 0 then
+    	is_active := (select qwat_network.ft_check_valve_is_active(_id));
+    	-- Do not consider valves whose status is not active
+    	if is_active = false then
+	        return false;
+    	end if;    
         if _check_if_network_function then
             is_network := (select qwat_network.ft_check_valve_is_network(_id));
             if is_network then

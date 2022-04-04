@@ -410,18 +410,21 @@ begin
 			) as ng
 
         where
-        	-- on continue tant qu'on n'est pas à une vanne fermée
-			(not qwat_network.ft_check_node_is_closed_valve(ng.source))
-			-- ou qu'on soit sur une des vannes en entrée
-			and not ng.source = any(valves)
-			-- on ne repasse pas par un noeud déjà dans le chemin à parcourir (on ne revient pas en arrière)
-			and not ng.target = any(ng.path)
-			-- on s'arrête à une profondeur pour ne pas parcourir le réseau entier
-			-- Stop if number of meters is too important
-			and ng.meters / 1000 < $3
-            -- et on ne passe pas par les vannes fermées
-            --and sg.cost != -1
-			and ng.active = true			
+         	-- do not consider valves whose status is not active
+        	not qwat_network.ft_check_valve_is_active(ng.source) or 
+        	(
+	        	-- continue if valve is not closed
+				(not qwat_network.ft_check_node_is_closed_valve(ng.source))
+				-- continue if valve is not selected by user (consider it as closed if it is selected)
+				and not ng.source = any(valves)
+				-- node is not already in path
+				and not ng.target = any(ng.path)
+				-- Stop if number of meters is too important
+				and ng.meters / 1000 < $3
+	            --and sg.cost != -1
+				-- continue if pipe status is active
+				and ng.active = true
+			)			
 	)
 	select distinct sg.id, sg.source, sg.target, n.geometry
 	from search_graph as sg

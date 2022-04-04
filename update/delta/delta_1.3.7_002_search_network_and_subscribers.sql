@@ -56,7 +56,10 @@ begin
         pressure_zone = (select fk_pressurezone from qwat_od.pipe p where p.id = start_pipe);
         condition_pressure_zone = ' and fk_pressurezone = ' || pressure_zone;
     end if;
-    
+
+	-- Do not consider valves whose status is not active
+    condition_active_valve = 'not qwat_network.ft_check_valve_is_active(ng.source) ';
+
     if stop_on_subscriber_valves then
         condition_subscriber_valve = ' and not qwat_network.ft_check_valve_is_subscriber(ng.source) ';
     end if;
@@ -149,31 +152,35 @@ begin
                 join qwat_od.pipe p on p.id = ng.id
 
             where
-                -- Continue while there is no closed valve
-                (not qwat_network.ft_check_node_is_closed_valve(ng.source))
-                
-                -- Be carreful not to cross a node twice
-                and not ng.target = any(ng.path)
-                
-                -- Stop if number of meters is too important
-                and ng.meters / 1000 < $4
-				
-                -- Stop if pipe has not active status to true
-				and ng.active = true
-                
-                -- pressure zone
-                %s
-                
-                -- subscriber valves
-                %s
-                
-                -- network valves
-                %s 
+				-- active valve
+				%s or
+				(
+	                -- Continue while there is no closed valve
+	                (not qwat_network.ft_check_node_is_closed_valve(ng.source))
+	                
+	                -- Be carreful not to cross a node twice
+	                and not ng.target = any(ng.path)
+	                
+	                -- Stop if number of meters is too important
+	                and ng.meters / 1000 < $4
+	                
+					-- Stop if pipe has not active status to true
+					and ng.active = true
+	
+	                -- pressure zone
+	                %s              
+	
+	                -- subscriber valves
+	                %s
+	                
+	                -- network valves
+	                %s 
+				)
         )
         select distinct sg.network_id, n.geometry, meters, path
         from search_graph as sg
         join qwat_network.network n on n.network_id = sg.network_id;
-        ', condition_pressure_zone, condition_subscriber_valve, condition_network_valve);
+        ', condition_active_valve, condition_pressure_zone, condition_subscriber_valve, condition_network_valve);
 
     for rec in execute sql using network_id, start_node, start_node2, max_km
     loop
@@ -192,5 +199,20 @@ begin
         end if;
     end loop;
 end
+$function$
+;
+
+CREATE OR REPLACE FUNCTION qwat_network.ft_check_valve_is_active(_id integer)
+	RETURNS boolean
+	LANGUAGE plpgsql
+AS $function$
+declare 
+	is_active boolean := true;
+	BEGIN
+		select status.active into is_active from qwat_od.valve valve
+		join qwat_vl.status status on valve.fk_status = status.id
+	 	where valve.id = _id;
+	 	return is_active;
+	END;
 $function$
 ;
