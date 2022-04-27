@@ -1,6 +1,8 @@
 from pum.core.deltapy import DeltaPy
 import pkg_resources
-import os
+import pathlib
+import subprocess
+import psycopg2
 
 class DropViews(DeltaPy):
 
@@ -18,10 +20,15 @@ class DropViews(DeltaPy):
     def drop_views(self):
         self.write_message("Dropping views")
 
-        drop_sql = os.path.join(self.delta_dir, '..', '..', 'ordinary_data', 'views',
-                                'drop_views.sql')
-        cmd = 'psql service={} -f {}'.format(self.pg_service, drop_sql)
-        self.write_message(cmd)
-        os.system(cmd)
+        connection = psycopg2.connect("service={0}".format(self.pg_service))
+        cursor = connection.cursor()
 
+
+        data_path = pathlib.Path(self.delta_dir) / '..' / '..' / 'ordinary_data'
+        dropviews_script = data_path / 'views' / 'drop_views.sql'
+
+        cursor.execute(open(dropviews_script, "r").read())
+
+        connection.commit()
         self.write_message("Dropping views: done")
+
