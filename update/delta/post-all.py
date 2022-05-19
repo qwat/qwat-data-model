@@ -24,8 +24,8 @@ class RecreateViewsAndFunctions(DeltaPy):
             "SRID": srid,
         })
         data_dir = this_dir / '..' / '..' / 'ordinary_data'
-        subprocess.run(["python", data_dir / 'views' / 'rewrite_views.py'], check=True)
-        subprocess.run(["python", data_dir / 'functions' / 'rewrite_functions.py'], check=True)
+        subprocess.run(["python", data_dir / 'views' / 'rewrite_views.py'], check=True, shell=True)
+        subprocess.run(["python", data_dir / 'functions' / 'rewrite_functions.py'], check=True, shell=True)
 
         self.write_message("Reloading views and functions: done")
 

@@ -15,4 +15,4 @@ print("Dropping views")
 cursor.execute(open(this_dir / "drop_views.sql").read())
 
 print("Inserting views")
-subprocess.run(["python", this_dir /"insert_views.py"], env=os.environ, check=True)
+subprocess.run(["python", this_dir /"insert_views.py"], check=True, shell=True)
