@@ -11,6 +11,7 @@ AS $function$
 declare 
     count integer := 0;
     is_network boolean := false;
+    is_active boolean := true;
 begin
     
     --raise notice 'vanne %', _id;

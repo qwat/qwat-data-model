@@ -38,6 +38,7 @@ declare
     condition_pressure_zone text := '';
     condition_subscriber_valve text := '';
     condition_network_valve text := '';
+    condition_active_valve text := '';
     crs integer;
 begin
 	-- Get CRS from qwat_sys.fn_setting_srid function
