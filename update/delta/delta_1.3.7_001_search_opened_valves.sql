@@ -1,5 +1,3 @@
-alter table qwat_network.network add column if not exists network_id serial ;
-
 /*
 Check if a node is a valve
 Is the parameter _check_if_network_function is true, then we also check if the valve is a network valve

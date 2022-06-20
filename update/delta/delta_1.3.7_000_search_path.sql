@@ -188,7 +188,7 @@ AS $function$
             end as reverse_cost,
             sp.geometry as geometry
         FROM qwat_network.pipe_reference as sp;
-        ALTER TABLE qwat_network.network ADD id_network serial; -- unique id for network
+        ALTER TABLE qwat_network.network ADD network_id serial; -- unique id for network
 	END;
 $function$
 ;
