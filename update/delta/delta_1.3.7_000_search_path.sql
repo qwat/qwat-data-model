@@ -205,10 +205,10 @@ declare
 	node_0 integer;
 begin
 	with recursive 
-    -- la CTE
+    -- CTE
     search_graph(id, source, target, cost, depth, path) as (
-        -- Initialisation
-        -- on part d'un troncon specifique
+        -- Initialize first iteration
+        -- from specific pipe created in network table
         select 
             g.id, 
 			case 
@@ -230,27 +230,27 @@ begin
         where 
             g.source = start_node or g.target = start_node            
         union all
-        -- Partie récursive
+        -- Recursive part
         select
             ng.id,
 			ng.source,
 			ng.target,
 			ng.cost,
-			-- on incremente la profondeur a chaque iteration			
+			-- increment depth for each iteration			
 			ng.depth + 1 as depth,
-			-- on met la target dans le tableau représentant le chemin à parcourir
+			-- target in path to know all the nodes to go through
 			ng.path || ng.target
         from
 			(select 
 				g.id,
-				-- si le tronçon suivant a la même target que le tronçon que l'on vient de parcourir, 
-				-- il faut inverser et prendre cette target comme source, sinon on prend la source
+				-- if next pipe has same target than pipe that has been run through,
+				-- then, it needs to switch and take target of the next pipe as source. Otherwise, it needs to take source of the next pipe as source.
 				case 
 					when sg.target=g.target then g.target
 					else g.source
 				end as source,
-				-- si le tronçon suivant a la même target que le tronçon que l'on vient de parcourir, 
-				-- il faut inverser et prendre la source comme target, sinon on prend la target
+				-- if next pipe has same target than pipe that has been run through,
+				-- then, it needs to switch and take source of the next pipe as target. Otherwise, it needs to take target of the next pipe as target.
 				case 
 					when sg.target=g.target then g.source
 					else g.target
@@ -259,32 +259,28 @@ begin
 				sg.depth,
 				sg.path
 			from 
-            -- la table qu'on jointure : c'est le graphe (au format pgrouting)
+            -- joined table : it is graph created in network table
 				qwat_network.network as g,
-			--join
-            -- la CTE
-				search_graph as sg				
+            -- CTE
+				search_graph as sg
+			-- join CTE and network table to move in the graph
 			where
-			--on
-				-- on jointure la CTE et network pour se déplacer dans le graphe
-				-- on cherche le tronçon qui a la target du tronçon précédent comme source
-				-- (ou comme target si le réseau n'a pas été saisi correctement et on inverse ensuite)		
+				-- search for pipe which has target of previous pipe as source
+				-- (or as target if network has been digitalized in reverse and we then switch)
 				(sg.target = g.source or
 				sg.target = g.target
 				and sg.source <> g.source)
 			) as ng
 
         where
-        	-- on continue tant qu'on n'est pas au noeud d'arrivée
+        	-- continue still we are not at the end_node
 			(ng.source <> end_node)
-			-- on ne repasse pas par un noeud déjà dans le chemin à parcourir (on ne revient pas en arrière)
+			-- continue as it is not a node that has been already run through in the path
 			and not ng.target = any(ng.path)
-			-- on s'arrête à une profondeur pour ne pas parcourir le réseau entier
-			and ng.depth < max_depth
-            -- et on ne passe pas par les vannes fermées
-            --and sg.cost != -1            
+			-- stop at max depth
+			and ng.depth < max_depth       
 	)
-	-- on met le chemin dans une variable pour construire ensuite le linéaire avec les géométries
+	-- path as variable to build geometries
     select sg.path into path
 		from search_graph as sg
  		where sg.target = end_node
@@ -292,19 +288,19 @@ begin
 		limit 1;
     
 	if path is not null then
-		-- on prend le premier noeud du chemin (noeud de départ)
+		-- firt node (start_node)
 		node_0 := path[1];
-		-- on part ensuite du deuxième noeud pour construire chaque géométrie
+		-- loop on each node to build geometries
 	    foreach node in array path[2:]
 		loop
 			select n.id, n.source, n.target, n.geometry into id, source, target, geometry from qwat_network.network n
-			-- on cherche le tronçon avec source et target égales au noeud n et noeud n + 1
-			-- (ou l'inverse si les tronçons n'ont pas été saisis correctement)
+			-- search for pipe with source = node n and target = node n+1
+			-- (or reverse)
 	    	where (n.source = node_0 and n.target = node) or (n.target = node_0 and n.source = node);
 	--   	    raise notice 'node 0 % ; node %', node_0, node;
-			-- on passe au noeud suivant pour chercher le prochain tronçon
+			-- next node to search next pipe
 	    	node_0 := node;
-	    	-- on renvoie la ligne de résultat dans la table
+			-- return result in table
 	        return next;
 	--        raise notice 'node %', node;
 		end loop;
@@ -331,10 +327,10 @@ begin
 --	select p.fk_node_a into start_node from qwat_od.pipe p where p.id = pipe;
 	return query
 	with recursive 
-    -- la CTE
+    -- CTE
     search_graph(id, source, target, cost, meters, path) as (
-        -- Initialisation
-        -- on part d'un troncon specifique
+        -- Initialize first iteration
+        -- from a specific pipe created in network table
         select 
             g.id, 
 			case 
@@ -359,28 +355,28 @@ begin
         where 
             (g.source = start_node or g.target = start_node) and (s.active = true)
         union all
-        -- Partie récursive
+        -- Recursive part
         select
             ng.id,
 			ng.source,
 			ng.target,
 			ng.cost,
-			-- on incremente la profondeur a chaque iteration			
+			-- increment depth for each iteration
 			ng.meters + st_length(ng.geometry) as meters,
-			-- on met la target dans le tableau représentant le chemin à parcourir
+			-- target in path to know all the nodes to go through
 			ng.path || ng.target,
 			ng.active
         from
 			(select 
 				g.id,
-				-- si le tronçon suivant a la même target que le tronçon que l'on vient de parcourir, 
-				-- il faut inverser et prendre cette target comme source, sinon on prend la source
+				-- if next pipe has same target than pipe that has been run through,
+				-- then, it needs to switch and take target of the next pipe as source. Otherwise, it needs to take source of the next pipe as source.
 				case 
 					when sg.target=g.target then g.target
 					else g.source
 				end as source,
-				-- si le tronçon suivant a la même target que le tronçon que l'on vient de parcourir, 
-				-- il faut inverser et prendre la source comme target, sinon on prend la target
+				-- if next pipe has same target than pipe that has been run through,
+				-- then, it needs to switch and take source of the next pipe as target. Otherwise, it needs to take target of the next pipe as target.
 				case 
 					when sg.target=g.target then g.source
 					else g.target
@@ -391,18 +387,16 @@ begin
 				s.active,
 				g.geometry
 			from 
-            -- la table qu'on jointure : c'est le graphe (au format pgrouting)
+            -- joined table : it is graph created in network table
 				qwat_network.network as g
 				join qwat_od.pipe p on g.id = p.id
 	        	join qwat_vl.status s on p.fk_status = s.id,
-			--join
-            -- la CTE
+            -- CTE
 				search_graph as sg				
+			-- join CTE and network table to move in the graph
 			where
-			--on
-				-- on jointure la CTE et network pour se déplacer dans le graphe
-				-- on cherche le tronçon qui a la target du tronçon précédent comme source
-				-- (ou comme target si le réseau n'a pas été saisi correctement et on inverse ensuite)		
+				-- search for pipe which has target of previous pipe as source
+				-- (or as target if network has been digitalized in reverse and we then switch)
 				(sg.target = g.source or
 				sg.target = g.target
 				and sg.source <> g.source)
@@ -421,7 +415,6 @@ begin
 				and not ng.target = any(ng.path)
 				-- Stop if number of meters is too important
 				and ng.meters / 1000 < $3
-	            --and sg.cost != -1
 				-- continue if pipe status is active
 				and ng.active = true
 			)			
