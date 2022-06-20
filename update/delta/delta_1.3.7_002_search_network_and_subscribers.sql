@@ -20,7 +20,9 @@ $function$
 ;
 
 
-CREATE OR REPLACE FUNCTION qwat_network.ft_search_network_and_subscribers(start_pipe integer, _x float, _y float, max_km real DEFAULT 20, stop_on_network_valves boolean DEFAULT false, stop_on_subscriber_valves boolean DEFAULT false, stop_on_current_pressure_zone boolean DEFAULT false)
+CREATE OR REPLACE FUNCTION qwat_network.ft_search_network_and_subscribers(start_pipe integer, _x float, _y float, max_km real DEFAULT 20, 
+    stop_on_network_valves boolean DEFAULT false, stop_on_subscriber_valves boolean DEFAULT false, 
+    stop_on_current_pressure_zone boolean DEFAULT false, tolerance real DEFAULT 1)
  RETURNS TABLE(id integer, id_pipe integer, geometry geometry)
  LANGUAGE plpgsql
 AS $function$
@@ -42,18 +44,17 @@ begin
 	sql = format('select qwat_sys.fn_setting_srid();');
 	execute sql into crs;
     -- Select a network object from the pipe id and point clicked
-    sql = format('
-        with point_clicked as ( 
-            select st_setsrid(st_makepoint($1,$2),$4) as geom
-        )
-        select n.network_id, n.source, n.target
-        from qwat_network.network n, point_clicked 
-        where n.id = $3
-        and st_dwithin(point_clicked.geom, n.geometry, 1)
-		order by st_distance(point_clicked.geom, n.geometry)
-        limit 1
-    ;'); -- 1m is enough ? order by distance point_clicked<-->line as there could be 2 pipes in result. The closest is the start pipe.
-    execute sql into network_id, start_node, start_node2 using _x, _y, start_pipe, crs;
+    with point_clicked as ( 
+        select st_setsrid(st_makepoint(_x,_y),crs) as geom
+    )
+    select n.network_id, n.source, n.target
+    from qwat_network.network n, point_clicked 
+    where n.id = start_pipe
+    and st_dwithin(point_clicked.geom, n.geometry, tolerance)
+    order by st_distance(point_clicked.geom, n.geometry)
+    limit 1
+    -- order by distance point_clicked<-->line as there could be 2 pipes in result. The closest is the start pipe.
+    into network_id, start_node, start_node2;
     
     if stop_on_current_pressure_zone then 
         pressure_zone = (select fk_pressurezone from qwat_od.pipe p where p.id = start_pipe);
