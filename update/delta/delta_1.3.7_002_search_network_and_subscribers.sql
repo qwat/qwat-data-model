@@ -38,8 +38,8 @@ declare
     condition_network_valve text := '';
     crs integer;
 begin
-	-- Get CRS from qwat_sys.settings
-	sql = format('select value from qwat_sys.settings;');
+	-- Get CRS from qwat_sys.fn_setting_srid function
+	sql = format('select qwat_sys.fn_setting_srid();');
 	execute sql into crs;
     -- Select a network object from the pipe id and point clicked
     sql = format('
