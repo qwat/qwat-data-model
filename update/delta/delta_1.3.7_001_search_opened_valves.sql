@@ -95,7 +95,7 @@ begin
     -- order by distance point_clicked<-->line as there could be 2 pipes in result. The closest is the start pipe.
     into _network_id, start_node, start_node2;
 
-    sql = format('
+    for rec in 
         with recursive search_graph(id, _network_id, source, target, cost, meters, path) as (
             -- Init
             -- We start from a specific pipe, on each node (source and target)
@@ -103,34 +103,34 @@ begin
                 select 
                     g.id,
                     g.network_id, 
-                    $2 as source,
-                    $3 as target,
+                    start_node as source,
+                    start_node2 as target,
                     g.cost, 
                     st_length(g.geometry) as meters,
-                    ARRAY[$2, $3] as path,
+                    ARRAY[start_node, start_node2] as path,
                     s.active
                 from 
                     qwat_network.network as g
 			        join qwat_od.pipe p on g.id = p.id
 			        join qwat_vl.status s on p.fk_status = s.id
                 where 
-                    g.network_id = $1
+                    g.network_id = _network_id
                 UNION 
                 select 
                     g.id,
                     g.network_id, 
-                    $3 as source,
-                    $2 as target,
+                    start_node2 as source,
+                    start_node as target,
                     g.cost, 
                     st_length(g.geometry) as meters,
-                    ARRAY[$3, $2] as path,
+                    ARRAY[start_node2, start_node] as path,
                     s.active
                 from 
                     qwat_network.network as g
 			        join qwat_od.pipe p on g.id = p.id
 			        join qwat_vl.status s on p.fk_status = s.id
                 where 
-                    (g.network_id = $1)  and (s.active = true)
+                    (g.network_id = _network_id)  and (s.active = true)
             )
             select * from start_nodes
 
@@ -183,10 +183,10 @@ begin
                 not ng.target = any(ng.path)
                 
                 -- Stop if number of meters is too important
-                and ng.meters / 1000 < $4
+                and ng.meters / 1000 < max_km
                 
                 -- Stop only on network valves ?
-                and not qwat_network.ft_check_node_is_valve(ng.source, $5)
+                and not qwat_network.ft_check_node_is_valve(ng.source, stop_on_network_valves)
 
 				-- Stop if pipe has not active status to true
 				and ng.active = true
@@ -195,14 +195,6 @@ begin
         from search_graph as sg
         join qwat_network.network n on n.network_id = sg._network_id
 
-    for rec in execute sql using network_id, start_node, start_node2, max_km, stop_on_network_valves
-   /* loop
-        -- Unique list of network pipes
-        if not rec.network_id = any(network_list) then
-            network_list := network_list || rec.network_id;
-        end if;
-    end loop;
-*/
     loop
         RAISE NOTICE '%', rec;
         select qwat_network.ft_check_node_is_valve(rec.source, stop_on_network_valves) into res;
