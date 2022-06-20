@@ -47,8 +47,24 @@ FOR r IN (
 	) tblpipe join (
 		SELECT pipe.id as p_id,n.id as n,n.geometry as ng
 		FROM qwat_od.pipe join qwat_od.node as n on n.id not in (pipe.fk_node_a,pipe.fk_node_b) 
-		WHERE pipe.id=var_pipe_id and ST_Distance(n.geometry,pipe.geometry)>=0 and ST_Distance(n.geometry,pipe.geometry)<0.003 
+		WHERE pipe.id=var_pipe_id
 		--and n.id in (select pipe.fk_node_a from qwat_od.pipe union select pipe.fk_node_b from qwat_od.pipe)
+		and ST_DWithin(n.geometry, pipe.geometry, 0.003)
+		union all
+		-- also consider valves which are not on nodes
+		SELECT pipe.id as p_id, v.id as n, v.geometry as ng
+		FROM qwat_od.pipe 
+		join qwat_od.valve v on v.id not in (pipe.fk_node_a,pipe.fk_node_b) 
+		where 
+		pipe.id=var_pipe_id 
+		and ST_DWithin(v.geometry, pipe.geometry, 0.003)
+		and NOT EXISTS (
+			-- check if valve is on a valve by checking node geometry and distance from the pipe
+		    select * 
+		    FROM qwat_od.node as n 
+		    where n.id = v.id
+		    and ST_DWithin(n.geometry, pipe.geometry, 0.003)
+		)		
 	) tblpipe_nodes on tblpipe.pid=tblpipe_nodes.p_id
 	ORDER BY distance
 )
