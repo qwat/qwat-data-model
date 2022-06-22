@@ -139,7 +139,7 @@ UNION
     p.geometry,
     p.id AS fk_pipe
    FROM qwat_od.pipe p
-  WHERE NOT (p.id IN ( SELECT pipe_reference.fk_pipe
+  WHERE (p.id NOT IN ( SELECT pipe_reference.fk_pipe
            FROM qwat_network.pipe_reference));
 
 -- Function: ft_element_valve_status :
@@ -165,6 +165,7 @@ CREATE OR REPLACE FUNCTION qwat_network.ft_create_network()
  LANGUAGE plpgsql
 AS $function$
 	BEGIN
+		DROP TABLE IF EXISTS qwat_network.network;
 		CREATE TABLE qwat_network.network as 
 		SELECT id,
 	            fk_node_a as source,
@@ -179,7 +180,7 @@ AS $function$
 	            END as reverse_cost,
 	            geometry as geometry
 	        FROM qwat_od.pipe p
-	        WHERE NOT (p.id IN (SELECT pipe_reference.fk_pipe
+	        WHERE (p.id NOT IN (SELECT pipe_reference.fk_pipe
 				FROM qwat_network.pipe_reference))
 	    UNION
         SELECT 
