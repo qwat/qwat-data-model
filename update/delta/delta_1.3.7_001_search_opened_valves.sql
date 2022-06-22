@@ -11,12 +11,6 @@ declare
     is_network boolean := false;
     is_active boolean := true;
 begin
-    
-    --raise notice 'vanne %', _id;
---     if _id = 54387 then
---         raise notice 'vanne 54387 %', _check_if_network_function;
---     end if;
-
     select count(*) into count from qwat_od.valve where id = _id;
     if count > 0 then
     	is_active := (select qwat_network.ft_check_valve_is_active(_id));
