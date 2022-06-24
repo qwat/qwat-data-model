@@ -95,7 +95,7 @@ AS $function$
 	END;
 $function$
 ;
-COMMENT ON FUNCTION qwat_od.fn_node_set_status( _node_ids integer[] ) IS 'Set the status of node regarding connected pipes. If one pipe: status of the pipe. If many: depends on priority of status of all pipes.';
+COMMENT ON FUNCTION qwat_od.fn_node_set_status( _node_id integer ) IS 'Set the status of node regarding connected pipes. If one pipe: status of the pipe. If many: depends on priority of status of all pipes.';
 
 -- Set status of each nodes
 CREATE OR REPLACE FUNCTION qwat_od.fn_node_set_status(_node_ids integer[] DEFAULT NULL::integer[])
