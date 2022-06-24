@@ -33,6 +33,7 @@ ALTER TABLE qwat_od.node ADD COLUMN _pipe_node_type      qwat_od.pipe_connection
 ALTER TABLE qwat_od.node ADD COLUMN _pipe_orientation    float   default 0;
 ALTER TABLE qwat_od.node ADD COLUMN _pipe_schema_visible boolean default false;
 ALTER TABLE qwat_od.node ADD COLUMN fk_status            integer default null;
+ALTER TABLE qwat_od.node ADD column fk_distributor       integer[];
 
 /* GEOMETRY */
 ALTER TABLE qwat_od.node ADD COLUMN geometry geometry('POINTZ',:SRID) NOT NULL;
