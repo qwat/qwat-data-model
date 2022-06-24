@@ -136,3 +136,46 @@ CREATE TRIGGER tr_pipe_altgeom_alt
 	FOR EACH ROW
 	EXECUTE PROCEDURE qwat_od.ft_geometry_alternative_aux();
 COMMENT ON TRIGGER tr_pipe_altgeom_alt ON qwat_od.pipe IS 'Trigger: when updating, check if alternative geometries are different to fill the boolean fields.';
+
+/* --------------------------------------------*/
+/* -------- NODE STATUS TRIGGER ----------*/
+CREATE OR REPLACE FUNCTION qwat_od.ft_pipe_node_status()
+ RETURNS trigger
+ LANGUAGE plpgsql
+AS $function$
+	DECLARE
+		node_ids integer[];
+	BEGIN
+		IF TG_OP = 'INSERT' THEN
+			node_ids := ARRAY[NEW.fk_node_a, NEW.fk_node_b];
+		ELSE
+			-- delete or update (OLD exists)
+			node_ids := ARRAY[OLD.fk_node_a, OLD.fk_node_b];
+		END IF;
+		IF TG_OP = 'UPDATE' THEN
+			IF NEW.fk_node_a <> OLD.fk_node_a THEN
+				node_ids := array_append(node_ids, OLD.fk_node_a);
+			END IF;
+			IF NEW.fk_node_b <> OLD.fk_node_b THEN
+				node_ids := array_append(node_ids, OLD.fk_node_b);
+			END IF;
+		END IF;
+		PERFORM qwat_od.fn_node_set_status( node_ids );
+		RETURN NEW;
+	END;
+	$function$
+;
+
+CREATE TRIGGER tr_pipe_node_status_insert
+    AFTER INSERT
+    ON qwat_od.pipe
+    FOR EACH ROW
+    EXECUTE FUNCTION qwat_od.ft_pipe_node_status();
+COMMENT ON TRIGGER tr_pipe_node_status_insert ON qwat_od.pipe IS 'Trigger: after insert of a pipe, set the status of nodes.';
+
+CREATE TRIGGER tr_pipe_node_status_update
+    AFTER update of fk_status
+    ON qwat_od.pipe
+    FOR EACH ROW
+    EXECUTE FUNCTION qwat_od.ft_pipe_node_status();
+COMMENT ON TRIGGER tr_pipe_node_status_insert ON qwat_od.pipe IS 'Trigger: after updating status of a pipe, set the status of nodes.';
