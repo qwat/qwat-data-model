@@ -180,3 +180,45 @@ CREATE TRIGGER tr_pipe_node_status_update
     EXECUTE FUNCTION qwat_od.ft_pipe_node_status();
 COMMENT ON TRIGGER tr_pipe_node_status_update ON qwat_od.pipe IS 'Trigger: after updating status of a pipe, set the status of nodes.';
 
+/* --------------------------------------------*/
+/* -------- NODE DISTRIBUTOR TRIGGER ----------*/
+CREATE OR REPLACE FUNCTION qwat_od.ft_pipe_node_distributor()
+ RETURNS trigger
+ LANGUAGE plpgsql
+AS $function$
+	DECLARE
+		node_ids integer[];
+	BEGIN
+		IF TG_OP = 'INSERT' THEN
+			node_ids := ARRAY[NEW.fk_node_a, NEW.fk_node_b];
+		ELSE
+			-- delete or update (OLD exists)
+			node_ids := ARRAY[OLD.fk_node_a, OLD.fk_node_b];
+		END IF;
+		IF TG_OP = 'UPDATE' THEN
+			IF NEW.fk_node_a <> OLD.fk_node_a THEN
+				node_ids := array_append(node_ids, OLD.fk_node_a);
+			END IF;
+			IF NEW.fk_node_b <> OLD.fk_node_b THEN
+				node_ids := array_append(node_ids, OLD.fk_node_b);
+			END IF;
+		END IF;
+		PERFORM qwat_od.fn_node_set_distributors( node_ids );
+		RETURN NEW;
+	END;
+	$function$
+;
+
+CREATE TRIGGER tr_pipe_node_distributor_insert
+    AFTER INSERT
+    ON qwat_od.pipe
+    FOR EACH ROW
+    EXECUTE FUNCTION qwat_od.ft_pipe_node_distributor();
+COMMENT ON TRIGGER tr_pipe_node_distributor_insert ON qwat_od.pipe IS 'Trigger: after insert of a pipe, set distributor(s) of nodes.';
+
+CREATE TRIGGER tr_pipe_node_distributor_update
+    AFTER update of fk_distributor
+    ON qwat_od.pipe
+    FOR EACH ROW
+    EXECUTE FUNCTION qwat_od.ft_pipe_node_distributor();
+COMMENT ON TRIGGER tr_pipe_node_distributor_update ON qwat_od.pipe IS 'Trigger: after updating distributor of a pipe, set distributor(s) of nodes.';
