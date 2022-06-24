@@ -32,6 +32,7 @@ ALTER TABLE qwat_od.node ADD COLUMN _geometry_alt2_used boolean;
 ALTER TABLE qwat_od.node ADD COLUMN _pipe_node_type      qwat_od.pipe_connection default null;
 ALTER TABLE qwat_od.node ADD COLUMN _pipe_orientation    float   default 0;
 ALTER TABLE qwat_od.node ADD COLUMN _pipe_schema_visible boolean default false;
+ALTER TABLE qwat_od.node ADD COLUMN fk_status    integer default null;
 
 /* GEOMETRY */
 ALTER TABLE qwat_od.node ADD COLUMN geometry geometry('POINTZ',:SRID) NOT NULL;
@@ -49,6 +50,7 @@ CREATE INDEX node_geoidx_alt2 ON qwat_od.node USING GIST ( geometry_alt2 );
 /* CONSTRAINTS */
 ALTER TABLE qwat_od.node ADD CONSTRAINT node_fk_district      FOREIGN KEY (fk_district)      REFERENCES qwat_od.district(id)      MATCH FULL; CREATE INDEX fki_node_fk_district      ON qwat_od.node(fk_district);
 ALTER TABLE qwat_od.node ADD CONSTRAINT node_fk_pressurezone  FOREIGN KEY (fk_pressurezone)  REFERENCES qwat_od.pressurezone(id)  MATCH FULL; CREATE INDEX fki_node_fk_pressurezone  ON qwat_od.node(fk_pressurezone);
+ALTER TABLE qwat_od.node ADD CONSTRAINT node_fk_status        FOREIGN KEY (fk_status)        REFERENCES qwat_vl.status(id)        MATCH FULL; CREATE INDEX fki_node_fk_status ON qwat_od.node(fk_status);
 
 
 /* GEOMETRY TRIGGERS */
