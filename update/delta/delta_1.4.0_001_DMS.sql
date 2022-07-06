@@ -9,7 +9,6 @@ INSERT INTO qwat_vl.document_type (id, value_en, value_fr, value_ro ) VALUES (10
 INSERT INTO qwat_vl.document_type (id, value_en, value_fr, value_ro ) VALUES (103, 'to be determined', 'à déterminer', 'de determinat');
 INSERT INTO qwat_vl.document_type (id, active, value_en, value_fr) VALUES (8001, true, 'Picture', 'Picture');
 INSERT INTO qwat_vl.document_type (id, active, value_en, value_fr) VALUES (8002, true, 'PDF', 'PDF');
-INSERT INTO qwat_vl.document_type (id, active, value_en, value_fr) VALUES (8003, true, 'Other', 'Autre');
 
 
 CREATE TABLE qwat_od.document(
