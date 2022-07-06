@@ -44,6 +44,9 @@ They will have 101, 102 and 103 as code, respectively.
 73 hydrant_model_inf
 74 hydrant_output
 
+/* others */
+80xx document types
+
 /* various */
 9000-9040 object_reference
 
