@@ -17,7 +17,7 @@ INSERT INTO qwat_vl.document_type (id, value_en, value_fr, value_ro ) VALUES (10
 INSERT INTO qwat_vl.document_type (id, value_en, value_fr, value_ro ) VALUES (103, 'to be determined', 'à déterminer', 'de determinat');
 
 /* VALUES */
-INSERT INTO qwat_vl.document_type (id, active, value_en, value_fr) VALUES (8001, true, 'Picture', 'Picture');
+INSERT INTO qwat_vl.document_type (id, active, value_en, value_fr) VALUES (8001, true, 'Picture', 'Image');
 INSERT INTO qwat_vl.document_type (id, active, value_en, value_fr) VALUES (8002, true, 'Movie', 'Vidéo');
 INSERT INTO qwat_vl.document_type (id, active, value_en, value_fr) VALUES (8003, true, 'Text', 'Texte');
 INSERT INTO qwat_vl.document_type (id, active, value_en, value_fr) VALUES (8004, true, 'Sketch', 'Croquis');
