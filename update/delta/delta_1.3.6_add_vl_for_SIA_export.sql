@@ -27,7 +27,7 @@ UPDATE qwat_vl.bedding SET sia405code = 'unbekannt' WHERE value_fr = 'terre';
 -- UPDATE qwat_vl.cover_type SET sia405code = 'unbekannt' WHERE ???;
 
 -- Hydrant material : mapping complete [X] to check [X]
-UPDATE qwat_vl.hydrant_material SET sia405code = 'Metall' WHERE short_fr LIKE 'F %';
+UPDATE qwat_vl.hydrant_material SET sia405code = 'Metall' WHERE short_fr LIKE 'F %%';
 UPDATE qwat_vl.hydrant_material SET sia405code = 'unbekannt' WHERE value_fr = 'autre';
 UPDATE qwat_vl.hydrant_material SET sia405code = 'unbekannt' WHERE value_fr = 'inconnu';
 UPDATE qwat_vl.hydrant_material SET sia405code = 'unbekannt' WHERE value_fr = 'à déterminer';
