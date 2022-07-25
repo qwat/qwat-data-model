@@ -1,7 +1,20 @@
 -- Add status in node table
 ALTER TABLE qwat_od.node ADD COLUMN fk_status integer default null;
 ALTER TABLE qwat_od.node ADD CONSTRAINT node_fk_status FOREIGN KEY (fk_status) REFERENCES qwat_vl.status(id) MATCH FULL;
-CREATE INDEX fki_fk_status ON qwat_od.node(fk_status);
+CREATE INDEX fki_node_fk_status ON qwat_od.node(fk_status);
+
+-- Copy column status from network_element table to node table
+UPDATE qwat_od.node
+SET fk_status = qwat_od.network_element.fk_status
+FROM qwat_od.network_element
+WHERE qwat_od.node.id = qwat_od.network_element.id;
+
+-- Drop index
+DROP INDEX IF EXISTS fki_element_fk_status;
+-- Drop constraint
+ALTER TABLE qwat_od.network_element DROP CONSTRAINT element_fk_status;
+-- Drop status column in network_element table
+ALTER TABLE qwat_od.network_element DROP COLUMN fk_status CASCADE;
 
 -- Set status of a node regarding connected pipes
 CREATE OR REPLACE FUNCTION qwat_od.fn_node_set_status(_node_id integer)

@@ -2,6 +2,19 @@
 alter table qwat_od.node add column fk_distributor integer[];
 -- foreign key for array is still not supported in 2022 so we can not add constraint foreign key
 
+-- Copy column status from network_element table to node table
+UPDATE qwat_od.node
+SET fk_distributor = qwat_od.node.fk_distributor || qwat_od.network_element.fk_distributor
+FROM qwat_od.network_element
+WHERE qwat_od.node.id = qwat_od.network_element.id;
+
+-- Drop index
+DROP INDEX IF EXISTS fki_element_fk_distributor;
+-- Drop constraint
+ALTER TABLE qwat_od.network_element DROP CONSTRAINT element_fk_distributor;
+-- Drop distributor column in network_element table
+ALTER TABLE qwat_od.network_element DROP COLUMN fk_distributor CASCADE;
+
 CREATE OR REPLACE FUNCTION qwat_od.fn_node_set_distributors(_node_id integer)
  RETURNS void
  LANGUAGE plpgsql
