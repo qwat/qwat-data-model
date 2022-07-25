@@ -20,7 +20,7 @@ CREATE OR REPLACE VIEW qwat_sigip.vw_export_installation AS
      LEFT JOIN qwat_vl.cistern cistern1 ON vw_element_installation.cistern1_fk_type = cistern1.id
      LEFT JOIN qwat_vl.source_type source_type ON vw_element_installation.fk_source_type = source_type.id
      LEFT JOIN qwat_vl.source_quality source_quality ON vw_element_installation.fk_source_quality = source_quality.id
-     LEFT JOIN qwat_od.distributor distributor ON vw_element_installation.fk_distributor = distributor.id
+     LEFT JOIN qwat_od.distributor distributor ON distributor.id = ANY(vw_element_installation.fk_distributor)
      LEFT JOIN qwat_vl.overflow overflow ON vw_element_installation.fk_overflow = overflow.id
      LEFT JOIN qwat_vl.pressurecontrol_type pressurecontrol_type ON vw_element_installation.fk_pressurecontrol_type = pressurecontrol_type.id
      LEFT JOIN qwat_vl.remote_type remote ON vw_element_installation.fk_remote = remote.id

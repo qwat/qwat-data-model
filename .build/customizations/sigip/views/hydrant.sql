@@ -18,7 +18,7 @@ CREATE OR REPLACE VIEW qwat_sigip.vw_export_hydrant AS
      LEFT JOIN qwat_vl.hydrant_model_sup model_sup ON vw_element_hydrant.fk_model_sup = model_sup.id
      LEFT JOIN qwat_vl.object_reference object_reference ON vw_element_hydrant.fk_object_reference = object_reference.id
      LEFT JOIN qwat_vl.hydrant_provider provider ON vw_element_hydrant.fk_provider = provider.id
-     LEFT JOIN qwat_od.distributor distributor ON vw_element_hydrant.fk_distributor = distributor.id
+     LEFT JOIN qwat_od.distributor distributor ON distributor.id = ANY(vw_element_hydrant.fk_distributor)
      LEFT JOIN qwat_vl.hydrant_output output ON vw_element_hydrant.fk_output = output.id
      LEFT JOIN qwat_od.folder folder ON vw_element_hydrant.fk_folder = folder.id
      LEFT JOIN qwat_vl.precisionalti precisionalti ON vw_element_hydrant.fk_precisionalti = precisionalti.id;
