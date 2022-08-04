@@ -32,3 +32,7 @@ A full web data model documentation with diagrams and relations is available [he
 ## Release
 
 Realeases are made using github actions when a new release is created. The tag must be of format `x.y.z`.
+
+## Tests
+
+Tests are run automatically on commit by github actions. If you want to run them locally, please refer to `run_tests.yml`.
