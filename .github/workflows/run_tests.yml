@@ -18,6 +18,8 @@ jobs:
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
+    env:
+      PGSERVICEFILE: ${{github.workspace}}/tests/pg_service.conf
 
     steps:
 
@@ -33,5 +35,9 @@ jobs:
 
       - name: Run tests
         run: tests/tests.sh
-        env:
-          PGSERVICEFILE: ${{github.workspace}}/tests/pg_service.conf
+
+      - name: Run scalability tests
+        run: tests/tests_scalability.sh -i 20
+
+      - name: Run scalability tests multithreaded
+        run: tests/tests_scalability_multithread.sh -i 20
