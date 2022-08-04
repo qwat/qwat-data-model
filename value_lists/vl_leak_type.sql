@@ -7,7 +7,7 @@
 /* CREATE */
 CREATE TABLE qwat_vl.leak_type () INHERITS ( qwat_vl.value_list_base);
 ALTER TABLE qwat_vl.leak_type ADD CONSTRAINT vl_leak_type_pk PRIMARY KEY (id);
-COMMENT ON TABLE qwat_vl.leak_type IS 'types of leak';
+COMMENT ON TABLE qwat_vl.leak_type IS 'leak types';
 
 /* VALUES */
 INSERT INTO qwat_vl.leak_type (id, value_en, value_fr, value_ro ) VALUES (101, 'other', 'autre', 'alta');
