@@ -96,8 +96,8 @@ INSERT INTO qwat_od.vw_element_installation (altitude, geometry, fk_distributor,
             'installation1', 2016);
 
 -- create a cover
-INSERT INTO qwat_od.cover (identification, form_dimension, fk_cover_type, circular, fk_installation, geometry)
-    SELECT 'installation1', 15, 101, True, (SELECT id FROM qwat_od.vw_element_installation WHERE name = 'installation1'), ST_SetSRID( ST_MakePoint( 500000, 500000, 0), 21781);
+INSERT INTO qwat_od.cover (identification, form_dimension, fk_cover_type, circular, fk_installation, geometry, fk_precision)
+    SELECT 'installation1', 15, 101, True, (SELECT id FROM qwat_od.vw_element_installation WHERE name = 'installation1'), ST_SetSRID( ST_MakePoint( 500000, 500000, 0), 21781), (SELECT id FROM qwat_vl.precision WHERE value_fr = 'Inconnu');
 
 
 -- installation bbox
