@@ -1,4 +1,4 @@
-﻿SET
+SET
 SET
 DELETE 0
 DELETE 0
