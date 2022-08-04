@@ -21,6 +21,13 @@ jobs:
 
     steps:
 
+      - uses: actions/checkout@v3
+
+      - name: Install PostgreSQL client
+        run: |
+          sudo apt-get update
+          sudo apt-get install --yes postgresql-client
+
       - name: Install Python dependencies
         run: pip install -r requirements.txt
 
