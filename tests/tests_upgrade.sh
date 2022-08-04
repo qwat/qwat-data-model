@@ -51,6 +51,14 @@ psql service=${PGSERVICE1} -c 'DROP DATABASE IF EXISTS qwat_test_release'
 psql service=${PGSERVICE1} -c 'CREATE DATABASE qwat_test_release'
 pum restore -p ${PGSERVICE2} -x ${RELEASE_LOCATION}
 
+# Drop qwat_sigip schema that is included in the release but that seems to
+# make migrations fail.
+# TODO: this should be probably be removed from the dumps, or if really obsolete,
+# removed from the source and dumped in a migration
+psql service=${PGSERVICE2} -c 'DROP SCHEMA qwat_sigip CASCADE'
+# despite being in qwat_od, this seems to be a qwat_sigip customization (created in data-model/.build/customizations/sigip/damage/damage.sql)
+psql service=${PGSERVICE2} -c 'DROP TABLE qwat_od.damage CASCADE'
+
 # Upgrade using pum
 pum upgrade -p ${PGSERVICE2} -t qwat_sys.info -d ${DIR}/../update/delta
 
