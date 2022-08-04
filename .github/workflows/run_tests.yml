@@ -34,4 +34,4 @@ jobs:
       - name: Run tests
         run: tests/tests.sh
         env:
-          PGSERVICEFILE: ${GITHUB_WORKSPACE}/tests/pg_service.conf
+          PGSERVICEFILE: ${{github.workspace}}/tests/pg_service.conf
