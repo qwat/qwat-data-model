@@ -1,6 +1,7 @@
 from pum.core.deltapy import DeltaPy
 import pkg_resources
 import os
+import subprocess
 
 class DropViews(DeltaPy):
 
@@ -22,6 +23,6 @@ class DropViews(DeltaPy):
                                 'drop_views.sql')
         cmd = 'psql service={} -f {}'.format(self.pg_service, drop_sql)
         self.write_message(cmd)
-        os.system(cmd)
+        subprocess.check_output(cmd, shell=True)
 
         self.write_message("Dropping views: done")
