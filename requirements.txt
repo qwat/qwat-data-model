@@ -1,3 +1,4 @@
-pum
+# pum>=0.9.15 # TODO: remove override once https://github.com/opengisch/pum/pull/102 is merged
+https://github.com/opengisch/pum/archive/refs/heads/2022-08_honour-exclude-schema.zip#egg=pum
 psycopg2-binary
 pyyaml
