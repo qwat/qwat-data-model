@@ -53,7 +53,7 @@ pum restore -p ${PGSERVICE2} -x ${RELEASE_LOCATION}
 
 # Drop qwat_sigip schema that is included in the release but that seems to
 # make migrations fail.
-# TODO: this should be probably be removed from the dumps, or if really obsolete,
+# TODO: qwat_sigip should be probably be removed from the dumps, or if really obsolete,
 # removed from the source and dumped in a migration
 psql service=${PGSERVICE2} -c 'DROP SCHEMA qwat_sigip CASCADE'
 # despite being in qwat_od, this seems to be a qwat_sigip customization (created in data-model/.build/customizations/sigip/damage/damage.sql)
