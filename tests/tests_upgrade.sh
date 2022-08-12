@@ -62,6 +62,10 @@ psql service=${PGSERVICE2} -c 'DROP TABLE qwat_od.damage CASCADE'
 # Upgrade using pum
 pum upgrade -p ${PGSERVICE2} -t qwat_sys.info -d ${DIR}/../update/delta
 
+# Audit triggers are enabled in the init scripts, but not in the released 1.3.6 dump.
+# so we need to enable it, otherwise pum check will detect differences.
+psql service=${PGSERVICE2} -c 'SELECT qwat_sys.activate_audit_views()'
+
 # Compare results
 pum check -p1 ${PGSERVICE1} -p2 ${PGSERVICE2} --exclude-schema public --exclude-schema tiger --exclude-schema topology
 
