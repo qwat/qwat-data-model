@@ -1,4 +1,3 @@
-# pum>=0.9.15 # TODO: remove override once we have a release with a73c249031ba476f27f9913677a574759847ee0d and 904da94ef1098f2ab3c12b5dafa44da67f066c19
-https://github.com/opengisch/pum/archive/a73c249031ba476f27f9913677a574759847ee0d.zip#egg=pum
+pum>=0.10.0
 psycopg2-binary
 pyyaml
