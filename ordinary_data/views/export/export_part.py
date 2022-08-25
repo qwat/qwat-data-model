@@ -23,10 +23,7 @@ exclude_join_fields:
 joins:
   district:
     table: qwat_od.district
-    fkey: fk_pressurezone
-  pressurezone:
-    table: qwat_od.pressurezone
-    fkey: fk_pressurezone
+    fkey: fk_district
   precision:
     table: qwat_vl.precision
     fkey: fk_precision

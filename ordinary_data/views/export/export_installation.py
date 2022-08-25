@@ -27,9 +27,6 @@ joins:
   remote:
     table: qwat_vl.remote_type
     fkey: fk_remote
-  pressurezone:
-    table: qwat_od.pressurezone
-    fkey: fk_pressurezone
   precision:
     table: qwat_vl.precision
     fkey: fk_precision
