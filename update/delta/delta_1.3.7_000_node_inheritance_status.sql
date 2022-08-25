@@ -150,6 +150,31 @@ $function$
 ;
 COMMENT ON FUNCTION qwat_od.fn_node_set_status( _node_ids integer[] ) IS 'Set the status of nodes regarding connected pipes.';
 
+CREATE OR REPLACE FUNCTION qwat_od.ft_pipe_node_type() RETURNS TRIGGER AS
+	$BODY$
+	DECLARE
+		node_ids integer[];
+	BEGIN
+		IF TG_OP = 'INSERT' THEN
+			node_ids := ARRAY[NEW.fk_node_a, NEW.fk_node_b];
+		ELSE
+			-- delete or update (OLD exists)
+			node_ids := ARRAY[OLD.fk_node_a, OLD.fk_node_b];
+		END IF;
+		IF TG_OP = 'UPDATE' THEN
+			IF NEW.fk_node_a <> OLD.fk_node_a THEN
+				node_ids := array_append(node_ids, NEW.fk_node_a);
+			END IF;
+			IF NEW.fk_node_b <> OLD.fk_node_b THEN
+				node_ids := array_append(node_ids, NEW.fk_node_b);
+			END IF;
+		END IF;
+		PERFORM qwat_od.fn_node_set_type( node_ids );
+		RETURN NEW;
+	END;
+	$BODY$
+	LANGUAGE plpgsql;
+
 CREATE OR REPLACE FUNCTION qwat_od.ft_pipe_node_status()
  RETURNS trigger
  LANGUAGE plpgsql
@@ -165,10 +190,10 @@ AS $function$
 		END IF;
 		IF TG_OP = 'UPDATE' THEN
 			IF NEW.fk_node_a <> OLD.fk_node_a THEN
-				node_ids := array_append(node_ids, OLD.fk_node_a);
+				node_ids := array_append(node_ids, NEW.fk_node_a);
 			END IF;
 			IF NEW.fk_node_b <> OLD.fk_node_b THEN
-				node_ids := array_append(node_ids, OLD.fk_node_b);
+				node_ids := array_append(node_ids, NEW.fk_node_b);
 			END IF;
 		END IF;
 		PERFORM qwat_od.fn_node_set_status( node_ids );

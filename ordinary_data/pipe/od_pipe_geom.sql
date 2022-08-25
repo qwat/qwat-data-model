@@ -90,10 +90,10 @@ CREATE OR REPLACE FUNCTION qwat_od.ft_pipe_node_type() RETURNS TRIGGER AS
 		END IF;
 		IF TG_OP = 'UPDATE' THEN
 			IF NEW.fk_node_a <> OLD.fk_node_a THEN
-				node_ids := array_append(node_ids, OLD.fk_node_a);
+				node_ids := array_append(node_ids, NEW.fk_node_a);
 			END IF;
 			IF NEW.fk_node_b <> OLD.fk_node_b THEN
-				node_ids := array_append(node_ids, OLD.fk_node_b);
+				node_ids := array_append(node_ids, NEW.fk_node_b);
 			END IF;
 		END IF;
 		PERFORM qwat_od.fn_node_set_type( node_ids );
@@ -154,10 +154,10 @@ AS $function$
 		END IF;
 		IF TG_OP = 'UPDATE' THEN
 			IF NEW.fk_node_a <> OLD.fk_node_a THEN
-				node_ids := array_append(node_ids, OLD.fk_node_a);
+				node_ids := array_append(node_ids, NEW.fk_node_a);
 			END IF;
 			IF NEW.fk_node_b <> OLD.fk_node_b THEN
-				node_ids := array_append(node_ids, OLD.fk_node_b);
+				node_ids := array_append(node_ids, NEW.fk_node_b);
 			END IF;
 		END IF;
 		PERFORM qwat_od.fn_node_set_status( node_ids );
