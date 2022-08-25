@@ -3,10 +3,9 @@
 
 	SQL file :: node status functions
 */
-
--- Set status of a node regarding connected pipes
-CREATE OR REPLACE FUNCTION qwat_od.fn_node_set_status(_node_id integer)
- RETURNS void
+-- Get status of a node regarding connected pipes
+CREATE OR REPLACE FUNCTION qwat_od.fn_node_get_status(_node_id integer, user_value integer = -1)
+ RETURNS integer
  LANGUAGE plpgsql
 AS $function$
 	declare
@@ -15,8 +14,8 @@ AS $function$
         _pipeitem	record;
 	begin
 --		RAISE NOTICE 'get status of the node:  %', _node_id;
-    	-- init status to -1 (wrong value due to constraint foreign key)
-    	_status := -1; 	
+    	-- init status to user_value
+    	_status := user_value; 	
         -- count pipes associated to this node
 		SELECT
 			COUNT(pipe.id) AS count,
@@ -86,16 +85,34 @@ AS $function$
                     	then _status := 1301; -- it is the highet priority so it needs to be the final priority of the created node
                 end case;
             END LOOP;
-       end if;
+		ELSE
+			_status := user_value;
+    	end if;
+
+		RETURN _status;     
+	END;
+$function$
+;
+COMMENT ON FUNCTION qwat_od.fn_node_get_status( _node_id integer, user_value integer ) IS 'Get the status of node regarding connected pipes. If one pipe: status of the pipe. If many: depends on priority of status of all pipes. If none: get value from user.';
+
+-- Set status of a node regarding connected pipes
+CREATE OR REPLACE FUNCTION qwat_od.fn_node_set_status(_node_id integer, user_value integer default -1)
+ RETURNS void
+ LANGUAGE plpgsql
+AS $function$
+	declare
+	    _status		integer;
+	begin
+    	_status := qwat_od.fn_node_get_status(_node_id, user_value); 	
 
 		-- update the node table
 		UPDATE qwat_od.node SET
 		    fk_status = _status
-		    WHERE id = _node_id;      
+		    WHERE id = _node_id;
 	END;
 $function$
 ;
-COMMENT ON FUNCTION qwat_od.fn_node_set_status( _node_id integer ) IS 'Set the status of node regarding connected pipes. If one pipe: status of the pipe. If many: depends on priority of status of all pipes.';
+COMMENT ON FUNCTION qwat_od.fn_node_set_status( _node_id integer, user_value integer ) IS 'Set the status of node regarding connected pipes. If one pipe: status of the pipe. If many: depends on priority of status of all pipes.';
 
 -- Set status of each nodes
 CREATE OR REPLACE FUNCTION qwat_od.fn_node_set_status(_node_ids integer[] DEFAULT NULL::integer[])
