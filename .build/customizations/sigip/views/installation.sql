@@ -25,7 +25,7 @@ CREATE OR REPLACE VIEW qwat_sigip.vw_export_installation AS
      LEFT JOIN qwat_vl.pressurecontrol_type pressurecontrol_type ON vw_element_installation.fk_pressurecontrol_type = pressurecontrol_type.id
      LEFT JOIN qwat_vl.remote_type remote ON vw_element_installation.fk_remote = remote.id
      LEFT JOIN qwat_od.district district ON vw_element_installation.fk_district = district.id
-     LEFT JOIN qwat_od.pressurezone pressurezone ON vw_element_installation.fk_pressurezone = pressurezone.id
+     LEFT JOIN qwat_od.pressurezone pressurezone ON pressurezone.id = ANY(vw_element_installation.fk_pressurezone)
      LEFT JOIN qwat_od.folder folder ON vw_element_installation.fk_folder = folder.id
      LEFT JOIN qwat_vl.precisionalti precisionalti ON vw_element_installation.fk_precisionalti = precisionalti.id
      LEFT JOIN qwat_vl.pump_operating pump_operating ON vw_element_installation.fk_pump_operating = pump_operating.id;

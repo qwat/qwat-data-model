@@ -12,7 +12,7 @@ CREATE OR REPLACE VIEW qwat_sigip.vw_export_hydrant AS
      LEFT JOIN qwat_vl.status status ON vw_element_hydrant.fk_status = status.id
      LEFT JOIN qwat_od.district district ON vw_element_hydrant.fk_district = district.id
      LEFT JOIN qwat_vl.hydrant_model_inf model_inf ON vw_element_hydrant.fk_model_inf = model_inf.id
-     LEFT JOIN qwat_od.pressurezone pressurezone ON vw_element_hydrant.fk_pressurezone = pressurezone.id
+     LEFT JOIN qwat_od.pressurezone pressurezone ON pressurezone.id = ANY(vw_element_hydrant.fk_pressurezone)
      LEFT JOIN qwat_vl.hydrant_material material ON vw_element_hydrant.fk_material = material.id
      LEFT JOIN qwat_vl."precision" "precision" ON vw_element_hydrant.fk_precision = "precision".id
      LEFT JOIN qwat_vl.hydrant_model_sup model_sup ON vw_element_hydrant.fk_model_sup = model_sup.id
