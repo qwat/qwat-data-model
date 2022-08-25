@@ -215,3 +215,77 @@ CREATE TRIGGER tr_pipe_node_status_update
     FOR EACH ROW
     EXECUTE FUNCTION qwat_od.ft_pipe_node_status();
 COMMENT ON TRIGGER tr_pipe_node_status_update ON qwat_od.pipe IS 'Trigger: after updating status of a pipe, set the status of nodes.';
+
+DROP FUNCTION IF EXISTS qwat_od.fn_node_create;
+CREATE OR REPLACE FUNCTION qwat_od.fn_node_create( _point geometry, deactivate_node_add_pipe_vertex boolean = FALSE, status integer = -1, distributors integer[] = '{}'::integer[] ) RETURNS integer AS
+$BODY$
+    DECLARE
+        _node_id integer;
+    BEGIN
+        SELECT id FROM qwat_od.node WHERE ST_Equals(ST_Force2d(_point), ST_Force2d(node.geometry)) IS TRUE LIMIT 1 INTO _node_id;
+        IF _node_id IS NULL THEN
+			IF (status = -1) THEN 
+			-- If it is default value for status, it is a node created connected with a pipe. 
+			-- Let the trigger set status and distributors and create the node only with a geometry.
+				INSERT INTO qwat_od.node (geometry) VALUES (ST_Force3D(_point)) RETURNING id INTO _node_id;
+			ELSE
+            	INSERT INTO qwat_od.node (geometry, fk_status, fk_distributor) VALUES (ST_Force3D(_point), status, distributors) RETURNING id INTO _node_id;
+			END IF;
+            IF _node_id IS NULL THEN
+                RAISE EXCEPTION 'Node is null although it should have been created';
+            END IF;
+        END IF;
+        RETURN _node_id;
+    END;
+$BODY$
+LANGUAGE plpgsql;
+COMMENT ON FUNCTION qwat_od.fn_node_create(geometry, boolean, integer, integer[]) IS 'Returns the node for a given geometry (point). If node does not exist, create it.';
+
+CREATE OR REPLACE FUNCTION qwat_od.ft_pipe_node_moved() RETURNS TRIGGER AS
+    $BODY$
+    DECLARE
+        node_ids integer[];
+        new_node_a integer;
+        new_node_b integer;
+        start_geom geometry;
+        end_geom geometry;
+    BEGIN
+        -- We get start and end points of the pipe
+        SELECT ST_StartPoint(geometry) into start_geom FROM qwat_od.pipe WHERE fk_node_a = OLD.id;
+        SELECT ST_EndPoint(geometry) into end_geom FROM qwat_od.pipe WHERE fk_node_b = OLD.id;
+        IF start_geom IS NOT NULL THEN
+            -- In that case, we can create a new node, and affect it to the pipe
+            new_node_a := qwat_od.fn_node_create(start_geom, OLD.fk_status, OLD.fk_distributor);
+            UPDATE qwat_od.pipe SET fk_node_a = new_node_a WHERE fk_node_a = OLD.id;
+        END IF;
+        IF end_geom IS NOT NULL THEN
+            -- In that case, we can create a new node, and affect it to the pipe
+            new_node_b := qwat_od.fn_node_create(end_geom, OLD.fk_status, OLD.fk_distributor);
+            UPDATE qwat_od.pipe SET fk_node_b = new_node_b WHERE fk_node_b = OLD.id;
+        END IF;
+        RETURN NEW;
+    END;
+    $BODY$
+    LANGUAGE plpgsql;
+COMMENT ON FUNCTION qwat_od.ft_pipe_node_moved() IS 'Trigger: if a network element (i.e. a node) has moved, then reaasign the nodes for the pipe.';
+
+CREATE OR REPLACE FUNCTION qwat_od.ft_pipe_geom() RETURNS TRIGGER AS
+	$BODY$
+	BEGIN
+		IF TG_OP = 'INSERT' OR ST_Equals(ST_StartPoint(NEW.geometry), ST_StartPoint(OLD.geometry)) IS FALSE THEN
+			NEW.fk_node_a       := qwat_od.fn_node_create(ST_StartPoint(NEW.geometry), /* deactivate_node_add_pipe_vertex */ true, status => new.fk_status, distributors => array[new.fk_distributor]);
+		END IF;
+		IF TG_OP = 'INSERT' OR ST_Equals(ST_EndPoint(NEW.geometry), ST_EndPoint(OLD.geometry)) IS FALSE THEN
+			NEW.fk_node_b       := qwat_od.fn_node_create(ST_EndPoint(NEW.geometry), /* deactivate_node_add_pipe_vertex */ true, status => new.fk_status, distributors => array[new.fk_distributor]);
+		END IF;
+		NEW.fk_district         := qwat_od.fn_get_district(NEW.geometry);
+		NEW.fk_pressurezone     := qwat_od.fn_get_pressurezone(NEW.geometry);
+		NEW.fk_printmap         := qwat_od.fn_get_printmap_id(NEW.geometry);
+		NEW._printmaps          := qwat_od.fn_get_printmaps(NEW.geometry);
+		NEW._length2d           := ST_Length(NEW.geometry);
+		NEW._length3d           := ST_3DLength(NEW.geometry);
+		NEW._diff_elevation     := @(ST_Z(ST_StartPoint(NEW.geometry))-ST_Z(ST_EndPoint(NEW.geometry)));
+		RETURN NEW;
+	END;
+	$BODY$
+	LANGUAGE plpgsql;
