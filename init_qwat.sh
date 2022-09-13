@@ -139,6 +139,7 @@ psql service=${PGSERVICE} -v ON_ERROR_STOP=1 -f ${DIR}/system/fn_enable_schemavi
 psql service=${PGSERVICE} -v ON_ERROR_STOP=1 -f ${DIR}/system/fn_label.sql
 psql service=${PGSERVICE} -v ON_ERROR_STOP=1 -f ${DIR}/system/upgrades_table.sql
 
+echo "Starting qwat_vl insertion..."
 # Value lists
 psql service=${PGSERVICE} -v ON_ERROR_STOP=1 -c "CREATE SCHEMA qwat_vl;"
 psql service=${PGSERVICE} -v ON_ERROR_STOP=1 -f ${DIR}/value_lists/value_list_base.sql
@@ -180,6 +181,7 @@ psql service=${PGSERVICE} -v ON_ERROR_STOP=1 -f ${DIR}/value_lists/vl_visible.sq
 psql service=${PGSERVICE} -v ON_ERROR_STOP=1 -f ${DIR}/value_lists/vl_watertype.sql
 psql service=${PGSERVICE} -v ON_ERROR_STOP=1 -f ${DIR}/value_lists/vl_worker_type.sql
 
+echo "Starting qwat_dr insertion..."
 # Drawings
 psql service=${PGSERVICE} -v ON_ERROR_STOP=1 -c "CREATE SCHEMA qwat_dr;"
 psql service=${PGSERVICE} -v ON_ERROR_STOP=1 -v SRID=$SRID -f ${DIR}/drawing/annotationline.sql
@@ -188,6 +190,7 @@ psql service=${PGSERVICE} -v ON_ERROR_STOP=1 -v SRID=$SRID -f ${DIR}/drawing/con
 psql service=${PGSERVICE} -v ON_ERROR_STOP=1 -v SRID=$SRID -f ${DIR}/drawing/dimension_distance.sql
 psql service=${PGSERVICE} -v ON_ERROR_STOP=1 -v SRID=$SRID -f ${DIR}/drawing/dimension_orientation.sql
 
+echo "Starting qwat_od insertion..."
 # Ordinary data
 psql service=${PGSERVICE} -v ON_ERROR_STOP=1 -c "CREATE SCHEMA qwat_od;"
 psql service=${PGSERVICE} -v ON_ERROR_STOP=1 -v SRID=$SRID -f ${DIR}/ordinary_data/functions/ft_geom3d_altitude.sql
@@ -247,10 +250,13 @@ psql service=${PGSERVICE} -v ON_ERROR_STOP=1 -v SRID=$SRID -f ${DIR}/ordinary_da
 psql service=${PGSERVICE} -v ON_ERROR_STOP=1 -v SRID=$SRID -f ${DIR}/ordinary_data/surveypoint/od_surveypoint.sql
 psql service=${PGSERVICE} -v ON_ERROR_STOP=1 -v SRID=$SRID -f ${DIR}/ordinary_data/leak/od_leak.sql
 
+echo "Starting tr_valve_pipe fn_valve_set_orientation..."
 psql service=${PGSERVICE} -v ON_ERROR_STOP=1 -v SRID=$SRID -f ${DIR}/ordinary_data/functions/fn_valve_set_orientation.sql
+
+echo "Starting tr_valve_pipe insertion..."
 psql service=${PGSERVICE} -v ON_ERROR_STOP=1 -v SRID=$SRID -f ${DIR}/ordinary_data/valve/tr_valve_pipe.sql
 
-
+echo "Starting view creation..."
 PGSERVICE=${PGSERVICE} SRID=$SRID ${DIR}/ordinary_data/views/insert_views.sh
 
 
