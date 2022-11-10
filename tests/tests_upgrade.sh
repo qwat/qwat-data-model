@@ -2,7 +2,6 @@
 
 # This tests that the database upgraded by PUM is consistent to the database
 # initialized by qwat_init.sh
-#It retrieves the
 
 set -e
 
