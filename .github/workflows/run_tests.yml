@@ -1,5 +1,18 @@
 name: Run tests
-on: push
+
+on:
+  push:
+    branches:
+      - master
+    tags:
+      - '*'
+  pull_request:
+    branches:
+      - master
+
+  release:
+    types: ['prereleased', 'released']
+
 
 jobs:
 
