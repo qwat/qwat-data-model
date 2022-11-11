@@ -26,7 +26,6 @@ shift
 done
 
 PGSERVICE=qwat_test
-PGOPTIONS="-c lc_messages=C -c client_min_messages=ERROR"
 
 
 if [ "$INIT_DB" = "1" ]; then
@@ -36,7 +35,7 @@ if [ "$INIT_DB" = "1" ]; then
 fi
 
 echo "Running initializations... "
-psql service=${PGSERVICE} ${PGOPTIONS} -tA -f ${DIR}/test_scenarii_scalability_init.sql
+psql service=${PGSERVICE} -c "SET lc_messages TO 'C.UTF-8'" -c "SET client_min_messages TO ERROR" -tA -f ${DIR}/test_scenarii_scalability_init.sql
 echo "OK"
 
 

@@ -147,11 +147,13 @@ psql service=${PGSERVICE} -v ON_ERROR_STOP=1 -f ${DIR}/value_lists/vl_object_ref
 psql service=${PGSERVICE} -v ON_ERROR_STOP=1 -f ${DIR}/value_lists/vl_bedding.sql
 psql service=${PGSERVICE} -v ON_ERROR_STOP=1 -f ${DIR}/value_lists/vl_cistern.sql
 psql service=${PGSERVICE} -v ON_ERROR_STOP=1 -f ${DIR}/value_lists/vl_cover_type.sql
+psql service=${PGSERVICE} -v ON_ERROR_STOP=1 -f ${DIR}/value_lists/vl_document_type.sql
 psql service=${PGSERVICE} -v ON_ERROR_STOP=1 -f ${DIR}/value_lists/vl_hydrant_model.sql
 psql service=${PGSERVICE} -v ON_ERROR_STOP=1 -f ${DIR}/value_lists/vl_hydrant_material.sql
 psql service=${PGSERVICE} -v ON_ERROR_STOP=1 -f ${DIR}/value_lists/vl_hydrant_output.sql
 psql service=${PGSERVICE} -v ON_ERROR_STOP=1 -f ${DIR}/value_lists/vl_hydrant_provider.sql
 psql service=${PGSERVICE} -v ON_ERROR_STOP=1 -f ${DIR}/value_lists/vl_leak_cause.sql
+psql service=${PGSERVICE} -v ON_ERROR_STOP=1 -f ${DIR}/value_lists/vl_leak_type.sql
 psql service=${PGSERVICE} -v ON_ERROR_STOP=1 -f ${DIR}/value_lists/vl_locationtype.sql
 psql service=${PGSERVICE} -v ON_ERROR_STOP=1 -f ${DIR}/value_lists/vl_nominal_diameter.sql
 psql service=${PGSERVICE} -v ON_ERROR_STOP=1 -f ${DIR}/value_lists/vl_overflow.sql
@@ -205,6 +207,7 @@ psql service=${PGSERVICE} -v ON_ERROR_STOP=1 -v SRID=$SRID -f ${DIR}/ordinary_da
 psql service=${PGSERVICE} -v ON_ERROR_STOP=1 -v SRID=$SRID -f ${DIR}/ordinary_data/areas/od_folder.sql
 psql service=${PGSERVICE} -v ON_ERROR_STOP=1 -v SRID=$SRID -f ${DIR}/ordinary_data/areas/od_printmap.sql
 psql service=${PGSERVICE} -v ON_ERROR_STOP=1 -v SRID=$SRID -f ${DIR}/ordinary_data/areas/od_protectionzone.sql
+psql service=${PGSERVICE} -v ON_ERROR_STOP=1 -v SRID=$SRID -f ${DIR}/ordinary_data/document/document.sql
 psql service=${PGSERVICE} -v ON_ERROR_STOP=1 -v SRID=$SRID -f ${DIR}/ordinary_data/functions/fn_get_district.sql
 psql service=${PGSERVICE} -v ON_ERROR_STOP=1 -v SRID=$SRID -f ${DIR}/ordinary_data/functions/fn_get_printmap.sql
 psql service=${PGSERVICE} -v ON_ERROR_STOP=1 -v SRID=$SRID -f ${DIR}/ordinary_data/functions/fn_pressurezone.sql

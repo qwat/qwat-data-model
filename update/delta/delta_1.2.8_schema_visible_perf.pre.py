@@ -1,5 +1,6 @@
 from pum.core.deltapy import DeltaPy
 import os
+import subprocess
 
 class DropViews128(DeltaPy):
 
@@ -16,5 +17,5 @@ class DropViews128(DeltaPy):
         self.write_message(cmd)
 
         # Execute command
-        os.system(cmd)
+        subprocess.check_output(cmd, shell=True)
         self.write_message("Dropping views: done")

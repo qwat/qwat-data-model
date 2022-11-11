@@ -21,7 +21,6 @@ shift
 done
 
 PGSERVICE=qwat_test
-PGOPTIONS="-c lc_messages=C -c client_min_messages=ERROR"
 
 if [ "$INIT_DB" = "1" ]; then
     cd ${DIR}/..
@@ -43,7 +42,7 @@ EXITCODE=0
 for f in ${TESTS}; do
     echo -n "Running $f ... "
     fo="/tmp/${f}.txt"
-    psql service=${PGSERVICE} ${PGOPTIONS} -tA -f ${DIR}/$f >$fo 2>&1
+    psql service=${PGSERVICE} -c "SET lc_messages TO 'C.UTF-8'" -c "SET client_min_messages TO ERROR" -tA -f ${DIR}/$f >$fo 2>&1
     diff -u $fo ${DIR}/${f/.sql/.expected.sql} >/dev/null
     if [ "$?" = "1" ]; then
 		EXITCODE=1
