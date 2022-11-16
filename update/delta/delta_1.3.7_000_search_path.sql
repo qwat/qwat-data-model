@@ -2,7 +2,7 @@
 
 CREATE SCHEMA IF NOT EXISTS qwat_network;
 
-CREATE TABLE qwat_network.pipe_reference
+CREATE TABLE IF NOT EXISTS qwat_network.pipe_reference
 (
     id serial,
     fk_pipe integer,
@@ -22,7 +22,7 @@ TABLESPACE pg_default;
     
 -- Index: pipe_reference_fk_pipe_idx
 
-CREATE INDEX pipe_reference_fk_pipe_idx
+CREATE INDEX IF NOT EXISTS pipe_reference_fk_pipe_idx
     ON qwat_network.pipe_reference USING btree
     (fk_pipe)
     TABLESPACE pg_default; 
