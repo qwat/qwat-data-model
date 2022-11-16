@@ -264,7 +264,26 @@ psql service=${PGSERVICE} -v ON_ERROR_STOP=1 -v SRID=$SRID -f ${DIR}/ordinary_da
 echo "Starting view creation..."
 PGSERVICE=${PGSERVICE} SRID=$SRID ${DIR}/ordinary_data/views/insert_views.sh
 
-
+# Network
+psql service=${PGSERVICE} -v ON_ERROR_STOP=1 -c "CREATE SCHEMA IF NOT EXISTS qwat_network;"
+psql service=${PGSERVICE} -v ON_ERROR_STOP=1 -f ${DIR}/network/pipe_reference.sql
+psql service=${PGSERVICE} -v ON_ERROR_STOP=1 -f ${DIR}/network/functions/ft_pipe_.sql
+psql service=${PGSERVICE} -v ON_ERROR_STOP=1 -f ${DIR}/network/functions/ft_all_pipes.sql
+psql service=${PGSERVICE} -v ON_ERROR_STOP=1 -f ${DIR}/network/vw_pipe_reference.sql
+psql service=${PGSERVICE} -v ON_ERROR_STOP=1 -f ${DIR}/network/functions/ft_element_valve_status.sql
+psql service=${PGSERVICE} -v ON_ERROR_STOP=1 -f ${DIR}/network/functions/ft_create_network.sql
+psql service=${PGSERVICE} -v ON_ERROR_STOP=1 -f ${DIR}/network/functions/ft_search_path.sql
+# psql service=${PGSERVICE} -v ON_ERROR_STOP=1 -c "SELECT qwat_network.ft_all_pipes();"
+# psql service=${PGSERVICE} -v ON_ERROR_STOP=1 -c "SELECT qwat_network.ft_create_network()"
+psql service=${PGSERVICE} -v ON_ERROR_STOP=1 -f ${DIR}/network/functions/ft_network_cutoff.sql
+psql service=${PGSERVICE} -v ON_ERROR_STOP=1 -f ${DIR}/network/functions/ft_check_node_is_hydrant.sql
+psql service=${PGSERVICE} -v ON_ERROR_STOP=1 -f ${DIR}/network/functions/ft_check_node_is_closed_valve.sql
+psql service=${PGSERVICE} -v ON_ERROR_STOP=1 -f ${DIR}/network/functions/ft_check_node_is_valve.sql
+psql service=${PGSERVICE} -v ON_ERROR_STOP=1 -f ${DIR}/network/functions/ft_check_valve_is_network.sql
+psql service=${PGSERVICE} -v ON_ERROR_STOP=1 -f ${DIR}/network/functions/ft_search_opened_valves.sql
+psql service=${PGSERVICE} -v ON_ERROR_STOP=1 -f ${DIR}/network/functions/ft_check_valve_is_subscriber.sql
+psql service=${PGSERVICE} -v ON_ERROR_STOP=1 -f ${DIR}/network/functions/ft_search_network_and_subscribers.sql
+psql service=${PGSERVICE} -v ON_ERROR_STOP=1 -f ${DIR}/network/functions/ft_check_valve_is_active.sql
 
 # Finalize System
 psql service=${PGSERVICE} -v ON_ERROR_STOP=1 -f ${DIR}/system/audit_tables.sql
