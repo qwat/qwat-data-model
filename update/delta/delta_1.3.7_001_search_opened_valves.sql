@@ -33,6 +33,7 @@ begin
 end
 $function$
 ;
+COMMENT ON FUNCTION qwat_network.ft_check_node_is_valve(_id integer, _check_if_network_function boolean) IS 'Check if a node is a valve. If the parameter _check_if_network_function is true, then we also check if the valve is a network valve.';
 
 /*
 Check if a valve is a network valve
@@ -52,7 +53,7 @@ begin
 end
 $function$
 ;
-
+COMMENT ON FUNCTION qwat_network.ft_check_valve_is_network(_id integer) IS 'Check if a valve is a network valve.';
 
 CREATE OR REPLACE FUNCTION qwat_network.ft_search_opened_valves(start_pipe integer, _x float, _y float, max_km real DEFAULT 20, 
     stop_on_network_valves boolean DEFAULT true, tolerance real DEFAULT 1)

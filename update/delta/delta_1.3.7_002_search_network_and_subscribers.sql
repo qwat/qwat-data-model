@@ -18,7 +18,7 @@ begin
 end
 $function$
 ;
-
+COMMENT ON FUNCTION qwat_network.ft_check_valve_is_subscriber(_id integer) IS 'Check if a valve is a subscriber valve.';
 
 CREATE OR REPLACE FUNCTION qwat_network.ft_search_network_and_subscribers(start_pipe integer, _x float, _y float, max_km real DEFAULT 20, 
     stop_on_network_valves boolean DEFAULT false, stop_on_subscriber_valves boolean DEFAULT false, 
@@ -221,3 +221,4 @@ declare
 	END;
 $function$
 ;
+COMMENT ON FUNCTION qwat_network.ft_check_valve_is_active(_id integer) IS 'Check if a valve is active.';

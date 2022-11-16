@@ -93,6 +93,7 @@ RETURN 0;
 END;
 $function$
 ;
+COMMENT ON FUNCTION qwat_network.ft_pipe_(var_pipe_id integer) IS 'Splits each pipe according to the nodes present on its geometry and insert in pipe_reference table.';
 
 -- Function: ft_all_pipes : populates the pipe_reference table
 
@@ -122,6 +123,7 @@ BEGIN
 END
 $function$
 ;
+COMMENT ON FUNCTION qwat_network.ft_all_pipes() IS 'Populates the pipe_reference table.';
 
 -- View: qwat_network.vw_pipe_reference : contains pipes which are not in pipe_reference table
 
@@ -157,6 +159,7 @@ AS $BODY$
     GROUP BY
 		fk_pipe
 $BODY$;
+COMMENT ON FUNCTION qwat_network.ft_element_valve_status(var_pipe_id integer) IS 'Get valve status from pipe ID.';
 
 -- Function: ft_create_network : create table with each pipe section (node to node)
 
@@ -325,6 +328,7 @@ begin
 end
 $function$
 ;
+COMMENT ON FUNCTION qwat_network.ft_search_path(start_node integer, end_node integer, max_depth integer) IS 'Returns network path from a start node to an end node by using qwat_network.network table.';
 
 select qwat_network.ft_all_pipes();
 
