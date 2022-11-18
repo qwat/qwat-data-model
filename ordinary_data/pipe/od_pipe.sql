@@ -54,7 +54,7 @@ ALTER TABLE qwat_od.pipe ADD CONSTRAINT pipe_fk_status         FOREIGN KEY (fk_s
 ALTER TABLE qwat_od.pipe ADD CONSTRAINT pipe_fk_watertype      FOREIGN KEY (fk_watertype)      REFERENCES qwat_vl.watertype(id)          MATCH FULL; CREATE INDEX fki_pipe_fk_watertype     ON qwat_od.pipe(fk_watertype);
 ALTER TABLE qwat_od.pipe ADD CONSTRAINT pipe_fk_folder         FOREIGN KEY (fk_folder)         REFERENCES qwat_od.folder(id)             MATCH FULL; CREATE INDEX fki_pipe_fk_folder        ON qwat_od.pipe(fk_folder);
 
-ALTER TABLE qwat_od.pipe ADD CONSTRAINT pipe_year_check CHECK (year IS NULL OR year > 1800 AND (year <= EXTRACT(YEAR FROM NOW()) OR fk_status = 1306 AND year - 50 <= EXTRACT(YEAR FROM NOW())));
+ALTER TABLE qwat_od.pipe ADD CONSTRAINT pipe_year_check CHECK (year IS NULL OR year >= 1800 AND (year <= EXTRACT(YEAR FROM NOW()) OR fk_status = 1306 AND year - 50 <= EXTRACT(YEAR FROM NOW())));
 COMMENT ON CONSTRAINT pipe_year_check ON qwat_od.pipe IS 'Year when the pipe was installed should be either NULL - not filled OR between 1800 and the current year; if the pipe has the project status (fk_status = 1306) then the year can be between 1800 and 50 years from now';
 
 ALTER TABLE qwat_od.pipe ADD CONSTRAINT pipe_year_rehabilitation_check CHECK (year_rehabilitation IS NULL OR year_rehabilitation > 1800 AND year_rehabilitation <= EXTRACT(YEAR FROM NOW()));
