@@ -65,7 +65,7 @@ INSERT INTO qwat_od.vw_element_installation (altitude, geometry, fk_distributor,
     VALUES (200, ST_SetSRID( ST_MakePoint( IN_X1, IN_Y1, IN_Z1), 21781), 1, 'chamber', 101, 101, 101, 101, 101, 'i_INSTALLATION_ID', 2016);;
 
 -- create a cover
-INSERT INTO qwat_od.cover (identification, form_dimension, fk_cover_type, circular, fk_installation, geometry)
-    SELECT 'i_INSTALLATION_ID', 15, 101, True, (SELECT id FROM qwat_od.vw_element_installation WHERE name = 'i_INSTALLATION_ID'), ST_SetSRID( ST_MakePoint( CO_X1, CO_Y1, CO_Z1), 21781);;
+INSERT INTO qwat_od.cover (identification, form_dimension, fk_cover_type, circular, fk_installation, geometry, fk_precision)
+    SELECT 'i_INSTALLATION_ID', 15, 101, True, (SELECT id FROM qwat_od.vw_element_installation WHERE name = 'i_INSTALLATION_ID'), ST_SetSRID( ST_MakePoint( CO_X1, CO_Y1, CO_Z1), 21781), (SELECT id FROM qwat_vl.precision WHERE value_fr = 'Inconnu');;
 
 

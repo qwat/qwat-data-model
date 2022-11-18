@@ -21,7 +21,7 @@ class RecreateViewsAndFunctions(DeltaPy):
                                     'rewrite_functions.sh')
         functions_cmd = 'PGSERVICE={} SRID={} {}'.format(
             self.pg_service, srid, functions_sh)
-        os.system(views_cmd)
-        os.system(functions_cmd)
+        subprocess.check_output(views_cmd, shell=True)
+        subprocess.check_output(functions_cmd, shell=True)
 
         self.write_message("Reloading views and functions: done")

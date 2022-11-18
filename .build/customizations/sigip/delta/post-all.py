@@ -1,4 +1,5 @@
 import os
+import subprocess
 from pum.core.deltapy import DeltaPy
 
 class RecreateViews(DeltaPy):
@@ -9,6 +10,6 @@ class RecreateViews(DeltaPy):
         rewrite_views = os.path.join(self.delta_dir, '..', 'rewrite_views.sh')
         cmd = 'PGSERVICE={} SRID=21781 {}'.format(self.pg_service, rewrite_views)
         self.write_message(cmd)
-        os.system(cmd)
+        subprocess.check_output(cmd, shell=True)
 
         self.write_message('Recreating sigip views: done')

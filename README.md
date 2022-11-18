@@ -8,6 +8,7 @@ A full web data model documentation with diagrams and relations is available [he
 
 # Model changelog ([Detailed](https://github.com/qwat/qwat-data-model/releases/))
 
+- v1.3.6 : Add sia405 mapping fields for interlis Export
 - v1.3.5 : Minors typo fixes #314 #315
 - v1.3.4 : Remove SIRE from core, add value list for valve nominal diameter
 - v1.3.3 : Support for customizations
@@ -31,3 +32,22 @@ A full web data model documentation with diagrams and relations is available [he
 ## Release
 
 Realeases are made using github actions when a new release is created. The tag must be of format `x.y.z`.
+
+## Tests
+
+Tests are run automatically on commit by github actions.
+
+To run them locally (please refer to `run_tests.yml` for up to date steps):
+```sh
+# start a dev postgis server
+docker run --rm -d -p 5432:5432 -e POSTGRES_DB=qwat_test -e POSTGRES_PASSWORD=postgres --name=qwat_test_db postgis/postgis:9.6-2.5
+
+# include the pgservices for test database
+cat ./tests/pg_service.conf >> ~/.pg_service.conf
+
+# install dependencies
+pip install -r requirements.txt
+
+# run tests
+tests/tests.sh
+```

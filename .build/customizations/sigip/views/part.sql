@@ -1,7 +1,7 @@
 CREATE OR REPLACE VIEW qwat_sigip.vw_export_part AS 
- SELECT vw_element_part.id,
-    vw_element_part.identification AS numero,
-    vw_element_part.orientation,
+  SELECT part.id,
+    ne.identification AS numero,
+    ne.orientation,
     status.value_fr AS statut,
     district.name AS commune,
     pressurezone.name AS zonepression,
@@ -9,6 +9,7 @@ CREATE OR REPLACE VIEW qwat_sigip.vw_export_part AS
     part_type.value_fr AS part_type,
     distributor.name AS distributeur,
     vw_element_part.geometry AS the_geom
+    
    FROM qwat_od.vw_element_part
      LEFT JOIN qwat_vl.status status ON vw_element_part.fk_status = status.id
      LEFT JOIN qwat_od.district district ON vw_element_part.fk_district = district.id

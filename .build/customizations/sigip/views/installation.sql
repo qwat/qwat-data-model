@@ -1,14 +1,23 @@
 CREATE OR REPLACE VIEW qwat_sigip.vw_export_installation AS 
- SELECT vw_element_installation.id,
-    vw_element_installation.identification,
-    vw_element_installation._pipe_orientation AS orientation,
-    vw_element_installation.name AS nom,
-    vw_element_installation.installation_type,
+  SELECT installation.id,
+    ne.identification,
+    node._pipe_orientation AS orientation,
+    installation.name AS nom,
+    CASE
+      WHEN chamber.id IS NOT NULL THEN 'chamber'::qwat_od.installation_type
+      WHEN pressurecontrol.id IS NOT NULL THEN 'pressurecontrol'::qwat_od.installation_type
+      WHEN pump.id IS NOT NULL THEN 'pump'::qwat_od.installation_type
+      WHEN source.id IS NOT NULL THEN 'source'::qwat_od.installation_type
+      WHEN tank.id IS NOT NULL THEN 'tank'::qwat_od.installation_type
+      WHEN treatment.id IS NOT NULL THEN 'treatment'::qwat_od.installation_type
+      ELSE 'installation'::qwat_od.installation_type
+    END AS installation_type,
     status.value_fr AS statut,
     district.name AS commune,
     pressurezone.name AS pressurezone_name,
     "precision".value_fr AS "precision",
     vw_element_installation.geometry_polygon AS the_geom
+    
    FROM qwat_od.vw_element_installation
      LEFT JOIN qwat_vl.status status ON vw_element_installation.fk_status = status.id
      LEFT JOIN qwat_vl.watertype watertype ON vw_element_installation.fk_watertype = watertype.id

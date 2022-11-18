@@ -22,7 +22,7 @@ TMPFILEDUMP=/tmp/qwat_dump
 UPGRADE=0
 SCRIPTDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 EXTDIRS=()
-DELTADIRS=()
+DELTADIRS=delta/
 INITFILES=()
 
 RED='\033[0;31m'

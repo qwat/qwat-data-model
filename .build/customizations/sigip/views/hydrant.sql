@@ -1,13 +1,14 @@
 CREATE OR REPLACE VIEW qwat_sigip.vw_export_hydrant AS 
- SELECT vw_element_hydrant.id,
-    vw_element_hydrant.identification AS numero,
-    vw_element_hydrant.year AS annee,
-    vw_element_hydrant.geometry AS the_geom,
+  SELECT hydrant.id,
+    ne.identification AS numero,
+    ne.year AS annee,
+    node.geometry AS the_geom,
     status.value_fr AS statut,
     district.name AS commune,
     pressurezone.name AS zonepression,
     distributor.name AS distributeur,
     "precision".value_fr AS "precision"
+    
    FROM qwat_od.vw_element_hydrant
      LEFT JOIN qwat_vl.status status ON vw_element_hydrant.fk_status = status.id
      LEFT JOIN qwat_od.district district ON vw_element_hydrant.fk_district = district.id
