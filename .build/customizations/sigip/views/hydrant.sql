@@ -24,7 +24,3 @@ CREATE OR REPLACE VIEW qwat_sigip.vw_export_hydrant AS
     LEFT JOIN qwat_vl.hydrant_output output ON hydrant.fk_output = output.id
     LEFT JOIN qwat_od.folder folder ON ne.fk_folder = folder.id
     LEFT JOIN qwat_vl.precisionalti precisionalti ON ne.fk_precisionalti = precisionalti.id;
-
-GRANT SELECT, REFERENCES, TRIGGER ON TABLE qwat_sigip.vw_export_hydrant TO qwat_viewer;
-GRANT ALL ON TABLE qwat_sigip.vw_export_hydrant TO qwat_user;
-GRANT ALL ON TABLE qwat_sigip.vw_export_hydrant TO qwat_manager;

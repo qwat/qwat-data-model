@@ -36,7 +36,3 @@ CREATE OR REPLACE VIEW qwat_sigip.vw_export_installation AS
      LEFT JOIN qwat_od.source source ON installation.id = source.id
      LEFT JOIN qwat_od.tank tank ON installation.id = tank.id
      LEFT JOIN qwat_od.treatment treatment ON installation.id = treatment.id;
-
-GRANT SELECT, REFERENCES, TRIGGER ON TABLE qwat_sigip.vw_export_installation TO qwat_viewer;
-GRANT ALL ON TABLE qwat_sigip.vw_export_installation TO qwat_user;
-GRANT ALL ON TABLE qwat_sigip.vw_export_installation TO qwat_manager;

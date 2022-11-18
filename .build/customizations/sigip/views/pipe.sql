@@ -33,7 +33,3 @@ CREATE OR REPLACE VIEW qwat_sigip.vw_export_pipe AS
      LEFT JOIN qwat_od.folder folder ON pipe.fk_folder = folder.id
      LEFT JOIN qwat_od.node node_b ON pipe.fk_node_b = node_b.id
      LEFT JOIN qwat_od.node node_a ON pipe.fk_node_a = node_a.id;
-
-GRANT SELECT, REFERENCES, TRIGGER ON TABLE qwat_sigip.vw_export_pipe TO qwat_viewer;
-GRANT ALL ON TABLE qwat_sigip.vw_export_pipe TO qwat_user;
-GRANT ALL ON TABLE qwat_sigip.vw_export_pipe TO qwat_manager;

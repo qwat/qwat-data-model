@@ -22,7 +22,3 @@ CREATE OR REPLACE VIEW qwat_sigip.vw_export_part AS
     LEFT JOIN qwat_od.distributor distributor ON ne.fk_distributor = distributor.id
     LEFT JOIN qwat_od.folder folder ON ne.fk_folder = folder.id
     LEFT JOIN qwat_vl.precisionalti precisionalti ON ne.fk_precisionalti = precisionalti.id;
-
-GRANT SELECT, REFERENCES, TRIGGER ON TABLE qwat_sigip.vw_export_part TO qwat_viewer;
-GRANT ALL ON TABLE qwat_sigip.vw_export_part TO qwat_user;
-GRANT ALL ON TABLE qwat_sigip.vw_export_part TO qwat_manager;

@@ -20,7 +20,3 @@ CREATE OR REPLACE VIEW qwat_sigip.vw_export_valve AS
      LEFT JOIN qwat_vl.valve_type valve_type ON valve.fk_valve_type = valve_type.id
      LEFT JOIN qwat_vl.object_reference object_reference ON valve.fk_object_reference = object_reference.id
      LEFT JOIN qwat_vl.valve_actuation valve_actuation ON valve.fk_valve_actuation = valve_actuation.id;
-
-GRANT SELECT, REFERENCES, TRIGGER ON TABLE qwat_sigip.vw_export_valve TO qwat_viewer;
-GRANT ALL ON TABLE qwat_sigip.vw_export_valve TO qwat_user;
-GRANT ALL ON TABLE qwat_sigip.vw_export_valve TO qwat_manager;
