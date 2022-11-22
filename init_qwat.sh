@@ -273,8 +273,8 @@ psql service=${PGSERVICE} -v ON_ERROR_STOP=1 -f ${DIR}/network/vw_pipe_reference
 psql service=${PGSERVICE} -v ON_ERROR_STOP=1 -f ${DIR}/network/functions/ft_element_valve_status.sql
 psql service=${PGSERVICE} -v ON_ERROR_STOP=1 -f ${DIR}/network/functions/ft_create_network.sql
 psql service=${PGSERVICE} -v ON_ERROR_STOP=1 -f ${DIR}/network/functions/ft_search_path.sql
-# psql service=${PGSERVICE} -v ON_ERROR_STOP=1 -c "SELECT qwat_network.ft_all_pipes();"
-# psql service=${PGSERVICE} -v ON_ERROR_STOP=1 -c "SELECT qwat_network.ft_create_network()"
+psql service=${PGSERVICE} -v ON_ERROR_STOP=1 -c "SELECT qwat_network.ft_all_pipes();"
+psql service=${PGSERVICE} -v ON_ERROR_STOP=1 -c "SELECT qwat_network.ft_create_network()"
 psql service=${PGSERVICE} -v ON_ERROR_STOP=1 -f ${DIR}/network/functions/ft_network_cutoff.sql
 psql service=${PGSERVICE} -v ON_ERROR_STOP=1 -f ${DIR}/network/functions/ft_check_node_is_hydrant.sql
 psql service=${PGSERVICE} -v ON_ERROR_STOP=1 -f ${DIR}/network/functions/ft_check_node_is_closed_valve.sql
