@@ -1,7 +1,7 @@
 -- Table: qwat_network.pipe_reference : contains each pipe section with source node and end node
 
 CREATE SCHEMA IF NOT EXISTS qwat_network;
-
+DROP TABLE IF EXISTS qwat_network.pipe_reference;
 CREATE TABLE IF NOT EXISTS qwat_network.pipe_reference
 (
     id serial,
