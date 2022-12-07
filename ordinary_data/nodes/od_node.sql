@@ -32,8 +32,6 @@ ALTER TABLE qwat_od.node ADD COLUMN _geometry_alt2_used boolean;
 ALTER TABLE qwat_od.node ADD COLUMN _pipe_node_type      qwat_od.pipe_connection default null;
 ALTER TABLE qwat_od.node ADD COLUMN _pipe_orientation    float   default 0;
 ALTER TABLE qwat_od.node ADD COLUMN _pipe_schema_visible boolean default false;
-ALTER TABLE qwat_od.node ADD COLUMN fk_status            integer default null;
-ALTER TABLE qwat_od.node ADD column fk_distributor       integer[];
 
 /* GEOMETRY */
 ALTER TABLE qwat_od.node ADD COLUMN geometry geometry('POINTZ',:SRID) NOT NULL;
@@ -41,6 +39,9 @@ ALTER TABLE qwat_od.node ADD COLUMN geometry_alt1 geometry('POINTZ',:SRID);
 ALTER TABLE qwat_od.node ADD COLUMN geometry_alt2 geometry('POINTZ',:SRID);
 ALTER TABLE qwat_od.node ADD COLUMN update_geometry_alt1 boolean default null; -- used to determine if alternative geometries should be updated when main geometry is updated
 ALTER TABLE qwat_od.node ADD COLUMN update_geometry_alt2 boolean default null; -- used to determine if alternative geometries should be updated when main geometry is updated
+
+ALTER TABLE qwat_od.node ADD COLUMN fk_status            integer default null;
+ALTER TABLE qwat_od.node ADD column fk_distributor       integer[];
 
 /* GEOM INDEXES */
 CREATE INDEX node_geoidx ON qwat_od.node USING GIST ( geometry );
