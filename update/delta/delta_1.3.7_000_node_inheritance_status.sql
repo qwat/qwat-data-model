@@ -206,14 +206,14 @@ CREATE TRIGGER tr_pipe_node_status_insert
     AFTER INSERT
     ON qwat_od.pipe
     FOR EACH ROW
-    EXECUTE FUNCTION qwat_od.ft_pipe_node_status();
+    EXECUTE PROCEDURE qwat_od.ft_pipe_node_status();
 COMMENT ON TRIGGER tr_pipe_node_status_insert ON qwat_od.pipe IS 'Trigger: after insert of a pipe, set the status of nodes.';
 
 CREATE TRIGGER tr_pipe_node_status_update
     AFTER update of fk_status
     ON qwat_od.pipe
     FOR EACH ROW
-    EXECUTE FUNCTION qwat_od.ft_pipe_node_status();
+    EXECUTE PROCEDURE qwat_od.ft_pipe_node_status();
 COMMENT ON TRIGGER tr_pipe_node_status_update ON qwat_od.pipe IS 'Trigger: after updating status of a pipe, set the status of nodes.';
 
 DROP FUNCTION IF EXISTS qwat_od.fn_node_create;
