@@ -43,13 +43,13 @@ VALUES (1, 2, 101, 101, 101, 1, 101, 101, 101, 101,
 
 -- create an element part
 INSERT INTO qwat_od.vw_element_part (year, _pipe_orientation, fk_part_type, fk_status, fk_distributor, fk_precision, geometry)
-    SELECT 2016, 1.5, (SELECT id FROM qwat_vl.part_type WHERE value_fr = 'bouchon'), 101, 1, 101, st_setsrid('point(530000 140000 0)'::geometry, 21781);
+    SELECT 2016, 1.5, (SELECT id FROM qwat_vl.part_type WHERE value_fr = 'bouchon'), 101, '{1}', 101, st_setsrid('point(530000 140000 0)'::geometry, 21781);
 
 -- create an introduction point
 INSERT INTO qwat_vl.part_type (id, value_fr) VALUES (999, 'Point d''introduction');
 
 INSERT INTO qwat_od.vw_element_part (year, _pipe_orientation, fk_part_type, fk_status, fk_distributor, fk_precision, geometry)
-    SELECT 2016, 1.5, (SELECT id FROM qwat_vl.part_type WHERE value_fr = 'Point d''introduction'), 101, 1, 101, st_setsrid('point(630000 140000 0)'::geometry, 21781);
+    SELECT 2016, 1.5, (SELECT id FROM qwat_vl.part_type WHERE value_fr = 'Point d''introduction'), 101, '{1}', 101, st_setsrid('point(630000 140000 0)'::geometry, 21781);
 
 -- create valve
 INSERT INTO qwat_od.valve (id, fk_district, fk_pressurezone, fk_distributor, fk_pipe,
@@ -74,7 +74,7 @@ INSERT INTO qwat_od.vw_element_hydrant (year, fk_distributor, fk_status, fk_prov
             pressure_static, pressure_dynamic, flow,
             observation_date, observation_source,
             geometry)
-    VALUES (2016, 1, 101, 101, 
+    VALUES (2016, '{1}', 101, 101, 
             True, 9.5, 101, 101, 101, 101, 101, 101, 101,
             12.3, 12.3, 12.3,
             '2016/01/01', 'sbe',
@@ -92,7 +92,7 @@ INSERT INTO qwat_od.leak (_repaired, detection_date, address, description,
 -- create an installation
 INSERT INTO qwat_od.vw_element_installation (altitude, geometry, fk_distributor, installation_type, fk_status, fk_precision, fk_precisionalti, fk_watertype, fk_object_reference,
             name, year)
-    VALUES (200, ST_SetSRID( ST_MakePoint( 400000, 400000, 0), 21781), 1, 'chamber', 101, 101, 101, 101, 101,
+    VALUES (200, ST_SetSRID( ST_MakePoint( 400000, 400000, 0), 21781), '{1}', 'chamber', 101, 101, 101, 101, 101,
             'installation1', 2016);
 
 -- create a cover
