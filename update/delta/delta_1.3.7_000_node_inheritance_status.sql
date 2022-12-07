@@ -216,7 +216,7 @@ CREATE TRIGGER tr_pipe_node_status_update
     EXECUTE PROCEDURE qwat_od.ft_pipe_node_status();
 COMMENT ON TRIGGER tr_pipe_node_status_update ON qwat_od.pipe IS 'Trigger: after updating status of a pipe, set the status of nodes.';
 
-DROP FUNCTION IF EXISTS qwat_od.fn_node_create;
+DROP FUNCTION IF EXISTS qwat_od.fn_node_create(geometry, boolean);
 CREATE OR REPLACE FUNCTION qwat_od.fn_node_create( _point geometry, deactivate_node_add_pipe_vertex boolean = FALSE, status integer = -1, distributors integer[] = '{}'::integer[] ) RETURNS integer AS
 $BODY$
     DECLARE
