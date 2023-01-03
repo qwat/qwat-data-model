@@ -44,10 +44,14 @@ CREATE OR REPLACE FUNCTION qwat_od.ft_pipe_geom() RETURNS TRIGGER AS
 	$BODY$
 	BEGIN
 		IF TG_OP = 'INSERT' OR ST_Equals(ST_StartPoint(NEW.geometry), ST_StartPoint(OLD.geometry)) IS FALSE THEN
-			NEW.fk_node_a       := qwat_od.fn_node_create(ST_StartPoint(NEW.geometry), /* deactivate_node_add_pipe_vertex */ TRUE);
+			NEW.fk_node_a       := qwat_od.fn_node_create(ST_StartPoint(NEW.geometry), /* deactivate_node_add_pipe_vertex */ true, status => new.fk_status, distributors => array[new.fk_distributor]);
+            perform qwat_od.fn_node_set_status(new.fk_node_a, new.fk_status);
+           	perform qwat_od.fn_node_set_distributors(new.fk_node_a);
 		END IF;
 		IF TG_OP = 'INSERT' OR ST_Equals(ST_EndPoint(NEW.geometry), ST_EndPoint(OLD.geometry)) IS FALSE THEN
-			NEW.fk_node_b       := qwat_od.fn_node_create(ST_EndPoint(NEW.geometry), /* deactivate_node_add_pipe_vertex */ TRUE);
+			NEW.fk_node_b       := qwat_od.fn_node_create(ST_EndPoint(NEW.geometry), /* deactivate_node_add_pipe_vertex */ true, status => new.fk_status, distributors => array[new.fk_distributor]);
+            perform qwat_od.fn_node_set_status(new.fk_node_b, new.fk_status);
+           	perform qwat_od.fn_node_set_distributors(new.fk_node_b);		
 		END IF;
 		NEW.fk_district         := qwat_od.fn_get_district(NEW.geometry);
 		NEW.fk_pressurezone     := qwat_od.fn_get_pressurezone(NEW.geometry);
@@ -90,10 +94,10 @@ CREATE OR REPLACE FUNCTION qwat_od.ft_pipe_node_type() RETURNS TRIGGER AS
 		END IF;
 		IF TG_OP = 'UPDATE' THEN
 			IF NEW.fk_node_a <> OLD.fk_node_a THEN
-				node_ids := array_append(node_ids, OLD.fk_node_a);
+				node_ids := array_append(node_ids, NEW.fk_node_a);
 			END IF;
 			IF NEW.fk_node_b <> OLD.fk_node_b THEN
-				node_ids := array_append(node_ids, OLD.fk_node_b);
+				node_ids := array_append(node_ids, NEW.fk_node_b);
 			END IF;
 		END IF;
 		PERFORM qwat_od.fn_node_set_type( node_ids );
@@ -136,3 +140,89 @@ CREATE TRIGGER tr_pipe_altgeom_alt
 	FOR EACH ROW
 	EXECUTE PROCEDURE qwat_od.ft_geometry_alternative_aux();
 COMMENT ON TRIGGER tr_pipe_altgeom_alt ON qwat_od.pipe IS 'Trigger: when updating, check if alternative geometries are different to fill the boolean fields.';
+
+/* --------------------------------------------*/
+/* -------- NODE STATUS TRIGGER ----------*/
+CREATE OR REPLACE FUNCTION qwat_od.ft_pipe_node_status()
+ RETURNS trigger
+ LANGUAGE plpgsql
+AS $function$
+	DECLARE
+		node_ids integer[];
+	BEGIN
+		IF TG_OP = 'INSERT' THEN
+			node_ids := ARRAY[NEW.fk_node_a, NEW.fk_node_b];
+		ELSE
+			-- delete or update (OLD exists)
+			node_ids := ARRAY[OLD.fk_node_a, OLD.fk_node_b];
+		END IF;
+		IF TG_OP = 'UPDATE' THEN
+			IF NEW.fk_node_a <> OLD.fk_node_a THEN
+				node_ids := array_append(node_ids, NEW.fk_node_a);
+			END IF;
+			IF NEW.fk_node_b <> OLD.fk_node_b THEN
+				node_ids := array_append(node_ids, NEW.fk_node_b);
+			END IF;
+		END IF;
+		PERFORM qwat_od.fn_node_set_status( node_ids );
+		RETURN NEW;
+	END;
+	$function$
+;
+
+CREATE TRIGGER tr_pipe_node_status_insert
+    AFTER INSERT
+    ON qwat_od.pipe
+    FOR EACH ROW
+    EXECUTE PROCEDURE qwat_od.ft_pipe_node_status();
+COMMENT ON TRIGGER tr_pipe_node_status_insert ON qwat_od.pipe IS 'Trigger: after insert of a pipe, set the status of nodes.';
+
+CREATE TRIGGER tr_pipe_node_status_update
+    AFTER update of fk_status
+    ON qwat_od.pipe
+    FOR EACH ROW
+    EXECUTE PROCEDURE qwat_od.ft_pipe_node_status();
+COMMENT ON TRIGGER tr_pipe_node_status_update ON qwat_od.pipe IS 'Trigger: after updating status of a pipe, set the status of nodes.';
+
+/* --------------------------------------------*/
+/* -------- NODE DISTRIBUTOR TRIGGER ----------*/
+CREATE OR REPLACE FUNCTION qwat_od.ft_pipe_node_distributor()
+ RETURNS trigger
+ LANGUAGE plpgsql
+AS $function$
+	DECLARE
+		node_ids integer[];
+	BEGIN
+		IF TG_OP = 'INSERT' THEN
+			node_ids := ARRAY[NEW.fk_node_a, NEW.fk_node_b];
+		ELSE
+			-- delete or update (OLD exists)
+			node_ids := ARRAY[OLD.fk_node_a, OLD.fk_node_b];
+		END IF;
+		IF TG_OP = 'UPDATE' THEN
+			IF NEW.fk_node_a <> OLD.fk_node_a THEN
+				node_ids := array_append(node_ids, NEW.fk_node_a);
+			END IF;
+			IF NEW.fk_node_b <> OLD.fk_node_b THEN
+				node_ids := array_append(node_ids, NEW.fk_node_b);
+			END IF;
+		END IF;
+		PERFORM qwat_od.fn_node_set_distributors( node_ids );
+		RETURN NEW;
+	END;
+	$function$
+;
+
+CREATE TRIGGER tr_pipe_node_distributor_insert
+    AFTER INSERT
+    ON qwat_od.pipe
+    FOR EACH ROW
+    EXECUTE PROCEDURE qwat_od.ft_pipe_node_distributor();
+COMMENT ON TRIGGER tr_pipe_node_distributor_insert ON qwat_od.pipe IS 'Trigger: after insert of a pipe, set distributor(s) of nodes.';
+
+CREATE TRIGGER tr_pipe_node_distributor_update
+    AFTER update of fk_distributor
+    ON qwat_od.pipe
+    FOR EACH ROW
+    EXECUTE PROCEDURE qwat_od.ft_pipe_node_distributor();
+COMMENT ON TRIGGER tr_pipe_node_distributor_update ON qwat_od.pipe IS 'Trigger: after updating distributor of a pipe, set distributor(s) of nodes.';

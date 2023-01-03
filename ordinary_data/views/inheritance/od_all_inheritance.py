@@ -20,7 +20,7 @@ qwat_node_element = """
 table: qwat_od.node
 alias: node
 pkey: id
-pkey_value: qwat_od.fn_node_create(NEW.geometry)
+pkey_value: qwat_od.fn_node_create(NEW.geometry, status => NEW.fk_status, distributors => NEW.fk_distributor)
 pkey_value_create_entry: true
 schema: qwat_od
 generate_child_views: True
