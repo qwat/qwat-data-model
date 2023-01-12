@@ -21,12 +21,12 @@ CREATE OR REPLACE VIEW qwat_sigip.vw_export_installation AS
    FROM qwat_od.installation
      LEFT JOIN qwat_od.network_element ne ON installation.id = ne.id
      LEFT JOIN qwat_od.node node ON installation.id = node.id
-     LEFT JOIN qwat_vl.status status ON ne.fk_status = status.id
+     LEFT JOIN qwat_vl.status status ON node.fk_status = status.id
      LEFT JOIN qwat_vl.watertype watertype ON installation.fk_watertype = watertype.id
      LEFT JOIN qwat_vl."precision" "precision" ON ne.fk_precision = "precision".id
-     LEFT JOIN qwat_od.distributor distributor ON ANY(ne.fk_distributor) = distributor.id
+     LEFT JOIN qwat_od.distributor distributor ON distributor.id = ANY(node.fk_distributor)
      LEFT JOIN qwat_od.district district ON node.fk_district = district.id
-     LEFT JOIN qwat_od.pressurezone pressurezone ON ANY(node.fk_pressurezone) = pressurezone.id
+     LEFT JOIN qwat_od.pressurezone pressurezone ON pressurezone.id = ANY(node.fk_pressurezone)
      LEFT JOIN qwat_od.folder folder ON ne.fk_folder = folder.id
      LEFT JOIN qwat_vl.precisionalti precisionalti ON ne.fk_precisionalti = precisionalti.id
 
