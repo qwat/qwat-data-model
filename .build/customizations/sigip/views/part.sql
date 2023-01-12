@@ -8,18 +8,20 @@ CREATE OR REPLACE VIEW qwat_sigip.vw_export_part AS
     "precision".value_fr AS "precision",
     part_type.value_fr AS part_type,
     distributor.name AS distributeur,
-    vw_element_part.geometry AS the_geom
-    
-   FROM qwat_od.vw_element_part
-     LEFT JOIN qwat_vl.status status ON vw_element_part.fk_status = status.id
-     LEFT JOIN qwat_od.district district ON vw_element_part.fk_district = district.id
-     LEFT JOIN qwat_od.pressurezone pressurezone ON pressurezone.id = ANY(vw_element_part.fk_pressurezone)
-     LEFT JOIN qwat_vl."precision" "precision" ON vw_element_part.fk_precision = "precision".id
-     LEFT JOIN qwat_vl.part_type part_type ON vw_element_part.fk_part_type = part_type.id
-     LEFT JOIN qwat_vl.object_reference object_reference ON vw_element_part.fk_object_reference = object_reference.id
-     LEFT JOIN qwat_od.distributor distributor ON distributor.id = ANY(vw_element_part.fk_distributor)
-     LEFT JOIN qwat_od.folder folder ON vw_element_part.fk_folder = folder.id
-     LEFT JOIN qwat_vl.precisionalti precisionalti ON vw_element_part.fk_precisionalti = precisionalti.id;
+    node.geometry AS the_geom
+
+  FROM qwat_od.part
+    LEFT JOIN qwat_od.network_element ne ON part.id = ne.id
+    LEFT JOIN qwat_od.node node ON part.id = node.id
+    LEFT JOIN qwat_vl.status status ON node.fk_status = status.id
+    LEFT JOIN qwat_od.district district ON node.fk_district = district.id
+    LEFT JOIN qwat_od.pressurezone pressurezone ON pressurezone.id = ANY(node.fk_pressurezone)
+    LEFT JOIN qwat_vl."precision" "precision" ON ne.fk_precision = "precision".id
+    LEFT JOIN qwat_vl.part_type part_type ON part.fk_part_type = part_type.id
+    LEFT JOIN qwat_vl.object_reference object_reference ON ne.fk_object_reference = object_reference.id
+    LEFT JOIN qwat_od.distributor distributor ON distributor.id = ANY(node.fk_distributor)
+    LEFT JOIN qwat_od.folder folder ON ne.fk_folder = folder.id
+    LEFT JOIN qwat_vl.precisionalti precisionalti ON ne.fk_precisionalti = precisionalti.id;
 
 GRANT SELECT, REFERENCES, TRIGGER ON TABLE qwat_sigip.vw_export_part TO qwat_viewer;
 GRANT ALL ON TABLE qwat_sigip.vw_export_part TO qwat_user;
