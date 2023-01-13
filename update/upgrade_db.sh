@@ -179,5 +179,29 @@ done
 printf "\n${BLUE}Test and upgrade qwat core${NC}\n\n"
 sleep 1
 
+# Run pum test-and-upgrade manually to handle audit triggers (enabled in init script, not in 1.3.6 dump)
+# Backup of db prod
+pum dump -p qwat_prod $TMPFILEDUMP
+# Restore db dump on db test
+pum restore -p qwat_test $TMPFILEDUMP
+# Apply deltas on db test
+pum upgrade -p qwat_test -t qwat_sys.info -d ${DELTADIRS[*]}
+
+# Audit triggers are enabled in the init scripts, but not in the released 1.3.6 dump.
+# so we need to enable it, otherwise pum check will detect differences.
+psql -d $DBTEST_NAME -U $DBTEST_USER ${TESTHOST} ${TESTPORT} -c 'SELECT qwat_sys.activate_audit_views();'
+
+# Compare db test with db comp
+pum check -p1 qwat_test -p2 qwat_comp -v 2 -i views rules
+CHECK=$?
+if [ $CHECK -ne 1 ]; then
+    
+    printf "\n${GREEN}SUCCESS ${NC} !! Going to upgrade production database...\n\n"
+    #Upgrade on db prod
+    pum upgrade -p qwat_prod -t qwat_sys.info -d ${DELTADIRS[*]}
+else 
+    printf "\n${RED}ERROR ${NC} on comparing databases (qwat_test & qwat_comp). Production database will not be upgraded\n"
+fi
+
 #pum test-and-upgrade -pp qwat_prod -pt qwat_test -pc qwat_comp -t qwat_sys.info -d delta/ -f $TMPFILEDUMP -i columns constraints views sequences indexes triggers functions rules
-pum test-and-upgrade -x -pp qwat_prod -pt qwat_test -pc qwat_comp -t qwat_sys.info -d ${DELTADIRS[*]} -f $TMPFILEDUMP -i views rules
+# pum test-and-upgrade -x -pp qwat_prod -pt qwat_test -pc qwat_comp -t qwat_sys.info -d ${DELTADIRS[*]} -f $TMPFILEDUMP -i views rules
