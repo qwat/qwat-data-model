@@ -25,11 +25,11 @@ VALUES (ID_NODE_A, ID_NODE_B, 101, 101, 101, 1, 101, 101, 101, 101,
 
 -- create an element part
 INSERT INTO qwat_od.vw_element_part (year, _pipe_orientation, fk_part_type, fk_status, fk_distributor, fk_precision, geometry)
-    SELECT 2016, 1.5, (SELECT id FROM qwat_vl.part_type WHERE value_fr = 'bouchon'), 101, 1, 101, st_setsrid('point(CP_PX1B CP_PY1B CP_PZ1B)'::geometry, 21781);;
+    SELECT 2016, 1.5, (SELECT id FROM qwat_vl.part_type WHERE value_fr = 'bouchon'), 101, '{1}', 101, st_setsrid('point(CP_PX1B CP_PY1B CP_PZ1B)'::geometry, 21781);;
 
 -- create an introduction point
 INSERT INTO qwat_od.vw_element_part (year, _pipe_orientation, fk_part_type, fk_status, fk_distributor, fk_precision, geometry)
-    SELECT 2016, 1.5, (SELECT id FROM qwat_vl.part_type WHERE value_fr = 'Point d''introduction'), 101, 1, 101, st_setsrid('point(IP_X1 IP_Y1 IP_Z1)'::geometry, 21781);;
+    SELECT 2016, 1.5, (SELECT id FROM qwat_vl.part_type WHERE value_fr = 'Point d''introduction'), 101, '{1}', 101, st_setsrid('point(IP_X1 IP_Y1 IP_Z1)'::geometry, 21781);;
 
 -- create valve
 INSERT INTO qwat_od.valve (id, fk_district, fk_pressurezone, fk_distributor, fk_pipe,
@@ -49,7 +49,7 @@ INSERT INTO qwat_od.pipe (fk_node_a, fk_node_b, fk_function, fk_installmethod, f
 INSERT INTO qwat_od.vw_element_hydrant (year, fk_distributor, fk_status, fk_provider,
             underground, altitude, fk_precisionalti, fk_precision, fk_object_reference, fk_model_sup, fk_model_inf, fk_material, fk_output,
             pressure_static, pressure_dynamic, flow, observation_date, observation_source, geometry)
-    VALUES (2016, 1, 101, 101, 
+    VALUES (2016, '{1}', 101, 101, 
             True, 9.5, 101, 101, 101, 101, 101, 101, 101,
             12.3, 12.3, 12.3, '2016/01/01', 'sbe', st_setsrid('point(HY_X1 HY_Y1 HY_Z1)'::geometry,21781));;
 
@@ -62,7 +62,7 @@ INSERT INTO qwat_od.leak (_repaired, detection_date, address, description,
 
 -- create an installation
 INSERT INTO qwat_od.vw_element_installation (altitude, geometry, fk_distributor, installation_type, fk_status, fk_precision, fk_precisionalti, fk_watertype, fk_object_reference, name, year)
-    VALUES (200, ST_SetSRID( ST_MakePoint( IN_X1, IN_Y1, IN_Z1), 21781), 1, 'chamber', 101, 101, 101, 101, 101, 'i_INSTALLATION_ID', 2016);;
+    VALUES (200, ST_SetSRID( ST_MakePoint( IN_X1, IN_Y1, IN_Z1), 21781), '{1}', 'chamber', 101, 101, 101, 101, 101, 'i_INSTALLATION_ID', 2016);;
 
 -- create a cover
 INSERT INTO qwat_od.cover (identification, form_dimension, fk_cover_type, circular, fk_installation, geometry, fk_precision)
