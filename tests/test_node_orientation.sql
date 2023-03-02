@@ -57,6 +57,14 @@ SELECT _pipe_orientation AS qwat_calculated_orientation FROM qwat_od.vw_element_
 -- SELECT degrees(ST_Azimuth(ST_GeomFromText('POINT(560000 150000)'), ST_GeomFromText('POINT(559990 150010)'))) AS real_orientation;
 -- SELECT (degrees(ST_Azimuth(ST_GeomFromText('POINT(559980 149980)'), ST_GeomFromText('POINT(559979.975263114 149979.915516003)'))) + degrees(ST_Azimuth(ST_GeomFromText('POINT(559979.975263114 149979.915516003)'), ST_GeomFromText('POINT(559979.947476254 149979.823744764)'))))/2 AS real_orientation;
 
+-- Move node 2 on pipe 3
+UPDATE qwat_od.pipe
+SET geometry = ST_SetSRID(ST_GeomFromText('LINESTRING (560000 150000 0, 560000 150020 0, 559980 150020 0)'), 21781)
+WHERE geometry = ST_SetSRID(ST_GeomFromText('LINESTRING (560000 150000 0, 559990 150010 0, 559980 150020 0)'), 21781);
+
+-- The CALCULATED orientation
+SELECT _pipe_orientation AS qwat_calculated_orientation FROM qwat_od.vw_element_hydrant order by id;
+
 -- restore the initial state
 DELETE FROM qwat_od.vw_element_hydrant;
 DELETE FROM qwat_od.pipe;
