@@ -128,6 +128,8 @@ children:
                     write: qwat_od.fn_pipe_get_id(NEW.geometry)
             trig_here: True
 
+            custom_update: "PERFORM qwat_od.fn_element_part_set_orientation(NEW.id)"
+
         meter:
             c_table: qwat_od.meter
             table: qwat_od.meter

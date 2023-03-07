@@ -220,6 +220,7 @@ psql service=${PGSERVICE} -v ON_ERROR_STOP=1 -v SRID=$SRID -f ${DIR}/ordinary_da
 psql service=${PGSERVICE} -v ON_ERROR_STOP=1 -v SRID=$SRID -f ${DIR}/ordinary_data/functions/fn_node_set_distributors.sql
 psql service=${PGSERVICE} -v ON_ERROR_STOP=1 -v SRID=$SRID -f ${DIR}/ordinary_data/functions/fn_node_set_status.sql
 psql service=${PGSERVICE} -v ON_ERROR_STOP=1 -v SRID=$SRID -f ${DIR}/ordinary_data/functions/fn_node_update_id.sql
+psql service=${PGSERVICE} -v ON_ERROR_STOP=1 -v SRID=$SRID -f ${DIR}/ordinary_data/functions/fn_element_part_set_orientation.sql
 
 psql service=${PGSERVICE} -v ON_ERROR_STOP=1 -v SRID=$SRID -f ${DIR}/ordinary_data/hydrant/od_hydrant.sql
 
