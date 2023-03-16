@@ -40,7 +40,7 @@ def create_dumps():
 
     dump = 'qwat_v{version}_data_only_sample.backup'.format(
         version=os.environ['TRAVIS_TAG'])
-    print('travis_fold:start:{}'.format(dump))
+    print('::group::{}'.format(dump))
     print('Creating dump {}'.format(dump))
     dumpfile = '/tmp/{dump}'.format(dump=dump)
     subprocess.check_output(['pg_dump',
@@ -55,11 +55,11 @@ def create_dumps():
                      'service=qwat_prod']
                     )
     files.append(dumpfile)
-    print('travis_fold:end:{}'.format(dump))
+    print('::endgroup::')
 
     dump='qwat_v{version}_data_only_sample.sql'.format(
         version=os.environ['TRAVIS_TAG'])
-    print('travis_fold:start:{}'.format(dump))
+    print('::group::{}'.format(dump))
     print('Creating dump {}'.format(dump))
     dumpfile='/tmp/{dump}'.format(dump=dump)
 
@@ -74,13 +74,13 @@ def create_dumps():
                      'service=qwat_prod']
                     )
     files.append(dumpfile)
-    print('travis_fold:end:{}'.format(dump))
+    print('::endgroup::')
 
     # Create data + structure dumps (with sample data)
 
     dump='qwat_v{version}_data_and_structure_sample.backup'.format(
         version=os.environ['TRAVIS_TAG'])
-    print('travis_fold:start:{}'.format(dump))
+    print('::group::{}'.format(dump))
     print('Creating dump {}'.format(dump))
     dumpfile='/tmp/{dump}'.format(dump=dump)
 
@@ -94,11 +94,11 @@ def create_dumps():
                      'service=qwat_prod']
                     )
     files.append(dumpfile)
-    print('travis_fold:end:{}'.format(dump))
+    print('::endgroup::')
 
     dump='qwat_v{version}_data_and_structure_sample.sql'.format(
         version=os.environ['TRAVIS_TAG'])
-    print('travis_fold:start:{}'.format(dump))
+    print('::group::{}'.format(dump))
     print('Creating dump {}'.format(dump))
     dumpfile='/tmp/{dump}'.format(dump=dump)
 
@@ -111,13 +111,13 @@ def create_dumps():
                      'service=qwat_prod']
                     )
     files.append(dumpfile)
-    print('travis_fold:end:{}'.format(dump))
+    print('::endgroup::')
 
     # Create structure-only dumps
 
     dump='qwat_v{version}_structure_only.backup'.format(
         version=os.environ['TRAVIS_TAG'])
-    print('travis_fold:start:{}'.format(dump))
+    print('::group::{}'.format(dump))
     print('Creating dump {}'.format(dump))
     dumpfile='/tmp/{dump}'.format(dump=dump)
 
@@ -130,11 +130,11 @@ def create_dumps():
                      'service=qwat_prod']
                     )
     files.append(dumpfile)
-    print('travis_fold:end:{}'.format(dump))
+    print('::endgroup::')
 
     dump='qwat_v{version}_structure_only.sql'.format(
         version=os.environ['TRAVIS_TAG'])
-    print('travis_fold:start:{}'.format(dump))
+    print('::group::{}'.format(dump))
     print('Creating dump {}'.format(dump))
     dumpfile='/tmp/{dump}'.format(dump=dump)
 
@@ -147,13 +147,13 @@ def create_dumps():
                      'service=qwat_prod']
                     )
     files.append(dumpfile)
-    print('travis_fold:end:{}'.format(dump))
+    print('::endgroup::')
 
     # Create value-list data only dumps (the qwat_vl schema)
 
     dump = 'qwat_v{version}_value_list_data_only.backup'.format(
         version=os.environ['TRAVIS_TAG'])
-    print('travis_fold:start:{}'.format(dump))
+    print('::group::{}'.format(dump))
     print('Creating dump {}'.format(dump))
     dumpfile = '/tmp/{dump}'.format(dump=dump)
     subprocess.check_output(['pg_dump',
@@ -167,11 +167,11 @@ def create_dumps():
                      'service=qwat_prod']
                     )
     files.append(dumpfile)
-    print('travis_fold:end:{}'.format(dump))
+    print('::endgroup::')
 
     dump='qwat_v{version}_value_list_data_only.sql'.format(
         version=os.environ['TRAVIS_TAG'])
-    print('travis_fold:start:{}'.format(dump))
+    print('::group::{}'.format(dump))
     print('Creating dump {}'.format(dump))
     dumpfile='/tmp/{dump}'.format(dump=dump)
 
@@ -185,7 +185,7 @@ def create_dumps():
                      'service=qwat_prod']
                     )
     files.append(dumpfile)
-    print('travis_fold:end:{}'.format(dump))
+    print('::endgroup::')
 
     return files
 

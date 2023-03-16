@@ -29,32 +29,36 @@ pum restore -p qwat_prod qwat_dump.backup
 pum baseline -p qwat_prod -t qwat_sys.info -d $DELTA_DIRS -b 1.2.1
 
 # Run init_qwat.sh to create the last version of qwat db used as the comp database
-printf "travis_fold:start:init-qwat\nInitialize database"
+printf "::group::init-qwat"
+printf "Initialize database"
 $TRAVIS_BUILD_DIR/init_qwat.sh -p qwat_comp -s 21781 -r -n
 psql service=qwat_comp -f $EXTRA_DELTA_FILE
-echo "travis_fold:end:init-qwat"
+echo "::endgroup::"
 
 # Set the baseline for the comp database
 pum baseline -p qwat_comp -t qwat_sys.info -d $DELTA_DIRS -b $VERSION
 
 # Run test_and_upgrade
-printf "travis_fold:start:test-and-upgrade\nRun test and upgrade"
+printf "::group::test-and-upgrade"
+printf "Run test and upgrade"
 yes | pum test-and-upgrade -pp qwat_prod -pt qwat_test -pc qwat_comp -t qwat_sys.info -d $DELTA_DIRS -f /tmp/qwat_dump -i views rules
-echo "travis_fold:end:test-and-upgrade"
+echo "::endgroup::"
 
 # Run a last check between qwat_prod and qwat_comp
 pum check -p1 qwat_prod -p2 qwat_comp -i views rules
 
 # Extend qwat_prod with a customization
-printf "travis_fold:start:init-sigip\nExtend database with a customization"
+printf "::group::init-sigip"
+printf "Extend database with a customization"
 $TRAVIS_BUILD_DIR/.build/customizations/sigip/init.sh -p qwat_prod -s 21781
-echo "travis_fold:end:init-sigip"
+echo "::endgroup::"
 
 # Run upgrade with customizations/sigip/delta as an extra delta dir
 DELTA_DIRS="$DELTA_DIRS $TRAVIS_BUILD_DIR/.build/customizations/sigip/delta"
-printf "travis_fold:start:upgrade\nRun upgrade"
+printf "::group::upgrade"
+printf "Run upgrade"
 pum upgrade -p qwat_prod -t qwat_sys.info -d $DELTA_DIRS
-echo "travis_fold:end:upgrade"
+echo "::endgroup::"
 
 # New test for upgrade
 psql service=qwat_prod -c "DROP TABLE qwat_table_test_"
