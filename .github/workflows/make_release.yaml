@@ -7,7 +7,7 @@ on:
 jobs:
   make-release:
     name: Make release
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-22.04
 
     env:
         PGSERVICEFILE: /tmp/pg_service.conf
