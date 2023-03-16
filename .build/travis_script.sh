@@ -43,7 +43,7 @@ yes | pum test-and-upgrade -pp qwat_prod -pt qwat_test -pc qwat_comp -t qwat_sys
 echo "::endgroup::"
 
 # Run a last check between qwat_prod and qwat_comp
-pum check -p1 qwat_prod -p2 qwat_comp -i views rules
+pum check -p1 qwat_prod -p2 qwat_comp -i views rules triggers
 
 # Extend qwat_prod with a customization
 echo "::group::Extend database with a customization"
