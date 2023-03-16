@@ -9,25 +9,30 @@ jobs:
     name: Make release
     runs-on: ubuntu-22.04
 
+    services:
+      postgres:
+        image: postgis/postgis:9.6-2.5
+        env:
+          POSTGRES_DB: qwat_test
+          POSTGRES_PASSWORD: postgres
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
     env:
-        PGSERVICEFILE: /tmp/pg_service.conf
+      PGSERVICEFILE: ${{github.workspace}}/tests/pg_service.conf
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - name: Assert CURRENT_VERSION.txt is up to date
         run: |
           LAST_VERSION=$(ls update/delta | sort -r | sed '/^delta_/!d' | head -n 1 | cut -d_ -f2)
           CUR_VERSION=$(cat system/CURRENT_VERSION.txt)
           [[ "${LAST_VERSION}" == "${CUR_VERSION}" ]] || (echo "Version mismatch ${LAST_VERSION} != ${CUR_VERSION}" && exit 1)
-
-      - name: Setup Postgis
-        uses: huaxk/postgis-action@v1
-        with:
-            postgresql version: '9.6'
-            postgresql password: 'postgres'
-            postgresql user: 'postgres'
-            postgresql db: 'postgres'
 
       - name: Install requirements
         run: |
@@ -49,7 +54,7 @@ jobs:
           TRAVIS_SECURE_ENV_VARS: 'true'
 
       - name: Upload assets
-        uses: AButler/upload-release-assets@v2.0
-        with:
-          files: 'artifacts/*'
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
+      uses: softprops/action-gh-release@v1
+      if: startsWith(github.ref, 'refs/tags/')
+      with:
+        files: 'artifacts/*'
