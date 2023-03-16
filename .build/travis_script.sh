@@ -39,7 +39,7 @@ pum baseline -p qwat_comp -t qwat_sys.info -d $DELTA_DIRS -b $VERSION
 
 # Run test_and_upgrade
 echo "::group::Run test and upgrade"
-yes | pum test-and-upgrade -pp qwat_prod -pt qwat_test -pc qwat_comp -t qwat_sys.info -d $DELTA_DIRS -f /tmp/qwat_dump -i views rules
+yes | pum test-and-upgrade -pp qwat_prod -pt qwat_test -pc qwat_comp -t qwat_sys.info -d $DELTA_DIRS -f /tmp/qwat_dump -i views rules triggers
 echo "::endgroup::"
 
 # Run a last check between qwat_prod and qwat_comp
