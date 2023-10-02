@@ -1,6 +1,6 @@
 /*
 	qWat - QGIS Water Module
-	
+
 	SQL file :: pressure vl_pipe_installmethod
 */
 
@@ -23,6 +23,14 @@ INSERT INTO qwat_vl.pipe_installmethod (id,value_fr,value_ro) VALUES (4205,'Prot
 INSERT INTO qwat_vl.pipe_installmethod (id,value_fr,value_ro) VALUES (4206,'Bétoné','Betonată');       /*TB: B   => 6 */
 INSERT INTO qwat_vl.pipe_installmethod (id,value_fr,value_ro) VALUES (4207,'Galerie','Galerie');      /*TB: G   => 7 */
 
-
-
-
+/* SIA405 codes */
+UPDATE qwat_vl.pipe_installmethod SET sia405code = 'unbekannt' WHERE value_fr = 'autre';
+UPDATE qwat_vl.pipe_installmethod SET sia405code = 'unbekannt' WHERE value_fr = 'inconnu';
+UPDATE qwat_vl.pipe_installmethod SET sia405code = 'unbekannt' WHERE value_fr = 'à déterminer';
+UPDATE qwat_vl.pipe_installmethod SET sia405code = 'offener_Graben' WHERE value_fr = 'En fouille';
+UPDATE qwat_vl.pipe_installmethod SET sia405code = 'offener_Graben' WHERE value_fr = 'Chemisé';
+UPDATE qwat_vl.pipe_installmethod SET sia405code = 'freiliegend' WHERE value_fr = 'Air libre';
+UPDATE qwat_vl.pipe_installmethod SET sia405code = 'freiliegend' WHERE value_fr = 'Sous pont';
+UPDATE qwat_vl.pipe_installmethod SET sia405code = 'offener_Graben' WHERE value_fr = 'Protégé';
+UPDATE qwat_vl.pipe_installmethod SET sia405code = 'offener_Graben' WHERE value_fr = 'Bétoné';
+UPDATE qwat_vl.pipe_installmethod SET sia405code = 'grabenlos' WHERE value_fr = 'Galerie';

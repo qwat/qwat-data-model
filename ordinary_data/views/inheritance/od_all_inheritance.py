@@ -20,7 +20,7 @@ qwat_node_element = """
 table: qwat_od.node
 alias: node
 pkey: id
-pkey_value: qwat_od.fn_node_create(NEW.geometry)
+pkey_value: qwat_od.fn_node_create(NEW.geometry, status => NEW.fk_status, distributors => NEW.fk_distributor)
 pkey_value_create_entry: true
 schema: qwat_od
 generate_child_views: True
@@ -127,6 +127,8 @@ children:
                 fk_pipe:
                     write: qwat_od.fn_pipe_get_id(NEW.geometry)
             trig_here: True
+
+            custom_update: "PERFORM qwat_od.fn_element_part_set_orientation(NEW.id)"
 
         meter:
             c_table: qwat_od.meter

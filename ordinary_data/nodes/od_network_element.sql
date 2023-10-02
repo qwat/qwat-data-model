@@ -14,8 +14,6 @@ Every network_element of the network (hydrants, network_element, installations, 
 /* COLUMNS */
 ALTER TABLE qwat_od.network_element ADD COLUMN id                  integer NOT NULL REFERENCES qwat_od.node(id) PRIMARY KEY;
 ALTER TABLE qwat_od.network_element ADD COLUMN identification      varchar(50);
-ALTER TABLE qwat_od.network_element ADD COLUMN fk_distributor      integer not null;
-ALTER TABLE qwat_od.network_element ADD COLUMN fk_status           integer not null;
 ALTER TABLE qwat_od.network_element ADD COLUMN fk_folder           integer;
 ALTER TABLE qwat_od.network_element ADD COLUMN fk_locationtype     integer[];
 ALTER TABLE qwat_od.network_element ADD COLUMN fk_precision        integer not null;
@@ -32,8 +30,6 @@ DO $$ BEGIN PERFORM qwat_sys.fn_label_create_fields('network_element'); END $$;
 
 
 /* CONSTRAINTS */
-ALTER TABLE qwat_od.network_element ADD CONSTRAINT element_fk_distributor      FOREIGN KEY (fk_distributor)      REFERENCES qwat_od.distributor(id)      MATCH FULL; CREATE INDEX fki_element_fk_distributor      ON qwat_od.network_element(fk_distributor);
-ALTER TABLE qwat_od.network_element ADD CONSTRAINT element_fk_status           FOREIGN KEY (fk_status)           REFERENCES qwat_vl.status(id)           MATCH FULL; CREATE INDEX fki_element_fk_status           ON qwat_od.network_element(fk_status);
 ALTER TABLE qwat_od.network_element ADD CONSTRAINT element_fk_folder           FOREIGN KEY (fk_folder)           REFERENCES qwat_od.folder(id)           MATCH FULL; CREATE INDEX fki_element_fk_folder           ON qwat_od.network_element(fk_folder);
 ALTER TABLE qwat_od.network_element ADD CONSTRAINT element_fk_precision        FOREIGN KEY (fk_precision)        REFERENCES qwat_vl.precision(id)        MATCH FULL; CREATE INDEX fki_element_fk_precision        ON qwat_od.network_element(fk_precision);
 ALTER TABLE qwat_od.network_element ADD CONSTRAINT element_fk_precisionalti    FOREIGN KEY (fk_precisionalti)    REFERENCES qwat_vl.precisionalti(id)    MATCH FULL; CREATE INDEX fki_element_fk_precisionalti    ON qwat_od.network_element(fk_precisionalti);

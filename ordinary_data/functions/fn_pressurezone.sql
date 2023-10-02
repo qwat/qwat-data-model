@@ -5,6 +5,24 @@
 */
 
 /* get pressurezone id function */
+CREATE OR REPLACE FUNCTION qwat_od.fn_get_pressurezones(geometry) RETURNS integer[] AS
+$BODY$ 
+	DECLARE
+		geom ALIAS FOR $1;
+		fk_pressurezone integer[];
+	BEGIN
+		fk_pressurezone := ARRAY(
+			SELECT 
+				pressurezone.id
+			FROM  qwat_od.pressurezone
+			WHERE ST_Intersects(geom,pressurezone.geometry) IS true
+		);
+		RETURN fk_pressurezone;
+	END
+$BODY$
+LANGUAGE plpgsql;
+COMMENT ON FUNCTION qwat_od.fn_get_pressurezones(geometry) IS 'Returns the id of overlapping pressurezones.';
+
 CREATE OR REPLACE FUNCTION qwat_od.fn_get_pressurezone(geometry) RETURNS integer AS
 $BODY$ 
 	DECLARE

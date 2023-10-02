@@ -23,7 +23,7 @@ Node should only contain geometric fields and automatic attributes (district, pr
 
 /* COLUMNS */
 ALTER TABLE qwat_od.node ADD COLUMN fk_district         integer;
-ALTER TABLE qwat_od.node ADD COLUMN fk_pressurezone     integer;
+ALTER TABLE qwat_od.node ADD COLUMN fk_pressurezone     integer[] default array[]::integer[];
 ALTER TABLE qwat_od.node ADD COLUMN fk_printmap         integer[];
 ALTER TABLE qwat_od.node ADD COLUMN _printmaps          text; -- list of printmap where it is included
 ALTER TABLE qwat_od.node ADD COLUMN _geometry_alt1_used boolean;
@@ -40,6 +40,9 @@ ALTER TABLE qwat_od.node ADD COLUMN geometry_alt2 geometry('POINTZ',:SRID);
 ALTER TABLE qwat_od.node ADD COLUMN update_geometry_alt1 boolean default null; -- used to determine if alternative geometries should be updated when main geometry is updated
 ALTER TABLE qwat_od.node ADD COLUMN update_geometry_alt2 boolean default null; -- used to determine if alternative geometries should be updated when main geometry is updated
 
+ALTER TABLE qwat_od.node ADD COLUMN fk_status            integer default null;
+ALTER TABLE qwat_od.node ADD column fk_distributor       integer[];
+
 /* GEOM INDEXES */
 CREATE INDEX node_geoidx ON qwat_od.node USING GIST ( geometry );
 CREATE INDEX node_geoidx_alt1 ON qwat_od.node USING GIST ( geometry_alt1 );
@@ -48,7 +51,8 @@ CREATE INDEX node_geoidx_alt2 ON qwat_od.node USING GIST ( geometry_alt2 );
 
 /* CONSTRAINTS */
 ALTER TABLE qwat_od.node ADD CONSTRAINT node_fk_district      FOREIGN KEY (fk_district)      REFERENCES qwat_od.district(id)      MATCH FULL; CREATE INDEX fki_node_fk_district      ON qwat_od.node(fk_district);
-ALTER TABLE qwat_od.node ADD CONSTRAINT node_fk_pressurezone  FOREIGN KEY (fk_pressurezone)  REFERENCES qwat_od.pressurezone(id)  MATCH FULL; CREATE INDEX fki_node_fk_pressurezone  ON qwat_od.node(fk_pressurezone);
+CREATE INDEX fki_node_fk_pressurezone  ON qwat_od.node(fk_pressurezone);
+ALTER TABLE qwat_od.node ADD CONSTRAINT node_fk_status        FOREIGN KEY (fk_status)        REFERENCES qwat_vl.status(id)        MATCH FULL; CREATE INDEX fki_node_fk_status ON qwat_od.node(fk_status);
 
 
 /* GEOMETRY TRIGGERS */
@@ -59,7 +63,7 @@ $BODY$
 	BEGIN
 		NEW.geometry            := ST_Force3D(NEW.geometry);
 		NEW.fk_district         := qwat_od.fn_get_district(NEW.geometry);
-		NEW.fk_pressurezone     := qwat_od.fn_get_pressurezone(NEW.geometry);
+		NEW.fk_pressurezone     := qwat_od.fn_get_pressurezones(NEW.geometry);
 		NEW.fk_printmap         := qwat_od.fn_get_printmap_id(NEW.geometry);
 		NEW._printmaps          := qwat_od.fn_get_printmaps(NEW.geometry);
 		RETURN NEW;
@@ -99,13 +103,19 @@ CREATE OR REPLACE FUNCTION qwat_od.ft_pipe_node_moved() RETURNS TRIGGER AS
         SELECT ST_EndPoint(geometry) into end_geom FROM qwat_od.pipe WHERE fk_node_b = OLD.id;
         IF start_geom IS NOT NULL THEN
             -- In that case, we can create a new node, and affect it to the pipe
-            new_node_a := qwat_od.fn_node_create(start_geom);
+            new_node_a := qwat_od.fn_node_create(start_geom, /* deactivate_node_add_pipe_vertex */ true, OLD.fk_status, OLD.fk_distributor);
             UPDATE qwat_od.pipe SET fk_node_a = new_node_a WHERE fk_node_a = OLD.id;
+            perform qwat_od.fn_node_set_status(new_node_a);
+           	perform qwat_od.fn_node_set_distributors(new_node_a);
+            perform qwat_od.fn_node_set_type(new_node_a);
         END IF;
         IF end_geom IS NOT NULL THEN
             -- In that case, we can create a new node, and affect it to the pipe
-            new_node_b := qwat_od.fn_node_create(end_geom);
+            new_node_b := qwat_od.fn_node_create(end_geom, /* deactivate_node_add_pipe_vertex */ true, OLD.fk_status, OLD.fk_distributor);
             UPDATE qwat_od.pipe SET fk_node_b = new_node_b WHERE fk_node_b = OLD.id;
+            perform qwat_od.fn_node_set_status(new_node_b);
+           	perform qwat_od.fn_node_set_distributors(new_node_b);
+            perform qwat_od.fn_node_set_type(new_node_b);
         END IF;
         RETURN NEW;
     END;

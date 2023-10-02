@@ -1,0 +1,60 @@
+name: Make release
+
+on:
+  release:
+    types: ['prereleased', 'released']
+
+jobs:
+  make-release:
+    name: Make release
+    runs-on: ubuntu-22.04
+
+    services:
+      postgres:
+        image: postgis/postgis:9.6-2.5
+        env:
+          POSTGRES_DB: postgres
+          POSTGRES_PASSWORD: postgres
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    env:
+      PGSERVICEFILE: ${{github.workspace}}/tests/pg_service.conf
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Assert CURRENT_VERSION.txt is up to date
+        run: |
+          LAST_VERSION=$(ls update/delta | sort -r | sed '/^delta_/!d' | head -n 1 | cut -d_ -f2)
+          CUR_VERSION=$(cat system/CURRENT_VERSION.txt)
+          [[ "${LAST_VERSION}" == "${CUR_VERSION}" ]] || (echo "Version mismatch ${LAST_VERSION} != ${CUR_VERSION}" && exit 1)
+
+      - name: Install requirements
+        run: |
+          pip3 install --upgrade setuptools
+          pip3 install -r requirements.txt
+
+      - name: Before script
+        run: ./.build/travis_before_script.sh
+
+      - name: Script
+        run: ./.build/travis_script.sh
+        env:
+          TRAVIS_BUILD_DIR: '.'
+
+      - name: Create dumps
+        run: ./.deploy/create_release.py
+        env:
+          TRAVIS_TAG: ${{ github.event.release.tag_name }}
+          TRAVIS_SECURE_ENV_VARS: 'true'
+
+      - name: Upload assets
+        uses: softprops/action-gh-release@v1
+        if: startsWith(github.ref, 'refs/tags/')
+        with:
+          files: 'artifacts/*'

@@ -19,7 +19,8 @@ INSERT INTO qwat_vl.hydrant_material (id, vl_active, short_en, value_en, short_f
 INSERT INTO qwat_vl.hydrant_material (id, vl_active, short_en, value_en, short_fr, value_fr, short_ro, value_ro, pressure_nominal) VALUES (7003, true, 'CI 80',  'Cast iron 80',  'F 80',  'Fonte 80',  'F 80',  'Fontă 80',  16);
 INSERT INTO qwat_vl.hydrant_material (id, vl_active, short_en, value_en, short_fr, value_fr, short_ro, value_ro, pressure_nominal) VALUES (7004, true, 'CI 100', 'Cast iron 100', 'F 100', 'Fonte 100', 'F 100', 'Fontă 100', 16);
 
-
-
-
-
+/* SIA405 codes */
+UPDATE qwat_vl.hydrant_material SET sia405code = 'Metall' WHERE short_fr LIKE 'F %';
+UPDATE qwat_vl.hydrant_material SET sia405code = 'unbekannt' WHERE value_fr = 'autre';
+UPDATE qwat_vl.hydrant_material SET sia405code = 'unbekannt' WHERE value_fr = 'inconnu';
+UPDATE qwat_vl.hydrant_material SET sia405code = 'unbekannt' WHERE value_fr = 'à déterminer';
