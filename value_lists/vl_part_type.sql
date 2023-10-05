@@ -10,6 +10,9 @@ ALTER TABLE qwat_vl.part_type ADD CONSTRAINT vl_part_type_pk PRIMARY KEY (id);
 COMMENT ON TABLE qwat_vl.part_type IS 'table for installation parts. They are supposed to be on top of nodes and might be used to display a specific symbol.';
 
 /* VALUES */
+INSERT INTO qwat_vl.part_type (id, value_en, value_fr, value_ro) VALUES (101, 'other', 'autre', 'alta');
+INSERT INTO qwat_vl.part_type (id, value_en, value_fr, value_ro) VALUES (102, 'unknown', 'inconnu', 'necunoscută');
+INSERT INTO qwat_vl.part_type (id, value_en, value_fr, value_ro) VALUES (103, 'to be determined', 'à déterminer', 'de determinat');
 
 INSERT INTO qwat_vl.part_type (id, value_en, value_fr, value_ro, vl_active) VALUES (9200, 'subscriber counter', 'compteur abonné'   , 'apometru abonat', true);
 INSERT INTO qwat_vl.part_type (id, value_en, value_fr, value_ro, vl_active) VALUES (9201, 'cap', 'bouchon'           , 'dop', true);
