@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # ##########
 #
-# QWAT initilization script
+# QWAT initialization script
 # 10.07.2015
 # Denis Rouzaud
 #
@@ -123,7 +123,7 @@ if [[ "$DROPSCHEMA" -eq 1 ]]; then
 	COMMIT;"
 fi
 
-# Create extenstions
+# Create extensions
 psql service=${PGSERVICE} -v ON_ERROR_STOP=1 -c "CREATE EXTENSION IF NOT EXISTS hstore;"
 psql service=${PGSERVICE} -v ON_ERROR_STOP=1 -c "CREATE EXTENSION IF NOT EXISTS postgis;"
 psql service=${PGSERVICE} -v ON_ERROR_STOP=1 -c 'CREATE EXTENSION IF NOT EXISTS "pgcrypto";'
@@ -307,6 +307,6 @@ if [[ "$CREATEROLES" -eq 1 ]]; then
 	psql service=${PGSERVICE} -v ON_ERROR_STOP=1 -f ${DIR}/roles.sql
 fi
 
-echo " *** QWAT was successfuly initialized! ***"
+echo " *** QWAT was successfully initialized! ***"
 
 exit 0
