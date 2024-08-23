@@ -45,7 +45,9 @@ jobs:
       - name: Install PostgreSQL postgis client
         run: |
           sudo apt update
-          sudo apt -y upgrade
+          sudo apt -y install gnupg2
+          wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add -
+          sudo apt update
           sudo apt -y install postgis ${{ matrix.postgis }}
 
       - name: Set up Python 3.12
