@@ -19,9 +19,13 @@ jobs:
   run-tests:
     runs-on: ubuntu-latest
 
-    services:
-      postgres:
-        image: postgis/postgis:9.6-2.5
+    strategy:
+      fail-fast: false
+      matrix:
+        postgis: 
+          - postgis/postgis:12-3.2
+          - postgis/postgis:15-3.4
+          - postgis/postgis:16-3.4
         env:
           POSTGRES_DB: qwat_test
           POSTGRES_PASSWORD: postgres
@@ -37,13 +41,13 @@ jobs:
 
     steps:
 
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
-      - name: Install PostgreSQL client
-        run: |
-          sudo apt-get update
-          sudo apt-get install --yes postgresql-client
-
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v5
+        with:
+            python-version: 3.12
+    
       - name: Install Python dependencies
         run: pip install -r requirements.txt
 
