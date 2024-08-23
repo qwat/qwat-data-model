@@ -26,13 +26,17 @@ jobs:
           - postgis/postgis:12-3.2
           - postgis/postgis:15-3.4
           - postgis/postgis:16-3.4
-        env:
-          POSTGRES_DB: qwat_test
+    env:
+      PGSERVICEFILE: ${{github.workspace}}/tests/pg_service.conf
+      POSTGRES_DB: qwat_test
           POSTGRES_PASSWORD: postgres
         ports:
           - 5432:5432
-    env:
-      PGSERVICEFILE: ${{github.workspace}}/tests/pg_service.conf
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
 
     steps:
 
