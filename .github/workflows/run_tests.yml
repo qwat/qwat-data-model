@@ -23,9 +23,9 @@ jobs:
       fail-fast: false
       matrix:
         postgis: 
-          - postgresql-12-postgis-3.2
-          - postgresql-15-postgis-3.4
-          - postgresql-16-postgis-3.4
+          - postgresql-12-postgis-3
+          - postgresql-15-postgis-3
+          - postgresql-16-postgis-3
     env:
       PGSERVICEFILE: ${{github.workspace}}/tests/pg_service.conf
       POSTGRES_DB: qwat_test
