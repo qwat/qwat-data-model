@@ -19,31 +19,42 @@ jobs:
   run-tests:
     runs-on: ubuntu-latest
 
-    services:
-      postgres:
-        image: postgis/postgis:9.6-2.5
-        env:
-          POSTGRES_DB: qwat_test
-          POSTGRES_PASSWORD: postgres
-        ports:
-          - 5432:5432
-        options: >-
-          --health-cmd pg_isready
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
+    strategy:
+      fail-fast: false
+      matrix:
+        postgis: 
+          - postgresql-12-postgis-3
+          - postgresql-15-postgis-3
+          - postgresql-16-postgis-3
     env:
       PGSERVICEFILE: ${{github.workspace}}/tests/pg_service.conf
+      POSTGRES_DB: qwat_test
+      POSTGRES_PASSWORD: postgres
+      PGHOST: 127.0.0.1
+      PGPORT: 5432
+      PGOPTIONS: >-
+        --health-cmd pg_isready
+        --health-interval 10s
+        --health-timeout 5s
+        --health-retries 5
 
     steps:
 
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
-      - name: Install PostgreSQL client
+      - name: Install PostgreSQL postgis client
         run: |
-          sudo apt-get update
-          sudo apt-get install --yes postgresql-client
+          sudo apt update
+          curl https://www.postgresql.org/media/keys/ACCC4CF8.asc | gpg --dearmor | sudo tee /etc/apt/trusted.gpg.d/apt.postgresql.org.gpg >/dev/null
+          sudo sh -c 'echo "deb http://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg main" > /etc/apt/sources.list.d/pgdg.list'
+          sudo apt update
+          sudo apt -y install postgis ${{ matrix.postgis }}
 
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v5
+        with:
+            python-version: 3.12
+    
       - name: Install Python dependencies
         run: pip install -r requirements.txt
 
