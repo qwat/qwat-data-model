@@ -262,12 +262,15 @@ psql service=${PGSERVICE} -v ON_ERROR_STOP=1 -v SRID=$SRID -f ${DIR}/ordinary_da
 echo "Starting tr_valve_pipe insertion..."
 psql service=${PGSERVICE} -v ON_ERROR_STOP=1 -v SRID=$SRID -f ${DIR}/ordinary_data/valve/tr_valve_pipe.sql
 
-echo "Starting controlcable insertion..."
+echo "Starting organisation insertion..."
 psql service=${PGSERVICE} -v ON_ERROR_STOP=1 -v SRID=$SRID -f ${DIR}/system/oid_generation.sql
 psql service=${PGSERVICE} -v ON_ERROR_STOP=1 -v SRID=$SRID -f ${DIR}/system/02_sys.sql
 psql service=${PGSERVICE} -v ON_ERROR_STOP=1 -v SRID=$SRID -f ${DIR}/system/09_qwat_dictionaries.sql
 
+psql service=${PGSERVICE} -v ON_ERROR_STOP=1 -v SRID=$SRID -f ${DIR}/ordinary_data/03_qwat_db_organisation.sql
+psql service=${PGSERVICE} -v ON_ERROR_STOP=1 -v SRID=$SRID -f ${DIR}/ordinary_data/09_qwat_organisation_dictionaries.sql
 
+echo "Starting controlcable insertion..."
 psql service=${PGSERVICE} -v ON_ERROR_STOP=1 -v SRID=$SRID -f ${DIR}/ordinary_data/controlcable/03_qwat_control_cable_db_sia405.sql
 psql service=${PGSERVICE} -v ON_ERROR_STOP=1 -v SRID=$SRID -f ${DIR}/ordinary_data/controlcable/09_qwat_control_cable_dictionaries.sql
 
