@@ -8,7 +8,7 @@ BEGIN;
 
 ---------------------------
 
-CREATE TABLE qwat_vl.value_list_base
+CREATE TABLE qwat_vl.value_list_base2
 (
 code integer NOT NULL,
 vsacode integer NOT NULL,
@@ -78,7 +78,7 @@ FOR EACH ROW EXECUTE PROCEDURE
 
 ------------ Relationships and Value Tables ----------- ;
 
-CREATE TABLE qwat_vl.organisation_organisation_type () INHERITS (qwat_vl.value_list_base);
+CREATE TABLE qwat_vl.organisation_organisation_type () INHERITS (qwat_vl.value_list_base2);
 ALTER TABLE qwat_vl.organisation_organisation_type ADD CONSTRAINT pkey_qwat_vl_organisation_organisation_type_code PRIMARY KEY (code);
  INSERT INTO qwat_vl.organisation_organisation_type (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (8608,8608,'waste_water_association','Abwasserverband','association_epuration_eau', 'consorzio_depurazione', 'rrr_Abwasserverband', '', '', '', '', '', 'true');
  INSERT INTO qwat_vl.organisation_organisation_type (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (8715,8715,'federation','Bund','federation', 'confederazione', 'rrr_Bund', '', '', '', '', '', 'true');
@@ -90,7 +90,7 @@ ALTER TABLE qwat_vl.organisation_organisation_type ADD CONSTRAINT pkey_qwat_vl_o
  ALTER TABLE qwat_od.organisation ADD CONSTRAINT fkey_vl_organisation_organisation_type FOREIGN KEY (organisation_type)
  REFERENCES qwat_vl.organisation_organisation_type (code) MATCH SIMPLE
  ON UPDATE RESTRICT ON DELETE RESTRICT;
-CREATE TABLE qwat_vl.organisation_status () INHERITS (qwat_vl.value_list_base);
+CREATE TABLE qwat_vl.organisation_status () INHERITS (qwat_vl.value_list_base2);
 ALTER TABLE qwat_vl.organisation_status ADD CONSTRAINT pkey_qwat_vl_organisation_status_code PRIMARY KEY (code);
  INSERT INTO qwat_vl.organisation_status (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (9047,9047,'activ','aktiv','active', 'attivo', 'rrr_aktiv', '', '', '', '', '', 'true');
  INSERT INTO qwat_vl.organisation_status (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (9048,9048,'gone','untergegangen','disparue', 'decaduta', 'rrr_untergegangen', '', '', '', '', '', 'true');

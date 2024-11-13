@@ -132,7 +132,7 @@ FOR EACH ROW EXECUTE PROCEDURE
 ------------ Relationships and Value Tables ----------- ;
 ALTER TABLE qwat_od.sia405cc_cable_point ADD COLUMN fk_owner varchar(16);
 ALTER TABLE qwat_od.sia405cc_cable_point ADD CONSTRAINT rel_sia405cc_cable_point_owner FOREIGN KEY (fk_owner) REFERENCES qwat_od.organisation(obj_id) ON UPDATE CASCADE ON DELETE set null DEFERRABLE INITIALLY DEFERRED;
-CREATE TABLE qwat_vl.sia405cc_cable_point_kind () INHERITS (qwat_vl.value_list_base);
+CREATE TABLE qwat_vl.sia405cc_cable_point_kind () INHERITS (qwat_vl.value_list_base2);
 ALTER TABLE qwat_vl.sia405cc_cable_point_kind ADD CONSTRAINT pkey_qwat_vl_sia405cc_cable_point_kind_code PRIMARY KEY (code);
  INSERT INTO qwat_vl.sia405cc_cable_point_kind (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (9385,9385,'cable_sleeve','Kabelmuffe','manchon_cable', 'manicotto_del_cavo', 'manson_de_cablu', '', '', '', '', '', 'true');
  INSERT INTO qwat_vl.sia405cc_cable_point_kind (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (9388,9388,'cable_point','Kabelpunkt','point_de_cable', 'punto_cavo', 'punct_de_cablu', '', '', '', '', '', 'true');
@@ -143,7 +143,7 @@ ALTER TABLE qwat_vl.sia405cc_cable_point_kind ADD CONSTRAINT pkey_qwat_vl_sia405
  ALTER TABLE qwat_od.sia405cc_cable_point ADD CONSTRAINT fkey_vl_sia405cc_cable_point_kind FOREIGN KEY (kind)
  REFERENCES qwat_vl.sia405cc_cable_point_kind (code) MATCH SIMPLE
  ON UPDATE RESTRICT ON DELETE RESTRICT;
-CREATE TABLE qwat_vl.sia405cc_cable_point_horizontal_positioning () INHERITS (qwat_vl.value_list_base);
+CREATE TABLE qwat_vl.sia405cc_cable_point_horizontal_positioning () INHERITS (qwat_vl.value_list_base2);
 ALTER TABLE qwat_vl.sia405cc_cable_point_horizontal_positioning ADD CONSTRAINT pkey_qwat_vl_sia405cc_cable_point_horizontal_positioning_code PRIMARY KEY (code);
  INSERT INTO qwat_vl.sia405cc_cable_point_horizontal_positioning (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (9392,9392,'accurate','genau','precis', 'precisa', 'precisa', '', '', '', '', '', 'true');
  INSERT INTO qwat_vl.sia405cc_cable_point_horizontal_positioning (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (9390,9390,'unknown','unbekannt','inconnue', 'sconosciuto', 'necunoscuta', '', '', '', '', '', 'true');
@@ -151,7 +151,7 @@ ALTER TABLE qwat_vl.sia405cc_cable_point_horizontal_positioning ADD CONSTRAINT p
  ALTER TABLE qwat_od.sia405cc_cable_point ADD CONSTRAINT fkey_vl_sia405cc_cable_point_horizontal_positioning FOREIGN KEY (horizontal_positioning)
  REFERENCES qwat_vl.sia405cc_cable_point_horizontal_positioning (code) MATCH SIMPLE
  ON UPDATE RESTRICT ON DELETE RESTRICT;
-CREATE TABLE qwat_vl.sia405cc_cable_point_elevation_determination () INHERITS (qwat_vl.value_list_base);
+CREATE TABLE qwat_vl.sia405cc_cable_point_elevation_determination () INHERITS (qwat_vl.value_list_base2);
 ALTER TABLE qwat_vl.sia405cc_cable_point_elevation_determination ADD CONSTRAINT pkey_qwat_vl_sia405cc_cable_point_elevation_determination_code PRIMARY KEY (code);
  INSERT INTO qwat_vl.sia405cc_cable_point_elevation_determination (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (9394,9394,'accurate','genau','precis', 'precisa', 'precisa', '', '', '', '', '', 'true');
  INSERT INTO qwat_vl.sia405cc_cable_point_elevation_determination (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (9395,9395,'unknown','unbekannt','inconnue', 'sconosciuto', 'necunoscuta', '', '', '', '', '', 'true');
@@ -159,7 +159,7 @@ ALTER TABLE qwat_vl.sia405cc_cable_point_elevation_determination ADD CONSTRAINT 
  ALTER TABLE qwat_od.sia405cc_cable_point ADD CONSTRAINT fkey_vl_sia405cc_cable_point_elevation_determination FOREIGN KEY (elevation_determination)
  REFERENCES qwat_vl.sia405cc_cable_point_elevation_determination (code) MATCH SIMPLE
  ON UPDATE RESTRICT ON DELETE RESTRICT;
-CREATE TABLE qwat_vl.sia405cc_cable_point_status () INHERITS (qwat_vl.value_list_base);
+CREATE TABLE qwat_vl.sia405cc_cable_point_status () INHERITS (qwat_vl.value_list_base2);
 ALTER TABLE qwat_vl.sia405cc_cable_point_status ADD CONSTRAINT pkey_qwat_vl_sia405cc_cable_point_status_code PRIMARY KEY (code);
  INSERT INTO qwat_vl.sia405cc_cable_point_status (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (9397,9397,'inoperative','ausser_Betrieb','hors_service', 'fuori_servizio', 'rrr_ausser_Betrieb', '', '', '', '', '', 'true');
  INSERT INTO qwat_vl.sia405cc_cable_point_status (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (9398,9398,'inoperative.reserve','ausser_Betrieb.Reserve','hors_service.en_reserve', 'fuori_servizio.riserva', 'rrr_ausser_Betrieb.Reserve', '', '', '', '', '', 'true');
@@ -174,7 +174,7 @@ ALTER TABLE qwat_vl.sia405cc_cable_point_status ADD CONSTRAINT pkey_qwat_vl_sia4
  ON UPDATE RESTRICT ON DELETE RESTRICT;
 ALTER TABLE qwat_od.sia405cc_cable ADD COLUMN fk_owner varchar(16);
 ALTER TABLE qwat_od.sia405cc_cable ADD CONSTRAINT rel_cable_owner FOREIGN KEY (fk_owner) REFERENCES qwat_od.organisation(obj_id) ON UPDATE CASCADE ON DELETE set null DEFERRABLE INITIALLY DEFERRED;
-CREATE TABLE qwat_vl.sia405cc_cable_function () INHERITS (qwat_vl.value_list_base);
+CREATE TABLE qwat_vl.sia405cc_cable_function () INHERITS (qwat_vl.value_list_base2);
 ALTER TABLE qwat_vl.sia405cc_cable_function ADD CONSTRAINT pkey_qwat_vl_sia405cc_cable_function_code PRIMARY KEY (code);
  INSERT INTO qwat_vl.sia405cc_cable_function (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (9339,9339,'signal_cable','Signalkabel','cable_de_signal', 'cavo_di_segnale', 'cablu_de_semnal', '', '', '', '', '', 'true');
  INSERT INTO qwat_vl.sia405cc_cable_function (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (9340,9340,'control_cable','Steuerkabel','cable_de_conduite', 'cavo_di_comando', 'cablu_de_control', '', '', '', '', '', 'true');
@@ -184,7 +184,7 @@ ALTER TABLE qwat_vl.sia405cc_cable_function ADD CONSTRAINT pkey_qwat_vl_sia405cc
  ALTER TABLE qwat_od.sia405cc_cable ADD CONSTRAINT fkey_vl_sia405cc_cable_function FOREIGN KEY (function)
  REFERENCES qwat_vl.sia405cc_cable_function (code) MATCH SIMPLE
  ON UPDATE RESTRICT ON DELETE RESTRICT;
-CREATE TABLE qwat_vl.sia405cc_cable_cable_type () INHERITS (qwat_vl.value_list_base);
+CREATE TABLE qwat_vl.sia405cc_cable_cable_type () INHERITS (qwat_vl.value_list_base2);
 ALTER TABLE qwat_vl.sia405cc_cable_cable_type ADD CONSTRAINT pkey_qwat_vl_sia405cc_cable_cable_type_code PRIMARY KEY (code);
  INSERT INTO qwat_vl.sia405cc_cable_cable_type (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (9345,9345,'coaxial','koaxial','coaxial', 'zzz_coassiale', 'rrr_koaxial', '', '', '', '', '', 'true');
  INSERT INTO qwat_vl.sia405cc_cable_cable_type (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (9344,9344,'copper','Kupfer','cuivre', 'zzz_rame', 'zzz_Kupfer', '', '', '', '', '', 'true');
@@ -193,7 +193,7 @@ ALTER TABLE qwat_vl.sia405cc_cable_cable_type ADD CONSTRAINT pkey_qwat_vl_sia405
  ALTER TABLE qwat_od.sia405cc_cable ADD CONSTRAINT fkey_vl_sia405cc_cable_cable_type FOREIGN KEY (cable_type)
  REFERENCES qwat_vl.sia405cc_cable_cable_type (code) MATCH SIMPLE
  ON UPDATE RESTRICT ON DELETE RESTRICT;
-CREATE TABLE qwat_vl.sia405cc_cable_horizontal_positioning () INHERITS (qwat_vl.value_list_base);
+CREATE TABLE qwat_vl.sia405cc_cable_horizontal_positioning () INHERITS (qwat_vl.value_list_base2);
 ALTER TABLE qwat_vl.sia405cc_cable_horizontal_positioning ADD CONSTRAINT pkey_qwat_vl_sia405cc_cable_horizontal_positioning_code PRIMARY KEY (code);
  INSERT INTO qwat_vl.sia405cc_cable_horizontal_positioning (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (9347,9347,'accurate','genau','precis', 'precisa', 'precisa', '', '', '', '', '', 'true');
  INSERT INTO qwat_vl.sia405cc_cable_horizontal_positioning (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (9348,9348,'unknown','unbekannt','inconnue', 'sconosciuto', 'necunoscuta', '', '', '', '', '', 'true');
@@ -201,7 +201,7 @@ ALTER TABLE qwat_vl.sia405cc_cable_horizontal_positioning ADD CONSTRAINT pkey_qw
  ALTER TABLE qwat_od.sia405cc_cable ADD CONSTRAINT fkey_vl_sia405cc_cable_horizontal_positioning FOREIGN KEY (horizontal_positioning)
  REFERENCES qwat_vl.sia405cc_cable_horizontal_positioning (code) MATCH SIMPLE
  ON UPDATE RESTRICT ON DELETE RESTRICT;
-CREATE TABLE qwat_vl.sia405cc_cable_status () INHERITS (qwat_vl.value_list_base);
+CREATE TABLE qwat_vl.sia405cc_cable_status () INHERITS (qwat_vl.value_list_base2);
 ALTER TABLE qwat_vl.sia405cc_cable_status ADD CONSTRAINT pkey_qwat_vl_sia405cc_cable_status_code PRIMARY KEY (code);
  INSERT INTO qwat_vl.sia405cc_cable_status (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (9363,9363,'inoperative','ausser_Betrieb','hors_service', 'fuori_servizio', 'rrr_ausser_Betrieb', '', '', '', '', '', 'true');
  INSERT INTO qwat_vl.sia405cc_cable_status (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (9364,9364,'inoperative.reserve','ausser_Betrieb.Reserve','hors_service.en_reserve', 'fuori_servizio.riserva', 'rrr_ausser_Betrieb.Reserve', '', '', '', '', '', 'true');
@@ -214,7 +214,7 @@ ALTER TABLE qwat_vl.sia405cc_cable_status ADD CONSTRAINT pkey_qwat_vl_sia405cc_c
  ALTER TABLE qwat_od.sia405cc_cable ADD CONSTRAINT fkey_vl_sia405cc_cable_status FOREIGN KEY (status)
  REFERENCES qwat_vl.sia405cc_cable_status (code) MATCH SIMPLE
  ON UPDATE RESTRICT ON DELETE RESTRICT;
-CREATE TABLE qwat_vl.sia405cc_cable_elevation_determination () INHERITS (qwat_vl.value_list_base);
+CREATE TABLE qwat_vl.sia405cc_cable_elevation_determination () INHERITS (qwat_vl.value_list_base2);
 ALTER TABLE qwat_vl.sia405cc_cable_elevation_determination ADD CONSTRAINT pkey_qwat_vl_sia405cc_cable_elevation_determination_code PRIMARY KEY (code);
  INSERT INTO qwat_vl.sia405cc_cable_elevation_determination (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (9359,9359,'accurate','genau','precis', 'precisa', 'precisa', '', '', '', '', '', 'true');
  INSERT INTO qwat_vl.sia405cc_cable_elevation_determination (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (9360,9360,'unknown','unbekannt','inconnue', 'sconosciuto', 'necunoscuta', '', '', '', '', '', 'true');

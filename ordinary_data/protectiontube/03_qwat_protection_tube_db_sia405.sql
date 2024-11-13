@@ -66,7 +66,7 @@ FOR EACH ROW EXECUTE PROCEDURE
 ------------ Relationships and Value Tables ----------- ;
 ALTER TABLE qwat_od.sia405pt_protection_tube ADD COLUMN fk_owner varchar(16);
 ALTER TABLE qwat_od.sia405pt_protection_tube ADD CONSTRAINT rel_sia405pt_protection_tube_owner FOREIGN KEY (fk_owner) REFERENCES qwat_od.organisation(obj_id) ON UPDATE CASCADE ON DELETE set null DEFERRABLE INITIALLY DEFERRED;
-CREATE TABLE qwat_vl.sia405pt_protection_tube_material () INHERITS (qwat_vl.value_list_base);
+CREATE TABLE qwat_vl.sia405pt_protection_tube_material () INHERITS (qwat_vl.value_list_base2);
 ALTER TABLE qwat_vl.sia405pt_protection_tube_material ADD CONSTRAINT pkey_qwat_vl_sia405pt_protection_tube_material_code PRIMARY KEY (code);
  INSERT INTO qwat_vl.sia405pt_protection_tube_material (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (9438,9438,'concrete','Beton','beton', 'calcestruzzo', 'beton', '', '', '', '', '', 'true');
  INSERT INTO qwat_vl.sia405pt_protection_tube_material (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (9437,9437,'cast_iron.gray_iron','Guss.Grauguss','fonte.fonte_grise', 'ghisa.ghisa_grigia', 'fonta.fonta_cenusie', '', '', '', '', '', 'true');
@@ -78,7 +78,7 @@ ALTER TABLE qwat_vl.sia405pt_protection_tube_material ADD CONSTRAINT pkey_qwat_v
  ALTER TABLE qwat_od.sia405pt_protection_tube ADD CONSTRAINT fkey_vl_sia405pt_protection_tube_material FOREIGN KEY (material)
  REFERENCES qwat_vl.sia405pt_protection_tube_material (code) MATCH SIMPLE
  ON UPDATE RESTRICT ON DELETE RESTRICT;
-CREATE TABLE qwat_vl.sia405pt_protection_tube_horizontal_positioning () INHERITS (qwat_vl.value_list_base);
+CREATE TABLE qwat_vl.sia405pt_protection_tube_horizontal_positioning () INHERITS (qwat_vl.value_list_base2);
 ALTER TABLE qwat_vl.sia405pt_protection_tube_horizontal_positioning ADD CONSTRAINT pkey_qwat_vl_sia405pt_protection_tube_horizontal_positioning_code PRIMARY KEY (code);
  INSERT INTO qwat_vl.sia405pt_protection_tube_horizontal_positioning (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (9443,9443,'accurate','genau','precis', 'precisa', 'precisa', '', '', '', '', '', 'true');
  INSERT INTO qwat_vl.sia405pt_protection_tube_horizontal_positioning (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (9444,9444,'unknown','unbekannt','inconnue', 'sconosciuto', 'necunoscuta', '', '', '', '', '', 'true');
@@ -86,7 +86,7 @@ ALTER TABLE qwat_vl.sia405pt_protection_tube_horizontal_positioning ADD CONSTRAI
  ALTER TABLE qwat_od.sia405pt_protection_tube ADD CONSTRAINT fkey_vl_sia405pt_protection_tube_horizontal_positioning FOREIGN KEY (horizontal_positioning)
  REFERENCES qwat_vl.sia405pt_protection_tube_horizontal_positioning (code) MATCH SIMPLE
  ON UPDATE RESTRICT ON DELETE RESTRICT;
-CREATE TABLE qwat_vl.sia405pt_protection_tube_status () INHERITS (qwat_vl.value_list_base);
+CREATE TABLE qwat_vl.sia405pt_protection_tube_status () INHERITS (qwat_vl.value_list_base2);
 ALTER TABLE qwat_vl.sia405pt_protection_tube_status ADD CONSTRAINT pkey_qwat_vl_sia405pt_protection_tube_status_code PRIMARY KEY (code);
  INSERT INTO qwat_vl.sia405pt_protection_tube_status (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (9446,9446,'inoperative','ausser_Betrieb','hors_service', 'fuori_servizio', 'rrr_ausser_Betrieb', '', '', '', '', '', 'true');
  INSERT INTO qwat_vl.sia405pt_protection_tube_status (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (9447,9447,'inoperative.reserve','ausser_Betrieb.Reserve','hors_service.en_reserve', 'fuori_servizio.riserva', 'rrr_ausser_Betrieb.Reserve', '', '', '', '', '', 'true');
