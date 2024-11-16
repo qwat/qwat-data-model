@@ -15,7 +15,7 @@ WITH (
    OIDS = False
 );
 CREATE SEQUENCE qwat_od.seq_sia405pt_protection_tube_oid INCREMENT 1 MINVALUE 0 MAXVALUE 999999 START 0;
-ALTER TABLE qwat_od.sia405pt_protection_tube ALTER COLUMN obj_id SET DEFAULT qwat_sys.generate_oid('tdh_od','sia405pt_protection_tube');
+ALTER TABLE qwat_od.sia405pt_protection_tube ALTER COLUMN obj_id SET DEFAULT qwat_sys.generate_oid('qwat_od','sia405pt_protection_tube');
 COMMENT ON COLUMN qwat_od.sia405pt_protection_tube.obj_id IS 'INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch';
  ALTER TABLE qwat_od.sia405pt_protection_tube ADD COLUMN name_number text;
  ALTER TABLE qwat_od.sia405pt_protection_tube ADD CONSTRAINT _name_number_length_max_40 CHECK(char_length(name_number)<=40);
