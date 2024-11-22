@@ -37,7 +37,7 @@ COMMENT ON COLUMN qwat_od.sia405cc_cable_point.name_number IS '';
 --ALTER TABLE qwat_od.sia405cc_cable_point ADD COLUMN geometry3d_geometry geometry('POINTZ', :SRID);
 
 -- Construire et exécuter la commande ALTER TABLE avec la valeur SRID récupérée
-EXECUTE format('ALTER TABLE qwat_od.sia405pt_protection_tube ADD COLUMN geometry3d_geometry geometry(''POINTZ'', %s)', srid_value);
+EXECUTE format('ALTER TABLE qwat_od.sia405cc_cable_point ADD COLUMN geometry3d_geometry geometry(''POINTZ'', %s)', srid_value);
 
 CREATE INDEX in_qwat_sia405cc_cable_point_geometry3d_geometry ON qwat_od.sia405cc_cable_point USING gist (geometry3d_geometry );
 COMMENT ON COLUMN qwat_od.sia405cc_cable_point.geometry3d_geometry IS '';
