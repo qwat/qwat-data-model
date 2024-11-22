@@ -1,3 +1,12 @@
+DO $$
+DECLARE
+    srid_value INTEGER;
+BEGIN
+    -- Récupérer la valeur SRID depuis la table qwat_sys.settings
+    SELECT value INTO srid_value FROM qwat_sys.settings WHERE name = 'srid';
+
+
+
 ------ This file generates the postgres database (Modul fernwirkkabel (based on SIA405_FERNWIRKKABEL_3D_2015_LV95 (Version 18.04.2018) in en for QQIS
 ------ Rename classes for integration in specific TEKSI module based on this convention: https://github.com/orgs/teksi/discussions/100#discussioncomment-9058690
 ------ For questions etc. please contact Stefan Burckhardt stefan.burckhardt@sjib.ch
@@ -23,7 +32,13 @@ COMMENT ON COLUMN qwat_od.sia405cc_cable_point.name_number IS '';
 --ALTER TABLE qwat_od.sia405cc_cable_point ADD COLUMN geometry_geometry geometry('POINT', :SRID);
 -- CREATE INDEX in_qwat_sia405cc_cable_point_geometry_geometry ON qwat_od.sia405cc_cable_point USING gist (geometry_geometry );
 -- COMMENT ON COLUMN qwat_od.sia405cc_cable_point.geometry_geometry IS '';
-ALTER TABLE qwat_od.sia405cc_cable_point ADD COLUMN geometry3d_geometry geometry('POINTZ', :SRID);
+
+-- Adapted for Delta file
+--ALTER TABLE qwat_od.sia405cc_cable_point ADD COLUMN geometry3d_geometry geometry('POINTZ', :SRID);
+
+-- Construire et exécuter la commande ALTER TABLE avec la valeur SRID récupérée
+EXECUTE format('ALTER TABLE qwat_od.sia405pt_protection_tube ADD COLUMN geometry3d_geometry geometry(''POINTZ'', %s)', srid_value);
+
 CREATE INDEX in_qwat_sia405cc_cable_point_geometry3d_geometry ON qwat_od.sia405cc_cable_point USING gist (geometry3d_geometry );
 COMMENT ON COLUMN qwat_od.sia405cc_cable_point.geometry3d_geometry IS '';
  ALTER TABLE qwat_od.sia405cc_cable_point ADD COLUMN kind  integer ;
@@ -107,7 +122,13 @@ COMMENT ON COLUMN qwat_od.sia405cc_cable.condition IS '';
 COMMENT ON COLUMN qwat_od.sia405cc_cable.remark IS '';
  ALTER TABLE qwat_od.sia405cc_cable ADD COLUMN width  smallint ;
 COMMENT ON COLUMN qwat_od.sia405cc_cable.width IS '';
-ALTER TABLE qwat_od.sia405cc_cable ADD COLUMN geometry3d_geometry geometry('COMPOUNDCURVEZ', :SRID);
+
+-- Adapted for Delta file
+--ALTER TABLE qwat_od.sia405cc_cable ADD COLUMN geometry3d_geometry geometry('COMPOUNDCURVEZ', :SRID);
+
+-- Construire et exécuter la commande ALTER TABLE avec la valeur SRID récupérée
+EXECUTE format('ALTER TABLE qwat_od.sia405cc_cable ADD COLUMN geometry3d_geometry geometry(''COMPOUNDCURVEZ'', %s)', srid_value);
+
 CREATE INDEX in_qwat_sia405cc_cable_geometry3d_geometry ON qwat_od.sia405cc_cable USING gist (geometry3d_geometry );
 COMMENT ON COLUMN qwat_od.sia405cc_cable.geometry3d_geometry IS '';
  ALTER TABLE qwat_od.sia405cc_cable ADD COLUMN elevation_determination  integer ;
@@ -241,4 +262,4 @@ ALTER TABLE qwat_od.sia405cc_cable_point ADD COLUMN fk_folder        integer ;
 ALTER TABLE qwat_od.sia405cc_cable_point ADD CONSTRAINT sia405cc_cable_point_fk_folder         FOREIGN KEY (fk_folder)         REFERENCES qwat_od.folder(id)             MATCH FULL; CREATE INDEX fki_sia405cc_cable_point_fk_folder        ON qwat_od.sia405cc_cable_point(fk_folder);
 
 
-
+END $$;
