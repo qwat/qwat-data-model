@@ -1,3 +1,11 @@
+DO $$
+DECLARE
+    srid_value INTEGER;
+BEGIN
+    -- Récupérer la valeur SRID depuis la table qwat_sys.settings
+    SELECT value INTO srid_value FROM qwat_sys.settings WHERE name = 'srid';
+
+
 ------ This file generates the postgres database (Modul schutzrohr (based on SIA405_SCHUTZROHR_3D_2015_LV95 (Version 18.04.2018) in en for QQIS
 ------ Rename classes for integration in specific TEKSI module based on this convention: https://github.com/orgs/teksi/discussions/100#discussioncomment-9058690
 ------ For questions etc. please contact Stefan Burckhardt stefan.burckhardt@sjib.ch
@@ -46,7 +54,13 @@ COMMENT ON COLUMN qwat_od.sia405pt_protection_tube.condition IS '';
  ALTER TABLE qwat_od.sia405pt_protection_tube ADD COLUMN remark text;
  ALTER TABLE qwat_od.sia405pt_protection_tube ADD CONSTRAINT _remark_length_max_80 CHECK(char_length(remark)<=80);
 COMMENT ON COLUMN qwat_od.sia405pt_protection_tube.remark IS 'General remarks / Allgemeine Bemerkungen / Remarques générales';
+
+-- Adapted for Delta file
 ALTER TABLE qwat_od.sia405pt_protection_tube ADD COLUMN geometry3d_geometry geometry('COMPOUNDCURVEZ', :SRID);
+
+-- Construire et exécuter la commande ALTER TABLE avec la valeur SRID récupérée
+EXECUTE format('ALTER TABLE qwat_od.sia405pt_protection_tube ADD COLUMN geometry3d_geometry geometry(''COMPOUNDCURVEZ'', %s)', srid_value);
+
 CREATE INDEX in_qwat_sia405pt_protection_tube_geometry3d_geometry ON qwat_od.sia405pt_protection_tube USING gist (geometry3d_geometry );
 COMMENT ON COLUMN qwat_od.sia405pt_protection_tube.geometry3d_geometry IS '';
  ALTER TABLE qwat_od.sia405pt_protection_tube ADD COLUMN last_modification TIMESTAMP without time zone DEFAULT now();
