@@ -56,7 +56,7 @@ COMMENT ON COLUMN qwat_od.sia405pt_protection_tube.condition IS '';
 COMMENT ON COLUMN qwat_od.sia405pt_protection_tube.remark IS 'General remarks / Allgemeine Bemerkungen / Remarques générales';
 
 -- Adapted for Delta file
-ALTER TABLE qwat_od.sia405pt_protection_tube ADD COLUMN geometry3d_geometry geometry('COMPOUNDCURVEZ', :SRID);
+--ALTER TABLE qwat_od.sia405pt_protection_tube ADD COLUMN geometry3d_geometry geometry('COMPOUNDCURVEZ', :SRID);
 
 -- Construire et exécuter la commande ALTER TABLE avec la valeur SRID récupérée
 EXECUTE format('ALTER TABLE qwat_od.sia405pt_protection_tube ADD COLUMN geometry3d_geometry geometry(''COMPOUNDCURVEZ'', %s)', srid_value);
