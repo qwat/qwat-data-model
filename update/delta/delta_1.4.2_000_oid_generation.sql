@@ -19,15 +19,7 @@ COMMENT ON TABLE qwat_sys.oid_prefixes
 
 -- sample entry for Invalid - you need to adapt this entry later for your own organization
 INSERT INTO qwat_sys.oid_prefixes (prefix,organization,active) VALUES ('ch000000','Invalid',TRUE);
-INSERT INTO qwat_sys.oid_prefixes (prefix,organization,active) VALUES ('ch11h8mw','Stadt Uster',FALSE);
-INSERT INTO qwat_sys.oid_prefixes (prefix,organization,active) VALUES ('ch15z36d','SIGE',FALSE);
-INSERT INTO qwat_sys.oid_prefixes (prefix,organization,active) VALUES ('ch13p7mz','Arbon',FALSE);
-INSERT INTO qwat_sys.oid_prefixes (prefix,organization,active) VALUES ('ch176dc9','Sigip',FALSE);
-INSERT INTO qwat_sys.oid_prefixes (prefix,organization,active) VALUES ('ch17f516','Prilly',FALSE);
-INSERT INTO qwat_sys.oid_prefixes (prefix,organization,active) VALUES ('ch17nq5g','Triform',FALSE);
-INSERT INTO qwat_sys.oid_prefixes (prefix,organization,active) VALUES ('ch2003p6','Vevey',FALSE);
-INSERT INTO qwat_sys.oid_prefixes (prefix,organization,active) VALUES ('ch238z74','La Tour-de-Peilz',FALSE);
-INSERT INTO qwat_sys.oid_prefixes (prefix,organization,active) VALUES ('ch234hqx','BTI',FALSE);
+
 
 CREATE INDEX in_qwat_is_oid_prefixes_active
   ON qwat_sys.oid_prefixes
