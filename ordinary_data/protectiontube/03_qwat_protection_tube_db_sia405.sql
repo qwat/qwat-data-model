@@ -1,7 +1,7 @@
 ------ This file generates the postgres database (Modul schutzrohr (based on SIA405_SCHUTZROHR_3D_2015_LV95 (Version 18.04.2018) in en for QQIS
 ------ Rename classes for integration in specific TEKSI module based on this convention: https://github.com/orgs/teksi/discussions/100#discussioncomment-9058690
 ------ For questions etc. please contact Stefan Burckhardt stefan.burckhardt@sjib.ch
------- version 28.10.2024 20:55:20
+------ version 09.12.2024 10:33:37
 ------ with 3D coordinates
 BEGIN;
 
@@ -27,7 +27,7 @@ COMMENT ON COLUMN qwat_od.sia405pt_protection_tube.name_number IS '';
 COMMENT ON COLUMN qwat_od.sia405pt_protection_tube.material IS '';
  ALTER TABLE qwat_od.sia405pt_protection_tube ADD COLUMN nominal_diameter text;
  ALTER TABLE qwat_od.sia405pt_protection_tube ADD CONSTRAINT _nominal_diameter_length_max_10 CHECK(char_length(nominal_diameter)<=10);
-COMMENT ON COLUMN qwat_od.sia405pt_protection_tube.nominal_diameter IS '';
+COMMENT ON COLUMN qwat_od.sia405pt_protection_tube.nominal_diameter IS 'as TEXT, as in some cases double values with slash (eg. 1500/800) / als TEXT, da zum Teil auch Doppelwerte mit Schrägstrich (z.B. 1500/800) / comme TEXTE, parcequ''on a aussi des valeurs doubles (par example 1500/800)';
  ALTER TABLE qwat_od.sia405pt_protection_tube ADD COLUMN outside_diameter  smallint ;
 COMMENT ON COLUMN qwat_od.sia405pt_protection_tube.outside_diameter IS '';
  ALTER TABLE qwat_od.sia405pt_protection_tube ADD COLUMN lenght  smallint ;
@@ -62,7 +62,7 @@ BEFORE UPDATE OR INSERT ON
  qwat_od.sia405pt_protection_tube
 FOR EACH ROW EXECUTE PROCEDURE
  qwat_sys.update_last_modified();
- 
+
 ------------ Relationships and Value Tables ----------- ;
 ALTER TABLE qwat_od.sia405pt_protection_tube ADD COLUMN fk_owner varchar(16);
 ALTER TABLE qwat_od.sia405pt_protection_tube ADD CONSTRAINT rel_sia405pt_protection_tube_owner FOREIGN KEY (fk_owner) REFERENCES qwat_od.organisation(obj_id) ON UPDATE CASCADE ON DELETE set null DEFERRABLE INITIALLY DEFERRED;
