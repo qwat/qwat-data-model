@@ -31,7 +31,7 @@ COMMENT ON COLUMN qwat_od.sia405cc_cable_point.kind IS '';
  ALTER TABLE qwat_od.sia405cc_cable_point ADD COLUMN horizontal_positioning  integer ;
 COMMENT ON COLUMN qwat_od.sia405cc_cable_point.horizontal_positioning IS '';
  ALTER TABLE qwat_od.sia405cc_cable_point ADD COLUMN altitude  decimal(7,3) ;
-COMMENT ON COLUMN qwat_od.sia405cc_cable_point.altitude IS 'Altitude of component / Oberkante Bauteil / Bord supérieur de l'élément contructif';
+COMMENT ON COLUMN qwat_od.sia405cc_cable_point.altitude IS 'Altitude of component / Oberkante Bauteil / Bord supérieur de l''élément contructif';
  ALTER TABLE qwat_od.sia405cc_cable_point ADD COLUMN elevation_determination  integer ;
 COMMENT ON COLUMN qwat_od.sia405cc_cable_point.elevation_determination IS 'Elevation determination of geometry (3D) / Höhenbestimmung der Geometrie (3D) / Définition de la détermination altimétrique de la Géométrie (3D)';
  ALTER TABLE qwat_od.sia405cc_cable_point ADD COLUMN status  integer ;
@@ -39,7 +39,7 @@ COMMENT ON COLUMN qwat_od.sia405cc_cable_point.status IS 'Operating and planning
  ALTER TABLE qwat_od.sia405cc_cable_point ADD COLUMN installation_year  smallint ;
 COMMENT ON COLUMN qwat_od.sia405cc_cable_point.installation_year IS '';
  ALTER TABLE qwat_od.sia405cc_cable_point ADD COLUMN sur_plus_cover  decimal(4,1) ;
-COMMENT ON COLUMN qwat_od.sia405cc_cable_point.sur_plus_cover IS 'Numerical mean value of an object / Numerisch mittlerer Wert eines Objektes / Valeur moyenne d'un objet';
+COMMENT ON COLUMN qwat_od.sia405cc_cable_point.sur_plus_cover IS 'Numerical mean value of an object / Numerisch mittlerer Wert eines Objektes / Valeur moyenne d''un objet';
  ALTER TABLE qwat_od.sia405cc_cable_point ADD COLUMN condition text;
  ALTER TABLE qwat_od.sia405cc_cable_point ADD CONSTRAINT _condition_length_max_40 CHECK(char_length(condition)<=40);
 COMMENT ON COLUMN qwat_od.sia405cc_cable_point.condition IS '';
