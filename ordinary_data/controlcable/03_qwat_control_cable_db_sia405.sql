@@ -1,7 +1,7 @@
 ------ This file generates the postgres database (Modul fernwirkkabel (based on SIA405_FERNWIRKKABEL_3D_2015_LV95 (Version 18.04.2018) in en for QQIS
 ------ Rename classes for integration in specific TEKSI module based on this convention: https://github.com/orgs/teksi/discussions/100#discussioncomment-9058690
 ------ For questions etc. please contact Stefan Burckhardt stefan.burckhardt@sjib.ch
------- version 28.10.2024 20:47:23
+------ version 09.12.2024 11:13:15
 ------ with 3D coordinates
 
 --- CREATE FUNCTION qgep_sys.update_last_modified() exists already
@@ -31,15 +31,15 @@ COMMENT ON COLUMN qwat_od.sia405cc_cable_point.kind IS '';
  ALTER TABLE qwat_od.sia405cc_cable_point ADD COLUMN horizontal_positioning  integer ;
 COMMENT ON COLUMN qwat_od.sia405cc_cable_point.horizontal_positioning IS '';
  ALTER TABLE qwat_od.sia405cc_cable_point ADD COLUMN altitude  decimal(7,3) ;
-COMMENT ON COLUMN qwat_od.sia405cc_cable_point.altitude IS '';
+COMMENT ON COLUMN qwat_od.sia405cc_cable_point.altitude IS 'Altitude of component / Oberkante Bauteil / Bord supérieur de l'élément contructif';
  ALTER TABLE qwat_od.sia405cc_cable_point ADD COLUMN elevation_determination  integer ;
-COMMENT ON COLUMN qwat_od.sia405cc_cable_point.elevation_determination IS '';
+COMMENT ON COLUMN qwat_od.sia405cc_cable_point.elevation_determination IS 'Elevation determination of geometry (3D) / Höhenbestimmung der Geometrie (3D) / Définition de la détermination altimétrique de la Géométrie (3D)';
  ALTER TABLE qwat_od.sia405cc_cable_point ADD COLUMN status  integer ;
 COMMENT ON COLUMN qwat_od.sia405cc_cable_point.status IS 'Operating and planning status of the structure / Betriebs- bzw. Planungszustand des Bauwerks / Etat de fonctionnement et de planification de l’ouvrage';
  ALTER TABLE qwat_od.sia405cc_cable_point ADD COLUMN installation_year  smallint ;
 COMMENT ON COLUMN qwat_od.sia405cc_cable_point.installation_year IS '';
  ALTER TABLE qwat_od.sia405cc_cable_point ADD COLUMN sur_plus_cover  decimal(4,1) ;
-COMMENT ON COLUMN qwat_od.sia405cc_cable_point.sur_plus_cover IS '';
+COMMENT ON COLUMN qwat_od.sia405cc_cable_point.sur_plus_cover IS 'Numerical mean value of an object / Numerisch mittlerer Wert eines Objektes / Valeur moyenne d'un objet';
  ALTER TABLE qwat_od.sia405cc_cable_point ADD COLUMN condition text;
  ALTER TABLE qwat_od.sia405cc_cable_point ADD CONSTRAINT _condition_length_max_40 CHECK(char_length(condition)<=40);
 COMMENT ON COLUMN qwat_od.sia405cc_cable_point.condition IS '';
@@ -47,15 +47,15 @@ COMMENT ON COLUMN qwat_od.sia405cc_cable_point.condition IS '';
  ALTER TABLE qwat_od.sia405cc_cable_point ADD CONSTRAINT _remark_length_max_80 CHECK(char_length(remark)<=80);
 COMMENT ON COLUMN qwat_od.sia405cc_cable_point.remark IS 'General remarks / Allgemeine Bemerkungen / Remarques générales';
  ALTER TABLE qwat_od.sia405cc_cable_point ADD COLUMN dimension1  smallint ;
-COMMENT ON COLUMN qwat_od.sia405cc_cable_point.dimension1 IS '';
+COMMENT ON COLUMN qwat_od.sia405cc_cable_point.dimension1 IS 'Larger dimension of an object (e.g. length) / grösseres Mass eines Objektes (z.B. Länge) / plus grande mesure d''un objet (par ex. Longueur, diamètre)';
  ALTER TABLE qwat_od.sia405cc_cable_point ADD COLUMN dimension2  smallint ;
-COMMENT ON COLUMN qwat_od.sia405cc_cable_point.dimension2 IS '';
+COMMENT ON COLUMN qwat_od.sia405cc_cable_point.dimension2 IS 'smaller dimension of an object (e.g. width) / kleineres Mass eines Objektes (z.B. Breite) / plus petite msure d''un objet (par ex. Largeur)';
  ALTER TABLE qwat_od.sia405cc_cable_point ADD COLUMN altitude_lower_edge  decimal(7,3) ;
-COMMENT ON COLUMN qwat_od.sia405cc_cable_point.altitude_lower_edge IS ' / Höhe Unterkante';
-ALTER TABLE qwat_od.sia405cc_cable_point ADD COLUMN symbolori  decimal(4,1) ;
+COMMENT ON COLUMN qwat_od.sia405cc_cable_point.altitude_lower_edge IS 'Altitude lower edge of component / Höhe Unterkante / bord inférieur de l''élément constructif';
+ ALTER TABLE qwat_od.sia405cc_cable_point ADD COLUMN symbolori  decimal(4,1) ;
 COMMENT ON COLUMN qwat_od.sia405cc_cable_point.symbolori IS 'Default: 90 degree / Default: 90 Grad / Default: 90 degre';
  ALTER TABLE qwat_od.sia405cc_cable_point ADD COLUMN depth  smallint ;
-COMMENT ON COLUMN qwat_od.sia405cc_cable_point.depth IS '';
+COMMENT ON COLUMN qwat_od.sia405cc_cable_point.depth IS 'Extension3D, Fonction (calculated value) = altitude minus altitude_lower_edge / Erweiterung 3D, Funktion (berechneter Wert) = Hoehe minus Hoehe_UK. / Extension 3D, Fonction (valuer calculée) = Altitude minus Altitude_BI.';
  ALTER TABLE qwat_od.sia405cc_cable_point ADD COLUMN last_modification TIMESTAMP without time zone DEFAULT now();
 COMMENT ON COLUMN qwat_od.sia405cc_cable_point.last_modification IS 'Last modification / Letzte_Aenderung / Derniere_modification: INTERLIS_1_DATE';
  ALTER TABLE qwat_od.sia405cc_cable_point ADD COLUMN fk_dataowner varchar(16);
@@ -106,14 +106,14 @@ COMMENT ON COLUMN qwat_od.sia405cc_cable.condition IS '';
  ALTER TABLE qwat_od.sia405cc_cable ADD CONSTRAINT _remark_length_max_80 CHECK(char_length(remark)<=80);
 COMMENT ON COLUMN qwat_od.sia405cc_cable.remark IS '';
  ALTER TABLE qwat_od.sia405cc_cable ADD COLUMN width  smallint ;
-COMMENT ON COLUMN qwat_od.sia405cc_cable.width IS '';
+COMMENT ON COLUMN qwat_od.sia405cc_cable.width IS 'Width of cable trench / Breite Kabeltrasse / xxx_Breite Kabeltrasse';
 ALTER TABLE qwat_od.sia405cc_cable ADD COLUMN geometry3d_geometry geometry('COMPOUNDCURVEZ', :SRID);
 CREATE INDEX in_qwat_sia405cc_cable_geometry3d_geometry ON qwat_od.sia405cc_cable USING gist (geometry3d_geometry );
 COMMENT ON COLUMN qwat_od.sia405cc_cable.geometry3d_geometry IS '';
  ALTER TABLE qwat_od.sia405cc_cable ADD COLUMN elevation_determination  integer ;
 COMMENT ON COLUMN qwat_od.sia405cc_cable.elevation_determination IS '';
  ALTER TABLE qwat_od.sia405cc_cable ADD COLUMN depth  smallint ;
-COMMENT ON COLUMN qwat_od.sia405cc_cable.depth IS 'Extension 3D, depth (height) of an object [mm]. / Erweiterung 3D Mächtigkeit (Höhe) eines Objektes [mm]. / Extension 3D, épaisseur (hauteur) d''un objet [mm].';
+COMMENT ON COLUMN qwat_od.sia405cc_cable.depth IS 'Extension 3D, heigth of of cable trench [mm]. / Erweiterung 3D, Mächtigkeit (Höhe) Kabeltrasse [mm]. / Extension 3D, épaisseur (largeur) du trace du câble [mm].';
  ALTER TABLE qwat_od.sia405cc_cable ADD COLUMN last_modification TIMESTAMP without time zone DEFAULT now();
 COMMENT ON COLUMN qwat_od.sia405cc_cable.last_modification IS 'Last modification / Letzte_Aenderung / Derniere_modification: INTERLIS_1_DATE';
  ALTER TABLE qwat_od.sia405cc_cable ADD COLUMN fk_dataowner varchar(16);
@@ -234,6 +234,6 @@ ALTER TABLE qwat_od.sia405cc_cable ADD CONSTRAINT rel_od_sia405cc_cable_fk_datap
  CREATE UNIQUE INDEX in_od_sia405cc_cable_name_number ON qwat_od.sia405cc_cable USING btree (name_number ASC NULLS LAST, fk_dataowner ASC NULLS LAST);
 
 
--- For m:n relation tables to avoid duplicate entries
+													 
 
 
