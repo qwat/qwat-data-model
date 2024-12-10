@@ -26,7 +26,7 @@ ALTER TABLE qwat_od.pipe ADD COLUMN year             smallint;
 ALTER TABLE qwat_od.pipe ADD COLUMN year_rehabilitation smallint;
 ALTER TABLE qwat_od.pipe ADD COLUMN year_end         smallint;
 ALTER TABLE qwat_od.pipe ADD COLUMN tunnel_or_bridge boolean default false;
-ALTER TABLE qwat_od.pipe ADD COLUMN pressure_nominal smallint default 16;
+ALTER TABLE qwat_od.pipe ADD COLUMN pressure_nominal smallint;
 ALTER TABLE qwat_od.pipe ADD COLUMN remark           text         ;
 ALTER TABLE qwat_od.pipe ADD COLUMN _valve_count     smallint default NULL;
 ALTER TABLE qwat_od.pipe ADD COLUMN _valve_closed    boolean default NULL;
