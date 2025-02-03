@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-DB_BASE_NAME=teksi_wastewater
+DB_BASE_NAME=qwat
 
 set -e
 
