@@ -7,10 +7,13 @@ concurrency:
 on:
   push:
     branches:
-      - main
+      - master
+    paths:
+      - datamodel/**
+      - '.github/workflows/datamodel-create-dumps.yml'
   pull_request:
     branches:
-      - main
+      - master
     paths:
       - datamodel/**
       - '.github/workflows/datamodel-create-dumps.yml'

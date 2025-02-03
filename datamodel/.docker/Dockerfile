@@ -31,8 +31,8 @@ RUN if [ "${RUN_TEST}" = "True" ]; then pip install -r datamodel/requirements-te
 
 # Configure the postgres connections
 RUN printf '[postgres]\ndbname=postgres\nuser=postgres\n' >> /etc/postgresql-common/pg_service.conf
-RUN printf '[pg_tww]\ndbname=tww\nuser=postgres\n' >> /etc/postgresql-common/pg_service.conf
-RUN printf '[pg_tww_demo]\ndbname=tww_demo\nuser=postgres\n' >> /etc/postgresql-common/pg_service.conf
+RUN printf '[pg_qwat]\ndbname=qwat\nuser=postgres\n' >> /etc/postgresql-common/pg_service.conf
+RUN printf '[pg_qwat_demo]\ndbname=qwat_demo\nuser=postgres\n' >> /etc/postgresql-common/pg_service.conf
 
 RUN chmod +x /src/datamodel/.docker/init_db.sh
 ENV PATH="/src/datamodel/.docker:${PATH}"
@@ -45,6 +45,6 @@ ENV POSTGRES_PASSWORD=postgres
 # otherwise psycopg cannot connect
 ENV PGSERVICEFILE=/etc/postgresql-common/pg_service.conf
 
-ENV PGSERVICE=pg_tww
+ENV PGSERVICE=pg_qwat
 
 ENV PYTEST_ADDOPTS="--color=yes"
