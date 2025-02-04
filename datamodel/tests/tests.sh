@@ -24,7 +24,7 @@ PGSERVICE=pg_qwat_test
 
 if [ "$INIT_DB" = "1" ]; then
     cd ${DIR}/..
-    ./init_qwat.sh -p ${PGSERVICE} -d
+    ./setup.sh -p ${PGSERVICE} -d
     cd -
 fi
 

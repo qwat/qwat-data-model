@@ -166,7 +166,7 @@ fi
 printf "\n${BLUE}Initializing qwat comparison db${NC}\n\n"
 
 sleep 1
-${SCRIPTDIR}/../init_qwat.sh -p pg_qwat_comp -s $SRID
+${SCRIPTDIR}/../setup.sh -p pg_qwat_comp -s $SRID
 
 # Initialize qwat db with extensions/customizations
 for i in "${INITFILES[@]}"

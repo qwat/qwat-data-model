@@ -28,9 +28,9 @@ pum restore -p pg_qwat_prod qwat_dump.backup
 # Set the baseline for the prod database
 pum baseline -p pg_qwat_prod -t qwat_sys.info -d $DELTA_DIRS -b 1.2.1
 
-# Run init_qwat.sh to create the last version of qwat db used as the comp database
+# Run setup.sh to create the last version of qwat db used as the comp database
 echo "::group::Initialize database"
-$TRAVIS_BUILD_DIR/init_qwat.sh -p pg_qwat_comp -s 21781 -r -n
+$TRAVIS_BUILD_DIR/setup.sh -p pg_qwat_comp -s 21781 -r -n
 psql service=pg_qwat_comp -f $EXTRA_DELTA_FILE
 echo "::endgroup::"
 

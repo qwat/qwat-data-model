@@ -41,7 +41,7 @@ fi
 # Initialize the databases (qwat_test for the init data, qwat_test_release for restoring the release dump)
 if [ "$INIT_DB" = "1" ]; then
     cd ${DIR}/..
-    ./init_qwat.sh -p ${PGSERVICE1} -d
+    ./setup.sh -p ${PGSERVICE1} -d
     cd -
 fi
 

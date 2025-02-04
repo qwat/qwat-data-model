@@ -53,7 +53,7 @@ PGSERVICE=${COPY_21781} psql -v ON_ERROR_STOP=1 -f $DIR/srid_21781_to_2056.sql
 /usr/bin/pg_dump --host 172.24.171.203 --port 5432 --username "sige" --no-password  --format custom --blobs --verbose --file "qwat_21781_sys.backup" --table "qwat_sys.logged_actions" "qwat_21781"
 
 # create empty QWAT DB
-$DIR/../init_qwat.sh -p ${FINAL_2056} -s 2056 -d
+$DIR/../setup.sh -p ${FINAL_2056} -s 2056 -d
 
 # SIGE specials
 PGSERVICE=${FINAL_2056} psql -v ON_ERROR_STOP=1 -c "ALTER TABLE qwat_od.hydrant ADD COLUMN model character varying(30);"

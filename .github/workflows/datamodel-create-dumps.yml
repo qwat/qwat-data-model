@@ -35,7 +35,7 @@ jobs:
         run: docker compose up -d --build
 
       - name: Initialize container
-        run: docker compose exec db init_db.sh wait
+        run: docker compose exec db /src/datamodel/scripts/setup.sh wait
 
       - name: Create dumps
         run: docker compose exec db /src/datamodel/scripts/create-dumps.py
