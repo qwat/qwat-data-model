@@ -36,16 +36,16 @@ jobs:
         run: docker compose up -d --build
 
       - name: Grant execute permissions for setup.sh
-        run: chmod +x ${{github.workspace}}/datamodel/scripts/setup.sh
+        run: chmod +x /src/datamodel/scripts/setup.sh
 
       - name: Check existence of init_db.sh
-        run: ls -ltra ${{github.workspace}}/datamodel/scripts/init_db.sh
+        run: ls -ltra /src/datamodel/.docker/init_db.sh
 
       - name: Initialize container
-        run: docker compose exec db ${{github.workspace}}/datamodel/scripts/init_db.sh wait
+        run: docker compose exec db init_db.sh wait
 
       - name: Create dumps
-        run: docker compose exec db ${{github.workspace}}/datamodel/scripts/create-dumps.py
+        run: docker compose exec db /src/datamodel/scripts/create-dumps.py
 
       - name: Schemaspy
         run:  docker compose run schemaspy
