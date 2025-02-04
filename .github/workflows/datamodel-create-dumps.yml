@@ -38,6 +38,9 @@ jobs:
       - name: Grant execute permissions for setup.sh
         run: chmod +x ${{github.workspace}}/datamodel/scripts/setup.sh
 
+      - name: Check existence of init_db.sh
+        run: ls -ltra /src/datamodel/scripts/init_db.sh
+
       - name: Initialize container
         run: docker compose exec db init_db.sh wait
 
