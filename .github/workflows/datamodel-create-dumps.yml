@@ -35,9 +35,6 @@ jobs:
       - name: Docker build
         run: docker compose up -d --build
 
-      - name: Check existence of init_db.sh
-        run: ls -ltra /src/datamodel/.docker/init_db.sh
-
       - name: Initialize container
         run: docker compose exec db init_db.sh wait
 
