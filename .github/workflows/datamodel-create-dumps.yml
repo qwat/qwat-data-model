@@ -39,10 +39,10 @@ jobs:
         run: chmod +x ${{github.workspace}}/datamodel/scripts/setup.sh
 
       - name: Check existence of init_db.sh
-        run: ls -ltra /src/datamodel/scripts/init_db.sh
+        run: ls -ltra ${{github.workspace}}/datamodel/scripts/init_db.sh
 
       - name: Initialize container
-        run: docker compose exec db init_db.sh wait
+        run: docker compose exec db ${{github.workspace}}/datamodel/scripts/init_db.sh wait
 
       - name: Create dumps
         run: docker compose exec db ${{github.workspace}}/datamodel/scripts/create-dumps.py
