@@ -35,9 +35,6 @@ jobs:
       - name: Docker build
         run: docker compose up -d --build
 
-      - name: Grant execute permissions for init_db.sh
-        run: chmod +x /src/datamodel/.docker/init_db.sh
-
       - name: Grant execute permissions for setup.sh
         run: chmod +x /src/datamodel/scripts/setup.sh
 
