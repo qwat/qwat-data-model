@@ -39,7 +39,7 @@ jobs:
         run: chmod +x ${{github.workspace}}/datamodel/scripts/setup.sh
 
       - name: Initialize container
-        run: docker compose exec db ${{github.workspace}}/datamodel/scripts/init_db.sh wait
+        run: docker compose exec db init_db.sh wait
 
       - name: Create dumps
         run: docker compose exec db ${{github.workspace}}/datamodel/scripts/create-dumps.py
