@@ -52,14 +52,26 @@ jobs:
       - name: Install Python dependencies
         run: pip install -r datamodel/requirements.txt
 
+      - name: Grant execute permissions for tests.sh
+        run: chmod +x datamodel/tests/tests.sh
+
       - name: Run tests
         run: datamodel/tests/tests.sh
 
+      - name: Grant execute permissions for tests_scalability.sh
+        run: chmod +x datamodel/tests/tests_scalability.sh
+
       - name: Run scalability tests
         run: datamodel/tests/tests_scalability.sh -i 20
+
+      - name: Grant execute permissions for tests_scalability_multithread.sh
+        run: chmod +x datamodel/tests/tests_scalability_multithread.sh
 
       - name: Run scalability tests multithreaded
         run: datamodel/tests/tests_scalability_multithread.sh -i 20
 
       - name: Run upgrade tests
         run: datamodel/tests/tests_upgrade.sh
+
+      - name: Grant execute permissions for tests_upgrade.sh
+        run: chmod +x datamodel/tests/tests_upgrade.sh
