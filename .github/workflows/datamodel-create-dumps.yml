@@ -29,13 +29,20 @@ jobs:
       COMPOSE_PROFILES: schemaspy
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
 
       - name: Docker build
         run: docker compose up -d --build
 
+      - name: Grant execute permissions for init_db.sh
+        run: chmod +x /src/datamodel/.docker/init_db.sh
+
+      - name: Grant execute permissions for setup.sh
+        run: chmod +x /src/datamodel/scripts/setup.sh
+
       - name: Initialize container
-        run: docker compose exec db /src/datamodel/scripts/setup.sh wait
+        run: docker compose exec db /src/datamodel/scripts/init_db.sh wait
 
       - name: Create dumps
         run: docker compose exec db /src/datamodel/scripts/create-dumps.py
