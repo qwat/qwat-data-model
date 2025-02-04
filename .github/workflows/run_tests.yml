@@ -70,8 +70,8 @@ jobs:
       - name: Run scalability tests multithreaded
         run: datamodel/tests/tests_scalability_multithread.sh -i 20
 
-      - name: Run upgrade tests
-        run: datamodel/tests/tests_upgrade.sh
-
       - name: Grant execute permissions for tests_upgrade.sh
         run: chmod +x datamodel/tests/tests_upgrade.sh
+
+      - name: Run upgrade tests
+        run: datamodel/tests/tests_upgrade.sh
