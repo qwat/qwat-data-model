@@ -5,7 +5,7 @@
 Stress the DB by inserting, updating and deleting elements
 
 USAGE
-    python test_scalability.py --pg_service qwat_test
+    python test_scalability.py --pg_service pg_qwat_test
 """
 from builtins import str
 from builtins import range

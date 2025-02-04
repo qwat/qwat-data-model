@@ -13,7 +13,7 @@ pgiv = imp.load_source(
 if len(sys.argv) > 1:
     pg_service = sys.argv[1]
 else:
-    pg_service = 'qwat_test'
+    pg_service = 'pg_qwat_test'
 
 
 qwat_node_element = """

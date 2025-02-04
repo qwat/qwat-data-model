@@ -52,7 +52,7 @@ def create_dumps():
                      '--file', dumpfile,
                      '--schema', 'qwat_dr',
                      '--schema', 'qwat_od',
-                     'service=qwat_prod']
+                     'service=pg_qwat_prod']
                     )
     files.append(dumpfile)
     print('::endgroup::')
@@ -71,7 +71,7 @@ def create_dumps():
                      '--file', dumpfile,
                      '--schema', 'qwat_dr',
                      '--schema', 'qwat_od',
-                     'service=qwat_prod']
+                     'service=pg_qwat_prod']
                     )
     files.append(dumpfile)
     print('::endgroup::')
@@ -91,7 +91,7 @@ def create_dumps():
                      '--verbose',
                      '--file', dumpfile,
                      '-N', 'public',
-                     'service=qwat_prod']
+                     'service=pg_qwat_prod']
                     )
     files.append(dumpfile)
     print('::endgroup::')
@@ -108,7 +108,7 @@ def create_dumps():
                      '--verbose',
                      '--file', dumpfile,
                      '-N', 'public',
-                     'service=qwat_prod']
+                     'service=pg_qwat_prod']
                     )
     files.append(dumpfile)
     print('::endgroup::')
@@ -127,7 +127,7 @@ def create_dumps():
                      '--verbose',
                      '--file', dumpfile,
                      '-N', 'public',
-                     'service=qwat_prod']
+                     'service=pg_qwat_prod']
                     )
     files.append(dumpfile)
     print('::endgroup::')
@@ -144,7 +144,7 @@ def create_dumps():
                      '--verbose',
                      '--file', dumpfile,
                      '-N', 'public',
-                     'service=qwat_prod']
+                     'service=pg_qwat_prod']
                     )
     files.append(dumpfile)
     print('::endgroup::')
@@ -164,7 +164,7 @@ def create_dumps():
                      '--verbose',
                      '--file', dumpfile,
                      '--schema', 'qwat_vl',
-                     'service=qwat_prod']
+                     'service=pg_qwat_prod']
                     )
     files.append(dumpfile)
     print('::endgroup::')
@@ -182,7 +182,7 @@ def create_dumps():
                      '--verbose',
                      '--file', dumpfile,
                      '--schema', 'qwat_vl',
-                     'service=qwat_prod']
+                     'service=pg_qwat_prod']
                     )
     files.append(dumpfile)
     print('::endgroup::')

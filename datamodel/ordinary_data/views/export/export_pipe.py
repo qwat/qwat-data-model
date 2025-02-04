@@ -13,7 +13,7 @@ else:
 if len(sys.argv) >= 3:
     pg_service = sys.argv[2]
 else:
-    pg_service = "qwat_test"
+    pg_service = "pg_qwat_test"
 
 definition = yaml.safe_load("""
 

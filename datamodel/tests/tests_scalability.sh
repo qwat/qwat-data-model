@@ -25,7 +25,7 @@ esac
 shift
 done
 
-PGSERVICE=qwat_test
+PGSERVICE=pg_qwat_test
 
 
 if [ "$INIT_DB" = "1" ]; then

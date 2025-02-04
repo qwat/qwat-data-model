@@ -25,8 +25,8 @@ esac
 shift
 done
 
-PGSERVICE1=qwat_test
-PGSERVICE2=qwat_test_release
+PGSERVICE1=pg_qwat_test
+PGSERVICE2=pg_qwat_test_release
 VERSION=1.3.6
 RELEASE_URL=https://github.com/qwat/qwat-data-model/releases/download/${VERSION}/qwat_v${VERSION}_data_and_structure_sample.backup
 RELEASE_LOCATION=/tmp/qwat_v${VERSION}.backup
@@ -45,7 +45,7 @@ if [ "$INIT_DB" = "1" ]; then
     cd -
 fi
 
-# Restore the release to qwat_test_release
+# Restore the release to pg_qwat_test_release
 psql service=${PGSERVICE1} -c 'DROP DATABASE IF EXISTS qwat_test_release'
 psql service=${PGSERVICE1} -c 'CREATE DATABASE qwat_test_release'
 pum restore -p ${PGSERVICE2} -x ${RELEASE_LOCATION}

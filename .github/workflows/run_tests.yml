@@ -38,7 +38,7 @@ jobs:
           --health-timeout 5s
           --health-retries 5
     env:
-      PGSERVICEFILE: ${{github.workspace}}/tests/pg_service.conf
+      PGSERVICEFILE: ${{github.workspace}}/datamodel/tests/pg_service.conf
 
     steps:
 

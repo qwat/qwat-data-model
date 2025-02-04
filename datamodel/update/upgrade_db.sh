@@ -125,14 +125,14 @@ if [[ $CLEAN -eq 1 ]]; then
     sleep 1
 
     # Read DB info from pg_service.conf file
-    DBCOMP_NAME=$(sed -n -e "/^\[qwat_comp]/,/^\[/ p" $PGSERVICEFILE | grep "^dbname" | cut -d"=" -f2)
-    DBCOMP_USER=$(sed -n -e "/^\[qwat_comp]/,/^\[/ p" $PGSERVICEFILE | grep "^user" | cut -d"=" -f2)
-    DBCOMP_HOST=$(sed -n -e "/^\[qwat_test]/,/^\[/ p" $PGSERVICEFILE | grep "^host" | cut -d"=" -f2)
-    DBCOMP_PORT=$(sed -n -e "/^\[qwat_test]/,/^\[/ p" $PGSERVICEFILE | grep "^port" | cut -d"=" -f2)
-    DBTEST_NAME=$(sed -n -e "/^\[qwat_test]/,/^\[/ p" $PGSERVICEFILE | grep "^dbname" | cut -d"=" -f2)
-    DBTEST_USER=$(sed -n -e "/^\[qwat_test]/,/^\[/ p" $PGSERVICEFILE | grep "^user" | cut -d"=" -f2)
-    DBTEST_HOST=$(sed -n -e "/^\[qwat_test]/,/^\[/ p" $PGSERVICEFILE | grep "^host" | cut -d"=" -f2)
-    DBTEST_PORT=$(sed -n -e "/^\[qwat_test]/,/^\[/ p" $PGSERVICEFILE | grep "^port" | cut -d"=" -f2)
+    DBCOMP_NAME=$(sed -n -e "/^\[pg_qwat_comp]/,/^\[/ p" $PGSERVICEFILE | grep "^dbname" | cut -d"=" -f2)
+    DBCOMP_USER=$(sed -n -e "/^\[pg_qwat_comp]/,/^\[/ p" $PGSERVICEFILE | grep "^user" | cut -d"=" -f2)
+    DBCOMP_HOST=$(sed -n -e "/^\[pg_qwat_test]/,/^\[/ p" $PGSERVICEFILE | grep "^host" | cut -d"=" -f2)
+    DBCOMP_PORT=$(sed -n -e "/^\[pg_qwat_test]/,/^\[/ p" $PGSERVICEFILE | grep "^port" | cut -d"=" -f2)
+    DBTEST_NAME=$(sed -n -e "/^\[pg_qwat_test]/,/^\[/ p" $PGSERVICEFILE | grep "^dbname" | cut -d"=" -f2)
+    DBTEST_USER=$(sed -n -e "/^\[pg_qwat_test]/,/^\[/ p" $PGSERVICEFILE | grep "^user" | cut -d"=" -f2)
+    DBTEST_HOST=$(sed -n -e "/^\[pg_qwat_test]/,/^\[/ p" $PGSERVICEFILE | grep "^host" | cut -d"=" -f2)
+    DBTEST_PORT=$(sed -n -e "/^\[pg_qwat_test]/,/^\[/ p" $PGSERVICEFILE | grep "^port" | cut -d"=" -f2)
 
     if [ ! -z "$DBCOMP_HOST" ]; then
 	    COMPHOST="-h $DBCOMP_HOST"
@@ -162,17 +162,17 @@ fi
 
 # initialize qwat db comparison db
 # do not use -r to avoid re-creating the roles, as the roles should already
-# be there for the main qwat_prod database
+# be there for the main pg_qwat_prod database
 printf "\n${BLUE}Initializing qwat comparison db${NC}\n\n"
 
 sleep 1
-${SCRIPTDIR}/../init_qwat.sh -p qwat_comp -s $SRID
+${SCRIPTDIR}/../init_qwat.sh -p pg_qwat_comp -s $SRID
 
 # Initialize qwat db with extensions/customizations
 for i in "${INITFILES[@]}"
 do
 	echo $i
-	$i -p qwat_comp -s $SRID
+	$i -p pg_qwat_comp -s $SRID
 done
 
 # checks delta files from 1.0 lead to the same version as current version, if yes upgrades
@@ -181,27 +181,27 @@ sleep 1
 
 # Run pum test-and-upgrade manually to handle audit triggers (enabled in init script, not in 1.3.6 dump)
 # Backup of db prod
-pum dump -p qwat_prod $TMPFILEDUMP
+pum dump -p pg_qwat_prod $TMPFILEDUMP
 # Restore db dump on db test
-pum restore -p qwat_test $TMPFILEDUMP
+pum restore -p pg_qwat_test $TMPFILEDUMP
 # Apply deltas on db test
-pum upgrade -p qwat_test -t qwat_sys.info -d ${DELTADIRS[*]}
+pum upgrade -p pg_qwat_test -t qwat_sys.info -d ${DELTADIRS[*]}
 
 # Audit triggers are enabled in the init scripts, but not in the released 1.3.6 dump.
 # so we need to enable it, otherwise pum check will detect differences.
 psql -d $DBTEST_NAME -U $DBTEST_USER ${TESTHOST} ${TESTPORT} -c 'SELECT qwat_sys.activate_audit_views();'
 
 # Compare db test with db comp
-pum check -p1 qwat_test -p2 qwat_comp -v 2 -i views rules
+pum check -p1 pg_qwat_test -p2 pg_qwat_comp -v 2 -i views rules
 CHECK=$?
 if [ $CHECK -ne 1 ]; then
     
     printf "\n${GREEN}SUCCESS ${NC} !! Going to upgrade production database...\n\n"
     #Upgrade on db prod
-    pum upgrade -p qwat_prod -t qwat_sys.info -d ${DELTADIRS[*]}
+    pum upgrade -p pg_qwat_prod -t qwat_sys.info -d ${DELTADIRS[*]}
 else 
-    printf "\n${RED}ERROR ${NC} on comparing databases (qwat_test & qwat_comp). Production database will not be upgraded\n"
+    printf "\n${RED}ERROR ${NC} on comparing databases (pg_qwat_test & pg_qwat_comp). Production database will not be upgraded\n"
 fi
 
-#pum test-and-upgrade -pp qwat_prod -pt qwat_test -pc qwat_comp -t qwat_sys.info -d delta/ -f $TMPFILEDUMP -i columns constraints views sequences indexes triggers functions rules
-# pum test-and-upgrade -x -pp qwat_prod -pt qwat_test -pc qwat_comp -t qwat_sys.info -d ${DELTADIRS[*]} -f $TMPFILEDUMP -i views rules
+#pum test-and-upgrade -pp pg_qwat_prod -pt pg_qwat_test -pc pg_qwat_comp -t qwat_sys.info -d delta/ -f $TMPFILEDUMP -i columns constraints views sequences indexes triggers functions rules
+# pum test-and-upgrade -x -pp pg_qwat_prod -pt pg_qwat_test -pc pg_qwat_comp -t qwat_sys.info -d ${DELTADIRS[*]} -f $TMPFILEDUMP -i views rules

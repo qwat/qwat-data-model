@@ -14,11 +14,11 @@ How to use the upgrade_db.sh script ?
 Requirements:
 
  You must have declared three PG services:
- -   qwat_prod
- -   qwat_comp
- -   qwat_test
+ -   pg_qwat_prod
+ -   pg_qwat_comp
+ -   pg_qwat_test
 
- Where each service correspond to a DB. qwat_prod is your main DB. The 2 others are for testing the migration.
+ Where each service correspond to a DB. pg_qwat_prod is your main DB. The 2 others are for testing the migration.
 
 
 run the script :

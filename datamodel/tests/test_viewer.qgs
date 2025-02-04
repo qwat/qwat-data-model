@@ -65,7 +65,7 @@
   <projectlayers layercount="3">
     <maplayer minimumScale="-4.65661e-10" maximumScale="1e+08" simplifyDrawingHints="0" minLabelScale="0" maxLabelScale="1e+08" simplifyDrawingTol="1" geometry="Line" simplifyMaxScale="1" type="vector" hasScaleBasedVisibilityFlag="0" simplifyLocal="1" scaleBasedLabelVisibilityFlag="0">
       <id>pipe20151102084555475</id>
-      <datasource>service='qwat_test' sslmode=disable key='id' srid=21781 type=LineString table="qwat_od"."pipe" (geometry) sql=</datasource>
+      <datasource>service='pg_qwat_test' sslmode=disable key='id' srid=21781 type=LineString table="qwat_od"."pipe" (geometry) sql=</datasource>
       <title></title>
       <abstract></abstract>
       <keywordList>
@@ -546,7 +546,7 @@
     </maplayer>
     <maplayer minimumScale="-4.65661e-10" maximumScale="1e+08" simplifyDrawingHints="0" minLabelScale="0" maxLabelScale="1e+08" simplifyDrawingTol="1" geometry="Point" simplifyMaxScale="1" type="vector" hasScaleBasedVisibilityFlag="0" simplifyLocal="1" scaleBasedLabelVisibilityFlag="0">
       <id>vw_element_valve20151116081440982</id>
-      <datasource>service='qwat_test' sslmode=disable key='id' srid=21781 type=Point table="qwat_od"."vw_element_valve" (geometry) sql=</datasource>
+      <datasource>service='pg_qwat_test' sslmode=disable key='id' srid=21781 type=Point table="qwat_od"."vw_element_valve" (geometry) sql=</datasource>
       <title></title>
       <abstract></abstract>
       <keywordList>
@@ -1098,7 +1098,7 @@ def my_form_open(dialog, layer, feature):
     </maplayer>
     <maplayer minimumScale="0" maximumScale="1e+08" simplifyDrawingHints="0" minLabelScale="0" maxLabelScale="1e+08" simplifyDrawingTol="1" geometry="Point" simplifyMaxScale="1" type="vector" hasScaleBasedVisibilityFlag="0" simplifyLocal="1" scaleBasedLabelVisibilityFlag="0">
       <id>vw_qwat_node20151102084555428</id>
-      <datasource>service='qwat_test' sslmode=disable key='id' srid=21781 type=Point table="qwat_od"."vw_qwat_node" (geometry) sql=</datasource>
+      <datasource>service='pg_qwat_test' sslmode=disable key='id' srid=21781 type=Point table="qwat_od"."vw_qwat_node" (geometry) sql=</datasource>
       <title></title>
       <abstract></abstract>
       <keywordList>
