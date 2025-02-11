@@ -42,7 +42,7 @@ fi
 
 eval set -- "$ARGS";
 
-DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )/.."
 # Default values
 SRID=21781
 DROPSCHEMA=0
