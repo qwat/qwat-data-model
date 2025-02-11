@@ -5,4 +5,5 @@ tmp/
 update/test_migration.expected.sql
 *.orig
 .idea
+.env
 logfile
