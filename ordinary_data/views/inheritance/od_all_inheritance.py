@@ -1,14 +1,16 @@
 #!/usr/bin/env python3
 
 from __future__ import print_function
-import imp
+import importlib.util
 import os
 import sys
 
-pgiv = imp.load_source(
-    'PGInheritanceViewRecursive',
-    os.path.join(os.path.dirname(__file__), 'pg_inheritance_view_recursive.py')
-)
+module_name = 'PGInheritanceViewRecursive'
+module_path = os.path.join(os.path.dirname(__file__), 'pg_inheritance_view_recursive.py')
+
+spec = importlib.util.spec_from_file_location(module_name, module_path)
+pgiv = importlib.util.module_from_spec(spec)
+spec.loader.exec_module(pgiv)
 
 if len(sys.argv) > 1:
     pg_service = sys.argv[1]
@@ -197,7 +199,5 @@ view: qwat_od.vw_element_part
 
 
 """
-# fix_print_with_import
-
 # fix_print_with_import
 print(pgiv.PGInheritanceViewRecursive(pg_service, qwat_node_element).sql_all())
