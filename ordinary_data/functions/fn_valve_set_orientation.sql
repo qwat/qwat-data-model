@@ -73,7 +73,7 @@ $BODY$
 
         -- update the valve table
         UPDATE qwat_od.valve SET
-            orientation    = degrees(_orientation)
+            orientation    = round(degrees(_orientation))
             --_pipe_schema_visible = _grouped.schema_visible
             WHERE id = _valve_id;
     END;
