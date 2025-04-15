@@ -40,7 +40,7 @@ Tests are run automatically on commit by github actions.
 To run them locally (please refer to `run_tests.yml` for up to date steps):
 ```sh
 # start a dev postgis server
-docker run --rm -d -p 5432:5432 -e POSTGRES_DB=qwat_test -e POSTGRES_PASSWORD=postgres --name=qwat_test_db postgis/postgis:9.6-2.5
+docker run --rm -d -p 5432:5432 -e POSTGRES_DB=qwat_test -e POSTGRES_PASSWORD=postgres --name=qwat_test_db postgis/postgis:16-3.5
 
 # include the pgservices for test database
 cat ./tests/pg_service.conf >> ~/.pg_service.conf

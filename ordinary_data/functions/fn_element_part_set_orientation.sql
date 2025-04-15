@@ -141,12 +141,12 @@ AS $function$
 
         -- update network_element and node tables
         UPDATE qwat_od.network_element SET
-            orientation    = degrees(_orientation)
+            orientation    = round(degrees(_orientation))
             --_pipe_schema_visible = _grouped.schema_visible
             WHERE id = _element_id;
 		UPDATE qwat_od.node SET
                 _pipe_node_type = _type,
-				_pipe_orientation = degrees(_orientation)
+				_pipe_orientation = round(degrees(_orientation))
 			WHERE id = _element_id;
 	END;
 $function$
