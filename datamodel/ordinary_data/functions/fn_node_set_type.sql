@@ -117,7 +117,7 @@ $BODY$
         -- update the node table
         UPDATE qwat_od.node SET
             _pipe_node_type      = _type,
-            _pipe_orientation    = degrees(_orientation),
+            _pipe_orientation    = round(degrees(_orientation)),
             _pipe_schema_visible = _grouped.schema_visible
             WHERE id = _node_id;
         --RAISE NOTICE '% %' , _node_id , degrees(_orientation);
