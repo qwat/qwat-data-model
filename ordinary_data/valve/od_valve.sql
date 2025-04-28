@@ -20,7 +20,6 @@ ALTER TABLE qwat_od.valve ADD COLUMN fk_nominal_diameter    integer;
 ALTER TABLE qwat_od.valve ADD COLUMN closed                  boolean default false;
 ALTER TABLE qwat_od.valve ADD COLUMN networkseparation       boolean default false;
 ALTER TABLE qwat_od.valve ADD COLUMN handle_altitude         decimal(10,3);
-ALTER TABLE qwat_od.valve ADD COLUMN handle_geometry         geometry(PointZ,:SRID);
 ALTER TABLE qwat_od.valve ADD COLUMN fk_district             integer;
 ALTER TABLE qwat_od.valve ADD COLUMN fk_pressurezone         integer;
 ALTER TABLE qwat_od.valve ADD COLUMN fk_distributor          integer not null;
@@ -76,6 +75,7 @@ ALTER TABLE qwat_od.valve ADD COLUMN geometry_alt1 geometry('POINTZ',:SRID);
 ALTER TABLE qwat_od.valve ADD COLUMN geometry_alt2 geometry('POINTZ',:SRID);
 ALTER TABLE qwat_od.valve ADD COLUMN update_geometry_alt1 boolean default null; -- used to determine if alternative geometries should be updated when main geometry is updated
 ALTER TABLE qwat_od.valve ADD COLUMN update_geometry_alt2 boolean default null; -- used to determine if alternative geometries should be updated when main geometry is updated
+ALTER TABLE qwat_od.valve ADD COLUMN handle_geometry geometry(PointZ,:SRID);
 
 /* Schema view */
 DO $$ BEGIN PERFORM qwat_sys.fn_enable_schemavisible('valve', 'valve_function', 'fk_valve_function'); END $$;
