@@ -1,4 +1,8 @@
-name: Run tests
+name: 🐘 Datamodel | Tests
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
 
 on:
   push:
@@ -17,7 +21,8 @@ on:
 jobs:
 
   run-tests:
-    runs-on: ubuntu-latest
+    name: Run unit tests on datamodel
+    runs-on: ubuntu-24.04
 
     services:
       postgres:
@@ -33,11 +38,11 @@ jobs:
           --health-timeout 5s
           --health-retries 5
     env:
-      PGSERVICEFILE: ${{github.workspace}}/tests/pg_service.conf
+      PGSERVICEFILE: ${{github.workspace}}/datamodel/tests/pg_service.conf
 
     steps:
 
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: Install PostgreSQL client
         run: |
@@ -45,16 +50,28 @@ jobs:
           sudo apt-get install --yes postgresql-client
 
       - name: Install Python dependencies
-        run: pip install -r requirements.txt
+        run: pip install -r datamodel/requirements.txt
+
+      - name: Grant execute permissions for tests.sh
+        run: chmod +x datamodel/tests/tests.sh
 
       - name: Run tests
-        run: tests/tests.sh
+        run: datamodel/tests/tests.sh
+
+      - name: Grant execute permissions for tests_scalability.sh
+        run: chmod +x datamodel/tests/tests_scalability.sh
 
       - name: Run scalability tests
-        run: tests/tests_scalability.sh -i 20
+        run: datamodel/tests/tests_scalability.sh -i 20
+
+      - name: Grant execute permissions for tests_scalability_multithread.sh
+        run: chmod +x datamodel/tests/tests_scalability_multithread.sh
 
       - name: Run scalability tests multithreaded
-        run: tests/tests_scalability_multithread.sh -i 20
+        run: datamodel/tests/tests_scalability_multithread.sh -i 20
+
+      - name: Grant execute permissions for tests_upgrade.sh
+        run: chmod +x datamodel/tests/tests_upgrade.sh
 
       - name: Run upgrade tests
-        run: tests/tests_upgrade.sh
+        run: datamodel/tests/tests_upgrade.sh

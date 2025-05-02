@@ -1,0 +1,29 @@
+****************
+Upgrade database
+****************
+
+Upgrade script allows you to test that your database can be migrated well to new qwat versions. If things are correct, then it asks to apply upgrade.
+
+The script relies mainly on the PUM tool (PostgreSQL Update Manager) which run with *Python 3* only.
+
+PUM install instructions : https://github.com/opengisch/pum
+
+How to use the upgrade_db.sh script ?
+=====================================
+
+Requirements:
+
+ You must have declared three PG services:
+ -   pg_qwat_prod
+ -   pg_qwat_comp
+ -   pg_qwat_test
+
+ Where each service correspond to a DB. pg_qwat_prod is your main DB. The 2 others are for testing the migration.
+
+
+run the script :
+./upgrade_db.sh
+
+
+
+Launch *./upgrade_db.sh* and follow the instructions.
