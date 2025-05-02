@@ -26,7 +26,7 @@ jobs:
       PGSERVICEFILE: ${{github.workspace}}/tests/pg_service.conf
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: Assert CURRENT_VERSION.txt is up to date
         run: |
