@@ -10,21 +10,21 @@ dbname=postgres
 user=postgres
 password=postgres
 
-[qwat_prod]
+[pg_qwat_prod]
 host=localhost
 dbname=qwat_prod
 user=postgres
 password=postgres
 
-[qwat_test]
+[pg_qwat_test]
 host=localhost
 dbname=qwat_test
 user=postgres
 password=postgres
 
-[qwat_comp]
+[pg_qwat_comp]
 host=localhost
-dbname=qwat_comp
+dbname=pg_qwat_comp
 user=postgres
 password=postgres
 EOF

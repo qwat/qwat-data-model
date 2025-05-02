@@ -1,0 +1,61 @@
+name: 📦 Datamodel | Create dumps
+
+concurrency:
+  group: dumps-${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - datamodel/**
+      - '.github/workflows/datamodel-create-dumps.yml'
+  pull_request:
+    branches:
+      - master
+    paths:
+      - datamodel/**
+      - '.github/workflows/datamodel-create-dumps.yml'
+  workflow_dispatch:
+  workflow_call:
+
+
+jobs:
+  datamodel-dumps:
+    name: Create dumps and schemaspy of datamodel
+    runs-on: ubuntu-24.04
+    env:
+      COMPOSE_PROFILES: schemaspy
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Docker build
+        run: docker compose up -d --build
+
+      - name: Initialize container
+        run: docker compose exec db init_db.sh wait
+
+      - name: Create dumps
+        run: docker compose exec db /src/datamodel/scripts/create-dumps.py
+
+      - name: Schemaspy
+        run:  docker compose run schemaspy
+
+      - name: Docker logs
+        if: failure()
+        run: docker compose logs db
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: datamodel-dumps
+          path: datamodel/artifacts/
+          if-no-files-found: error
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: datamodel-schemaspy
+          path: datamodel/schemaspy/
+          if-no-files-found: error
