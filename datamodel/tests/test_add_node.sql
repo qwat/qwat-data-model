@@ -16,7 +16,7 @@ INSERT INTO qwat_od.pipe (id, fk_node_a, fk_node_b,
        fk_status, fk_watertype,
        geometry) VALUES (1, 1, 2,
        101, 101, 101, 1, 101, 101, 101, 101,
-       st_setsrid('linestring(530000 138260 0,530050 138270 0)'::geometry, 21781));
+       st_setsrid('linestring(2530000 1138260 0,2530050 1138270 0)'::geometry, 2056));
 
 -- add a node to the pipe's start
 INSERT INTO qwat_od.vw_element_hydrant (year, fk_distributor, fk_status, fk_provider,
@@ -28,7 +28,7 @@ INSERT INTO qwat_od.vw_element_hydrant (year, fk_distributor, fk_status, fk_prov
             True, 9.5, 101, 101, 101, 101, 101, 101, 101,
             12.3, 12.3, 12.3,
             '2016/01/01', 'Test',
-            st_setsrid('POINT(530000 138260 0)'::geometry,21781)
+            st_setsrid('POINT(2530000 1138260 0)'::geometry,2056)
             );
 
 -- Now we have 3 vertices on the pipe
@@ -44,7 +44,7 @@ INSERT INTO qwat_od.vw_element_hydrant (year, fk_distributor, fk_status, fk_prov
             True, 9.5, 101, 101, 101, 101, 101, 101, 101,
             12.3, 12.3, 12.3,
             '2016/01/01', 'Test',
-            st_setsrid('POINT(530050 138270 0)'::geometry,21781)
+            st_setsrid('POINT(2530050 1138270 0)'::geometry,2056)
             );
 
 -- Now we have 4 vertices on the pipe
@@ -58,7 +58,7 @@ INSERT INTO qwat_od.valve (id, fk_district, fk_pressurezone, fk_distributor, fk_
     VALUES (1, 1, 1, 1, 1,
        101, 101, 101, 101, 6108, 101, 101,
        2016, True, '{1,2}', 9.5, True,
-       st_setsrid('point(530025 138265 0)'::geometry,21781));
+       st_setsrid('point(2530025 1138265 0)'::geometry,2056));
 
 -- Now we have 3 vertices on the pipe
 SELECT 'num_points_after_add1', st_numpoints(geometry) FROM qwat_od.pipe WHERE id = 1;
@@ -71,7 +71,7 @@ INSERT INTO qwat_od.valve (id, fk_district, fk_pressurezone, fk_distributor, fk_
     VALUES (2, 1, 1, 1, 1,
        101, 101, 101, 101, 6108, 101, 101,
        2016, True, '{1,2}', 9.5, True,
-       st_setsrid('point(530025.2 138265.04 0)'::geometry,21781));
+       st_setsrid('point(2530025.2 1138265.04 0)'::geometry,2056));
 
 -- Another point added
 SELECT 'num_points_after_add2', st_numpoints(geometry) FROM qwat_od.pipe WHERE id = 1;
@@ -84,7 +84,7 @@ INSERT INTO qwat_od.pipe (id,
        geometry) VALUES
        (14428,
        101, 101, 101, 1, 101, 101, 101, 101,
-       ST_GeomFromText('LINESTRINGZ(540899.7448098600 152955.6844859300 0, 540900.2686702100 152955.4115092600 0)',21781)
+       ST_GeomFromText('LINESTRINGZ(2540899.7448098600 1152955.6844859300 0, 2540900.2686702100 1152955.4115092600 0)',2056)
 );
 
 INSERT INTO qwat_od.pipe (id,
@@ -92,7 +92,7 @@ INSERT INTO qwat_od.pipe (id,
        geometry) VALUES
        (14296,
        101, 101, 101, 1, 101, 101, 101, 101,
-       ST_GeomFromText('LINESTRINGZ(540900.2686702100 152955.4115092800 0, 540900.4100672200 152952.3142217600 0)',21781)
+       ST_GeomFromText('LINESTRINGZ(2540900.2686702100 1152955.4115092800 0, 2540900.4100672200 1152952.3142217600 0)',2056)
        --                                                          ^
        --       Here is the small distance to the last end point --+
 );
@@ -105,9 +105,9 @@ INSERT INTO qwat_od.pipe (id, fk_node_a, fk_node_b,
        fk_status, fk_watertype,
        geometry) VALUES (11, 1, 2,
        101, 101, 101, 1, 101, 101, 101, 101,
-       st_setsrid('linestring(530000 148260 0, 530001 148260 0, 530002 148270 0)'::geometry, 21781));
+       st_setsrid('linestring(2530000 1148260 0, 2530001 1148260 0, 2530002 1148270 0)'::geometry, 2056));
 
-UPDATE qwat_od.pipe SET geometry = st_setsrid('linestring(530000 148260 0, 530001 148260 0)'::geometry, 21781) where id=11;
+UPDATE qwat_od.pipe SET geometry = st_setsrid('linestring(2530000 1148260 0, 2530001 1148260 0)'::geometry, 2056) where id=11;
 
 -- restore the initial state
 DELETE FROM qwat_od.valve;

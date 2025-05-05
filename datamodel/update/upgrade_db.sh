@@ -16,7 +16,7 @@ fi
 
 # Default values
 PGSERVICEFILE=~/.pg_service.conf
-SRID=21781
+SRID=2056
 CLEAN=0
 TMPFILEDUMP=/tmp/qwat_dump
 UPGRADE=0

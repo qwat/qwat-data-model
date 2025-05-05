@@ -23,7 +23,7 @@ cat <<EOF
 Usage: $0 [options]
 
 -p| --pgservice      PG service to connect to the database.
--s|--srid            PostGIS SRID. Default to 21781 (ch1903)
+-s|--srid            PostGIS SRID. Default to 2056 (ch1903+)
 -d|--drop-schema     drop schemas (cascaded) if they exist
 --demo               load some demo data (not complete yet)
 -r|--create-roles    create roles in the database
@@ -44,7 +44,7 @@ eval set -- "$ARGS";
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )/.."
 # Default values
-SRID=21781
+SRID=2056
 DROPSCHEMA=0
 CREATEROLES=0
 VERBOSE=0
