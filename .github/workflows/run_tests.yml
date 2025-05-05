@@ -25,6 +25,7 @@ jobs:
     runs-on: ubuntu-24.04
 
     strategy:
+      fail-fast: false
       matrix:
         postgres-version:
           - 15-3.5
