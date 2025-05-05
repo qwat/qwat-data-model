@@ -24,9 +24,16 @@ jobs:
     name: Run unit tests on datamodel
     runs-on: ubuntu-24.04
 
+    strategy:
+      matrix:
+        postgres-version:
+          - 15-3.5
+          - 16-3.5
+          - 17-3.5
+
     services:
       postgres:
-        image: postgis/postgis:16-3.5
+        image: postgis/postgis:${{ matrix.postgres-version }}
         env:
           POSTGRES_DB: qwat_test
           POSTGRES_PASSWORD: postgres
