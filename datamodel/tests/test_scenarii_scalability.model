@@ -1,35 +1,35 @@
 -- add a construction point
-INSERT INTO qwat_dr.constructionpoint (id, geometry) VALUES (ID_CP, ST_Setsrid('point(CP_X1 CP_Y1 CP_Z1)'::geometry,21781));;
+INSERT INTO qwat_dr.constructionpoint (id, geometry) VALUES (ID_CP, ST_Setsrid('point(CP_X1 CP_Y1 CP_Z1)'::geometry,2056));;
 
 -- create pipe
 INSERT INTO qwat_od.pipe (fk_node_a, fk_node_b, fk_function, fk_installmethod, fk_material, fk_distributor, fk_precision, fk_bedding,
        fk_status, fk_watertype, geometry, year, fk_protection,schema_force_visible)
     VALUES (ID_NODE_A, ID_NODE_B, 101, 101, 101, 1, 101, 101, 101, 101,
-       st_setsrid('linestring(CP_X1 CP_Y1 CP_Z1,CP_PX1B CP_PY1B CP_PZ1B,CP_X2 CP_Y2 CP_Z2)'::geometry, 21781), 2016, 101, True);;
+       st_setsrid('linestring(CP_X1 CP_Y1 CP_Z1,CP_PX1B CP_PY1B CP_PZ1B,CP_X2 CP_Y2 CP_Z2)'::geometry, 2056), 2016, 101, True);;
 
 -- cut pipe in half
     -- insert the initial pipe
 INSERT INTO qwat_od.pipe (fk_node_a, fk_node_b, fk_function, fk_installmethod, fk_material, fk_distributor, fk_precision, fk_bedding,
     fk_status, fk_watertype, geometry, year, fk_protection,schema_force_visible)
 VALUES (ID_NODE_A, ID_NODE_B, 101, 101, 101, 1, 101, 101, 101, 101,
-    st_setsrid('linestring(CP_X3 CP_Y3 CP_Z3,CP_X4 CP_Y4 CP_Z4,CP_X5 CP_Y5 CP_Z5)'::geometry, 21781),
+    st_setsrid('linestring(CP_X3 CP_Y3 CP_Z3,CP_X4 CP_Y4 CP_Z4,CP_X5 CP_Y5 CP_Z5)'::geometry, 2056),
     2016, 101, True);;
     -- update that pipe
-UPDATE qwat_od.pipe SET geometry = st_setsrid('linestring(CP_X3 CP_Y3 CP_Z3,CP_X4 CP_Y4 CP_Z4)'::geometry, 21781) WHERE geometry = st_setsrid('linestring(CP_X3 CP_Y3 CP_Z3,CP_X4 CP_Y4 CP_Z4,CP_X5 CP_Y5 CP_Z5)'::geometry, 21781);;
+UPDATE qwat_od.pipe SET geometry = st_setsrid('linestring(CP_X3 CP_Y3 CP_Z3,CP_X4 CP_Y4 CP_Z4)'::geometry, 2056) WHERE geometry = st_setsrid('linestring(CP_X3 CP_Y3 CP_Z3,CP_X4 CP_Y4 CP_Z4,CP_X5 CP_Y5 CP_Z5)'::geometry, 2056);;
     -- create a new one
 INSERT INTO qwat_od.pipe (fk_node_a, fk_node_b, fk_function, fk_installmethod, fk_material, fk_distributor, fk_precision, fk_bedding,
     fk_status, fk_watertype, geometry, year, fk_protection,schema_force_visible)
 VALUES (ID_NODE_A, ID_NODE_B, 101, 101, 101, 1, 101, 101, 101, 101,
-    st_setsrid('linestring(CP_X4 CP_Y4 CP_Z4,CP_X5 CP_Y5 CP_Z5)'::geometry, 21781),
+    st_setsrid('linestring(CP_X4 CP_Y4 CP_Z4,CP_X5 CP_Y5 CP_Z5)'::geometry, 2056),
     2016, 101, True);;
 
 -- create an element part
 INSERT INTO qwat_od.vw_element_part (year, _pipe_orientation, fk_part_type, fk_status, fk_distributor, fk_precision, geometry)
-    SELECT 2016, 1.5, (SELECT id FROM qwat_vl.part_type WHERE value_fr = 'bouchon'), 101, '{1}', 101, st_setsrid('point(CP_PX1B CP_PY1B CP_PZ1B)'::geometry, 21781);;
+    SELECT 2016, 1.5, (SELECT id FROM qwat_vl.part_type WHERE value_fr = 'bouchon'), 101, '{1}', 101, st_setsrid('point(CP_PX1B CP_PY1B CP_PZ1B)'::geometry, 2056);;
 
 -- create an introduction point
 INSERT INTO qwat_od.vw_element_part (year, _pipe_orientation, fk_part_type, fk_status, fk_distributor, fk_precision, geometry)
-    SELECT 2016, 1.5, (SELECT id FROM qwat_vl.part_type WHERE value_fr = 'Point d''introduction'), 101, '{1}', 101, st_setsrid('point(IP_X1 IP_Y1 IP_Z1)'::geometry, 21781);;
+    SELECT 2016, 1.5, (SELECT id FROM qwat_vl.part_type WHERE value_fr = 'Point d''introduction'), 101, '{1}', 101, st_setsrid('point(IP_X1 IP_Y1 IP_Z1)'::geometry, 2056);;
 
 -- create valve
 INSERT INTO qwat_od.valve (id, fk_district, fk_pressurezone, fk_distributor, fk_pipe,
@@ -37,13 +37,13 @@ INSERT INTO qwat_od.valve (id, fk_district, fk_pressurezone, fk_distributor, fk_
        year, closed, fk_maintenance,altitude,schema_force_visible, geometry)
     VALUES (VALVE_ID, 1, 1, 1, 1,
        101, 101, 101, 101, 6108, 101, 101,
-       2016, True, '{1,2}', 9.5, True, st_setsrid('point(CP_X2 CP_Y2 CP_Z2)'::geometry,21781));;
+       2016, True, '{1,2}', 9.5, True, st_setsrid('point(CP_X2 CP_Y2 CP_Z2)'::geometry,2056));;
 
 -- create hydrante (create another pipe for that)
 INSERT INTO qwat_od.pipe (fk_node_a, fk_node_b, fk_function, fk_installmethod, fk_material, fk_distributor, fk_precision, fk_bedding,
        fk_status, fk_watertype, geometry, year, fk_protection,schema_force_visible)
     VALUES (ID_NODE_A, ID_NODE_B, 101, 101, 101, 1, 101, 101, 101, 101,
-       st_setsrid('linestring(HY_X1 HY_Y1 HY_Z1,HY_X2 HY_Y2 HY_Z2)'::geometry, 21781),
+       st_setsrid('linestring(HY_X1 HY_Y1 HY_Z1,HY_X2 HY_Y2 HY_Z2)'::geometry, 2056),
        2016, 101, True);;
 
 INSERT INTO qwat_od.vw_element_hydrant (year, fk_distributor, fk_status, fk_provider,
@@ -51,7 +51,7 @@ INSERT INTO qwat_od.vw_element_hydrant (year, fk_distributor, fk_status, fk_prov
             pressure_static, pressure_dynamic, flow, observation_date, observation_source, geometry)
     VALUES (2016, '{1}', 101, 101, 
             True, 9.5, 101, 101, 101, 101, 101, 101, 101,
-            12.3, 12.3, 12.3, '2016/01/01', 'sbe', st_setsrid('point(HY_X1 HY_Y1 HY_Z1)'::geometry,21781));;
+            12.3, 12.3, 12.3, '2016/01/01', 'sbe', st_setsrid('point(HY_X1 HY_Y1 HY_Z1)'::geometry,2056));;
 
 -- create a leak
 INSERT INTO qwat_od.leak (_repaired, detection_date, address, description,
@@ -62,10 +62,10 @@ INSERT INTO qwat_od.leak (_repaired, detection_date, address, description,
 
 -- create an installation
 INSERT INTO qwat_od.vw_element_installation (altitude, geometry, fk_distributor, installation_type, fk_status, fk_precision, fk_precisionalti, fk_watertype, fk_object_reference, name, year)
-    VALUES (200, ST_SetSRID( ST_MakePoint( IN_X1, IN_Y1, IN_Z1), 21781), '{1}', 'chamber', 101, 101, 101, 101, 101, 'i_INSTALLATION_ID', 2016);;
+    VALUES (200, ST_SetSRID( ST_MakePoint( IN_X1, IN_Y1, IN_Z1), 2056), '{1}', 'chamber', 101, 101, 101, 101, 101, 'i_INSTALLATION_ID', 2016);;
 
 -- create a cover
 INSERT INTO qwat_od.cover (identification, form_dimension, fk_cover_type, circular, fk_installation, geometry, fk_precision)
-    SELECT 'i_INSTALLATION_ID', 15, 101, True, (SELECT id FROM qwat_od.vw_element_installation WHERE name = 'i_INSTALLATION_ID'), ST_SetSRID( ST_MakePoint( CO_X1, CO_Y1, CO_Z1), 21781), (SELECT id FROM qwat_vl.precision WHERE value_fr = 'Inconnu');;
+    SELECT 'i_INSTALLATION_ID', 15, 101, True, (SELECT id FROM qwat_od.vw_element_installation WHERE name = 'i_INSTALLATION_ID'), ST_SetSRID( ST_MakePoint( CO_X1, CO_Y1, CO_Z1), 2056), (SELECT id FROM qwat_vl.precision WHERE value_fr = 'Inconnu');;
 
 

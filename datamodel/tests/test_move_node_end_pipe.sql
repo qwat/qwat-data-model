@@ -16,7 +16,7 @@ INSERT INTO qwat_od.pipe (id, fk_node_a, fk_node_b,
        fk_status, fk_watertype,
        geometry) VALUES (1, 1, 2,
        101, 101, 101, 1, 101, 101, 101, 101,
-       st_setsrid('linestring(530000 140000 0,530000 140010 0)'::geometry, 21781));
+       st_setsrid('linestring(2530000 1140000 0,2530000 1140010 0)'::geometry, 2056));
 
 -- insert an hydrant at the start of the pipe
 INSERT INTO qwat_od.vw_element_hydrant (year, fk_distributor, fk_status, fk_provider,
@@ -28,11 +28,11 @@ INSERT INTO qwat_od.vw_element_hydrant (year, fk_distributor, fk_status, fk_prov
             True, 9.5, 101, 101, 101, 101, 101, 101, 101,
             12.3, 12.3, 12.3,
             '2016/01/01', 'Test',
-            st_setsrid('POINT(530000 140000 0)'::geometry,21781)
+            st_setsrid('POINT(2530000 1140000 0)'::geometry,2056)
             );
 
 -- move hydrant away
-UPDATE qwat_od.vw_element_hydrant set geometry = st_setsrid('point(530001 140000 0)'::geometry,21781) where geometry = st_setsrid('point(530000 140000 0)'::geometry,21781);
+UPDATE qwat_od.vw_element_hydrant set geometry = st_setsrid('point(2530001 1140000 0)'::geometry,2056) where geometry = st_setsrid('point(2530000 1140000 0)'::geometry,2056);
 
 -- restore the initial state
 DELETE FROM qwat_od.vw_element_hydrant;
