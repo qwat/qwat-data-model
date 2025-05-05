@@ -14,7 +14,7 @@ usage() {
 cat << EOF
 Usage: $0 [options]
 -p|--pgservice       PG service to connect to the database.
--s|--srid            PostGIS SRID. Default to 21781 (ch1903)
+-s|--srid            PostGIS SRID. Default to 2056 (ch1903+)
 -d|--drop-schema     Drop schema (cascaded) if it exists
 EOF
 }
@@ -31,7 +31,7 @@ eval set -- "$ARGS";
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 # Default values
-SRID=21781
+SRID=2056
 DROPSCHEMA=0
 
 while true; do
