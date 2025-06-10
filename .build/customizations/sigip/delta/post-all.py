@@ -8,7 +8,7 @@ class RecreateViews(DeltaPy):
         self.write_message('Recreating sigip views')
 
         rewrite_views = os.path.join(self.delta_dir, '..', 'rewrite_views.sh')
-        cmd = 'PGSERVICE={} SRID=21781 {}'.format(self.pg_service, rewrite_views)
+        cmd = 'PGSERVICE={} SRID=2056 {}'.format(self.pg_service, rewrite_views)
         self.write_message(cmd)
         subprocess.check_output(cmd, shell=True)
 

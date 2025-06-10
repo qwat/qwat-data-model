@@ -16,25 +16,25 @@ INSERT INTO qwat_od.pipe (id, fk_node_a, fk_node_b,
        fk_status, fk_watertype,
        geometry) VALUES (1, 1, 2,
        101, 101, 101, 1, 101, 101, 101, 101,
-       st_setsrid('linestring(530000 138260 0,530050 138270 0)'::geometry, 21781));
+       st_setsrid('linestring(2530000 1138260 0,2530050 1138270 0)'::geometry, 2056));
        
 -- all geom should be the same
 SELECT 'test1', st_equals(geometry,geometry_alt1) IS TRUE, _geometry_alt1_used IS FALSE, st_equals(geometry,geometry_alt2) IS TRUE, _geometry_alt2_used IS FALSE from qwat_od.pipe;
 
 -- update main geom, since they were equal and nothing specified, they should be kept the same
-UPDATE qwat_od.pipe SET geometry = st_setsrid('linestring(530001 138260 0,530050 138270 0)'::geometry, 21781);
+UPDATE qwat_od.pipe SET geometry = st_setsrid('linestring(2530001 1138260 0,2530050 1138270 0)'::geometry, 2056);
 SELECT 'test2', st_equals(geometry,geometry_alt1) IS TRUE, _geometry_alt1_used IS FALSE, st_equals(geometry,geometry_alt2) IS TRUE, _geometry_alt2_used IS FALSE from qwat_od.pipe;
 
 -- move main geom and say alt1 should not be moved along => main != 1, and main = 2
-UPDATE qwat_od.pipe SET update_geometry_alt1 = false, geometry = st_setsrid('linestring(530002 138260 0,530050 138270 0)'::geometry, 21781);
+UPDATE qwat_od.pipe SET update_geometry_alt1 = false, geometry = st_setsrid('linestring(2530002 1138260 0,2530050 1138270 0)'::geometry, 2056);
 SELECT 'test3', st_equals(geometry,geometry_alt1) IS FALSE, _geometry_alt1_used IS TRUE, st_equals(geometry,geometry_alt2) IS TRUE, _geometry_alt2_used IS FALSE from qwat_od.pipe;
 
 -- move main geom and say alt1 should move along => main = 1, and main = 2
-UPDATE qwat_od.pipe SET update_geometry_alt1 = true, geometry = st_setsrid('linestring(530003 138260 0,530050 138270 0)'::geometry, 21781);
+UPDATE qwat_od.pipe SET update_geometry_alt1 = true, geometry = st_setsrid('linestring(2530003 1138260 0,2530050 1138270 0)'::geometry, 2056);
 SELECT 'test4', st_equals(geometry,geometry_alt1) IS TRUE, _geometry_alt1_used IS FALSE, st_equals(geometry,geometry_alt2) IS TRUE, _geometry_alt2_used IS FALSE from qwat_od.pipe;
 
 -- move alt1 => main != 1 and main = 2
-UPDATE qwat_od.pipe SET geometry_alt1 = st_setsrid('linestring(530004 138260 0,530050 138270 0)'::geometry, 21781);
+UPDATE qwat_od.pipe SET geometry_alt1 = st_setsrid('linestring(2530004 1138260 0,2530050 1138270 0)'::geometry, 2056);
 SELECT 'test5', st_equals(geometry,geometry_alt1) IS FALSE, _geometry_alt1_used IS TRUE, st_equals(geometry,geometry_alt2) IS TRUE, _geometry_alt2_used IS FALSE from qwat_od.pipe;
 
 -- restore the initial state

@@ -4,7 +4,7 @@ INSERT INTO qwat_vl.part_type (id, value_fr) VALUES (999, 'Point d''introduction
 
 -- add a construction point
 INSERT INTO qwat_dr.constructionpoint (id, geometry) 
-    VALUES (1, ST_Setsrid('point(530000 140000 0)'::geometry,21781));
+    VALUES (1, ST_Setsrid('point(2530000 1140000 0)'::geometry,2056));
 
 -- add a district
 INSERT INTO qwat_od.district (id, name) VALUES (1, 'My district');

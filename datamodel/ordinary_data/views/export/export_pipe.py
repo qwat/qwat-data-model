@@ -9,7 +9,7 @@ from sql_export_view import SqlExportView
 if len(sys.argv) >=2:
     SRID = sys.argv[1]
 else:
-    SRID = 21781
+    SRID = 2056
 if len(sys.argv) >= 3:
     pg_service = sys.argv[2]
 else:
