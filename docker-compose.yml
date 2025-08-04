@@ -5,7 +5,7 @@ services:
       context: .
       dockerfile: datamodel/.docker/Dockerfile
       args:
-        POSTGIS_IMAGE: ${POSTGIS_IMAGE:-postgis/postgis:16-3.5}
+        POSTGIS_IMAGE: ${POSTGIS_IMAGE:-postgis/postgis:16-3.5-alpine}
     image: qwat/qwat-data-model:${DOCKER_TAG:-unstable}
     working_dir: /src
     volumes:
