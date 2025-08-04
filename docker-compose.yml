@@ -13,6 +13,11 @@ services:
     ports:
       # making the postgres database accessible for debugging
       - ${QWAT_PG_PORT:-5432}:${QWAT_PG_PORT:-5432}
+    options: >-
+      --health-cmd pg_isready
+      --health-interval 10s
+      --health-timeout 5s
+      --health-retries 5
 
   qgis:
     build:
