@@ -59,3 +59,4 @@ jobs:
           name: datamodel-schemaspy
           path: datamodel/schemaspy/
           if-no-files-found: error
+          
