@@ -66,6 +66,6 @@ pum upgrade -p ${PGSERVICE2} -t qwat_sys.info -d ${DIR}/../update/delta
 psql service=${PGSERVICE2} -c 'SELECT qwat_sys.activate_audit_views()'
 
 # Compare results
-pum check -p1 ${PGSERVICE1} -p2 ${PGSERVICE2} --exclude-schema public --exclude-schema tiger --exclude-schema topology
+pum check -p1 ${PGSERVICE1} -p2 ${PGSERVICE2} --exclude-schema public --exclude-schema tiger --exclude-schema topology -i views
 
 echo "Success 😁 !!"

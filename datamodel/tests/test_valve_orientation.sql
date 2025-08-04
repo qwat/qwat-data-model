@@ -11,16 +11,16 @@ INSERT INTO qwat_od.consumptionzone(id, name) VALUES (1, 'A consumption zone');
 INSERT INTO qwat_od.pressurezone (id, name, fk_distributor, fk_consumptionzone) VALUES (1, 'A pressure zone', 1, 1);
 
 INSERT INTO qwat_od.pipe (geometry, fk_function, fk_material, fk_distributor, fk_status, fk_watertype, fk_installmethod, fk_precision, fk_bedding)
-SELECT ST_SetSRID(ST_GeomFromText('LINESTRING (559980 149980 0, 559990 149990 0, 560000 150000 0)'), 21781), 4105, 101, 1, 1301, 1502, 101, 101, 101;
+SELECT ST_SetSRID(ST_GeomFromText('LINESTRING (2559980 1149980 0, 2559990 1149990 0, 2560000 1150000 0)'), 2056), 4105, 101, 1, 1301, 1502, 101, 101, 101;
 
 INSERT INTO qwat_od.pipe (geometry, fk_function, fk_material, fk_distributor, fk_status, fk_watertype, fk_installmethod, fk_precision, fk_bedding)
-SELECT ST_SetSRID(ST_GeomFromText('LINESTRING (560000 150000 0, 560010 150010 0, 560020 150020 0)'), 21781), 4105, 101, 1, 1301, 1502, 101, 101, 101;
+SELECT ST_SetSRID(ST_GeomFromText('LINESTRING (2560000 1150000 0, 2560010 1150010 0, 2560020 1150020 0)'), 2056), 4105, 101, 1, 1301, 1502, 101, 101, 101;
 
 INSERT INTO qwat_od.pipe (geometry, fk_function, fk_material, fk_distributor, fk_status, fk_watertype, fk_installmethod, fk_precision, fk_bedding)
-SELECT ST_SetSRID(ST_GeomFromText('LINESTRING (560000 150000 0, 559990 150010 0, 559980 150020 0)'), 21781), 4105, 101, 1, 1301, 1502, 101, 101, 101;
+SELECT ST_SetSRID(ST_GeomFromText('LINESTRING (2560000 1150000 0, 2559990 1150010 0, 2559980 1150020 0)'), 2056), 4105, 101, 1, 1301, 1502, 101, 101, 101;
 
 INSERT INTO qwat_od.pipe (geometry, fk_function, fk_material, fk_distributor, fk_status, fk_watertype, fk_installmethod, fk_precision, fk_bedding)
-SELECT ST_SetSRID(ST_GeomFromText('LINESTRING(559980 149980 0, 559979.975263114 149979.915516003 0, 559979.947476254 149979.823744764 0)'), 21781), 4105, 101, 1, 1301, 1502, 101, 101, 101;
+SELECT ST_SetSRID(ST_GeomFromText('LINESTRING(2559980 1149980 0, 2559979.975263114 1149979.915516003 0, 2559979.947476254 1149979.823744764 0)'), 2056), 4105, 101, 1, 1301, 1502, 101, 101, 101;
 
 
 INSERT INTO qwat_od.valve (id, fk_district, fk_pressurezone, fk_distributor,
@@ -30,7 +30,7 @@ INSERT INTO qwat_od.valve (id, fk_district, fk_pressurezone, fk_distributor,
     VALUES (1, 1, 1, 1,
        101, 101, 101, 101, 6108, 101, 101,
        2016, True, '{1,2}', 9.5, True,
-       st_setsrid('point(559990 149990 0)'::geometry,21781));
+       st_setsrid('point(2559990 1149990 0)'::geometry,2056));
 
 INSERT INTO qwat_od.valve (id, fk_district, fk_pressurezone, fk_distributor,
        fk_precision, fk_precisionalti, fk_status, fk_valve_type, fk_valve_function, fk_valve_actuation, fk_object_reference,
@@ -39,7 +39,7 @@ INSERT INTO qwat_od.valve (id, fk_district, fk_pressurezone, fk_distributor,
     VALUES (2, 1, 1, 1,
        101, 101, 101, 101, 6108, 101, 101,
        2016, True, '{1,2}', 9.5, True,
-       st_setsrid('point(560010 150010 0)'::geometry,21781));
+       st_setsrid('point(2560010 1150010 0)'::geometry,2056));
 
 INSERT INTO qwat_od.valve (id, fk_district, fk_pressurezone, fk_distributor,
        fk_precision, fk_precisionalti, fk_status, fk_valve_type, fk_valve_function, fk_valve_actuation, fk_object_reference,
@@ -48,7 +48,7 @@ INSERT INTO qwat_od.valve (id, fk_district, fk_pressurezone, fk_distributor,
     VALUES (3, 1, 1, 1,
        101, 101, 101, 101, 6108, 101, 101,
        2016, True, '{1,2}', 9.5, True,
-       st_setsrid('point(559990 150010 0)'::geometry,21781));
+       st_setsrid('point(2559990 1150010 0)'::geometry,2056));
 
 -- The CALCULATED orientation
 SELECT orientation AS qwat_calculated_orientation FROM qwat_od.valve order by id;
