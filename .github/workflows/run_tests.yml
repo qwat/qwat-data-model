@@ -19,7 +19,6 @@ on:
 
 
 jobs:
-
   run-tests:
     name: Run unit tests on datamodel
     runs-on: ubuntu-24.04

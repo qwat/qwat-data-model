@@ -1,6 +1,5 @@
 # requires buildkit (default from docker engine 23.0)
-
-ARG POSTGIS_IMAGE=postgis/postgis:16-3.5
+ARG POSTGIS_IMAGE=postgis/postgis:16-3.5-alpine
 
 # arm builds are not available with 3.2
 #FROM imresamu/postgis-arm64:14-3.2 AS base-arm64
@@ -15,7 +14,8 @@ ARG RUN_TEST=False
 ARG PSYCOPG_VERSION=3
 
 # System deps (bc + exiftool for testing)
-RUN apt-get update && apt-get install -y python3 python3-pip python3-venv libpq-dev wget exiftool bc && apt-get clean
+# RUN apt-get update && apt-get install -y python3 python3-pip python3-venv libpq-dev wget exiftool bc && apt-get clean 
+RUN apk update && apk add python3 py3-pip py3-venv postgresql-dev wget exiftool bc
 
 # Add source
 ADD . /src
