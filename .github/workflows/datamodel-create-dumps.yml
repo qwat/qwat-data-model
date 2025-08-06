@@ -42,7 +42,7 @@ jobs:
         run: docker compose exec db /src/datamodel/scripts/create-dumps.py
 
       - name: Schemaspy
-        run:  docker compose run schemaspy
+        run:  docker compose up schemaspy
 
       - name: Docker logs
         if: failure()
