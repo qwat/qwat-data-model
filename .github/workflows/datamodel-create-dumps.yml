@@ -64,3 +64,13 @@ jobs:
           name: datamodel-schemaspy
           path: datamodel/schemaspy/
           if-no-files-found: error
+
+      - name: Upload datamodel dumps as GitHub Release asset
+        if: ${{ inputs.release_tag != '' }}
+        run: |
+          gh release upload "${{ inputs.release_tag }}" datamodel-dumps.zip --repo "$GITHUB_REPOSITORY"
+          gh release upload "${{ inputs.release_tag }}" datamodel-schemaspy.zip --repo "$GITHUB_REPOSITORY"
+
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TAG: ${{ github.ref_name }}
