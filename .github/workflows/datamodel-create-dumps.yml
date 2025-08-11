@@ -2,7 +2,7 @@ name: 📦 Datamodel | Create dumps
 
 concurrency:
   group: dumps-${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
-  cancel-in-progress: true
+  cancel-in-progress: ${{ github.event_name != 'workflow_call' }}
 
 on:
   push:
@@ -18,8 +18,13 @@ on:
       - datamodel/**
       - '.github/workflows/datamodel-create-dumps.yml'
   workflow_dispatch:
-  workflow_call:
-
+  workflow_call:  # Allows this workflow to be called by other workflows
+      inputs:
+        release_tag:
+          required: false
+          description: 'Release tag to upload dumps as GitHub Release asset'
+          default: ''
+          type: string
 
 jobs:
   datamodel-dumps:
