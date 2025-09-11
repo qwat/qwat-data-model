@@ -13,7 +13,7 @@ $BODY$
 	BEGIN
 		_pipe_id := pipe.id FROM qwat_od.pipe 
 			JOIN qwat_vl.status ON fk_status = status.id
-			WHERE ST_Intersects(ST_Force2d(_geometry),ST_Force2d(pipe.geometry)) 
+			WHERE ST_DWithin(ST_Force2d(_geometry), ST_Force2d(pipe.geometry), 0.001)
 			ORDER BY status.active::integer DESC
 			LIMIT 1;
 		RETURN _pipe_id;
