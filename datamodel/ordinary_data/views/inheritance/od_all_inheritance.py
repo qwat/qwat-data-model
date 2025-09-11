@@ -127,7 +127,7 @@ children:
             pkey: id
             c_alter:
                 fk_pipe:
-                    write: qwat_od.fn_pipe_get_id(NEW.geometry)
+                    write: CASE WHEN NEW.fk_pipe IS NULL THEN qwat_od.fn_pipe_get_id(NEW.geometry) ELSE NEW.fk_pipe END
             trig_here: True
 
             custom_update: "PERFORM qwat_od.fn_element_part_set_orientation(NEW.id)"
