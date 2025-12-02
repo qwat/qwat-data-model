@@ -48,13 +48,13 @@ jobs:
         if: failure()
         run: docker compose logs db
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v5
         with:
           name: datamodel-dumps
           path: datamodel/artifacts/
           if-no-files-found: error
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v5
         with:
           name: datamodel-schemaspy
           path: datamodel/schemaspy/
