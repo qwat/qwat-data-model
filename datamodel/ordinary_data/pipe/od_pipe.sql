@@ -30,6 +30,7 @@ ALTER TABLE qwat_od.pipe ADD COLUMN pressure_nominal    smallint;
 ALTER TABLE qwat_od.pipe ADD COLUMN remark              text;
 ALTER TABLE qwat_od.pipe ADD COLUMN _valve_count        smallint DEFAULT NULL;
 ALTER TABLE qwat_od.pipe ADD COLUMN _valve_closed       boolean DEFAULT NULL;
+ALTER TABLE qwat_od.pipe ADD COLUMN identification      varchar(50);
 
 COMMENT ON COLUMN qwat_od.pipe.year IS 'Represents the year when the pipe was installed. It can be NULL (not filled), between 1800 and the current year. If the pipe has project status then the maximum value of the year can be 50 years from the current year.';
 COMMENT ON COLUMN qwat_od.pipe.year_rehabilitation IS 'Represents the year when the pipe was rehabilitated. It can be NULL (not filled) or between 1800 and the current year.';
