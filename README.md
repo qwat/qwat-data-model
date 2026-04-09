@@ -4,7 +4,7 @@
 
 This repository contains the definition of the data model used by [QWAT](https://github.com/qwat/QWAT) project, a module aimed at managing a water network in QGIS.
 
-A full web data model documentation with diagrams and relations is available [here](https://rawgit.com/qwat/qwat-data-model/master/diagram/index.html).
+A full web data model documentation with diagrams and relations is available in the [diagram](https://github.com/qwat/qwat-data-model/tree/master/diagram) folder of the current repository.
 
 # Model changelog ([Detailed](https://github.com/qwat/qwat-data-model/releases/))
 
