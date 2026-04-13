@@ -7,7 +7,7 @@ cd $TRAVIS_BUILD_DIR
 export VERSION=$(cat "$TRAVIS_BUILD_DIR/system/CURRENT_VERSION.txt")
 
 # Get the 1.2.1 data_and_structure dump
-wget -q -O qwat_dump.backup https://github.com/qwat/qwat-data-sample/raw/master/qwat_v1.2.1_data_and_structure_sample.backup
+wget -q -O qwat_dump.backup https://github.com/qwat/qwat-data-sample/raw/main/qwat_v1.2.1_data_and_structure_sample.backup
 
 # Use an extra delta directory with an extra delta file to exercise Pum's
 # multi delta dir feature
