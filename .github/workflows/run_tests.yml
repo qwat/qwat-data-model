@@ -7,12 +7,12 @@ concurrency:
 on:
   push:
     branches:
-      - master
+      - main
     tags:
       - '*'
   pull_request:
     branches:
-      - master
+      - main
 
   release:
     types: ['prereleased', 'released']
@@ -50,7 +50,7 @@ jobs:
 
     steps:
 
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - name: Install PostgreSQL client
         run: |

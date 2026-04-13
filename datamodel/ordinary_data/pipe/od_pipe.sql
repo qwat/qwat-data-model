@@ -10,26 +10,27 @@ COMMENT ON TABLE qwat_od.pipe IS 'Table for pipes.';
 
 
 /* columns */
-ALTER TABLE qwat_od.pipe ADD COLUMN fk_parent        integer;
-ALTER TABLE qwat_od.pipe ADD COLUMN fk_function      integer not null;
-ALTER TABLE qwat_od.pipe ADD COLUMN fk_installmethod integer not null;
-ALTER TABLE qwat_od.pipe ADD COLUMN fk_material      integer not null;
-ALTER TABLE qwat_od.pipe ADD COLUMN fk_distributor   integer not null;
-ALTER TABLE qwat_od.pipe ADD COLUMN fk_precision     integer not null;
-ALTER TABLE qwat_od.pipe ADD COLUMN fk_bedding       integer not null;
-ALTER TABLE qwat_od.pipe ADD COLUMN fk_protection    integer;
-ALTER TABLE qwat_od.pipe ADD COLUMN fk_status        integer not null;
-ALTER TABLE qwat_od.pipe ADD COLUMN fk_watertype     integer not null;
-ALTER TABLE qwat_od.pipe ADD COLUMN fk_locationtype  integer[];
-ALTER TABLE qwat_od.pipe ADD COLUMN fk_folder        integer ;
-ALTER TABLE qwat_od.pipe ADD COLUMN year             smallint;
+ALTER TABLE qwat_od.pipe ADD COLUMN fk_parent           integer;
+ALTER TABLE qwat_od.pipe ADD COLUMN fk_function         integer NOT NULL;
+ALTER TABLE qwat_od.pipe ADD COLUMN fk_installmethod    integer NOT NULL;
+ALTER TABLE qwat_od.pipe ADD COLUMN fk_material         integer NOT NULL;
+ALTER TABLE qwat_od.pipe ADD COLUMN fk_distributor      integer NOT NULL;
+ALTER TABLE qwat_od.pipe ADD COLUMN fk_precision        integer NOT NULL;
+ALTER TABLE qwat_od.pipe ADD COLUMN fk_bedding          integer NOT NULL;
+ALTER TABLE qwat_od.pipe ADD COLUMN fk_protection       integer;
+ALTER TABLE qwat_od.pipe ADD COLUMN fk_status           integer NOT NULL;
+ALTER TABLE qwat_od.pipe ADD COLUMN fk_watertype        integer NOT NULL;
+ALTER TABLE qwat_od.pipe ADD COLUMN fk_locationtype     integer[];
+ALTER TABLE qwat_od.pipe ADD COLUMN fk_folder           integer;
+ALTER TABLE qwat_od.pipe ADD COLUMN year                smallint;
 ALTER TABLE qwat_od.pipe ADD COLUMN year_rehabilitation smallint;
-ALTER TABLE qwat_od.pipe ADD COLUMN year_end         smallint;
-ALTER TABLE qwat_od.pipe ADD COLUMN tunnel_or_bridge boolean default false;
-ALTER TABLE qwat_od.pipe ADD COLUMN pressure_nominal smallint;
-ALTER TABLE qwat_od.pipe ADD COLUMN remark           text         ;
-ALTER TABLE qwat_od.pipe ADD COLUMN _valve_count     smallint default NULL;
-ALTER TABLE qwat_od.pipe ADD COLUMN _valve_closed    boolean default NULL;
+ALTER TABLE qwat_od.pipe ADD COLUMN year_end            smallint;
+ALTER TABLE qwat_od.pipe ADD COLUMN tunnel_or_bridge    boolean DEFAULT FALSE;
+ALTER TABLE qwat_od.pipe ADD COLUMN pressure_nominal    smallint;
+ALTER TABLE qwat_od.pipe ADD COLUMN remark              text;
+ALTER TABLE qwat_od.pipe ADD COLUMN _valve_count        smallint DEFAULT NULL;
+ALTER TABLE qwat_od.pipe ADD COLUMN _valve_closed       boolean DEFAULT NULL;
+ALTER TABLE qwat_od.pipe ADD COLUMN identification      varchar(50);
 
 COMMENT ON COLUMN qwat_od.pipe.year IS 'Represents the year when the pipe was installed. It can be NULL (not filled), between 1800 and the current year. If the pipe has project status then the maximum value of the year can be 50 years from the current year.';
 COMMENT ON COLUMN qwat_od.pipe.year_rehabilitation IS 'Represents the year when the pipe was rehabilitated. It can be NULL (not filled) or between 1800 and the current year.';
