@@ -1,0 +1,5 @@
+
+CREATE SCHEMA IF NOT EXISTS qwat_sys;
+CREATE SCHEMA qwat_vl;
+CREATE SCHEMA qwat_od;
+CREATE SCHEMA qwat_cfg;
