@@ -7,7 +7,6 @@ from pathlib import Path
 
 import psycopg
 import yaml
-from pirogue import MultipleInheritance, SimpleJoins, SingleInheritance
 from pum import HookBase
 from triggers.set_defaults_and_triggers import set_defaults_and_triggers
 
@@ -57,10 +56,6 @@ class Hook(HookBase):
         }
         self.execute("CREATE SCHEMA qwat_app;")
         self.run_sql_files_in_folder(self.cwd / "sql_functions")
-
-        # Defaults and Triggers
-        # Has to be fired before view creation otherwise it won't work and will only fail in CI
-        set_defaults_and_triggers(self._connection, self.single_inherintances)
 
         sql_directories = [
             "view/schematic",
