@@ -19,38 +19,16 @@ class Hook(HookBase):
         self,
         connection: psycopg.Connection,
         SRID: int = 2056,
-        webgis: bool = False,
-        modification_ci: bool = False,
         lang_code: str = "en",
-        modification_yaml: Path = None,
     ):
         """
-        Creates the schema qwat_app for TEKSI Wastewater & GEP
-        :param SRID: the EPSG code for geometry columns. Overridden by modification_yaml
-        :param webgis: bool of whether to load web modification. Overridden by modification_yaml
-        :param modification_ci: bool of whether to load ci modification. Overridden by modification_yaml
-        :param lang_code: language code for use in modification views. Overridden by modification_yaml
-        :param modification_yaml: Path of yaml containing app parametrisation
+        Creates the schema qwat_app for TEKSI QWAT
+        :param SRID: the EPSG code for geometry columns.
+        :param lang_code: language code for use in modification views.
         """
         self.cwd = Path(__file__).parent.resolve()
         self._connection = connection
 
-        if modification_yaml:
-            self.parameters = self.load_yaml(modification_yaml)
-        else:
-            self.parameters = self.load_yaml(self.cwd / "app_modification.template.yaml")
-            if "modification_repositories" in self.parameters:
-                for entry in self.parameters["modification_repositories"]:
-                    if modification_ci and entry["id"] == "ci":
-                        entry["active"] = True
-                    if webgis and entry["id"] == "webgis":
-                        entry["active"] = True
-
-        self.abspath = self.cwd if not modification_yaml else ""
-
-        variables_pirogue = {
-            "SRID": psycopg.sql.SQL(f"{SRID}")
-        }  # when dropping psycopg2 support, we can use the SRID var directly
         self.variables_sql = {
             "SRID": {
                 "value": SRID,
@@ -79,30 +57,6 @@ class Hook(HookBase):
         }
         self.execute("CREATE SCHEMA qwat_app;")
         self.run_sql_files_in_folder(self.cwd / "sql_functions")
-        self.app_modifications = [
-            entry
-            for entry in self.parameters.get("modification_repositories")
-            if entry.get("active")
-        ]
-
-        self.extra_definitions = self.parameters.get("extra_definitions")
-        self.simple_joins_yaml = self.parameters.get("simple_joins_yaml")
-        self.multiple_inherintances = self.parameters.get("multiple_inherintances")
-
-        self.single_inherintances = self.load_yaml(self.cwd / "single_inherintances.yaml")
-
-        if self.app_modifications:
-            for modification in self.app_modifications:
-                logger.debug(f"""*****
-Running modification {modification.get('id')}
-****
-                """)
-                self.load_modification(
-                    modification_config=modification,
-                )
-        for entry in self.parameters.get("modification_repositories"):
-            if entry.get("reset_vl", False):
-                self.manage_vl(entry)
 
         # Defaults and Triggers
         # Has to be fired before view creation otherwise it won't work and will only fail in CI

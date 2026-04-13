@@ -14,5 +14,3 @@ CREATE TRIGGER tr_dimension_distance
 	FOR EACH ROW
 	EXECUTE PROCEDURE qwat_app.ft_dimension_distance_distance();
 COMMENT ON TRIGGER tr_dimension_distance ON qwat_od.dimension_distance IS 'Trigger: updates the length and other fields of the pipe after insert/update.';
-
-
