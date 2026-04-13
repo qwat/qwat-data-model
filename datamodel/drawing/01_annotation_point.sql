@@ -18,4 +18,3 @@ ALTER TABLE qwat_od.annotation_point ADD COLUMN scale_2          boolean default
 /* GEOMETRY */
 ALTER TABLE qwat_od.annotation_point ADD COLUMN geometry geometry('POINT',:SRID);
 CREATE INDEX annotationpoint_geoidx ON qwat_od.annotation_point USING GIST ( geometry );
-

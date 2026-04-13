@@ -20,9 +20,5 @@ ALTER TABLE qwat_od.construction_point ADD COLUMN remark                text ;
 ALTER TABLE qwat_od.construction_point ADD COLUMN geometry geometry('POINTZ',:SRID);
 CREATE INDEX constructionpoint_geoidx ON qwat_od.construction_point USING GIST ( geometry );
 
-
 /* constraints */
 ALTER TABLE qwat_od.construction_point ADD CONSTRAINT constructionpoint_fk_object_reference FOREIGN KEY (fk_object_reference) REFERENCES qwat_vl.object_reference(id) MATCH FULL; CREATE INDEX fki_constructionpoint_fk_object_reference ON qwat_od.construction_point(fk_object_reference);
-
-
-
