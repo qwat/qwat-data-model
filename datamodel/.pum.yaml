@@ -1,0 +1,85 @@
+
+pum:
+  module: qwat
+  migration_table_schema: qwat_sys
+  minimum_version: 1.4.2
+
+roles:
+  - name: qwat_viewer
+    description: Role for users who can view the qwat data.
+    permissions:
+      - type: read
+        schemas: [qwat_od, qwat_vl, qwat_sys, qwat_app, qwat_app_pg2ili]
+
+  - name: qwat_user
+    description: Role for users who can view and edit the qwat data.
+    inherit: qwat_viewer
+    permissions:
+      - type: write
+        schemas: [qwat_od, qwat_app_pg2ili]
+
+  - name: qwat_manager
+    description: Role for users who can view and edit the qwat data, and manage the qwat application.
+    inherit: qwat_user
+    permissions:
+      - type: write
+        schemas: [qwat_vl]
+
+  - name: qwat_sysadmin
+    description: Role for system administrators who can manage the qwat application and its configuration.
+    inherit: qwat_manager
+    permissions:
+      - type: write
+        schemas: [qwat_sys]
+
+
+parameters:
+  - name: SRID
+    type: integer
+    default: 2056
+    description: Coordinate Reference System (CRS) to use for the data. This is used for the geometry column in the database. Default is 2056 (CH1903+ / LV95).
+
+  - name: modification_ci
+    type: boolean
+    default: false
+    description: load ci modification
+    app_only: true
+
+  - name: webgis
+    type: boolean
+    default: false
+    description: enable WebGIS app modification
+    app_only: true
+
+  - name: modification_yaml
+    type: path
+    description: yaml file with app modification definitions
+    app_only: true
+
+  - name: lang_code
+    type: text
+    default: en
+    description: language code for the creation of custom views
+    app_only: true
+    values: [en, de, fr, it, ro]
+
+dependencies:
+  - name: pirogue
+    minimum_version: 3.0.0
+
+application:
+  drop:
+    - code: DROP SCHEMA IF EXISTS qwat_app CASCADE;
+    - code: DROP SCHEMA IF EXISTS qwat_app_pg2ili CASCADE;
+  create:
+    - file: app/create_app.py
+
+uninstall:
+  - code: DROP SCHEMA IF EXISTS qwat_od CASCADE;
+  - code: DROP SCHEMA IF EXISTS qwat_vl CASCADE;
+  - code: DROP SCHEMA IF EXISTS qwat_sys CASCADE;
+  - code: DROP SCHEMA IF EXISTS qwat_app CASCADE;
+  
+demo_data:
+  - name: SIGE
+    file: demo_data/demo_data_sige.sql

@@ -1,26 +1,39 @@
 
 services:
   db:
-    build:
-      context: .
-      dockerfile: datamodel/.docker/Dockerfile
-      args:
-        POSTGIS_IMAGE: ${POSTGIS_IMAGE:-postgis/postgis:16-3.5}
-    image: qwat/qwat-data-model:${DOCKER_TAG:-unstable}
-    working_dir: /src
-    volumes:
-      - .:/src
+    image: postgis/postgis:16-3.5
+    platform: linux/amd64
+    environment:
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
     ports:
       # making the postgres database accessible for debugging
-      - ${QWAT_PG_PORT:-5432}:${QWAT_PG_PORT:-5432}
+      - ${PG_CONTAINER_PORT:-5432}:5432
+    volumes:
+      - .:/usr/src
+      - dump-data:/dump
+      - db-data:/var/lib/postgresql/data
+
+  pum:
+    image: opengisch/pum:${PUM_VERSION:-latest}
+    tty: true
+    stdin_open: true
+    platform: linux/amd64
+    environment:
+      - PGSERVICE=${PGSERVICE:-pg_qwat}
+    volumes:
+      - .:/pum
+      - ${PGSERVICEFILE:-./datamodel/.docker/.pg_service.conf}:/.pg_service.conf:ro
+    depends_on:
+      - db
 
   qgis:
     build:
       context: .
-      dockerfile: plugin/.docker/Dockerfile
+      dockerfile: .docker/Dockerfile
       args:
-        QGIS_TEST_VERSION: ${QGIS_TEST_VERSION:-latest}
+        QGIS_TEST_VERSION: ${QGIS_TEST_VERSION:-3.44-noble}
     tty: true
+    platform: linux/amd64
     volumes:
       - .:/usr/src
     links:
@@ -43,3 +56,7 @@ services:
     user: "${UID}:${GID}"
     profiles:
       - schemaspy
+
+volumes:
+  db-data:
+  dump-data:

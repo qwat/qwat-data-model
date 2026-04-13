@@ -1,0 +1,104 @@
+name: 📦 Datamodel | Create dumps
+
+concurrency:
+  group: dumps-${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: ${{ github.event_name != 'workflow_call' }}
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+    paths:
+      - datamodel/**
+      - '.github/workflows/datamodel-dumps-documentation.yml'
+  workflow_dispatch:
+  workflow_call: # Allows this workflow to be called by other workflows
+      inputs:
+        release_tag:
+          required: false
+          description: 'Release tag to upload dumps as GitHub Release asset'
+          default: ''
+          type: string
+
+
+jobs:
+  datamodel-dumps:
+    name: Create dumps and schemaspy of datamodel
+    runs-on: ubuntu-latest
+    env:
+      PGSERVICE: pg_qwat
+      DB_NAME: qwat
+      DEMO_DATA: SIGE
+      COMPOSE_PROFILES: schemaspy
+      COMPOSE_PROJECT_NAME: qwat
+
+    strategy:
+      fail-fast: false
+
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Setup env
+        run: cp .env.example .env
+
+      - name: Initialize container
+        run: |
+          docker compose up -d --build
+          until docker compose exec db pg_isready -U postgres; do
+            echo "Waiting for PostgreSQL to be ready..."
+            sleep 3
+          done
+          docker compose exec db createdb -U postgres ${DB_NAME}
+          # docker compose exec db createdb -U postgres ${DB_NAME}_demo
+          docker compose run pum -vvv -p ${PGSERVICE} -d datamodel install -p SRID 2056
+          # docker compose run pum -vvv -p ${PGSERVICE}_demo -d datamodel install -p SRID 2056 --demo-data ${DEMO_DATA}
+
+      - name: Create dumps
+        run: |
+          VERSION=${{ inputs.release_tag || github.event.release.tag_name || 'dev' }}
+          docker compose exec db pg_dump -U postgres --format custom --exclude-schema=public --blobs --compress 5 --file /dump/${DB_NAME}-${VERSION}-db-dump.backup ${DB_NAME}
+          docker compose exec db pg_dump -U postgres --format plain --exclude-schema=public --file /dump/${DB_NAME}-${VERSION}-db-dump.sql ${DB_NAME}
+          docker compose exec db pg_dump -U postgres --format plain --schema=${DB_NAME}_app --file /dump/${DB_NAME}-${VERSION}-db-app.sql ${DB_NAME}
+          # docker compose exec db pg_dump -U postgres --format custom --exclude-schema=public --blobs --compress 5 --file /dump/${DB_NAME}-${VERSION}-db-dump-with-demo.backup ${DB_NAME}_demo
+          # docker compose exec db pg_dump -U postgres --format plain --exclude-schema=public --file /dump/${DB_NAME}-${VERSION}-db-dump-with-demo.sql ${DB_NAME}_demo
+          mkdir -p datamodel/artifacts/
+          docker compose cp db:/dump/. ./datamodel/artifacts/
+
+      - name: Schemaspy
+        run:  docker compose up schemaspy
+
+      - name: Docker logs
+        if: failure()
+        run: docker compose logs db
+
+      - uses: actions/upload-artifact@v7
+        with:
+          name: datamodel-dumps
+          path: datamodel/artifacts/
+          if-no-files-found: error
+
+      - uses: actions/upload-artifact@v7
+        with:
+          name: datamodel-schemaspy
+          path: datamodel/schemaspy/
+          if-no-files-found: error
+
+      - name: Zip datamodel dumps
+        run: |
+           zip -r datamodel-dumps.zip datamodel/artifacts
+
+      - name: Zip schemaspy output
+        run: zip -r datamodel-schemaspy.zip datamodel/schemaspy
+
+      - name: Upload datamodel dumps as GitHub Release asset
+        if: ${{ inputs.release_tag != '' }}
+        run: |
+          gh release upload "${{ inputs.release_tag }}" datamodel-dumps.zip --repo "$GITHUB_REPOSITORY"
+          gh release upload "${{ inputs.release_tag }}" datamodel-schemaspy.zip --repo "$GITHUB_REPOSITORY"
+
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TAG: ${{ github.ref_name }}
