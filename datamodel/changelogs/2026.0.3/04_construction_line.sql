@@ -17,7 +17,7 @@ ALTER TABLE qwat_od.construction_line ADD COLUMN measurement_campaign  varchar(2
 ALTER TABLE qwat_od.construction_line ADD COLUMN remark                text ;
 
 /* geometry */
-ALTER TABLE qwat_od.construction_line ADD COLUMN geometry geometry('LINESTRINGZ',:SRID);
+ALTER TABLE qwat_od.construction_line ADD COLUMN geometry geometry('LINESTRINGZ', {SRID});
 CREATE INDEX constructionline_geoidx ON qwat_od.construction_line USING GIST ( geometry );
 
 /* constraints */
