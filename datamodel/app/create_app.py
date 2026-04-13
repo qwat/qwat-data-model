@@ -19,7 +19,6 @@ class Hook(HookBase):
         self,
         connection: psycopg.Connection,
         SRID: int = 2056,
-        modification_agxx: bool = False,
         webgis: bool = False,
         modification_ci: bool = False,
         lang_code: str = "en",
@@ -45,8 +44,6 @@ class Hook(HookBase):
                     if modification_ci and entry["id"] == "ci":
                         entry["active"] = True
                     if webgis and entry["id"] == "webgis":
-                        entry["active"] = True
-                    if modification_agxx and entry["id"] == "agxx":
                         entry["active"] = True
 
         self.abspath = self.cwd if not modification_yaml else ""
@@ -276,13 +273,6 @@ if __name__ == "__main__":
         action=BooleanOptionalAction,
     )
     parser.add_argument(
-        "-a",
-        "--modification_agxx",
-        action="store_true",
-        default=False,
-        help="load AG-64/96 modification on app schema",
-    )
-    parser.add_argument(
         "-c",
         "--modification_ci",
         action="store_true",
@@ -314,7 +304,6 @@ if __name__ == "__main__":
         hook.run_hook(
             connection=connection,
             SRID=args.srid,
-            modification_agxx=args.modification_agxx,
             modification_ci=args.modification_ci,
             webgis=args.webgis,
             modification_yaml=args.modification_yaml,
