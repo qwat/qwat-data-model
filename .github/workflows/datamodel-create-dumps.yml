@@ -24,7 +24,7 @@ on:
 jobs:
   datamodel-dumps:
     name: Create dumps and schemaspy of datamodel
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     env:
       COMPOSE_PROFILES: schemaspy
 

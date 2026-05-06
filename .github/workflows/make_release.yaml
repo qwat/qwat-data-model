@@ -7,7 +7,7 @@ on:
 jobs:
   make-release:
     name: Make release
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-26.04
 
     services:
       postgres:
