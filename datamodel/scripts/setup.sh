@@ -262,6 +262,26 @@ psql service=${PGSERVICE} -v ON_ERROR_STOP=1 -v SRID=$SRID -f ${DIR}/ordinary_da
 echo "Starting tr_valve_pipe insertion..."
 psql service=${PGSERVICE} -v ON_ERROR_STOP=1 -v SRID=$SRID -f ${DIR}/ordinary_data/valve/tr_valve_pipe.sql
 
+echo "Starting organisation insertion..."
+psql service=${PGSERVICE} -v ON_ERROR_STOP=1 -v SRID=$SRID -f ${DIR}/system/oid_generation.sql
+psql service=${PGSERVICE} -v ON_ERROR_STOP=1 -v SRID=$SRID -f ${DIR}/system/02_sys.sql
+psql service=${PGSERVICE} -v ON_ERROR_STOP=1 -v SRID=$SRID -f ${DIR}/system/09_qwat_dictionaries.sql
+
+psql service=${PGSERVICE} -v ON_ERROR_STOP=1 -v SRID=$SRID -f ${DIR}/ordinary_data/organisation/03_qwat_db_organisation.sql
+psql service=${PGSERVICE} -v ON_ERROR_STOP=1 -v SRID=$SRID -f ${DIR}/ordinary_data/organisation/09_qwat_organisation_dictionaries.sql
+
+echo "Starting controlcable insertion..."
+psql service=${PGSERVICE} -v ON_ERROR_STOP=1 -v SRID=$SRID -f ${DIR}/ordinary_data/controlcable/03_qwat_control_cable_db_sia405.sql
+psql service=${PGSERVICE} -v ON_ERROR_STOP=1 -v SRID=$SRID -f ${DIR}/ordinary_data/controlcable/09_qwat_control_cable_dictionaries.sql
+psql service=${PGSERVICE} -v ON_ERROR_STOP=1 -v SRID=$SRID -f ${DIR}/ordinary_data/controlcable/qwat_control_cable_fk_folder.sql
+
+echo "Starting protection_tube insertion..."
+psql service=${PGSERVICE} -v ON_ERROR_STOP=1 -v SRID=$SRID -f ${DIR}/ordinary_data/protectiontube/03_qwat_protection_tube_db_sia405.sql
+psql service=${PGSERVICE} -v ON_ERROR_STOP=1 -v SRID=$SRID -f ${DIR}/ordinary_data/protectiontube/09_qwat_protection_tube_dictionaries.sql
+psql service=${PGSERVICE} -v ON_ERROR_STOP=1 -v SRID=$SRID -f ${DIR}/ordinary_data/protectiontube/qwat_protection_tube_fk_folder.sql
+
+
+
 echo "Starting view creation..."
 PGSERVICE=${PGSERVICE} SRID=$SRID ${DIR}/ordinary_data/views/insert_views.sh
 

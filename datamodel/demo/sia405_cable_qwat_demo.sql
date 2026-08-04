@@ -1,0 +1,36 @@
+--
+-- PostgreSQL database dump
+--
+
+-- Dumped from database version 15.7
+-- Dumped by pg_dump version 15.3
+
+-- Started on 2025-04-15 15:33:56
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET idle_in_transaction_session_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SELECT pg_catalog.set_config('search_path', '', false);
+SET check_function_bodies = false;
+SET xmloption = content;
+SET client_min_messages = warning;
+SET row_security = off;
+
+--
+-- TOC entry 5028 (class 0 OID 430225)
+-- Dependencies: 392
+-- Data for Name: sia405cc_cable; Type: TABLE DATA; Schema: qwat_od; Owner: postgres
+--
+
+INSERT INTO qwat_od.sia405cc_cable VALUES ('ch000000CB000001', 'test cable', 9339, 9346, 9347, 9365, 2024, NULL, NULL, NULL, 350, '01090000A0155500000100000001020000800200000005F55116A36C1F417CD75EE9E95A034100000000000000002C4F527EBB6C1F415610BC11005B03410000000000000000', 9361, NULL, '2024-12-09 16:34:16.404826', 'ch20p3q400002114', 'ch20p3q400002114', 'ch20p3q400002114', NULL);
+INSERT INTO qwat_od.sia405cc_cable VALUES ('ch000000CB000002', 'cable 2', 9339, 9346, 9347, 9365, 2024, NULL, NULL, NULL, NULL, '01090000A01555000001000000010200008005000000F1277EAA536C1F412CF60307815A03410000000000000000057EEA08966C1F41F133368DDF5A03410000000000000000425994589B6C1F417CE9AD1DE75A034100000000000000004361FBB19F6C1F411485E272EB5A0341000000000000000005F55116A36C1F417CD75EE9E95A03410000000000000000', 9361, NULL, '2024-12-09 16:36:10.937486', 'ch20p3q400002114', 'ch20p3q400002114', 'ch20p3q400002114', NULL);
+
+
+-- Completed on 2025-04-15 15:33:56
+
+--
+-- PostgreSQL database dump complete
+--
+
