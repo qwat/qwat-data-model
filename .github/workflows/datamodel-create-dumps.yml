@@ -19,7 +19,12 @@ on:
       - '.github/workflows/datamodel-create-dumps.yml'
   workflow_dispatch:
   workflow_call:
-
+      inputs:
+        release_tag:
+          required: false
+          description: 'Release tag to upload dumps as GitHub Release asset'
+          default: ''
+          type: string
 
 jobs:
   datamodel-dumps:
