@@ -30,14 +30,14 @@ jobs:
 
       - name: Assert CURRENT_VERSION.txt is up to date
         run: |
-          LAST_VERSION=$(ls update/delta | sort -r | sed '/^delta_/!d' | head -n 1 | cut -d_ -f2)
-          CUR_VERSION=$(cat system/CURRENT_VERSION.txt)
+          LAST_VERSION=$(ls datamodel/update/delta | sort -r | sed '/^delta_/!d' | head -n 1 | cut -d_ -f2)
+          CUR_VERSION=$(cat datamodel/system/CURRENT_VERSION.txt)
           [[ "${LAST_VERSION}" == "${CUR_VERSION}" ]] || (echo "Version mismatch ${LAST_VERSION} != ${CUR_VERSION}" && exit 1)
 
       - name: Install requirements
         run: |
           pip3 install --upgrade setuptools
-          pip3 install -r requirements.txt
+          pip3 install -r datamodel/requirements.txt
 
       - name: Before script
         run: ./.build/travis_before_script.sh
