@@ -1,0 +1,12 @@
+name: 📦 Release
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  datamodel-create-dumps:
+    name: Call Datamodel Create Dumps Workflow
+    uses: ./.github/workflows/datamodel-create-dumps.yml
+    with:
+      release_tag: ${{ github.event.release.tag_name }}
