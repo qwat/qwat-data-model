@@ -49,7 +49,7 @@ echo "::group::Extend database with a customization"
 echo "::endgroup::"
 
 # Run upgrade with customizations/sigip/delta as an extra delta dir
-DELTA_DIRS="$DELTA_DIRS /.build/customizations/sigip/delta"
+DELTA_DIRS="$DELTA_DIRS .build/customizations/sigip/delta"
 echo "::group::Run upgrade"
 pum upgrade -p pg_qwat_prod -t qwat_sys.info -d $DELTA_DIRS
 echo "::endgroup::"
