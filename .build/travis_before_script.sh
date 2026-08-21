@@ -27,6 +27,12 @@ host=localhost
 dbname=qwat_comp
 user=postgres
 password=postgres
+
+[pg_qwat_test_release]
+host=localhost
+dbname=qwat_test_release
+user=postgres
+password=postgres
 EOF
 
 echo "SET client_min_messages TO WARNING;" > ~/.psqlrc
