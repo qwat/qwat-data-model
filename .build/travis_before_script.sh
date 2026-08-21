@@ -24,7 +24,7 @@ password=postgres
 
 [pg_qwat_comp]
 host=localhost
-dbname=pg_qwat_comp
+dbname=qwat_comp
 user=postgres
 password=postgres
 EOF
