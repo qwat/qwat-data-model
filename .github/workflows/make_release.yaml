@@ -3,7 +3,12 @@ name: Make release
 on:
   release:
     types: ['prereleased', 'released']
-
+  workflow_dispatch:
+    inputs:
+      release_tag:
+        type: string
+        default: '0.0.0'
+      
 jobs:
   make-release:
     name: Make release
@@ -30,14 +35,14 @@ jobs:
 
       - name: Assert CURRENT_VERSION.txt is up to date
         run: |
-          LAST_VERSION=$(ls update/delta | sort -r | sed '/^delta_/!d' | head -n 1 | cut -d_ -f2)
-          CUR_VERSION=$(cat system/CURRENT_VERSION.txt)
+          LAST_VERSION=$(ls datamodel/update/delta | sort -r | sed '/^delta_/!d' | head -n 1 | cut -d_ -f2)
+          CUR_VERSION=$(cat datamodel/system/CURRENT_VERSION.txt)
           [[ "${LAST_VERSION}" == "${CUR_VERSION}" ]] || (echo "Version mismatch ${LAST_VERSION} != ${CUR_VERSION}" && exit 1)
 
       - name: Install requirements
         run: |
           pip3 install --upgrade setuptools
-          pip3 install -r requirements.txt
+          pip3 install -r datamodel/requirements.txt
 
       - name: Before script
         run: ./.build/travis_before_script.sh
@@ -50,8 +55,15 @@ jobs:
       - name: Create dumps
         run: ./.deploy/create_release.py
         env:
-          TRAVIS_TAG: ${{ github.event.release.tag_name }}
+          TRAVIS_TAG: ${{ github.event.release.tag_name || inputs.release_tag }}
           TRAVIS_SECURE_ENV_VARS: 'true'
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v7
+        with:
+          name: datamodel-dumps
+          path: artifacts/
+          if-no-files-found: error
 
       - name: Upload assets
         uses: softprops/action-gh-release@v3
