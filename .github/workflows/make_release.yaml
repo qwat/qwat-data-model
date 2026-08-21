@@ -3,7 +3,12 @@ name: Make release
 on:
   release:
     types: ['prereleased', 'released']
-
+  workflow_dispatch:
+    inputs:
+      release_tag:
+        type: string
+        default: '0.0.0'
+      
 jobs:
   make-release:
     name: Make release
@@ -50,8 +55,15 @@ jobs:
       - name: Create dumps
         run: ./.deploy/create_release.py
         env:
-          TRAVIS_TAG: ${{ github.event.release.tag_name }}
+          TRAVIS_TAG: ${{ github.event.release.tag_name || inputs.release_tag }}
           TRAVIS_SECURE_ENV_VARS: 'true'
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v7
+        with:
+          name: datamodel-dumps
+          path: artifacts/
+          if-no-files-found: error
 
       - name: Upload assets
         uses: softprops/action-gh-release@v3
