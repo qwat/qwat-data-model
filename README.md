@@ -8,7 +8,8 @@ A full web data model documentation with diagrams and relations is available in 
 
 # Model changelog ([Detailed](https://github.com/qwat/qwat-data-model/releases/))
 
-- v1.4.0 : TODO 
+- v1.5.0 : See [new release documentation 1.5.0](https://qwat.github.io/docs/releases/1_5.html)
+- v1.4.0 : see release notes 1.4.0 [datamodel] https://github.com/qwat/qwat-data-model/releases#release-1.4.0 and [qwat](https://github.com/qwat/QWAT/releases#release-1.4.0)
 - v1.3.6 : Add sia405 mapping fields for interlis Export
 - v1.3.5 : Minors typo fixes #314 #315
 - v1.3.4 : Remove SIRE from core, add value list for valve nominal diameter
